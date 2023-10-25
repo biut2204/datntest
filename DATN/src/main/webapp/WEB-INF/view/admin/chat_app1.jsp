@@ -40,7 +40,7 @@
         }
 
         .chat-app .chat {
-            margin-left: 280px;
+            /*margin-left: 280px;*/
             border-left: 1px solid #eaeaea
         }
 
@@ -281,7 +281,7 @@
 
         #scroll-container {
             width: 100%; /* Độ rộng của phần tử cuộn */
-            height: 600px; /* Độ cao của phần tử cuộn */
+            height: 170px; /* Độ cao của phần tử cuộn */
             overflow: auto; /* Hiển thị thanh cuộn khi nội dung vượt quá kích thước của phần tử */
         }
     </style>
@@ -295,7 +295,7 @@
                 <div class="chat">
                     <div class="chat-header clearfix">
                         <div class="row">
-                            <div class="col-lg-6" id="fixed-content">
+                            <div class="col-lg-6">
                                 <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
                                     <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
                                 </a>
@@ -306,21 +306,19 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 hidden-sm text-right">
-                                <a href="javascript:void(0);" class="btn btn-outline-secondary"><i
-                                        class="fa fa-camera"></i></a>
                                 <a href="javascript:void(0);" class="btn btn-outline-primary"><i
                                         class="fa fa-image"></i></a>
-                                <a href="javascript:void(0);" class="btn btn-outline-info"><i
-                                        class="fa fa-cogs"></i></a>
-                                <a href="javascript:void(0);" class="btn btn-outline-warning"><i
-                                        class="fa fa-question"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="chat-history" id="scroll-container">
                         <ul class="m-b-0">
                             <c:forEach items="${messages}" var="message">
-                                <li>${message.users.ten}: ${message.content}</li>
+                                <li class="clearfix">
+                                    <div class="${message.users.ma==check?"message other-message float-right":"message my-message"}">
+                                            ${message.content}
+                                    </div>
+                                </li>
                             </c:forEach>
                         </ul>
                         <div id="chat-content"></div>
@@ -330,7 +328,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="send"><i class="fa fa-send"></i></span>
                             </div>
-                            <input type="text" id="message" placeholder="Nhập vào đây để gửi . . ."
+                            <input type="text" id="message" placeholder="Nhập vào đây để viết . . ."
                                    class="form-control">
                         </div>
                     </div>
@@ -346,29 +344,45 @@
 </script>
 <script>
     var stompClient = null;
-
     function connect() {
         var socket = new SockJS('/chat');
         stompClient = Stomp.over(socket);
-
         stompClient.connect({}, function (frame) {
-            stompClient.subscribe('/topic/publicChatRoom', function (message) {
+            var index = document.getElementById("ma").value;
+            stompClient.subscribe('/topic/privateRoomName/'+index, function (message) {
                 showMessage(JSON.parse(message.body));
             });
         });
     }
 
     function showMessage(message) {
+        // Tạo các phần tử HTML cho tin nhắn và thời gian
         var chatContent = document.getElementById('chat-content');
-        chatContent.innerHTML += message.users.ten + ': ' + message.content + '<br>' + '<br>';
-    }
+        var listItem = document.createElement('li');
+        var messageText = document.createElement('div');
+        var check = document.getElementById("ma").value;
+        // Đặt lớp CSS cho tin nhắn dựa trên người gửi và người nhận
+        listItem.className = "clearfix";
+        listItem.style.listStyleType = 'none'; // Loại bỏ dấu chấm (bullet)
+        listItem.style.marginBottom = "35px";
+        if (message.users.ma===check) {
+            messageText.className = "message other-message float-right";
 
+        } else {
+            messageText.className = "message my-message";
+        }
+        // Đặt nội dung tin nhắn
+        messageText.textContent = message.content;
+        // Gắn các phần tử HTML vào cấu trúc DOM
+        listItem.appendChild(messageText);
+        chatContent.appendChild(listItem);
+    }
 
     function sendMessage() {
         var messageInput = document.getElementById('message');
         var message = messageInput.value;
         var check = document.getElementById("ma").value;
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify({'content': message, 'users': {'ma': check},'bientrunggian':check}));
+        stompClient.send("/app/chat.sendPrivateMessage", {}, JSON.stringify({'content': message, 'users': {'ma': check},'bientrunggian':check}));
         messageInput.value = '';
     }
 
@@ -377,17 +391,6 @@
     document.getElementById('send').addEventListener('click', function () {
         sendMessage();
     });
-</script>
-<script>
-    // Hàm cuộn tự động xuống dòng cuối cùng
-    function scrollDownToBottom() {
-        var chatContainer = document.getElementById('scroll-container');
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-    // Gọi hàm cuộn tự động xuống dòng cuối cùng khi trang được tải
-    window.onload = function () {
-        scrollDownToBottom();
-    };
 </script>
 </body>
 </html>

@@ -284,6 +284,12 @@
             height: 600px; /* Độ cao của phần tử cuộn */
             overflow: auto; /* Hiển thị thanh cuộn khi nội dung vượt quá kích thước của phần tử */
         }
+        /* CSS */
+        ul.list-unstyled.chat-list li a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -302,14 +308,14 @@
                     <ul class="list-unstyled chat-list mt-2 mb-0">
                         <c:forEach items="${user}" var="u" varStatus="a">
                             <li class="clearfix">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar${a.index+1}.png" alt="avatar">
-                                <div class="about">
-                                    <div class="name">${u.ten}</div>
-                                    <a href="/admin/chat/${u.ma}"><button>Detail</button></a>
-                                </div>
+                                <a href="/admin/chat/${u.ma}">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar${a.index+1}.png" alt="avatar">
+                                    <div class="about">
+                                            ${u.ten}
+                                    </div>
+                                </a>
                             </li>
                         </c:forEach>
-
                     </ul>
                 </div>
                 <div class="chat">
@@ -320,28 +326,26 @@
                                     <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
                                 </a>
                                 <div class="chat-about">
-                                    <h6 class="m-b-0">User</h6>
+                                    <h6 class="m-b-0">${ten}</h6>
                                     <small>Last seen: 2 hours ago</small>
                                     <input value="${check}" type="hidden" id="ma">
                                     <input value="${check1}" type="hidden" id="ma1">
                                 </div>
                             </div>
                             <div class="col-lg-6 hidden-sm text-right">
-                                <a href="javascript:void(0);" class="btn btn-outline-secondary"><i
-                                        class="fa fa-camera"></i></a>
                                 <a href="javascript:void(0);" class="btn btn-outline-primary"><i
                                         class="fa fa-image"></i></a>
-                                <a href="javascript:void(0);" class="btn btn-outline-info"><i
-                                        class="fa fa-cogs"></i></a>
-                                <a href="javascript:void(0);" class="btn btn-outline-warning"><i
-                                        class="fa fa-question"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="chat-history" id="scroll-container">
                         <ul class="m-b-0">
                             <c:forEach items="${messages}" var="message">
-                                <li>${message.users.ten}: ${message.content}</li>
+                                <li class="clearfix">
+                                    <div class="${message.users.ma==check?"message other-message float-right":"message my-message"}">
+                                            ${message.content}
+                                    </div>
+                                </li>
                             </c:forEach>
                         </ul>
                         <div id="chat-content"></div>
@@ -367,21 +371,37 @@
 </script>
 <script>
     var stompClient = null;
-
     function connect() {
         var socket = new SockJS('/chat');
         stompClient = Stomp.over(socket);
-
         stompClient.connect({}, function (frame) {
-            stompClient.subscribe('/topic/publicChatRoom', function (message) {
+            var index = document.getElementById("ma").value;
+            stompClient.subscribe('/topic/privateRoomName/'+index, function (message) {
                 showMessage(JSON.parse(message.body));
             });
         });
     }
 
     function showMessage(message) {
+        // Tạo các phần tử HTML cho tin nhắn và thời gian
         var chatContent = document.getElementById('chat-content');
-        chatContent.innerHTML += message.users.ten + ': ' + message.content + '<br>'+ '<br>';
+        var listItem = document.createElement('li');
+        var messageText = document.createElement('div');
+        var check1 = document.getElementById("ma1").value;
+        // Đặt lớp CSS cho tin nhắn dựa trên người gửi và người nhận
+        listItem.className = "clearfix";
+        listItem.style.listStyleType = 'none'; // Loại bỏ dấu chấm (bullet)
+        listItem.style.marginBottom = "35px";
+        if (message.users.ma===check1) {
+            messageText.className = "message other-message float-right";
+        } else {
+            messageText.className = "message my-message";
+        }
+        // Đặt nội dung tin nhắn
+        messageText.textContent = message.content;
+        // Gắn các phần tử HTML vào cấu trúc DOM
+        listItem.appendChild(messageText);
+        chatContent.appendChild(listItem);
     }
 
 
@@ -390,7 +410,7 @@
         var message = messageInput.value;
         var check = document.getElementById("ma").value;
         var check1 = document.getElementById("ma1").value;
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify({'content': message, 'users': {'ma': check1},'bientrunggian':check}));
+        stompClient.send("/app/chat.sendPrivateMessage", {}, JSON.stringify({'content': message, 'users': {'ma': check1},'bientrunggian':check}));
         messageInput.value = '';
     }
 

@@ -5,12 +5,12 @@ import com.example.demo.entity.chat.MessageChat;
 import com.example.demo.entity.khachhang.Users;
 import com.example.demo.repo.ChatMessageRepository;
 import com.example.demo.repo.users.UsersRepo;
-import com.example.demo.ser.users.UsersSer;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,15 +22,14 @@ import java.util.List;
 @Controller
 public class ChatController {
     @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+    @Autowired
     private ChatMessageRepository chatMessageRepository;
     @Autowired
     private UsersRepo userRepository;
 
-    @Autowired
-    UsersSer usersSer;
-
     @MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/publicChatRoom")
+    @SendTo("/topic/publicChatRoom/")
     public MessageChat sendMessage(@Payload MessageChat message) {
         Users u = userRepository.findByMa(message.getUsers().getMa());
         message.setUsers(u);
@@ -39,19 +38,24 @@ public class ChatController {
         chatMessageRepository.save(message);
         return message;
     }
+    @MessageMapping("/chat.sendPrivateMessage")
+    public MessageChat sendMessage(@Payload MessageChat message, @Header("simpSessionId") String sessionId) {
+        // Lấy giá trị privateRoomName từ tin nhắn
+        Users u = userRepository.findByMa(message.getUsers().getMa());
+        message.setUsers(u);
+        message.setTimestamp(LocalDateTime.now());
+        message.setBientrunggian(message.getBientrunggian());
+        chatMessageRepository.save(message);
+        // Xử lý tin nhắn ở đây và gửi lại cho phòng riêng tư cụ thể
+        messagingTemplate.convertAndSend("/topic/privateRoomName/" + message.getBientrunggian(), message);
+        return message;
+    }
 
-    @GetMapping("user/chat/*")
-    public String chatPage(HttpServletRequest request, Model model) {
-
-        String url = request.getRequestURI();
-        String[] p = url.split("user/chat/");
-        String ma = p[1];
-
+    @GetMapping("user/chat/{ma}")
+    public String chatPage(@PathVariable String ma, Model model) {
         model.addAttribute("check", ma);
-        Users users = usersSer.findByMa(ma);
         List<MessageChat> messages = chatMessageRepository.findAllByBientrunggian(ma);
         model.addAttribute("messages", messages);
-        model.addAttribute("ten", users.getTen());
         return "/admin/chat_app1";
     }
 
@@ -59,6 +63,8 @@ public class ChatController {
     public String chatPage1(@PathVariable String ma, Model model) {
         model.addAttribute("user",userRepository.findByRole(RoleEnum.MENBER));
         model.addAttribute("check", ma);
+        Users u = userRepository.findByMa(ma);
+        model.addAttribute("ten", u.getTen());
         model.addAttribute("check1", "005");
         List<MessageChat> messages = chatMessageRepository.findAllByBientrunggian(ma);
         model.addAttribute("messages", messages);
