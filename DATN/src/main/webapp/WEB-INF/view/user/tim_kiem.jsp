@@ -45,7 +45,8 @@
                 <div class="input-group">
                     <input type="text" class="form-control" name="timKiem" placeholder="Search for products">
                     <div class="input-group-append">
-                        <button class="input-group-text bg-transparent text-primary" formaction="/user/tim_kiem/${idKh}">
+                        <button class="input-group-text bg-transparent text-primary"
+                                formaction="/user/tim_kiem/${idKh}">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -123,7 +124,8 @@
                             <c:when test="${idKh != 2}">
                                 <a href="/user/don_hang/${idKh}" class="btn px-0">
                                     <i class="fa fa-user"></i>
-                                    <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">${idKh}</span>
+                                    <span class="badge text-secondary border border-secondary rounded-circle"
+                                          style="padding-bottom: 2px;">${idKh}</span>
                                 </a>
                                 <a href="/user/gio_hang/view/${idKh}" class="btn px-0 ml-3">
                                     <i class="fas fa-shopping-cart text-primary"></i>
@@ -169,98 +171,117 @@
             <!-- Price Start -->
             <form method="post">
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3">Giá</span>
+                        class="bg-secondary pr-3">Giá <i style="display: inline-block" class="fas fa-angle-down"
+                                                         onclick="toggleView('view_anh2')"></i></span>
                 </h5>
-                <div class="bg-light p-4 mb-30">
-                    <div class="custom-control custom-combobox d-flex align-items-center justify-content-between mb-3">
-                        <select class="custom-select mr-2" id="minPrice" name="minPrice">
-                            <option value="">Min</option>
-                            <option value="100">10000</option>
-                            <option value="200">20000</option>
-                            <option value="300">30000</option>
-                            <!-- Thêm các tùy chọn giá khác tùy theo nhu cầu của bạn -->
-                        </select>
+                <div id="view_anh2" style="display:block">
+                    <div class="bg-light p-4 mb-30">
+                        <div class="custom-control custom-combobox d-flex align-items-center justify-content-between mb-3">
+                            <select class="custom-select mr-2" id="minPrice" name="minPrice">
+                                <option value="">Min</option>
+                                <option value="100">10000</option>
+                                <option value="200">20000</option>
+                                <option value="300">30000</option>
+                                <!-- Thêm các tùy chọn giá khác tùy theo nhu cầu của bạn -->
+                            </select>
 
-                        <!-- Combobox Max Giá -->
-                        <select class="custom-select ml-2" id="maxPrice" name="maxPrice">
-                            <option value="">Max</option>
-                            <option value="500000">500000</option>
-                            <option value="1000000">1000000</option>
-                            <option value="1500000">1500000</option>
-                            <!-- Thêm các tùy chọn giá khác tùy theo nhu cầu của bạn -->
-                        </select>
+                            <!-- Combobox Max Giá -->
+                            <select class="custom-select ml-2" id="maxPrice" name="maxPrice">
+                                <option value="">Max</option>
+                                <option value="500000">500000</option>
+                                <option value="1000000">1000000</option>
+                                <option value="1500000">1500000</option>
+                                <!-- Thêm các tùy chọn giá khác tùy theo nhu cầu của bạn -->
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <!-- Price End -->
 
                 <!-- Color Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3">Form</span>
+                        class="bg-secondary pr-3">Form <i style="display: inline-block" class="fas fa-angle-down"
+                                                          onclick="toggleView('view_anh3')"></i></span>
                 </h5>
-                <div class="bg-light p-4 mb-30">
-                    <c:forEach items="${listForm}" var="list" varStatus="status">
-                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
-                            <input type="radio" class="control-input" id="form-${status.index == 0 ? '0' : ''}"
-                                   name="idForm" value="${list.id}">
-                            <label for="form-${status.index == 0 ? '0' : ''}"
-                                   style="width: 200px; padding-top: 8px">${list.ten}</label>
-                        </div>
-                    </c:forEach>
+                <div id="view_anh3" style="display:block">
+                    <div class="bg-light p-4 mb-30">
+                        <c:forEach items="${listForm}" var="list" varStatus="status">
+                            <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
+                                <input type="radio" class="control-input" id="form-${status.index == 0 ? '0' : ''}"
+                                       name="idForm" value="${list.id}">
+                                <label for="form-${status.index == 0 ? '0' : ''}"
+                                       style="width: 200px; padding-top: 8px">${list.ten}</label>
+                            </div>
+                        </c:forEach>
+                    </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3">Hãng</span>
+                        class="bg-secondary pr-3">Hãng <i style="display: inline-block" class="fas fa-angle-down"
+                                                          onclick="toggleView('view_anh4')"></i></span>
                 </h5>
-                <div class="bg-light p-4 mb-30">
-                    <c:forEach items="${listHang}" var="list" varStatus="status">
-                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
-                            <input type="radio" class="control-input" id="hang-${status.index == 0 ? '0' : ''}"
-                                   name="idHang" value="${list.id}">
-                            <label style="width: 200px; padding-top: 8px"
-                                   for="hang-${status.index == 0 ? '0' : ''}">${list.ten}</label>
-                        </div>
-                    </c:forEach>
+                <div id="view_anh4" style="display:block">
+                    <div class="bg-light p-4 mb-30">
+                        <c:forEach items="${listHang}" var="list" varStatus="status">
+                            <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
+                                <input type="radio" class="control-input" id="hang-${status.index == 0 ? '0' : ''}"
+                                       name="idHang" value="${list.id}">
+                                <label style="width: 200px; padding-top: 8px"
+                                       for="hang-${status.index == 0 ? '0' : ''}">${list.ten}</label>
+                            </div>
+                        </c:forEach>
+                    </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3">Loại áo</span>
+                        class="bg-secondary pr-3">Loại áo <i style="display: inline-block" class="fas fa-angle-down"
+                                                             onclick="toggleView('view_anh5')"></i></span>
                 </h5>
-                <div class="bg-light p-4 mb-30">
-                    <c:forEach items="${listLoaiAo}" var="list" varStatus="status">
-                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
-                            <input type="radio" class="control-input" id="loaiAo-${status.index == 0 ? '0' : ''}"
-                                   name="idLoaiAo" value="${list.id}">
-                            <label style="width: 200px; padding-top: 8px"
-                                   for="loaiAo-${status.index == 0 ? '0' : ''}">${list.ten}</label>
-                        </div>
-                    </c:forEach>
+                <div id="view_anh5" style="display:block">
+                    <div class="bg-light p-4 mb-30">
+                        <c:forEach items="${listLoaiAo}" var="list" varStatus="status">
+                            <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
+                                <input type="radio" class="control-input" id="loaiAo-${status.index == 0 ? '0' : ''}"
+                                       name="idLoaiAo" value="${list.id}" ${list.id == loaiAo.id ?'checked':''}>
+                                <label style="width: 200px; padding-top: 8px"
+                                       for="loaiAo-${status.index == 0 ? '0' : ''}">${list.ten}</label>
+                            </div>
+                        </c:forEach>
+                    </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3">Chất vải</span>
+                        class="bg-secondary pr-3">Chất vải <i style="display: inline-block" class="fas fa-angle-down"
+                                                              onclick="toggleView('view_anh6')"></i></span>
                 </h5>
-                <div class="bg-light p-4 mb-30">
-                    <c:forEach items="${listChatVai}" var="list" varStatus="status">
-                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
-                            <input type="radio" class="control-input" id="cv-${status.index == 0 ? '0' : ''}"
-                                   name="idChatVai" value="${list.id}">
-                            <label style="width: 200px; padding-top: 8px"
-                                   for="cv-${status.index == 0 ? '0' : ''}">${list.ten}</label>
-                        </div>
-                    </c:forEach>
+                <div id="view_anh6" style="display:block">
+                    <div class="bg-light p-4 mb-30">
+                        <c:forEach items="${listChatVai}" var="list" varStatus="status">
+                            <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
+                                <input type="radio" class="control-input" id="cv-${status.index == 0 ? '0' : ''}"
+                                       name="idChatVai" value="${list.id}">
+                                <label style="width: 200px; padding-top: 8px"
+                                       for="cv-${status.index == 0 ? '0' : ''}">${list.ten}</label>
+                            </div>
+                        </c:forEach>
+                    </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3">Màu sắc</span>
+                        class="bg-secondary pr-3">Màu sắc <i style="display: inline-block" class="fas fa-angle-down"
+                                                             onclick="toggleView('view_anh7')"></i></span>
                 </h5>
-                <div class="bg-light p-4 mb-30">
-                    <c:forEach items="${listMauSac}" var="list" varStatus="status">
-                        <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="control-input" id="cv-${status.index == 0 ? '0' : ''}"
-                                   name="mauSacIds" value="${list.id}">
-                            <label style="width: 200px; padding-top: 8px"
-                                   for="cv-${status.index == 0 ? '0' : ''}">${list.ten}</label>
-                        </div>
-                    </c:forEach>
+                <div id="view_anh7" style="display:block">
+                    <div class="bg-light p-4 mb-30">
+                        <c:forEach items="${listMauSac}" var="list" varStatus="status">
+                            <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
+                                <input type="checkbox" class="control-input" id="cv-${status.index == 0 ? '0' : ''}"
+                                       name="mauSacIds" value="${list.id}">
+                                <label style="width: 200px; padding-top: 8px"
+                                       for="cv-${status.index == 0 ? '0' : ''}">${list.ten}</label>
+                            </div>
+                        </c:forEach>
+                    </div>
                 </div>
-
-                <button class="btn btn-block btn-primary font-weight-bold my-3 py-3" formaction="/user/tim_kiem_nang_cao/${idKh}">Lọc</button>
+                <button class="btn btn-block btn-primary font-weight-bold my-3 py-3"
+                        formaction="/user/tim_kiem_nang_cao/${idKh}">Lọc
+                </button>
 
             </form>
             <!-- Size End -->
@@ -270,34 +291,10 @@
 
         <!-- Shop Product Start -->
         <div class="col-lg-9 col-md-8">
-            <div class="row pb-3">
+            <div class="row pb-3" id="product-list">
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <div>
-                            <button class="btn btn-sm btn-light"><i class="fa fa-th-large"></i></button>
-                            <button class="btn btn-sm btn-light ml-2"><i class="fa fa-bars"></i></button>
-                        </div>
-                        <div class="ml-2">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-light dropdown-toggle"
-                                        data-toggle="dropdown">Sorting
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">Latest</a>
-                                    <a class="dropdown-item" href="#">Popularity</a>
-                                    <a class="dropdown-item" href="#">Best Rating</a>
-                                </div>
-                            </div>
-                            <div class="btn-group ml-2">
-                                <button type="button" class="btn btn-sm btn-light dropdown-toggle"
-                                        data-toggle="dropdown">Showing
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">10</a>
-                                    <a class="dropdown-item" href="#">20</a>
-                                    <a class="dropdown-item" href="#">30</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -320,22 +317,24 @@
                                    href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a>
                                 <c:choose>
                                     <c:when test="${list.giaBan == list.ao.giaBan}">
-                                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                                <h5 style="color: red;">${list.ao.giaBan}</h5>
-                                            </div>
-                                            <p>Sản phẩm đã bán ${list.slBan}</p>
+                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                            <h5 style="color: red;">${list.ao.giaBan}</h5>
+                                        </div>
+                                        <p>Sản phẩm đã bán ${list.slBan}</p>
                                     </c:when>
                                     <c:when test="${list.giaBan < list.ao.giaBan}">
                                         <div class="d-flex align-items-center justify-content-center mt-2">
                                             <h6 class="text-muted ml-2">
-                                                <del>${list.ao.giaBan}</del>
+                                                <del><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
+                                                                       currencySymbol="VNĐ"/></del>
                                             </h6>
-                                            <h5 style="color: red;">${list.giaBan}</h5>
+                                            <h5 style="color: red;"><fmt:formatNumber value="${list.giaBan}"
+                                                                                      type="currency"
+                                                                                      currencySymbol="VNĐ"/></h5>
                                         </div>
                                         <p>Sản phẩm đã bán ${list.slBan}</p>
                                     </c:when>
                                 </c:choose>
-
                             </div>
                         </div>
                     </div>
@@ -344,11 +343,15 @@
                 <div class="col-12">
                     <nav>
                         <ul class="pagination justify-content-center">
-                            <li class="page-item disabled"><a class="page-link" href="#">Previous</span></a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            <div id="pagination">
+                                <button onclick="previousPage()"
+                                        style="width: 80px; background: #818182; border-radius: 15px;color: white">Pre
+                                </button>
+                                <span id="currentPage">1</span>
+                                <button onclick="nextPage()"
+                                        style="width: 80px; background: #818182; border-radius: 15px;color: white">Next
+                                </button>
+                            </div>
                         </ul>
                     </nav>
                 </div>
@@ -449,6 +452,72 @@
 
 <!-- Template Javascript -->
 <script src="../../../resources/js/main.js"></script>
+<script>
+    // Danh sách sản phẩm
+    const productList = document.getElementById("product-list");
+
+    // Các nút phân trang
+    const previousButton = document.querySelector("#pagination button:nth-child(1)");
+    const nextButton = document.querySelector("#pagination button:nth-child(3)");
+    const currentPageSpan = document.getElementById("currentPage");
+
+    // Số sản phẩm trên mỗi trang
+    const itemsPerPage = 6;
+
+    // Danh sách sản phẩm đầy đủ
+    const allProducts = productList.querySelectorAll(".col-lg-4");
+
+    // Trang hiện tại
+    let currentPage = 1;
+
+    // Hàm hiển thị sản phẩm cho trang hiện tại
+    function displayCurrentPage() {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        // Ẩn tất cả sản phẩm
+        allProducts.forEach((product) => {
+            product.style.display = "none";
+        });
+
+        // Hiển thị sản phẩm trên trang hiện tại
+        for (let i = startIndex; i < endIndex; i++) {
+            if (allProducts[i]) {
+                allProducts[i].style.display = "block";
+            }
+        }
+
+        // Cập nhật số trang hiện tại
+        currentPageSpan.textContent = currentPage;
+    }
+
+    // Hàm chuyển đến trang trước
+    function previousPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            displayCurrentPage();
+        }
+    }
+
+    // Hàm chuyển đến trang kế tiếp
+    function nextPage() {
+        const totalPages = Math.ceil(allProducts.length / itemsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayCurrentPage();
+        }
+    }
+
+    // Hiển thị trang đầu tiên khi tải trang
+    displayCurrentPage();
+</script>
+<script>
+    function toggleView(elementId) {
+        var element = document.getElementById(elementId);
+        element.style.display = (element.style.display === "block") ? "none" : "block";
+    }
+</script>
+
 </body>
 
 </html>

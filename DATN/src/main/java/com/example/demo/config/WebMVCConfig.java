@@ -3,6 +3,7 @@ package com.example.demo.config;
 import com.example.demo.filler.loGinInterceptor;
 import com.example.demo.filler.adminInterceptor;
 import com.example.demo.filler.userInterceptor;
+import com.example.demo.filler.satffInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -34,21 +35,26 @@ public class WebMVCConfig implements WebMvcConfigurer {
     adminInterceptor adminInterceptor;
 
     @Autowired
+    satffInterceptor satffInterceptor;
+
+    @Autowired
     userInterceptor userInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry){
 
         //chỉ xem member
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/checkout", "/profile","/product/list","/category/list");
+                .addPathPatterns("/profile","/product/list","/category/list");
+
+        registry.addInterceptor(satffInterceptor)
+                .addPathPatterns("/admin/index/*","/admin/ao/view/*");
 
 
         //Phân quyền bắt đăng nhập
         registry.addInterceptor(adminInterceptor)
-                .addPathPatterns("/admin/**");
+                .addPathPatterns("/admin/**")
+                .excludePathPatterns("/admin/index/*","/admin/ao/view/*");
 
-//        registry.addInterceptor(userInterceptor)
-//                .addPathPatterns("/user/**");
       }
 }
 

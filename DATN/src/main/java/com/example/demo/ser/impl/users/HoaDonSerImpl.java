@@ -4,8 +4,9 @@ import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
 import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.entity.khachhang.HoaDonChiTiet;
 import com.example.demo.entity.sanpham.Ao;
-import com.example.demo.entity.sanpham.dto.HoaDonDTO;
-import com.example.demo.entity.sanpham.dto.ThongKeDTO;
+import com.example.demo.entity.dto.DonHangDTO;
+import com.example.demo.entity.dto.HoaDonDTO;
+import com.example.demo.entity.dto.ThongKeDTO;
 import com.example.demo.repo.giamgia.GiamGiaSanPhamChiTietRepo;
 import com.example.demo.repo.users.HoaDonChiTietRepo;
 import com.example.demo.repo.users.HoaDonRepo;
@@ -16,8 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -53,6 +54,10 @@ public class HoaDonSerImpl implements HoaDonSer {
 
             hoaDon.setMa(updateHoaDon.getMa());
             hoaDon.setNgayTao(updateHoaDon.getNgayTao());
+            hoaDon.setNgayChoXacNhan(updateHoaDon.getNgayChoXacNhan());
+            hoaDon.setNgayXacNhan(updateHoaDon.getNgayXacNhan());
+            hoaDon.setNgayHoanThanh(updateHoaDon.getNgayHoanThanh());
+            hoaDon.setNgayHuy(updateHoaDon.getNgayHuy());
             hoaDon.setNgayThanhToan(updateHoaDon.getNgayThanhToan());
             hoaDon.setNhanVien(updateHoaDon.getNhanVien());
             hoaDon.setKhachHang(updateHoaDon.getKhachHang());
@@ -126,12 +131,13 @@ public class HoaDonSerImpl implements HoaDonSer {
     public List<ThongKeDTO> thongKeTheoNgayThanhToan() {
 
         List<ThongKeDTO> listThongKeDTOS = new ArrayList<>();
+        List<Object[]> listDates = hoaDonRepo.listNgayThanhToanHoanThanh();
 
-        List<Date> listDates = hoaDonRepo.listNgayThanhToanHoanThanh();
-        for (Date date : listDates) {
+        for (Object[] date : listDates) {
+            LocalDate localDate = ((java.sql.Date) date[0]).toLocalDate();
             ThongKeDTO thongKeDTO = new ThongKeDTO();
-            thongKeDTO.setNgayThanhToan(date);
-            thongKeDTO.setSoLuong(hoaDonChiTietRepo.soLuongBanTheoNgayThanhToan(date));
+            thongKeDTO.setNgayThanhToan(localDate);
+            thongKeDTO.setSoLuong(hoaDonChiTietRepo.soLuongBanTheoNgayThanhToan(localDate));
             listThongKeDTOS.add(thongKeDTO);
         }
 
@@ -139,18 +145,48 @@ public class HoaDonSerImpl implements HoaDonSer {
     }
 
     @Override
-    public int soLuongHoaDonTheoNgayandTrangThai(Date date, int trangThai) {
+    public int soLuongHoaDonTheoNgayandTrangThai(LocalDate date, int trangThai) {
         return hoaDonRepo.soLuongHoaDonTheoNgayandTrangThai(date, trangThai);
     }
 
     @Override
-    public int soLuongHoaDonHoanThanhTheoNgay(Date date) {
+    public int countHoaDonHuyByNgayHienTai(LocalDate date) {
+        return hoaDonRepo.countHoaDonHuyByNgayHienTai(date);
+    }
+
+    @Override
+    public int soLuongHoaDonHoanThanhTheoNgay(LocalDate date){
         return hoaDonRepo.soLuongHoaDonHoanThanhTheoNgay(date);
     }
 
     @Override
-    public int countHoaDonDangGiaoByNgayHienTai(Date date) {
+    public int countHoaDonDangGiaoByNgayHienTai(LocalDate date) {
         return hoaDonRepo.countHoaDonDangGiaoByNgayHienTai(date);
+    }
+
+    @Override
+    public List<DonHangDTO> findAllByOrderByNgayTaoDesc() {
+
+        List<DonHangDTO> listDonHangDTOS = new ArrayList<>();
+        List<HoaDon> listHoaDons = hoaDonRepo.findAllByOrderByNgayTaoDesc();
+        for (HoaDon hoaDon : listHoaDons){
+            DonHangDTO donHangDTO = new DonHangDTO();
+
+            int sl = Math.toIntExact(hoaDonRepo.tongSl(hoaDon.getId()));
+
+            donHangDTO.setHoaDon(hoaDon);
+            donHangDTO.setSoLuong(sl);
+
+            listDonHangDTOS.add(donHangDTO);
+        }
+
+        return listDonHangDTOS;
+    }
+
+    @Override
+    public Page<HoaDon> listHoaDonTheoNgay(LocalDate date, Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, 5);
+        return hoaDonRepo.listHoaDonTheoNgay(date, pageable);
     }
 
 }

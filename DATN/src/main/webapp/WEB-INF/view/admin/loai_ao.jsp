@@ -446,13 +446,13 @@
                     <form method="post" enctype="multipart/form-data" id="addForm">
                         <input type="hidden" name="id" value="${item.id}">
                         <div class="form-group">
-                            <label for="formGroupExampleInput">Mã</label>
+                            <label for="formGroupExampleInput">Mã <span class="text-danger">(*)</span> :</label>
                             <input type="text" name="ma" value="${item.ma}" class="form-control"
                                    id="formGroupExampleInput" placeholder="Mã">
                             <span id="errorMa" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label for="formGroupExampleInput2">Tên</label>
+                            <label for="formGroupExampleInput2">Tên <span class="text-danger">(*)</span> :</label>
                             <input type="text" name="ten" value="${item.ten}" class="form-control"
                                    id="formGroupExampleInput2" placeholder="Tên ">
                             <span id="errorTen" class="text-danger"></span>
@@ -576,7 +576,6 @@
     });
 
     if (window.location.href === "http://localhost:8080/admin/loai_ao/view/1") {
-        // If the URL matches, show the form container
         addFormContainer.style.display = "none";
     } else {
         addFormContainer.style.display = "block";

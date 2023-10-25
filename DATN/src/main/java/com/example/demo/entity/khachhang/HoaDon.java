@@ -16,6 +16,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -44,10 +45,22 @@ public class HoaDon {
     Users khachHang;
 
     @Column(name = "NgayTao")
-    Date ngayTao;
+    LocalDateTime ngayTao;
+
+    @Column(name = "NgayChoXacNhan")
+    LocalDateTime ngayChoXacNhan;
+
+    @Column(name = "NgayXacNhan")
+    LocalDateTime ngayXacNhan;
+
+    @Column(name = "NgayHoanThanh")
+    LocalDateTime ngayHoanThanh;
+
+    @Column(name = "NgayHuy")
+    LocalDateTime ngayHuy;
 
     @Column(name = "NgayThanhToan")
-    Date ngayThanhToan;
+    LocalDateTime ngayThanhToan;
 
     @Column(name = "MoTa")
     String moTa;

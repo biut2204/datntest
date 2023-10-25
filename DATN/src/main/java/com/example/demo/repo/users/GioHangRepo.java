@@ -16,4 +16,7 @@ public interface GioHangRepo extends JpaRepository<GioHang, UUID> {
 
     @Query("select gh from GioHang gh where gh.khachHang.id = ?1")
     GioHang findByIdKH(UUID id);
+
+    @Query("select count(gh.ma) from GioHang gh")
+    int soLuongGioHang();
 }

@@ -44,4 +44,9 @@ public class LoaiAoSerImpl implements LoaiAoSer {
     public List<LoaiAo> findAllByTrangThai(Integer trangThai) {
         return loaiAoRepo.findAllByTrangThai(trangThai);
     }
+
+    @Override
+    public LoaiAo findByMa(String ma) {
+        return loaiAoRepo.findByMa(ma);
+    }
 }

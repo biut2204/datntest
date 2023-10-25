@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,16 +29,25 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, UUID> {
     @Query("select hd from HoaDon hd where hd.ma = ?1")
     HoaDon findByMa(String ma);
 
-    @Query("SELECT distinct hd.ngayThanhToan FROM HoaDon hd WHERE hd.ngayThanhToan IS NOT NULL")
-    List<Date> listNgayThanhToanHoanThanh();
+    @Query("SELECT distinct cast(hd.ngayHoanThanh as date)  FROM HoaDon hd WHERE cast(hd.ngayHoanThanh as date) IS NOT NULL")
+    List<Object[]> listNgayThanhToanHoanThanh();
 
-    @Query("select count(hd.ma) from HoaDon hd where hd.ngayTao = ?1 and hd.trangThai = ?2")
-    int soLuongHoaDonTheoNgayandTrangThai(Date date, int trangThai);
+    @Query("select count(hd.ma) from HoaDon hd where CAST(hd.ngayChoXacNhan AS DATE) = ?1 and hd.trangThai = ?2")
+    int soLuongHoaDonTheoNgayandTrangThai(LocalDate date, int trangThai);
 
-    @Query("select count(hd.ma) from HoaDon hd where hd.ngayThanhToan = ?1")
-    int soLuongHoaDonHoanThanhTheoNgay(Date date);
+    @Query("select count(hd.ma) from HoaDon hd where CAST(hd.ngayHoanThanh AS DATE)  = ?1")
+    int soLuongHoaDonHoanThanhTheoNgay(LocalDate date);
 
-    @Query("SELECT COUNT(hd.ma) FROM HoaDon hd WHERE  hd.ngayTao <= ?1 AND hd.trangThai = 2")
-    int countHoaDonDangGiaoByNgayHienTai(Date date);
+    @Query("SELECT COUNT(hd.ma) FROM HoaDon hd WHERE  CAST(hd.ngayXacNhan AS DATE) <= ?1 AND hd.trangThai = 2")
+    int countHoaDonDangGiaoByNgayHienTai(LocalDate date);
+
+    @Query("SELECT COUNT(hd.ma) FROM HoaDon hd WHERE  CAST(hd.ngayHuy AS DATE) = ?1 AND hd.trangThai = 4")
+    int countHoaDonHuyByNgayHienTai(LocalDate date);
+
+    @Query("select hd from HoaDon hd where cast(hd.ngayTao as date) = ?1 and (hd.trangThai = 1 OR hd.trangThai = 2 OR hd.trangThai = 3 OR hd.trangThai = 4)")
+    Page<HoaDon> listHoaDonTheoNgay(LocalDate date, Pageable pageable);
+
+    @Query(value = "select * from HoaDon where TrangThai = 1 or TrangThai = 2 or TrangThai = 3 or TrangThai = 4 order by NgayTao DESC",nativeQuery = true)
+    List<HoaDon> findAllByOrderByNgayTaoDesc();
 
 }

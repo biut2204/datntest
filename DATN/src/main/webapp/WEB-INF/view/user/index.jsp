@@ -28,6 +28,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../resources/css/style.css" rel="stylesheet">
+
     <style>
         .gia {
             color: red;
@@ -40,29 +41,18 @@
             color: gray;
         }
 
-        /*chạy chữ*/
-        .run {
-            font-size: 15px;
-            color: rgb(192, 100, 100);
-            letter-spacing: 14.5px;
-        }
-
-        .run1 {
-            font-size: 20px;
-            color: rgb(192, 100, 100);
-            letter-spacing: 14.5px;
-        }
-
         .label {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            color: black;
+            top: -10px;
+            right: 270px;
+            color: red;
             padding: 5px;
-            font-size: 5px;
+            font-size: 30px;
             transform: rotate(-45deg);
             transform-origin: top right;
             animation: blink 1s infinite alternate;
+            white-space: nowrap;
+            background: white;
         }
 
         @keyframes blink {
@@ -75,6 +65,96 @@
             100% {
                 opacity: 1;
             }
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        /* Tạo hình vuông tùy chỉnh và tạo một hình vuông giả bằng cách sử dụng một phần tử div */
+        label.radio-label {
+            display: inline-flex;
+            align-items: center; /* Căn giữa theo chiều dọc */
+            position: relative;
+            cursor: pointer;
+        }
+
+        label.radio-label::before {
+            content: " ";
+            display: inline-block;
+            width: 130%; /* Độ rộng hình vuông */
+            height: 130%; /* Chiều cao hình vuông */
+            border: 0.5px solid #6e7881; /* Viền */
+            background-color: transparent; /* Màu nền */
+            position: absolute; /* Điều chỉnh khoảng cách giữa hình vuông và label */
+            top: 0;
+            border-radius: 4px; /* Độ cong viền */
+        }
+
+        /* Điều khiển màu nền của hình vuông khi được chọn */
+        input[type="radio"]:checked + label.radio-label::before {
+            border: 2px solid #ffa500; /* Đổi màu border thành màu cam */
+        }
+
+        /* Tạo góc bên dưới bên phải màu cam */
+        input[type="radio"]:checked + label.radio-label::after {
+            content: "";
+            position: absolute;
+            bottom: 58%; /* Điều chỉnh vị trí theo chiều dọc */
+            right: -30%; /* Điều chỉnh vị trí theo chiều ngang */
+            width: 20px; /* Độ rộng của góc cam */
+            height: 12px; /* Chiều cao của góc cam */
+            background-color: #ffa500; /* Màu cam */
+            clip-path: polygon(100% 0, 0 0, 100% 100%);
+        }
+    </style>
+
+    <style>
+        #addFormContainer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Màu nền với độ trong suốt */
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #addForm {
+            margin-top: 5%;
+            width: 100%;
+            height: 450px;
+            background-color: white; /* Màu nền của biểu mẫu */
+            border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
+        }
+    </style>
+    <style>
+        #addFormContainer1 {
+            display: none;
+            position: fixed;
+            top: -7%;
+            left: 22%;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #addForm1 {
+            padding-left: 10px;
+            margin-top: 10%;
+            width: 36.2%;
+            height: 100%;
+            background-color: white; /* Màu nền của biểu mẫu */
+            border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
         }
     </style>
 </head>
@@ -92,9 +172,10 @@
         <div class="col-lg-4 col-6 text-left">
             <form method="post">
                 <div class="input-group">
-                    <input type="text" class="form-control" name="timKiem" placeholder="Search for products">
+                    <input type="text" class="form-control" name="timKiem" placeholder="Search for products" id="searchInput2" onkeyup="search2()" oninput="toggleAddFormContainer()">
                     <div class="input-group-append">
-                        <button class="input-group-text bg-transparent text-primary" formaction="/user/tim_kiem/${idKh}">
+                        <button class="input-group-text bg-transparent text-primary"
+                                formaction="/user/tim_kiem/${idKh}">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -108,7 +189,15 @@
     </div>
 </div>
 <!-- Topbar End -->
-
+<div id="addFormContainer1" style="display: none;">
+    <div class="container-fluid">
+        <div class="container">
+            <form method="post" id="addForm1">
+                <div id="searchResults2"></div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Navbar Start -->
 <div class="container-fluid bg-dark mb-30">
@@ -155,7 +244,7 @@
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
                         <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="shop.html" class="nav-item nav-link">Shop</a>
+                        <a href="/user/shop/${idKh}" class="nav-item nav-link">Shop</a>
                         <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i
@@ -165,14 +254,15 @@
                                 <a href="checkout.html" class="dropdown-item">Checkout</a>
                             </div>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                        <a href="/user/contact/${idKh}" class="nav-item nav-link">Contact</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                         <c:choose>
                             <c:when test="${idKh != 2}">
                                 <a href="/user/don_hang/${idKh}" class="btn px-0">
                                     <i class="fa fa-user"></i>
-                                    <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">${idKh}</span>
+                                    <span class="badge text-secondary border border-secondary rounded-circle"
+                                          style="padding-bottom: 2px;">${idKh}</span>
                                 </a>
                                 <a href="/user/gio_hang/view/${idKh}" class="btn px-0 ml-3">
                                     <i class="fas fa-shopping-cart text-primary"></i>
@@ -181,7 +271,7 @@
                                 </a>
                             </c:when>
                             <c:when test="${idKh == 2}">
-                                <a href="" class="btn px-0 ml-3">
+                                <a href="/login" class="btn px-0 ml-3">
                                     <i class="fas fa-user text-primary"></i>
                                 </a>
                             </c:when>
@@ -303,7 +393,7 @@
     <div class="row px-xl-5 pb-3">
         <c:forEach items="${listLoaiAos}" var="list">
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                <a class="text-decoration-none" href="">
+                <a class="text-decoration-none" href="/user/loc_theo_loai_ao/${idKh}/${list.ma}">
                     <div class="cat-item d-flex align-items-center mb-4">
                         <div class="overflow-hidden" style="width: 100px; height: 100px;">
                             <img class="img-fluid" src="/images/${list.tenURL}" alt="">
@@ -325,21 +415,26 @@
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản phẩm bán chạy</span>
     </h2>
     <div class="row px-xl-5">
-        <c:forEach items="${listTop8Aos}" var="list">
+        <c:forEach items="${listTop8Aos}" var="list" varStatus="vTri">
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
                     <div class="product-img position-relative overflow-hidden">
                         <img class="img-fluid" style="width: 100%; height: 350px"
                              src="/images/${list.ao.anhs.get(0).ten_url}" alt="">
                         <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i class="fa fa-search"></i></a>
+                            <a class="btn btn-outline-dark btn-square"
+                               href="/user/show_gio_hang_index/${idKh}/${list.ao.id}"><i
+                                    class="fa fa-shopping-cart"></i></a>
+                            <a class="btn btn-outline-dark btn-square"
+                               href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i class="fa fa-search"></i></a>
                         </div>
                     </div>
                     <div class="text-center py-4">
-                        <a class="h6 text-decoration-none text-truncate" href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a>
+                        <a class="h6 text-decoration-none text-truncate"
+                           href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5><strong><fmt:formatNumber value="${list.ao.giaBan}" type="currency" currencySymbol="VNĐ" /></strong></h5>
+                            <h5><strong><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
+                                                          currencySymbol="VNĐ"/></strong></h5>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mt-2">
                             <span class="ml-2">${list.slBan} sản phẩm đã bán</span>
@@ -350,8 +445,152 @@
         </c:forEach>
     </div>
 </div>
-<!-- Products End -->
 
+<div class="container-fluid py-5">
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản phẩm mới nhập</span>
+    </h2>
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="owl-carousel related-carousel">
+                <c:forEach items="${listAoDTOMoi}" var="list">
+                    <div class="product-item bg-light">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img class="img-fluid" style="width: 100%; height: 350px"
+                                 src="/images/${list.ao.anhs.get(0).ten_url}" alt="">
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark btn-square" href="/user/show_gio_hang_index/${idKh}/${list.ao.id}"><i
+                                        class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square"
+                                   href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="label">New</div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate"
+                               href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5><strong><fmt:formatNumber value="${list.giaBan}" type="currency"
+                                                              currencySymbol="VNĐ"/></strong></h5>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Products End -->
+<div id="addFormContainer" style="display: none;">
+    <div class="container-fluid">
+        <div class="container">
+            <form method="post" id="addForm">
+                <div class="row px-xl-5">
+                    <div class="col-lg-5 mb-30">
+                        <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner bg-light">
+                                <c:forEach items="${anhs}" var="list" varStatus="status">
+                                    <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
+                                        <img class="" style="width: 100%; height: 450px" src="/images/${list.ten_url}"
+                                             alt="Image">
+                                    </div>
+                                </c:forEach>
+                            </div>
+                            <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                                <i class="fa fa-2x fa-angle-left text-dark"></i>
+                            </a>
+                            <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                                <i class="fa fa-2x fa-angle-right text-dark"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7 h-auto mb-30">
+                        <div class="h-100 bg-light p-30">
+                            <h3>${ao.ten}</h3>
+                            <c:choose>
+                                <c:when test="${giamgia != 2}">
+                                    <div class="gia">
+                                        <p>
+                                            <del><fmt:formatNumber value="${ao.giaBan}" type="currency"
+                                                                   currencySymbol="VNĐ"/></del>
+                                            <strong><fmt:formatNumber value="${ao.giaBan * (100 - giamgia) / 100}"
+                                                                      type="currency"
+                                                                      currencySymbol="VNĐ"/></strong>
+                                        </p>
+                                    </div>
+                                </c:when>
+                                <c:when test="${giamgia == 2}">
+                                    <div class="gia">
+                                        <p>
+                                            <strong><fmt:formatNumber value="${ao.giaBan}" type="currency"
+                                                                      currencySymbol="VNĐ"/></strong>
+                                        </p>
+                                    </div>
+                                </c:when>
+                            </c:choose>
+                            <div><h6><strong>${slAoDaBan}</strong> sản phẩm đã bán</h6></div>
+                            <div id="soLuongTonStr"></div>
+                            <input type="hidden" id="soLuongTon">
+                            <input type="hidden" name="idAo" value="${ao.id}" id="idAo">
+                            <div class="d-flex mb-4">
+                                <strong class="text-dark mr-3">Colors:</strong>
+                                <c:forEach items="${mauSacs}" var="list" varStatus="vTri">
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="radio${vTri.index + 1}" name="mauSac"
+                                               value="${list.id}">
+                                        <label class="radio-label" for="radio${vTri.index + 1}"><span
+                                                style="padding-left: 10px;padding-top: 5px">${list.ten}</span></label>
+
+                                            <%--                                <input type="radio" class="custom-control-input" id="color-${vTri.index + 1}" name="mauSac" value="${list.id}">--%>
+                                            <%--                                <label class="custom-control-label" for="color-${vTri.index + 1}">${list.ten}</label>--%>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                            <div class="d-flex mb-3">
+                                <strong class="text-dark mr-3">Sizes:</strong>
+                                <c:forEach items="${sizes}" var="list" varStatus="vTri">
+                                    <div class="custom-control custom-radio custom-control-inline"
+                                         style="margin-left: 8px">
+                                        <input type="radio" id="size${vTri.index + 1}" name="size" value="${list.id}">
+                                        <label class="radio-label" for="size${vTri.index + 1}"><span
+                                                style="padding-left: 10px;padding-top: 5px">${list.ten}</span></label>
+
+                                            <%--                                <input type="radio" class="custom-control-input" id="size-${vTri.index + 1}" name="size" value="${list.id}">--%>
+                                            <%--                                <label class="custom-control-label" for="size-${vTri.index + 1}">${list.ten}</label>--%>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                            <div class="d-flex align-items-center mb-4 pt-2">
+                                <div class="input-group quantity mr-3" style="width: 130px;" id="mauSacAndSize">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary btn-minus" type="button"
+                                                onclick="decreaseQuantity()">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <input type="text" class="form-control bg-secondary border-0 text-center"
+                                               value="1"
+                                               name="sl" id="quantityInput">
+                                        <button class="btn btn-primary btn-plus" type="button"
+                                                onclick="increaseQuantity()">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="idKh" value="${idKh}">
+                                <button class="btn btn-primary px-3" formaction="/user/gio_hang/add_gio_hang/${idKh}"
+                                        onclick="addProduct()"><i class="fa fa-shopping-cart mr-1"></i> Add To
+                                    Cart
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Offer Start -->
 <div class="container-fluid pt-5 pb-3">
@@ -374,22 +613,38 @@
 
 
 <!-- Products Start -->
+
 <div class="container-fluid py-5">
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản phẩm sale</span>
     </h2>
     <div class="row px-xl-5">
         <div class="col">
-            <div class="owl-carousel vendor-carousel">
+            <div class="owl-carousel related-carousel">
                 <c:forEach items="${listGiamGiaSanPhamChiTiets}" var="list">
-                    <div class="bg-light p-4">
-                        <a href="/user/san_pham_detail/${idKh}/${list.ao.id}"><img class="img-fluid" src="/images/${list.ao.anhs.get(0).ten_url}" style="width: 100%;height: 250px" alt=""></a>
-                        <div class="label"><img style="width: 60px" src="/images/khuyen_mai.png" alt=""></div>
+                    <div class="product-item bg-light">
+                        <div class="product-img position-relative overflow-hidden">
+                            <a href="/user/san_pham_detail/${idKh}/${list.ao.id}"><img class="img-fluid"
+                                                                                       src="/images/${list.ao.anhs.get(0).ten_url}"
+                                                                                       style="width: 100%;height: 350px"
+                                                                                       alt=""></a>
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark btn-square" href="/user/show_gio_hang_index/${idKh}/${list.ao.id}"><i
+                                        class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square"
+                                   href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="label">${list.giamGiaSanPham.phanTramGiam}% off</div>
                         <div class="offer-text">
-                            <h6 class="text-black text-center"><a href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a></h6>
+                            <h6 class="text-black text-center"><a
+                                    href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a></h6>
                         </div>
                         <div class="gia">
-                            <del><fmt:formatNumber value="${list.ao.giaBan}" type="currency" currencySymbol="VNĐ" /></del>
-                            <strong><fmt:formatNumber value="${list.ao.giaBan * (100 - list.giamGiaSanPham.phanTramGiam)/100}" type="currency" currencySymbol="VNĐ" /></strong>
+                            <del><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
+                                                   currencySymbol="VNĐ"/></del>
+                            <strong><fmt:formatNumber
+                                    value="${list.ao.giaBan * (100 - list.giamGiaSanPham.phanTramGiam)/100}"
+                                    type="currency" currencySymbol="VNĐ"/></strong>
                         </div>
                     </div>
                 </c:forEach>
@@ -397,6 +652,7 @@
         </div>
     </div>
 </div>
+
 <!-- Vendor End -->
 <div class="container-fluid py-5">
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Danh sách sản phẩm</span>
@@ -410,15 +666,18 @@
                             <img class="img-fluid" style="width: 100%; height: 350px"
                                  src="/images/${list.anhs.get(0).ten_url}" alt="">
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href=""><i
+                                <a class="btn btn-outline-dark btn-square" href="/user/show_gio_hang_index/${idKh}/${list.id}"><i
                                         class="fa fa-shopping-cart"></i></a>
-                                <a class="btn btn-outline-dark btn-square" href="/user/san_pham_detail/${idKh}/${list.id}"><i class="fa fa-search"></i></a>
+                                <a class="btn btn-outline-dark btn-square"
+                                   href="/user/san_pham_detail/${idKh}/${list.id}"><i class="fa fa-search"></i></a>
                             </div>
                         </div>
                         <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="/user/san_pham_detail/${idKh}/${list.id}">${list.ten}</a>
+                            <a class="h6 text-decoration-none text-truncate"
+                               href="/user/san_pham_detail/${idKh}/${list.id}">${list.ten}</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5><strong><fmt:formatNumber value="${list.giaBan}" type="currency" currencySymbol="VNĐ" /></strong></h5>
+                                <h5><strong><fmt:formatNumber value="${list.giaBan}" type="currency"
+                                                              currencySymbol="VNĐ"/></strong></h5>
                             </div>
                         </div>
                     </div>
@@ -427,6 +686,16 @@
         </div>
     </div>
 </div>
+
+<%--chat--%>
+<%--<button class="btn btn-primary" id="addButton" onclick="clickThem()">Chat</button>--%>
+
+<%--<div id="addFormContainer" style="display: none;">--%>
+<%--    <div style="background: white">Admin</div>--%>
+<%--    <div id="addForm">--%>
+<%--        <iframe src="/user/chat/${idKh}" style="height: 100%"></iframe>--%>
+<%--    </div>--%>
+<%--</div>--%>
 
 <!-- Footer Start -->
 <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
@@ -500,11 +769,8 @@
 </div>
 <!-- Footer End -->
 
-
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
@@ -517,6 +783,214 @@
 
 <!-- Template Javascript -->
 <script src="../../../resources/js/main.js"></script>
+<script>
+    var addFormContainer = document.getElementById("addFormContainer");
+
+    var noneOrBlock = "${noneOrBlock}";
+
+    if (noneOrBlock == "none") {
+        addFormContainer.style.display = "none";
+    } else {
+        addFormContainer.style.display = "block";
+    }
+
+    // Add an event listener to the background overlay
+    addFormContainer.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer) {
+            // Hide the form
+            addFormContainer.style.display = "none";
+        }
+    });
+</script>
+
+<script>
+    var addFormContainer1 = document.getElementById("addFormContainer1");
+    var searchInput1 = document.getElementById("searchInput2");
+
+    // Hàm để kiểm tra trạng thái của ô tìm kiếm và hiển thị/ẩn addFormContainer1
+    function toggleAddFormContainer() {
+        if (searchInput1.value.trim() == "") {
+            addFormContainer1.style.display = "none"; // Ẩn addFormContainer1 nếu ô tìm kiếm trống
+        } else {
+            addFormContainer1.style.display = "block"; // Hiển thị addFormContainer1 nếu ô tìm kiếm có giá trị
+        }
+    }
+
+
+    // Add an event listener to the background overlay
+    addFormContainer1.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer1) {
+            // Hide the form
+            addFormContainer1.style.display = "none";
+        }
+    });
+</script>
+
+<script>
+
+    var input1 = document.getElementById("quantityInput");
+
+    // Thêm sự kiện "input" để kiểm tra mỗi khi người dùng nhập
+    input1.addEventListener("input", function () {
+        // Lấy giá trị hiện tại của input
+        var value = this.value;
+
+        // Sử dụng biểu thức chính quy để kiểm tra nếu giá trị chứa dấu trừ hoặc chữ cái
+        if (/[-a-zA-Z]/.test(value)) {
+            // Nếu có, loại bỏ chúng và cập nhật giá trị
+            value = value.replace(/[-a-zA-Z]/g, "");
+            this.value = value;
+        }
+    });
+
+    function increaseQuantity() {
+        var input = document.getElementById("quantityInput").value;
+        var soLuongTon = document.getElementById("soLuongTon").value;
+
+        var value = parseFloat(input);
+        var sl = parseFloat(soLuongTon);
+
+        if (value < sl - 1) {
+            var min = value++;
+            document.getElementById("quantityInput").value = min.toFixed(0);
+        } else {
+            var max = sl - 1;
+            document.getElementById("quantityInput").value = max.toFixed(0);
+        }
+    }
+
+    function decreaseQuantity() {
+        var input = document.getElementById("quantityInput").value;
+        var value = parseFloat(input);
+
+        if (value > 0) {
+            var min = value--;
+            document.getElementById("quantityInput").value = min.toFixed(0);
+        } else {
+            var max = 0;
+            document.getElementById("quantityInput").value = max.toFixed(0);
+        }
+    }
+
+    function addProduct() {
+
+        var input = document.getElementById("quantityInput").value;
+        var value = parseFloat(input);
+
+        var soLuongTon = document.getElementById("soLuongTon").value;
+        var sl = parseFloat(soLuongTon);
+
+        var selectedMauSac = document.querySelector('input[name="mauSac"]:checked');
+        var selectedSize = document.querySelector('input[name="size"]:checked');
+
+        var idKh = document.getElementsByName('idKh')[0].value;
+        var hasError = false;
+
+        if (idKh == 2) {
+            alert("Bạn chưa đăng nhập");
+            hasError = true;
+        }
+        if (!selectedMauSac || !selectedSize) {
+            alert("Vui lòng chọn cả màu sắc hoặc kích thước áo");
+            hasError = true;
+        }
+        if (sl == 0) {
+            alert("Sản phẩm đã hết, bạn vui lòng chọn sản phẩm khác");
+            hasError = true;
+        }
+        if (value > sl) {
+            alert("Số lượng tồn không đủ");
+            hasError = true;
+        }
+        if (hasError) {
+            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
+        }
+    }
+
+</script>
+
+<script>
+
+    var mauSacAndSizeDiv = document.getElementById("mauSacAndSize");
+
+    // Ẩn div mauSacAndSize ban đầu
+    mauSacAndSizeDiv.style.display = "none";
+
+    function updateProductAvailability() {
+        var selectedColor = document.querySelector("input[name='mauSac']:checked");
+        var selectedSize = document.querySelector("input[name='size']:checked");
+
+        if (selectedColor && selectedSize) {
+            var colorId = selectedColor.value;
+            var sizeId = selectedSize.value;
+            var idAo = document.getElementById("idAo").value;
+
+            // Tạo đối tượng XMLHttpRequest
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/find/" + idAo + "/" + colorId + "/" + sizeId, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response > 0) {
+                        // Cập nhật nội dung của phần tử div
+                        document.getElementById("soLuongTonStr").textContent = "Số lượng sản phẩm còn lại: " + response;
+                        document.getElementById("soLuongTon").value = response;
+
+                    } else {
+                        document.getElementById("soLuongTonStr").textContent = "Đã hết sản phẩm";
+                        document.getElementById("soLuongTon").value = 0;
+                    }
+                } else {
+                    document.getElementById("soLuongTonStr").textContent = "Đã hết sản phẩm";
+                    document.getElementById("soLuongTon").value = 0;
+                }
+            };
+
+            xhr.send();
+
+            // Hiển thị div mauSacAndSize
+            mauSacAndSizeDiv.style.display = "block";
+        }
+    }
+
+    // Thêm sự kiện change cho các input radio
+    var colorInputs = document.querySelectorAll("input[name='mauSac']");
+    var sizeInputs = document.querySelectorAll("input[name='size']");
+
+    colorInputs.forEach(function (input) {
+        input.addEventListener("change", updateProductAvailability);
+    });
+
+    sizeInputs.forEach(function (input) {
+        input.addEventListener("change", updateProductAvailability);
+    });
+</script>
+<script>
+    function search2() {
+        var keyword2 = document.getElementById("searchInput2").value;
+
+        $.ajax({
+            url: "/search2",
+            data: {"keyword2": keyword2},
+            success: function (results2) {
+                $("#searchResults2").empty();
+
+                results2.forEach(function (result2) {
+                    var liElement = $("<div>").text(result2);
+
+                    liElement.click(function () {
+                        $("#searchInput2").val(result2);
+                    });
+
+                    liElement.appendTo("#searchResults2");
+                });
+            }
+        });
+    }
+</script>
 </body>
 
 </html>

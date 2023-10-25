@@ -63,4 +63,14 @@ public class UsersSerImpl implements UsersSer {
     public Users findByEmail(String email) {
         return usersRepo.findByEmail(email);
     }
+
+    @Override
+    public int soLuongUser() {
+        return usersRepo.soLuongUser();
+    }
+
+    @Override
+    public int demLoginGG(String email) {
+        return usersRepo.demLoginGG(email);
+    }
 }

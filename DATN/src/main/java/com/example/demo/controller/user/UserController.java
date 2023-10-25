@@ -8,9 +8,9 @@ import com.example.demo.entity.khachhang.HoaDonChiTiet;
 import com.example.demo.entity.khachhang.Users;
 import com.example.demo.entity.sanpham.Ao;
 import com.example.demo.entity.sanpham.AoChiTiet;
-import com.example.demo.entity.sanpham.dto.GioHangDTO;
-import com.example.demo.entity.sanpham.dto.HoaDonChiTietDTO;
-import com.example.demo.entity.sanpham.dto.HoaDonDTO;
+import com.example.demo.entity.dto.GioHangDTO;
+import com.example.demo.entity.dto.HoaDonChiTietDTO;
+import com.example.demo.entity.dto.HoaDonDTO;
 import com.example.demo.ser.giamgia.GiamGiaHoaDonSer;
 import com.example.demo.ser.giamgia.GiamGiaSanPhamChiTietSer;
 import com.example.demo.ser.users.GioHangChiTietSer;
@@ -30,13 +30,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -209,7 +207,7 @@ public class UserController {
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMa("Ma" + now.getHour() + now.getMinute() + now.getSecond());
         hoaDon.setKhachHang(khachHang);
-        hoaDon.setNgayTao(new Date());
+        hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(0);
 
         hoaDonSer.add(hoaDon);
@@ -284,7 +282,7 @@ public class UserController {
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMa("Ma" + now.getHour() + now.getMinute() + now.getSecond());
         hoaDon.setKhachHang(khachHang);
-        hoaDon.setNgayTao(new Date());
+        hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(0);
 
         hoaDonSer.add(hoaDon);
@@ -334,8 +332,9 @@ public class UserController {
         String diaChiChon = request.getParameter("diaChiChon");
 
         hd.setMa(hoaDon.getMa());
-        hd.setTongTien(BigDecimal.valueOf(Double.valueOf(tongTien)));
+        hd.setTongTien(BigDecimal.valueOf(Float.valueOf(tongTien)));
         hd.setNgayTao(hoaDon.getNgayTao());
+        hd.setNgayChoXacNhan(LocalDateTime.now());
         hd.setKhachHang(hoaDon.getKhachHang());
         hd.setTrangThai(1);
         if (diaChiChon.equals("diaChiMoi")) {
@@ -364,17 +363,41 @@ public class UserController {
         List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
 
         for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
+            Ao ao = hoaDonChiTiet.getAoChiTiet().getAo();
+
+            GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietSer.findByIdAoAndTrangThai(ao.getId());
+
+            int gia;
+
+            if (giamGiaSanPhamChiTiet != null) {
+                gia = ao.getGiaBan().toBigInteger().intValue() * (100 - giamGiaSanPhamChiTiet.getGiamGiaSanPham().getPhanTramGiam()) / 100;
+            } else {
+                gia = ao.getGiaBan().toBigInteger().intValue();
+            }
+
+            int donGia = gia * hoaDonChiTiet.getSoLuong();
+            BigDecimal bigDecimalDonGia = new BigDecimal(donGia);
+
+            HoaDonChiTiet hdct = new HoaDonChiTiet();
+            hdct.setHoaDon(hoaDonChiTiet.getHoaDon());
+            hdct.setAoChiTiet(hoaDonChiTiet.getAoChiTiet());
+            hdct.setSoLuong(hoaDonChiTiet.getSoLuong());
+            hdct.setDonGia(bigDecimalDonGia);
+
+            hoaDonChiTietSer.update(hoaDonChiTiet.getId(), hdct);
+
             AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
 
             AoChiTiet aoChiTiet = new AoChiTiet();
 
             int slTon = act.getSlton() - hoaDonChiTiet.getSoLuong();
+            int slBan = act.getSlban() + hoaDonChiTiet.getSoLuong();
 
             aoChiTiet.setMau_sac(act.getMau_sac());
             aoChiTiet.setSize(act.getSize());
             aoChiTiet.setAo(act.getAo());
             aoChiTiet.setSlton(slTon);
-            aoChiTiet.setSlban(hoaDonChiTiet.getSoLuong());
+            aoChiTiet.setSlban(slBan);
             aoChiTiet.setTrangthai(act.getTrangthai());
 
             aoChiTietSer.update(act.getId(), aoChiTiet);
@@ -395,13 +418,36 @@ public class UserController {
 
         hd.setMa(hoaDon.getMa());
         hd.setTongTien(hoaDon.getTongTien());
-        hd.setNgayTao(Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        hd.setNgayTao(hoaDon.getNgayTao());
+        hd.setNgayChoXacNhan(hoaDon.getNgayChoXacNhan());
+        hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
+        hd.setNgayHuy(LocalDateTime.now());
         hd.setKhachHang(hoaDon.getKhachHang());
         hd.setTrangThai(4);
         hd.setMoTa(hoaDon.getMoTa());
         hoaDonSer.update(hoaDon.getId(), hd);
 
-        hoaDonSer.update(hoaDon.getId(), hoaDon);
+        List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
+
+        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
+
+            AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
+
+            AoChiTiet aoChiTiet = new AoChiTiet();
+
+            int slTon = act.getSlton() + hoaDonChiTiet.getSoLuong();
+            int slBan = act.getSlban() - hoaDonChiTiet.getSoLuong();
+
+            aoChiTiet.setMau_sac(act.getMau_sac());
+            aoChiTiet.setSize(act.getSize());
+            aoChiTiet.setAo(act.getAo());
+            aoChiTiet.setSlton(slTon);
+            aoChiTiet.setSlban(slBan);
+            aoChiTiet.setTrangthai(act.getTrangthai());
+
+            aoChiTietSer.update(act.getId(), aoChiTiet);
+        }
+
         return "redirect:/user/don_hang/" + hoaDon.getKhachHang().getMa();
     }
 
@@ -418,8 +464,10 @@ public class UserController {
         hd.setMa(hoaDon.getMa());
         hd.setTongTien(hoaDon.getTongTien());
         hd.setNgayTao(hoaDon.getNgayTao());
+        hd.setNgayChoXacNhan(hoaDon.getNgayChoXacNhan());
+        hd.setNgayHoanThanh(LocalDateTime.now());
         hd.setKhachHang(hoaDon.getKhachHang());
-        hd.setNgayThanhToan(Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        hd.setNgayThanhToan(LocalDateTime.now());
         hd.setTrangThai(3);
         hd.setMoTa(hoaDon.getMoTa());
         hoaDonSer.update(hoaDon.getId(), hd);

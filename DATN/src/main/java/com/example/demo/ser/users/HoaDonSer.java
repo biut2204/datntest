@@ -1,11 +1,12 @@
 package com.example.demo.ser.users;
 
 import com.example.demo.entity.khachhang.HoaDon;
-import com.example.demo.entity.sanpham.dto.HoaDonDTO;
-import com.example.demo.entity.sanpham.dto.ThongKeDTO;
+import com.example.demo.entity.dto.DonHangDTO;
+import com.example.demo.entity.dto.HoaDonDTO;
+import com.example.demo.entity.dto.ThongKeDTO;
 import org.springframework.data.domain.Page;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,10 +33,16 @@ public interface HoaDonSer {
 
     List<ThongKeDTO> thongKeTheoNgayThanhToan();
 
-    int soLuongHoaDonTheoNgayandTrangThai(Date date, int trangThai);
+    int soLuongHoaDonTheoNgayandTrangThai(LocalDate date, int trangThai);
 
-    int soLuongHoaDonHoanThanhTheoNgay(Date date);
+    int countHoaDonHuyByNgayHienTai(LocalDate date);
 
-    int countHoaDonDangGiaoByNgayHienTai(Date date);
+    int soLuongHoaDonHoanThanhTheoNgay(LocalDate date);
+
+    int countHoaDonDangGiaoByNgayHienTai(LocalDate date);
+
+    List<DonHangDTO> findAllByOrderByNgayTaoDesc();
+
+    Page<HoaDon> listHoaDonTheoNgay(LocalDate date, Integer pageNo);
 
 }

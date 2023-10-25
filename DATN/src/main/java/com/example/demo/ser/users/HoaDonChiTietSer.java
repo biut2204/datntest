@@ -10,4 +10,6 @@ public interface HoaDonChiTietSer {
     void add(HoaDonChiTiet hoaDonChiTiet);
 
     List<HoaDonChiTiet> findByHoaDon(UUID id);
+
+    void update(UUID id, HoaDonChiTiet updateHDCT);
 }

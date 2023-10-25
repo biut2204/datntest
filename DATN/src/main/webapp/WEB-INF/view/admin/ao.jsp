@@ -53,6 +53,39 @@
             background-color: #0056b3; /* Màu nền khi di chuột vào */
         }
     </style>
+    <style>
+        #addFormContainer1 {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Màu nền với độ trong suốt */
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #addForm {
+            background-color: white; /* Màu nền của biểu mẫu */
+            padding: 20px;
+            border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
+        }
+
+        #addForm button[type="submit"] {
+            background-color: #007BFF; /* Màu nền của nút */
+            color: white; /* Màu chữ trắng */
+            border: none;
+            cursor: pointer;
+        }
+
+        #addForm button[type="submit"]:hover {
+            background-color: #0056b3; /* Màu nền khi di chuột vào */
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -442,6 +475,14 @@
                                                         </c:forEach>
                                                     </select>
                                                 </div>
+                                                <div class="form-group col-3">
+                                                    <label for="searchText3">Lọc</label>
+                                                    <select class="form-control" name="loai_ao_id" id="searchText3">
+                                                        <c:forEach items="${listLoaiAos}" var="list">
+                                                            <option value="${list.ten}">${list.ten}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                         <thead>
@@ -583,14 +624,14 @@
                                     <label>Tên Sản Phẩm :</label>
                                     <input type="text" class="form-control" value="${item.ten}"
                                            placeholder="Tên Sản Phẩm"
-                                           name="ten">
-                                    <span id="errorTen" class="text-danger"></span>
+                                           name="ten1">
+                                    <span id="errorTen1" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Hãng :</label>
-                                    <select class="form-control" name="hang_id">
+                                    <select class="form-control" name="hang_id1">
                                         <c:forEach items="${listHangs}" var="h">
-                                            <option value="${h.id}">${h.ten}</option>
+                                            <option value="${h.id}" ${item.hang.id == h.id?'selected':''}>${h.ten}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -598,7 +639,7 @@
                                     <label for="ngaybd_hd">Ngày nhập:</label>
                                     <br>
                                     <fmt:formatDate value="${item.ngayNhap}" pattern="yyyy-MM-dd" var="formattedDate"/>
-                                    <input type="date" id="ngaybd_hd" name="ngayNhap" class="form-control"
+                                    <input type="date" id="ngaybd_hd" name="ngayNhap1" class="form-control"
                                            value="${formattedDate}">
                                 </div>
                             </div>
@@ -606,56 +647,56 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label>Loại áo :</label>
-                                    <select class="form-control" name="loai_ao_id">
+                                    <select class="form-control" name="loai_ao_id1">
                                         <c:forEach items="${listLoaiAos}" var="la">
-                                            <option value="${la.id}">${la.ten}</option>
+                                            <option value="${la.id}" ${item.loaiAo.id == la.id?'selected':''}>${la.ten}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Chất Vải :</label>
-                                    <select class="form-control" name="chat_vai_id">
+                                    <select class="form-control" name="chat_vai_id1">
                                         <c:forEach items="${listChatVais}" var="cv">
-                                            <option value="${cv.id}">${cv.ten}</option>
+                                            <option value="${cv.id}" ${item.chatVai.id == cv.id?'selected':''}>${cv.ten}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Cổ Áo</label>
-                                    <select class="form-control" name="co_ao">
-                                        <option value="Cổ áo nhọn">Cổ áo nhọn</option>
-                                        <option value="Cổ áo cài nút">Cổ áo cài nút</option>
-                                        <option value="Cổ áo trụ">Cổ áo trụ</option>
-                                        <option value="Cổ áo cổ tàu">Cổ áo cổ tàu</option>
-                                        <option value="Cổ áo tròn">Cổ áo tròn</option>
-                                        <option value="Cổ áo mandarin">Cổ áo mandarin</option>
-                                        <option value="Cổ áo notch">Cổ áo notch</option>
-                                        <option value="Cổ áo wingtip">Cổ áo wingtip</option>
-                                        <option value="Cổ áo mandarin stand-up">Cổ áo mandarin stand-up</option>
+                                    <select class="form-control" name="co_ao1">
+                                        <option value="Cổ áo nhọn" ${item.coAo == "Cổ áo nhọn"?'selected':''}>Cổ áo nhọn</option>
+                                        <option value="Cổ áo cài nút" ${item.coAo == "Cổ áo cài nút"?'selected':''}>Cổ áo cài nút</option>
+                                        <option value="Cổ áo trụ" ${item.coAo == "Cổ áo trụ"?'selected':''}>Cổ áo trụ</option>
+                                        <option value="Cổ áo cổ tàu" ${item.coAo == "Cổ áo cổ tàu"?'selected':''}>Cổ áo cổ tàu</option>
+                                        <option value="Cổ áo tròn" ${item.coAo == "Cổ áo tròn"?'selected':''}>Cổ áo tròn</option>
+                                        <option value="Cổ áo mandarin" ${item.coAo == "Cổ áo mandarin"?'selected':''}>Cổ áo mandarin</option>
+                                        <option value="Cổ áo notch" ${item.coAo == "Cổ áo notch"?'selected':''}>Cổ áo notch</option>
+                                        <option value="Cổ áo wingtip" ${item.coAo == "Cổ áo wingtip"?'selected':''}>Cổ áo wingtip</option>
+                                        <option value="Cổ áo mandarin stand-up" ${item.coAo == "Cổ áo mandarin stand-up"?'selected':''}>Cổ áo mandarin stand-up</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label>Túi Áo :</label>
-                                    <select class="form-control" name="tui_ao">
-                                        <option value="Túi ngực bổ sung">Túi ngực bổ sung</option>
-                                        <option value="Túi khuy">Túi khuy</option>
+                                    <select class="form-control" name="tui_ao1">
+                                        <option value="Túi ngực bổ sung" ${item.tui == "Túi ngực bổ sung"?'selected':''}>Túi ngực bổ sung</option>
+                                        <option value="Túi khuy" ${item.tui == "Túi khuy"?'selected':''}>Túi khuy</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Tay Áo</label>
-                                    <select class="form-control" name="tay_ao">
-                                        <option value="Ngắn">Ngắn</option>
-                                        <option value="Dài">Dài</option>
-                                        <option value="Không có">Không có</option>
+                                    <select class="form-control" name="tay_ao1">
+                                        <option value="Ngắn" ${item.tayAo == "Ngắn"?'selected':''}>Ngắn</option>
+                                        <option value="Dài" ${item.tayAo == "Dài"?'selected':''}>Dài</option>
+                                        <option value="Không có" ${item.tayAo == "Không có"?'selected':''}>Không có</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Form áo :</label>
-                                    <select class="form-control" name="form_id">
+                                    <select class="form-control" name="form_id1">
                                         <c:forEach items="${listForms}" var="f">
-                                            <option value="${f.id}">${f.ten}</option>
+                                            <option value="${f.id}" ${item.form.id == f.id?'selected':''}>${f.ten}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -665,30 +706,25 @@
                                 <div class="form-group col-md-6">
                                     <label>Giá Nhập :</label>
                                     <input type="text" class="form-control" value="${item.giaNhap}"
-                                           placeholder="Giá Nhập Sản Phẩm" name="gianhap">
-                                    <span id="errorGiaNhap" class="text-danger"></span>
+                                           placeholder="Giá Nhập Sản Phẩm" name="gianhap1">
+                                    <span id="errorGiaNhap1" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Giá Bán :</label>
                                     <input type="text" class="form-control" value="${item.giaBan}"
-                                           placeholder="Giá Bán Sản Phẩm" name="giaban">
-                                    <span id="errorGiaBan" class="text-danger"></span>
+                                           placeholder="Giá Bán Sản Phẩm" name="giaban1">
+                                    <span id="errorGiaBan1" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label>Mô Tả :</label>
                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
-                                          name="mota">${item.moTa}</textarea>
-                                <span id="errorMoTa" class="text-danger"></span>
+                                          name="mota1">${item.moTa}</textarea>
+                                <span id="errorMoTa1" class="text-danger"></span>
                             </div>
 
-                            <button class="btn btn-primary" formaction="/admin/ao/add" type="submit"
-                                    onclick="addProduct()">
-                                Thêm Mới
-                            </button>
-                            <button class="btn btn-primary" formaction="/admin/ao/update/${item.id}" type="submit"
-                                    onclick="addProduct()">
+                            <button class="btn btn-primary" formaction="/admin/ao/update/${item.id}" type="submit">
                                 Cập nhật
                             </button>
                         </form>
@@ -831,15 +867,133 @@
                 </c:when>
             </c:choose>
         </div>
+
+        <div id="addFormContainer1" style="display: none;">
+            <div class="container-fluid">
+                <div class="container">
+                    <h3 style="text-align: center; padding-top: 10px; color: white">ÁO
+                        <i style="display: inline-block" class="fas fa-angle-down"
+                           onclick="toggleView('view_anh5')"></i>
+                    </h3>
+                    <div id="view_anh5" style="display:block">
+                        <form method="post" id="addForm">
+                            <input type="hidden" name="id" >
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label>Tên Sản Phẩm <span class="text-danger">(*)</span> :</label>
+                                    <input type="text" class="form-control"
+                                           placeholder="Tên Sản Phẩm"
+                                           name="ten">
+                                    <span id="errorTen" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Hãng :</label>
+                                    <select class="form-control" name="hang_id">
+                                        <c:forEach items="${listHangs}" var="h">
+                                            <option value="${h.id}" >${h.ten}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="ngayChon">Ngày nhập <span class="text-danger">(*)</span> :</label>
+                                    <br>
+                                    <input type="date" id="ngayChon" name="ngayNhap" class="form-control">
+                                    <span id="errorNgayChon" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label>Loại áo :</label>
+                                    <select class="form-control" name="loai_ao_id">
+                                        <c:forEach items="${listLoaiAos}" var="la">
+                                            <option value="${la.id}" >${la.ten}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Chất Vải :</label>
+                                    <select class="form-control" name="chat_vai_id">
+                                        <c:forEach items="${listChatVais}" var="cv">
+                                            <option value="${cv.id}">${cv.ten}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Cổ Áo</label>
+                                    <select class="form-control" name="co_ao">
+                                        <option value="Cổ áo nhọn" >Cổ áo nhọn</option>
+                                        <option value="Cổ áo cài nút" >Cổ áo cài nút</option>
+                                        <option value="Cổ áo trụ" >Cổ áo trụ</option>
+                                        <option value="Cổ áo cổ tàu" >Cổ áo cổ tàu</option>
+                                        <option value="Cổ áo tròn" >Cổ áo tròn</option>
+                                        <option value="Cổ áo mandarin">Cổ áo mandarin</option>
+                                        <option value="Cổ áo notch" >Cổ áo notch</option>
+                                        <option value="Cổ áo wingtip">Cổ áo wingtip</option>
+                                        <option value="Cổ áo mandarin stand-up" >Cổ áo mandarin stand-up</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label>Túi Áo :</label>
+                                    <select class="form-control" name="tui_ao">
+                                        <option value="Túi ngực bổ sung" >Túi ngực bổ sung</option>
+                                        <option value="Túi khuy">Túi khuy</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Tay Áo</label>
+                                    <select class="form-control" name="tay_ao">
+                                        <option value="Ngắn" >Ngắn</option>
+                                        <option value="Dài" >Dài</option>
+                                        <option value="Không có" >Không có</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Form áo :</label>
+                                    <select class="form-control" name="form_id">
+                                        <c:forEach items="${listForms}" var="f">
+                                            <option value="${f.id}">${f.ten}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Giá Nhập <span class="text-danger">(*)</span> :</label>
+                                    <input type="text" class="form-control"
+                                           placeholder="Giá Nhập Sản Phẩm" name="gianhap">
+                                    <span id="errorGiaNhap" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Giá Bán <span class="text-danger">(*)</span> :</label>
+                                    <input type="text" class="form-control"
+                                           placeholder="Giá Bán Sản Phẩm" name="giaban">
+                                    <span id="errorGiaBan" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Mô Tả <span class="text-danger">(*)</span> :</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                          name="mota"></textarea>
+                                <span id="errorMoTa" class="text-danger"></span>
+                            </div>
+
+                            <button class="btn btn-primary" formaction="/admin/ao/add" type="submit"
+                                    onclick="addProduct()">
+                                Thêm Mới
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    <footer class="main-footer">
-        <div class="float-right d-none d-sm-block">
-            <b>Version</b> 3.2.0
-        </div>
-        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-    </footer>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -893,14 +1047,15 @@
     // Get references to the button and form container
     var addButton = document.getElementById("addButton");
     var addFormContainer = document.getElementById("addFormContainer");
+    var addFormContainer1 = document.getElementById("addFormContainer1");
 
     // Add an event listener to the button
     addButton.addEventListener("click", function () {
         // Toggle the visibility of the form container
-        if (addFormContainer.style.display === "none" || addFormContainer.style.display === "") {
-            addFormContainer.style.display = "block";
+        if (addFormContainer1.style.display === "none" || addFormContainer1.style.display === "") {
+            addFormContainer1.style.display = "block";
         } else {
-            addFormContainer.style.display = "none";
+            addFormContainer1.style.display = "none";
         }
     });
 
@@ -910,6 +1065,13 @@
         if (event.target === addFormContainer) {
             // Hide the form
             addFormContainer.style.display = "none";
+        }
+    });
+    addFormContainer1.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer1) {
+            // Hide the form
+            addFormContainer1.style.display = "none";
         }
     });
 
@@ -959,6 +1121,25 @@
     });
 </script>
 <script>
+    $(document).ready(function () {
+        // Sự kiện thay đổi combobox
+        $('#searchText3').on('change', function () {
+            var selectedValue = $(this).val().toLowerCase();
+
+            // Hiển thị tất cả dòng trong bảng trước
+            $('#example1 tbody tr').show();
+
+            // Kiểm tra giá trị của từng dòng và ẩn dòng không khớp
+            $('#example1 tbody tr').each(function () {
+                var rowText = $(this).text().toLowerCase();
+                if (!rowText.includes(selectedValue)) {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>
+<script>
     function toggleView(elementId) {
         var element = document.getElementById(elementId);
         element.style.display = (element.style.display === "block") ? "none" : "block";
@@ -966,24 +1147,20 @@
 </script>
 <script>
     function addProduct() {
-        var ma = document.getElementsByName('ma')[0].value;
+
         var ten = document.getElementsByName('ten')[0].value;
         var gianhap = document.getElementsByName('gianhap')[0].value;
         var giaban = document.getElementsByName('giaban')[0].value;
         var mota = document.getElementsByName('mota')[0].value;
-        var errorMa = document.getElementById('errorMa');
+        var ngayNhap = document.getElementsByName('ngayNhap')[0].value;
+
         var errorTen = document.getElementById('errorTen');
         var errorGiaNhap = document.getElementById('errorGiaNhap');
         var errorGiaBan = document.getElementById('errorGiaBan');
         var errorMoTa = document.getElementById('errorMoTa');
-        var hasError = false;
+        var errorNgayChon = document.getElementById('errorNgayChon');
 
-        if (ma.trim() === '') {
-            errorMa.innerText = 'Vui lòng nhập mã.';
-            hasError = true;
-        } else {
-            errorMa.innerText = '';
-        }
+        var hasError = false;
 
         if (ten.trim() === '') {
             errorTen.innerText = 'Vui lòng nhập tên.';
@@ -1005,6 +1182,7 @@
         } else {
             errorTen.innerText = '';
         }
+
         if (mota.trim() === '') {
             errorMoTa.innerText = 'Vui lòng nhập mô tả.';
             hasError = true;
@@ -1012,8 +1190,15 @@
             errorTen.innerText = '';
         }
 
+        if (ngayNhap.trim() === '') {
+            errorNgayChon.innerText = 'Vui lòng nhập ngày nhập';
+            hasError = true;
+        } else {
+            errorNgayChon.innerText = '';
+        }
+
         if (hasError) {
-            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
+            event.preventDefault();
         }
     }
 </script>

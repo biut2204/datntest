@@ -39,6 +39,7 @@
         .gia del {
             color: gray;
         }
+
         input[type="radio"] {
             display: none;
         }
@@ -97,7 +98,8 @@
                 <div class="input-group">
                     <input type="text" class="form-control" name="timKiem" placeholder="Search for products">
                     <div class="input-group-append">
-                        <button class="input-group-text bg-transparent text-primary" formaction="/user/tim_kiem/${idKh}">
+                        <button class="input-group-text bg-transparent text-primary"
+                                formaction="/user/tim_kiem/${idKh}">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -176,12 +178,13 @@
                                 <c:when test="${idKh != 2}">
                                     <a href="/user/don_hang/${idKh}" class="btn px-0">
                                         <i class="fa fa-user"></i>
-                                        <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">${idKh}</span>
+                                        <span class="badge text-secondary border border-secondary rounded-circle"
+                                              style="padding-bottom: 2px;">${idKh}</span>
                                     </a>
-                                    <a href="" class="btn px-0 ml-3">
+                                    <a href="/user/gio_hang/view/${idKh}" class="btn px-0 ml-3">
                                         <i class="fas fa-shopping-cart text-primary"></i>
                                         <span class="badge text-secondary border border-secondary rounded-circle"
-                                              style="padding-bottom: 2px;">0</span>
+                                              style="padding-bottom: 2px;">${soLuongSanPham}</span>
                                     </a>
                                 </c:when>
                                 <c:when test="${idKh == 2}">
@@ -243,56 +246,68 @@
                     <c:when test="${giamgia != 2}">
                         <div class="gia">
                             <p>
-                                <del><fmt:formatNumber value="${ao.giaBan}" type="currency" currencySymbol="VNĐ" /></del>
-                                <strong><fmt:formatNumber value="${ao.giaBan * (100 - giamgia) / 100}" type="currency" currencySymbol="VNĐ" /></strong>
+                                <del><fmt:formatNumber value="${ao.giaBan}" type="currency" currencySymbol="VNĐ"/></del>
+                                <strong><fmt:formatNumber value="${ao.giaBan * (100 - giamgia) / 100}" type="currency"
+                                                          currencySymbol="VNĐ"/></strong>
                             </p>
                         </div>
                     </c:when>
                     <c:when test="${giamgia == 2}">
                         <div class="gia">
                             <p>
-                                <strong><fmt:formatNumber value="${ao.giaBan}" type="currency" currencySymbol="VNĐ" /></strong>
+                                <strong><fmt:formatNumber value="${ao.giaBan}" type="currency"
+                                                          currencySymbol="VNĐ"/></strong>
                             </p>
                         </div>
                     </c:when>
                 </c:choose>
+                <div><h6><strong>${slAoDaBan}</strong> sản phẩm đã bán</h6></div>
+                <div id="soLuongTonStr"></div>
+                <input type="hidden" id="soLuongTon">
                 <form method="post">
-                    <input type="hidden" name="idAo" value="${ao.id}">
+                    <input type="hidden" name="idAo" value="${ao.id}" id="idAo">
                     <div class="d-flex mb-4">
                         <strong class="text-dark mr-3">Colors:</strong>
                         <c:forEach items="${mauSacs}" var="list" varStatus="vTri">
                             <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="radio${vTri.index + 1}" name="mauSac"value="${list.id}">
-                                <label class="radio-label" for="radio${vTri.index + 1}"><span style="padding-left: 10px;padding-top: 5px">${list.ten}</span></label>
+                                <input type="radio" id="radio${vTri.index + 1}" name="mauSac" value="${list.id}">
+                                <label class="radio-label" for="radio${vTri.index + 1}"><span
+                                        style="padding-left: 10px;padding-top: 5px">${list.ten}</span></label>
 
-<%--                                <input type="radio" class="custom-control-input" id="color-${vTri.index + 1}" name="mauSac" value="${list.id}">--%>
-<%--                                <label class="custom-control-label" for="color-${vTri.index + 1}">${list.ten}</label>--%>
+                                    <%--                                <input type="radio" class="custom-control-input" id="color-${vTri.index + 1}" name="mauSac" value="${list.id}">--%>
+                                    <%--                                <label class="custom-control-label" for="color-${vTri.index + 1}">${list.ten}</label>--%>
                             </div>
                         </c:forEach>
                     </div>
                     <div class="d-flex mb-3">
                         <strong class="text-dark mr-3">Sizes:</strong>
                         <c:forEach items="${sizes}" var="list" varStatus="vTri">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" class="custom-control-input" id="size-${vTri.index + 1}" name="size" value="${list.id}">
-                                <label class="custom-control-label" for="size-${vTri.index + 1}">${list.ten}</label>
+                            <div class="custom-control custom-radio custom-control-inline" style="margin-left: 8px">
+                                <input type="radio" id="size${vTri.index + 1}" name="size" value="${list.id}">
+                                <label class="radio-label" for="size${vTri.index + 1}"><span
+                                        style="padding-left: 10px;padding-top: 5px">${list.ten}</span></label>
+
+                                    <%--                                <input type="radio" class="custom-control-input" id="size-${vTri.index + 1}" name="size" value="${list.id}">--%>
+                                    <%--                                <label class="custom-control-label" for="size-${vTri.index + 1}">${list.ten}</label>--%>
                             </div>
                         </c:forEach>
                     </div>
                     <div class="d-flex align-items-center mb-4 pt-2">
-                        <div class="input-group quantity mr-3" style="width: 130px;">
+                        <div class="input-group quantity mr-3" style="width: 130px;" id="mauSacAndSize">
                             <div class="input-group-append">
-                                <button class="btn btn-primary btn-minus" type="button">
+                                <button class="btn btn-primary btn-minus" type="button" onclick="decreaseQuantity()">
                                     <i class="fa fa-minus"></i>
                                 </button>
-                                <input type="text" class="form-control bg-secondary border-0 text-center" value="1" name="sl">
-                                <button class="btn btn-primary btn-plus" type="button">
+                                <input type="text" class="form-control bg-secondary border-0 text-center" value="1"
+                                       name="sl" id="quantityInput">
+                                <button class="btn btn-primary btn-plus" type="button" onclick="increaseQuantity()">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
                         <input type="hidden" name="idKh" value="${idKh}">
-                        <button class="btn btn-primary px-3" formaction="/user/gio_hang/add_gio_hang/${idKh}" onclick="addProduct()"><i class="fa fa-shopping-cart mr-1"></i> Add To
+                        <button class="btn btn-primary px-3" formaction="/user/gio_hang/add_gio_hang/${idKh}"
+                                onclick="addProduct()"><i class="fa fa-shopping-cart mr-1"></i> Add To
                             Cart
                         </button>
                     </div>
@@ -404,7 +419,8 @@
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate" href="">${list.ten}</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5><strong><fmt:formatNumber value="${list.giaBan}" type="currency" currencySymbol="VNĐ" /></strong></h5>
+                                <h5><strong><fmt:formatNumber value="${list.giaBan}" type="currency"
+                                                              currencySymbol="VNĐ"/></strong></h5>
                             </div>
                         </div>
                     </div>
@@ -485,6 +501,7 @@
         </div>
     </div>
 </div>
+
 <!-- Footer End -->
 
 
@@ -506,33 +523,146 @@
 <!-- Template Javascript -->
 <script src="../../../resources/js/main.js"></script>
 <script>
+
+    var input1 = document.getElementById("quantityInput");
+
+    // Thêm sự kiện "input" để kiểm tra mỗi khi người dùng nhập
+    input1.addEventListener("input", function() {
+        // Lấy giá trị hiện tại của input
+        var value = this.value;
+
+        // Sử dụng biểu thức chính quy để kiểm tra nếu giá trị chứa dấu trừ hoặc chữ cái
+        if (/[-a-zA-Z]/.test(value)) {
+            // Nếu có, loại bỏ chúng và cập nhật giá trị
+            value = value.replace(/[-a-zA-Z]/g, "");
+            this.value = value;
+        }
+    });
+
     function increaseQuantity() {
-        var input = document.querySelector("input[name='sl']");
-        var value = parseInt(input.value);
-        input.value = value ++;
+        var input = document.getElementById("quantityInput").value;
+        var soLuongTon = document.getElementById("soLuongTon").value;
+
+        var value = parseFloat(input);
+        var sl = parseFloat(soLuongTon);
+
+        if (value < sl-1) {
+            var min = value++;
+            document.getElementById("quantityInput").value = min.toFixed(0);
+        } else {
+            var max = sl-1;
+            document.getElementById("quantityInput").value = max.toFixed(0);
+        }
     }
 
     function decreaseQuantity() {
-        var input = document.querySelector("input[name='sl']");
-        var value = parseInt(input.value);
-        input.value = value --;
+        var input = document.getElementById("quantityInput").value;
+        var value = parseFloat(input);
+
+        if (value > 0) {
+            var min = value--;
+            document.getElementById("quantityInput").value = min.toFixed(0);
+        } else {
+            var max = 0;
+            document.getElementById("quantityInput").value = max.toFixed(0);
+        }
     }
 
-    document.querySelector(".btn-plus").addEventListener("click", increaseQuantity);
-    document.querySelector(".btn-minus").addEventListener("click", decreaseQuantity);
-
     function addProduct() {
+
+        var input = document.getElementById("quantityInput").value;
+        var value = parseFloat(input);
+
+        var soLuongTon = document.getElementById("soLuongTon").value;
+        var sl = parseFloat(soLuongTon);
+
+        var selectedMauSac = document.querySelector('input[name="mauSac"]:checked');
+        var selectedSize = document.querySelector('input[name="size"]:checked');
+
         var idKh = document.getElementsByName('idKh')[0].value;
         var hasError = false;
+
         if (idKh == 2) {
-            alert("bạn chưa đăng nhập");
+            alert("Bạn chưa đăng nhập");
+            hasError = true;
+        }
+        if (!selectedMauSac || !selectedSize) {
+            alert("Vui lòng chọn cả màu sắc hoặc kích thước áo");
+            hasError = true;
+        }
+        if (sl == 0) {
+            alert("Sản phẩm đã hết, bạn vui lòng chọn sản phẩm khác");
+            hasError = true;
+        }
+        if (value > sl) {
+            alert("Số lượng tồn không đủ");
             hasError = true;
         }
         if (hasError) {
             event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
         }
     }
+
 </script>
+
+<script>
+
+    var mauSacAndSizeDiv = document.getElementById("mauSacAndSize");
+
+    // Ẩn div mauSacAndSize ban đầu
+    mauSacAndSizeDiv.style.display = "none";
+
+    function updateProductAvailability() {
+        var selectedColor = document.querySelector("input[name='mauSac']:checked");
+        var selectedSize = document.querySelector("input[name='size']:checked");
+
+        if (selectedColor && selectedSize) {
+            var colorId = selectedColor.value;
+            var sizeId = selectedSize.value;
+            var idAo = document.getElementById("idAo").value;
+
+            // Tạo đối tượng XMLHttpRequest
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/find/" + idAo + "/" + colorId + "/" + sizeId, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response > 0) {
+                        // Cập nhật nội dung của phần tử div
+                        document.getElementById("soLuongTonStr").textContent = "Số lượng sản phẩm còn lại: " + response;
+                        document.getElementById("soLuongTon").value = response;
+
+                    } else {
+                        document.getElementById("soLuongTonStr").textContent = "Đã hết sản phẩm";
+                        document.getElementById("soLuongTon").value = 0;
+                    }
+                } else {
+                    document.getElementById("soLuongTonStr").textContent = "Đã hết sản phẩm";
+                    document.getElementById("soLuongTon").value = 0;
+                }
+            };
+
+            xhr.send();
+
+            // Hiển thị div mauSacAndSize
+            mauSacAndSizeDiv.style.display = "block";
+        }
+    }
+
+    // Thêm sự kiện change cho các input radio
+    var colorInputs = document.querySelectorAll("input[name='mauSac']");
+    var sizeInputs = document.querySelectorAll("input[name='size']");
+
+    colorInputs.forEach(function (input) {
+        input.addEventListener("change", updateProductAvailability);
+    });
+
+    sizeInputs.forEach(function (input) {
+        input.addEventListener("change", updateProductAvailability);
+    });
+</script>
+
 </body>
 
 </html>

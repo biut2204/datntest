@@ -1,4 +1,4 @@
-package com.example.demo.entity.sanpham.dto;
+package com.example.demo.entity.dto;
 
 import com.example.demo.entity.sanpham.Ao;
 import jakarta.persistence.Entity;

@@ -1,8 +1,7 @@
 package com.example.demo.ser.sanpham;
 
 import com.example.demo.entity.sanpham.Ao;
-import com.example.demo.entity.sanpham.dto.AoDTO;
-import org.springframework.data.repository.query.Param;
+import com.example.demo.entity.dto.AoDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -32,5 +31,11 @@ public interface AoSer {
 
     List<AoDTO> findByAo(List<Ao> listAos);
 
+    List<Ao> listAoFindByLoaiAo(String ma);
+
+    List<Ao> findAoNhapTrongThangHienTai();
+
     List<Ao> timKiemNangCao(UUID idChatVai, UUID idLoaiAo, UUID idForm, UUID idHang, BigDecimal minPrice, BigDecimal maxPrice, List<UUID> mauSacIds);
+
+    Long soLuongBanByUUID(UUID id);
 }

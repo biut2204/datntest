@@ -21,21 +21,21 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
     <style>
-        #container {
-            text-align: center;
-        }
+        /*#container {*/
+        /*    text-align: center;*/
+        /*}*/
 
-        #button-container {
-            display: inline-block;
-            margin-top: 20px;
-        }
+        /*#button-container {*/
+        /*    display: inline-block;*/
+        /*    margin-top: 20px;*/
+        /*}*/
 
-        button {
-            padding: 10px;
-            margin: 5px;
-            font-size: 16px;
-            width: 100px;
-        }
+        /*button {*/
+        /*    padding: 10px;*/
+        /*    margin: 5px;*/
+        /*    font-size: 16px;*/
+        /*    width: 100px;*/
+        /*}*/
     </style>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -376,6 +376,14 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item">
+                        <a href="/admin/quan_li_don_hang/1" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Quản lí hóa đơn
+                            </p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
@@ -390,8 +398,8 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Ngày hiện tại <c:set var="dateFormat" value="dd/MM/yyyy"/>
-                            <fmt:formatDate value="${ngayHienTai}" pattern="${dateFormat}"/>
+<%--                        <h1>Ngày hiện tại <c:set var="dateFormat" value="dd/MM/yyyy"/>--%>
+<%--                            <fmt:formatDate value="${ngayHienTai}" pattern="${dateFormat}"/>--%>
                         </h1>
                     </div>
                 </div>
@@ -493,8 +501,8 @@
                 <div class="card bg-gradient-primary">
                     <div class="card-header border-0">
                         <h3 class="card-title">
-                            <i class="fas fa-map-marker-alt mr-1"></i>
-                            Địa chỉ
+                            <i class="fas fa-shopping-cart"></i>
+                            Hiện tại
                         </h3>
                         <!-- card tools -->
                         <div class="card-tools">
@@ -505,10 +513,48 @@
                         </div>
                         <!-- /.card-tools -->
                     </div>
-                    <div class="card-body">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.835352125604!2d105.72923707479646!3d21.039272987418336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31345550b525aa03%3A0x3fdefc40f69a023a!2zQ2FvIMSR4bqzbmcgRlBUIFBo4buRIFRy4buLbmggVsSDbiBCw7QgLCBQaMaw4budbmcgUGjGsMahbmcgQ2FuaCAsIHF14bqtbiBU4burIExpw6pt!5e0!3m2!1svi!2s!4v1696996396079!5m2!1svi!2s"
-                                width="100%" height="450px" style="border:0;" allowfullscreen="" loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <div class="card-body" style="background: white; color: #0a0e14">
+                        <c:forEach items="${page.content}" var="list">
+                            <div style="margin-bottom: 10px">
+                                <div style="display: inline-block;width: 100px">${list.ma}</div>
+                                <div style="display: inline-block;width: 150px">${list.khachHang.ten}</div>
+                                <div style="display: inline-block;width: 100px">
+                                    <fmt:formatNumber value="${list.tongTien}" type="currency" currencySymbol="VNĐ"/>
+                                </div>
+                                <c:choose>
+                                    <c:when test="${list.trangThai == 1}">
+                                        <div style="display: inline-block;width: 100px;text-align: center;background: #ff8b33;border-radius: 15px">Chờ xác nhận</div>
+                                    </c:when>
+                                    <c:when test="${list.trangThai == 2}">
+                                        <div style="display: inline-block;width: 100px;text-align: center;background: wheat;border-radius: 15px">Đang giao</div>
+                                    </c:when>
+                                    <c:when test="${list.trangThai == 3}">
+                                        <div style="display: inline-block;width: 100px;text-align: center;background: springgreen;border-radius: 15px">Hoàn thành</div>
+                                    </c:when>
+                                    <c:when test="${list.trangThai == 4}">
+                                        <div style="display: inline-block;width: 100px;text-align: center;background: red;border-radius: 15px">Hủy</div>
+                                    </c:when>
+                                </c:choose>
+
+                            </div>
+                        </c:forEach>
+                        <ul class="pagination">
+                            <c:if test="${not page.first}">
+                                <li class="page-item">
+                                    <a href="?pageNo=${page.number -1}">Pre</a>
+                                </li>
+                            </c:if>
+                            <c:forEach begin="0" end="${page.totalPages > 1 ? page.totalPages - 1 : 0}" var="i">
+                                <li class="page-item <c:if test='${i == page.number}'>active</c:if>">
+                                    <a class="page-link" href="?pageNo=${i}">${i + 1}</a>
+                                </li>
+                            </c:forEach>
+                            <c:if test="${not page.last}">
+                                <li class="page-item">
+                                    <a href="?pageNo=${page.number +1}">Next</a>
+                                </li>
+                            </c:if>
+                        </ul>
                     </div>
                     <!-- /.card-body-->
                 </div>
@@ -619,8 +665,7 @@
     var ngayThanhToan = [
         // Dữ liệu ngày từ danh sách ThongKeDTO
         <c:forEach items="${listThongKeDTOS}" var="thongKeDTO">
-        <c:set var="dateFormat" value="dd/MM/yyyy"/>
-        '<fmt:formatDate value="${thongKeDTO.ngayThanhToan}" pattern="${dateFormat}"/>',
+        '${thongKeDTO.ngayThanhToan}',
         </c:forEach>
     ];
 

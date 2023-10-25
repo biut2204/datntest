@@ -146,7 +146,7 @@
 </div>
 <!-- Topbar End -->
 
-
+${ngayTao}
 <!-- Navbar Start -->
 <div class="container-fluid bg-dark mb-30">
     <div class="row px-xl-5">
@@ -255,7 +255,7 @@
             <div class="col-lg-6">
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Địa chỉ nhận hàng</span>
                 </h5>
-                <input type="checkbox" name="diaChiChon" value="diaChiCu" onchange="kiemTraDiaChiCu()">Địa chỉ ban đầu
+                <input type="checkbox" name="diaChiChon" value="diaChiCu" id="checkbox1" onchange="kiemTraDiaChiCu()">Địa chỉ ban đầu
                 <div id="view_dia_chi_cu" style="display:block">
                     <div class="bg-light p-30 mb-5">
                         <div class="row">
@@ -297,7 +297,7 @@
                         </div>
                     </div>
                 </div>
-                <input type="checkbox" name="diaChiChon" value="diaChiMoi" onclick="toggleView('view_dia_chi_moi')">Địa
+                <input type="checkbox" name="diaChiChon" value="diaChiMoi" id="checkbox2" onclick="toggleView('view_dia_chi_moi')">Địa
                 chỉ
                 mới
                 <div id="view_dia_chi_moi" style="display:none">
@@ -322,8 +322,10 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label>Thành phố</label>
+
                                     <input class="form-control" name="thanhPho1" id="diaChiMoi"
                                            oninput="kiemTraDiaChiMoi()" type="text" placeholder="Thành phố">
+
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label>Địa chỉ</label>
@@ -346,7 +348,7 @@
                                 <p><img style="width: 50px"
                                         src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
                                 <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
-                                <p>${list.gia}</p>
+                                <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
                                 <p>${list.hoaDonChiTiet.soLuong}</p>
                             </div>
                         </c:forEach>
@@ -385,10 +387,10 @@
                                         <div class="voucher-details">
                                             <input name="options" type="radio" value="${list.phanTramGiam}"
                                                    onclick="updatePrice(this)"
-                                                   <c:if test="${list.soLuongSanPham > slDK && list.soTienHoaDon > tongTienDK}">disabled</c:if>>
+                                                   <c:if test="${list.soLuongSanPham > slDK || list.soTienHoaDon > tongTienDK}">disabled</c:if>>
                                             <label for="${list.ma}" class="radio-label"></label>
                                             <span class="voucher-name">${list.ten}</span>
-                                            <span class="voucher-condition"><a href="#"
+                                            <span class="voucher-condition" style="margin-left: 20px;"><a href="#" style=" color: #0e84b5"
                                                                                onclick="showCondition('Số sản phẩm trên ${list.soLuongSanPham} và tổng tiền hóa đơn trên ${list.soTienHoaDon}')">Xem điều kiện</a></span>
                                         </div>
                                     </c:forEach>
@@ -578,6 +580,24 @@
     }
 </script>
 <script>
+
+    var checkbox1 = document.getElementById("checkbox1");
+    var checkbox2 = document.getElementById("checkbox2");
+
+    // Thêm sự kiện cho checkbox1 để kiểm tra trạng thái của checkbox2
+    checkbox1.addEventListener("change", function() {
+        if (checkbox1.checked) {
+            checkbox2.checked = false;
+        }
+    });
+
+    // Thêm sự kiện cho checkbox2 để kiểm tra trạng thái của checkbox1
+    checkbox2.addEventListener("change", function() {
+        if (checkbox2.checked) {
+            checkbox1.checked = false;
+        }
+    });
+
     // JavaScript code để kiểm tra địa chỉ cũ
     function kiemTraDiaChiCu() {
         var diaChiCu = document.getElementById("diaChiCu").value;
@@ -615,6 +635,7 @@
     function kiemTraDiaChiMoi() {
         var diaChiMoi = document.getElementById("diaChiMoi").value;
         var priceInput = document.getElementById("price");
+        var priceInput1 = document.getElementById("price1");
         var currentPrice = parseFloat(${tongTien});
         if (diaChiMoi.includes("Hà Nội")) {
             var ship = 20000;
@@ -627,9 +648,21 @@
         } else if (diaChiMoi.includes("Quảng Ninh")) {
             var ship = 40000;
         }
+
         var tongSoTien = currentPrice + ship;
-        document.getElementById("ship").value = ship.toFixed(0);
-        priceInput.value = tongSoTien.toFixed(2);
+        priceInput1.value = tongSoTien;
+
+        var gia1Formatted3 = ship.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+        var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
+
+        document.getElementById("ship").value = gia1WithCurrency3;
+
+        var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+        var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
+
+        priceInput.value = gia1WithCurrency2;
     }
 </script>
 </body>

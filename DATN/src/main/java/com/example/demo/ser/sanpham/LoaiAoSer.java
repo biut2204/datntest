@@ -17,4 +17,6 @@ public interface LoaiAoSer {
 
     List<LoaiAo> findAllByTrangThai(Integer trangThai);
 
+    LoaiAo findByMa(String ma);
+
 }

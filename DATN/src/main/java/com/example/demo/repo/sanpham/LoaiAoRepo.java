@@ -13,4 +13,6 @@ public interface LoaiAoRepo extends JpaRepository<LoaiAo, UUID> {
 
     @Query("select la from LoaiAo la where la.trangthai = ?1")
     List<LoaiAo> findAllByTrangThai(Integer trangThai);
+
+    LoaiAo findByMa(String ma);
 }

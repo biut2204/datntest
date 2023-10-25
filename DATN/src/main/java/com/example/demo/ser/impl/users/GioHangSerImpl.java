@@ -29,4 +29,9 @@ public class GioHangSerImpl implements GioHangSer {
     public void add(GioHang gioHang) {
         gioHangRepo.save(gioHang);
     }
+
+    @Override
+    public int soLuongGioHang() {
+        return gioHangRepo.soLuongGioHang();
+    }
 }

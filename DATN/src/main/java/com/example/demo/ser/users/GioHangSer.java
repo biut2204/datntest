@@ -12,4 +12,6 @@ public interface GioHangSer {
     GioHang findByIdKH(UUID id);
 
     void add(GioHang gioHang);
+
+    int soLuongGioHang();
 }

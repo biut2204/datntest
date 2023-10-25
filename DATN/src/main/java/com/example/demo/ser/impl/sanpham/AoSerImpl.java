@@ -2,11 +2,12 @@ package com.example.demo.ser.impl.sanpham;
 
 import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
 import com.example.demo.entity.sanpham.Ao;
-import com.example.demo.entity.sanpham.dto.AoDTO;
+import com.example.demo.entity.dto.AoDTO;
 import com.example.demo.repo.giamgia.GiamGiaSanPhamChiTietRepo;
 import com.example.demo.repo.sanpham.AoRepo;
 import com.example.demo.ser.sanpham.AoSer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -161,7 +162,22 @@ public class AoSerImpl implements AoSer {
     }
 
     @Override
+    public List<Ao> listAoFindByLoaiAo(String ma) {
+        return aoRepo.listAoFindByLoaiAo(ma);
+    }
+
+    @Override
+    public List<Ao> findAoNhapTrongThangHienTai() {
+        return aoRepo.findAoNhapTrongThangHienTai();
+    }
+
+    @Override
     public List<Ao> timKiemNangCao(UUID idChatVai, UUID idLoaiAo, UUID idForm, UUID idHang, BigDecimal minPrice, BigDecimal maxPrice, List<UUID> mauSacIds) {
         return aoRepo.timKiemNangCao(idChatVai, idLoaiAo, idForm, idHang, minPrice, maxPrice, mauSacIds);
+    }
+
+    @Override
+    public Long soLuongBanByUUID(UUID id) {
+        return aoRepo.soLuongBanByUUID(id);
     }
 }

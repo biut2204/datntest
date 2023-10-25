@@ -1,5 +1,6 @@
 package com.example.demo.controller.admin.sanpham;
 
+import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.entity.sanpham.Anh;
 import com.example.demo.entity.sanpham.Ao;
 import com.example.demo.entity.sanpham.AoChiTiet;
@@ -9,7 +10,7 @@ import com.example.demo.entity.sanpham.Hang;
 import com.example.demo.entity.sanpham.LoaiAo;
 import com.example.demo.entity.sanpham.MauSac;
 import com.example.demo.entity.sanpham.Size;
-import com.example.demo.entity.sanpham.dto.ThongKeDTO;
+import com.example.demo.entity.dto.ThongKeDTO;
 import com.example.demo.ser.sanpham.AnhSer;
 import com.example.demo.ser.sanpham.AoChiTietSer;
 import com.example.demo.ser.sanpham.AoSer;
@@ -22,6 +23,7 @@ import com.example.demo.ser.sanpham.SizeSer;
 import com.example.demo.ser.users.HoaDonSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +40,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -77,15 +80,17 @@ public class SanPhamController {
     HoaDonSer hoaDonSer;
 
     @GetMapping("/admin/index/*")
-    public String index(Model model) {
-        LocalDate currentDate = LocalDate.now();
-        Date ngayHienTai = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    public String index(Model model, @RequestParam(name = "pageNo", required = false, defaultValue = "0") Integer pageNo) {
+        LocalDateTime ngayHienTai = LocalDateTime.now();
+
+        LocalDate date = LocalDate.now();
 
         List<ThongKeDTO> listThongKeDTOS = hoaDonSer.thongKeTheoNgayThanhToan();
-        int soDonMoi = hoaDonSer.soLuongHoaDonTheoNgayandTrangThai(ngayHienTai, 1);
-        int soDonDangGiao = hoaDonSer.countHoaDonDangGiaoByNgayHienTai(ngayHienTai);
-        int soDonHoanThanh = hoaDonSer.soLuongHoaDonHoanThanhTheoNgay(ngayHienTai);
-        int soDonHuy = hoaDonSer.soLuongHoaDonTheoNgayandTrangThai(ngayHienTai, 4);
+        int soDonMoi = hoaDonSer.soLuongHoaDonTheoNgayandTrangThai(date, 1);
+        int soDonDangGiao = hoaDonSer.countHoaDonDangGiaoByNgayHienTai(date);
+        int soDonHoanThanh = hoaDonSer.soLuongHoaDonHoanThanhTheoNgay(date);
+        int soDonHuy = hoaDonSer.countHoaDonHuyByNgayHienTai(date);
+        Page<HoaDon> page = hoaDonSer.listHoaDonTheoNgay(date, pageNo);
 
         model.addAttribute("listThongKeDTOS", listThongKeDTOS);
         model.addAttribute("ngayHienTai", ngayHienTai);
@@ -93,6 +98,7 @@ public class SanPhamController {
         model.addAttribute("soDonDangGiao", soDonDangGiao);
         model.addAttribute("soDonHoanThanh", soDonHoanThanh);
         model.addAttribute("soDonHuy", soDonHuy);
+        model.addAttribute("page", page);
 
         return "/admin/index";
     }
@@ -201,19 +207,19 @@ public class SanPhamController {
         String[] parts = url.split("/admin/ao/update/");
         String id = parts[1];
 
-        String ten = request.getParameter("ten");
-        String hang_id = request.getParameter("hang_id");
-        String loai_ao_id = request.getParameter("loai_ao_id");
-        String chat_vai_id = request.getParameter("chat_vai_id");
-        String co_ao = request.getParameter("co_ao");
-        String tui_ao = request.getParameter("tui_ao");
-        String tay_ao = request.getParameter("tay_ao");
-        String form_id = request.getParameter("form_id");
-        String gianhapStr = request.getParameter("gianhap");
-        String giabanStr = request.getParameter("giaban");
-        String mota = request.getParameter("mota");
+        String ten = request.getParameter("ten1");
+        String hang_id = request.getParameter("hang_id1");
+        String loai_ao_id = request.getParameter("loai_ao_id1");
+        String chat_vai_id = request.getParameter("chat_vai_id1");
+        String co_ao = request.getParameter("co_ao1");
+        String tui_ao = request.getParameter("tui_ao1");
+        String tay_ao = request.getParameter("tay_ao1");
+        String form_id = request.getParameter("form_id1");
+        String gianhapStr = request.getParameter("gianhap1");
+        String giabanStr = request.getParameter("giaban1");
+        String mota = request.getParameter("mota1");
 
-        String ngayNhapString = request.getParameter("ngayNhap");
+        String ngayNhapString = request.getParameter("ngayNhap1");
         LocalDate ngayNhap = LocalDate.parse(ngayNhapString);
 
         BigDecimal giaNhap = BigDecimal.valueOf(Integer.parseInt(gianhapStr));

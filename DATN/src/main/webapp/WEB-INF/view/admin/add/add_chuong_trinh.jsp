@@ -534,11 +534,11 @@
 
                             <input type="hidden" id="id" name="id" value="${CTGG.id}">
 
-                            <label for="ma">Mã chương trình:</label>
+                            <label for="ma">Mã chương trình <span class="text-danger">(*)</span> :</label>
                             <input type="text" id="ma" name="ma" value="${CTGG.ma}" required>
                             <span id="errorMa" class="text-danger"></span>
 
-                            <label for="ten">Tên chương trình:</label>
+                            <label for="ten">Tên chương trình <span class="text-danger">(*)</span> :</label>
                             <input type="text" id="ten" name="ten" value="${CTGG.ten}" required>
                             <span id="errorTen" class="text-danger"></span>
 
@@ -563,17 +563,17 @@
                                 <label for="ngaykt">Ngày kết thúc:</label>
                                 <input type="date" id="ngaykt" name="ngaykt" value="${ngayKetThuc_sp}">
 
-                                <label for="tigiam">Phần trăm giảm:</label>
+                                <label for="tigiam">Phần trăm giảm <span class="text-danger">(*)</span> :</label>
                                 <input type="text" id="tigiam" name="tigiam" value="${CTGGSP.phanTramGiam}">
                                 <span id="errorPhanTramGiamSP" class="text-danger"></span>
                             </div>
 
                             <div id="giamgia_hoadon" style="display: none;">
-                                <label for="sosp">Số sản phẩm hóa đơn trên :</label>
+                                <label for="sosp">Số sản phẩm hóa đơn trên <span class="text-danger">(*)</span> :</label>
                                 <input type="number" id="sosp" name="sosp" value="${CTGGHD.soLuongSanPham}">
                                 <span id="errorSoSanPham" class="text-danger"></span>
 
-                                <label for="tongtien">Tổng tiền hóa đơn trên :</label>
+                                <label for="tongtien">Tổng tiền hóa đơn trên <span class="text-danger">(*)</span> :</label>
                                 <input type="number" id="tongtien" name="tongtien" value="${CTGGHD.soTienHoaDon}">
                                 <span id="errorTongTien" class="text-danger"></span>
 
@@ -583,7 +583,7 @@
                                 <label for="ngaykt_hd">Ngày kết thúc:</label>
                                 <input type="date" id="ngaykt_hd" name="ngaykt_hd" value="${ngayKetThuc_hd}">
 
-                                <label for="tigiam_hd">Phần trăm giảm:</label>
+                                <label for="tigiam_hd">Phần trăm giảm <span class="text-danger">(*)</span> :</label>
                                 <input type="text" id="tigiam_hd" name="tigiam_hd" value="${CTGGHD.phanTramGiam}">
                                 <span id="errorPhanTramGiamHD" class="text-danger"></span>
                             </div>

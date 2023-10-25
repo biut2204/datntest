@@ -1,8 +1,11 @@
 package com.example.demo.config;
 
+import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
 import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.entity.khachhang.HoaDonChiTiet;
+import com.example.demo.entity.sanpham.Ao;
 import com.example.demo.entity.sanpham.AoChiTiet;
+import com.example.demo.ser.giamgia.GiamGiaSanPhamChiTietSer;
 import com.example.demo.ser.sanpham.AoChiTietSer;
 import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
@@ -19,6 +22,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,6 +46,9 @@ public class PaymentController {
 
     @Autowired
     AoChiTietSer aoChiTietSer;
+
+    @Autowired
+    GiamGiaSanPhamChiTietSer giamGiaSanPhamChiTietSer;
 
     private String generatePaymentUrl(String ma, BigDecimal tongTien) throws UnsupportedEncodingException {
         String vnp_Version = "2.1.0";
@@ -128,7 +135,6 @@ public class PaymentController {
     public String thanhCong(HttpSession session, Model model){
         String maHoaDon = (String) session.getAttribute("maHoaDon");
 
-        LocalDate currentDate = LocalDate.now();
 
         HoaDon hoaDon = hoaDonSer.findByMa(maHoaDon);
         HoaDon hd = new HoaDon();
@@ -136,7 +142,8 @@ public class PaymentController {
         hd.setMa(hoaDon.getMa());
         hd.setTongTien(hoaDon.getTongTien());
         hd.setNgayTao(hoaDon.getNgayTao());
-        hd.setNgayThanhToan(Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        hd.setNgayChoXacNhan(hoaDon.getNgayChoXacNhan());
+        hd.setNgayThanhToan(LocalDateTime.now());
         hd.setKhachHang(hoaDon.getKhachHang());
         hd.setTrangThai(1);
         hd.setMoTa(hoaDon.getMoTa());
@@ -146,17 +153,42 @@ public class PaymentController {
         List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
 
         for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
+
+            Ao ao = hoaDonChiTiet.getAoChiTiet().getAo();
+
+            GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietSer.findByIdAoAndTrangThai(ao.getId());
+
+            int gia;
+
+            if (giamGiaSanPhamChiTiet != null) {
+                gia = ao.getGiaBan().toBigInteger().intValue() * (100 - giamGiaSanPhamChiTiet.getGiamGiaSanPham().getPhanTramGiam()) / 100;
+            } else {
+                gia = ao.getGiaBan().toBigInteger().intValue();
+            }
+
+            int donGia = gia * hoaDonChiTiet.getSoLuong();
+            BigDecimal bigDecimalDonGia = new BigDecimal(donGia);
+
+            HoaDonChiTiet hdct = new HoaDonChiTiet();
+            hdct.setHoaDon(hoaDonChiTiet.getHoaDon());
+            hdct.setAoChiTiet(hoaDonChiTiet.getAoChiTiet());
+            hdct.setSoLuong(hoaDonChiTiet.getSoLuong());
+            hdct.setDonGia(bigDecimalDonGia);
+
+            hoaDonChiTietSer.update(hoaDonChiTiet.getId(), hdct);
+
             AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
 
             AoChiTiet aoChiTiet = new AoChiTiet();
 
             int slTon = act.getSlton() - hoaDonChiTiet.getSoLuong();
+            int slBan = act.getSlban() + hoaDonChiTiet.getSoLuong();
 
             aoChiTiet.setMau_sac(act.getMau_sac());
             aoChiTiet.setSize(act.getSize());
             aoChiTiet.setAo(act.getAo());
             aoChiTiet.setSlton(slTon);
-            aoChiTiet.setSlban(hoaDonChiTiet.getSoLuong());
+            aoChiTiet.setSlban(slBan);
             aoChiTiet.setTrangthai(act.getTrangthai());
 
             aoChiTietSer.update(act.getId(), aoChiTiet);

@@ -188,9 +188,9 @@
                         <tr>
                             <td class="align-middle"><input type="checkbox" name="chon" value="${vTri.index}">
                             <td class="align-middle">${vTri.index + 1}
-                            <td class="align-middle"><img
+                            <td class="align-middle"><a href="/user/san_pham_detail/${idKh}/${list.aoChiTiet.ao.id}"> <img
                                 src="/images/${list.aoChiTiet.ao.anhs.get(0).ten_url}" alt=""
-                                style="width: 50px;">
+                                style="width: 50px;"></a>
                             </td>
                             <input type="hidden" name="idAoChiTiet" value="${list.aoChiTiet.id}">
 

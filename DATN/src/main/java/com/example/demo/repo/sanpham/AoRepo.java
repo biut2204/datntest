@@ -28,6 +28,9 @@ public interface AoRepo extends JpaRepository<Ao, UUID> {
             "order by sum(act.SoLuongBan) desc\n",nativeQuery = true)
     List<UUID> uuidTop8();
 
+    @Query("select a from Ao a where a.loaiAo.ma = ?1 and a.trangThai = 2")
+    List<Ao> listAoFindByLoaiAo(String ma);
+
     @Query("select sum(act.slban) from AoChiTiet act where act.ao.id = ?1")
     Long soLuongBanByUUID(UUID id);
 
@@ -36,6 +39,9 @@ public interface AoRepo extends JpaRepository<Ao, UUID> {
 
     @Query("SELECT a FROM Ao a WHERE a.ten LIKE %:ten% and a.trangThai = 2")
     List<Ao> findAllByTen(@Param("ten") String ten);
+
+    @Query("SELECT a FROM Ao a WHERE EXTRACT(MONTH FROM a.ngayNhap) = EXTRACT(MONTH FROM CURRENT_DATE) and a.trangThai = 2")
+    List<Ao> findAoNhapTrongThangHienTai();
 
     @Query("SELECT a FROM Ao a WHERE " +
             "(a.trangThai = 2) AND " +

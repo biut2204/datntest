@@ -27,4 +27,7 @@ public interface AoChiTietRepo extends JpaRepository<AoChiTiet, UUID> {
 
     @Query("select count(act.ao.id) from AoChiTiet act where act.ao.id = ?1")
     int soLuongAoChiTietByIdAo(UUID id);
+
+    @Query("select p from AoChiTiet p where p.ao.ma = ?1 and p.mau_sac.ma = ?2 and p.size.ma = ?3")
+    AoChiTiet findByMaAoMsSize(String id, String idMauSac, String idSize);
 }

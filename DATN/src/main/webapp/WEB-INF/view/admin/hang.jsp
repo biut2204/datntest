@@ -445,19 +445,19 @@
                     <form method="post" id="addForm">
                         <input type="hidden" name="id" value="${item.id}">
                         <div class="form-group">
-                            <label for="formGroupExampleInput">Mã</label>
+                            <label for="formGroupExampleInput">Mã <span class="text-danger">(*)</span> :</label>
                             <input type="text" name="ma" value="${item.ma}" class="form-control"
                                    id="formGroupExampleInput" placeholder="Mã ">
                             <span id="errorMa" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label for="formGroupExampleInput2">Tên</label>
+                            <label for="formGroupExampleInput2">Tên <span class="text-danger">(*)</span> :</label>
                             <input type="text" name="ten" value="${item.ten}" class="form-control"
                                    id="formGroupExampleInput2" placeholder="Tên ">
                             <span id="errorTen" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label>Địa chỉ :</label>
+                            <label>Địa chỉ <span class="text-danger">(*)</span> :</label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
                                       name="diaChi">${item.diaChi}</textarea>
                             <span id="errorDiaChi" class="text-danger"></span>

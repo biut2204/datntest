@@ -23,4 +23,8 @@ public interface UsersSer {
     void update(UUID id, Users update);
 
     Users findByEmail(String email);
+
+    int soLuongUser();
+
+    int demLoginGG(String email);
 }
