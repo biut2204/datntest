@@ -62,6 +62,7 @@ public class HoaDonSerImpl implements HoaDonSer {
             hoaDon.setNhanVien(updateHoaDon.getNhanVien());
             hoaDon.setKhachHang(updateHoaDon.getKhachHang());
             hoaDon.setMoTa(updateHoaDon.getMoTa());
+            hoaDon.setGhiChu(updateHoaDon.getGhiChu());
             hoaDon.setTongTien(updateHoaDon.getTongTien());
             hoaDon.setTrangThai(updateHoaDon.getTrangThai());
 

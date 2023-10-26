@@ -31,10 +31,20 @@
     <style>
         /* Style tab buttons */
         /* Style tab buttons */
-        .tab {
+        .tab2,.tab3,.tab4,.tab5{
             display: inline-block;
             padding: 10px 20px;
             background-color: #ccc;
+            cursor: pointer;
+            border: 1px solid #aaa;
+            border-bottom: none; /* Loại bỏ viền dưới của tab */
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab1{
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: white;
             cursor: pointer;
             border: 1px solid #aaa;
             border-bottom: none; /* Loại bỏ viền dưới của tab */
@@ -50,15 +60,11 @@
             border-top: none;
         }
 
-        /* Change background color of active tab */
-        .active {
-            background-color: #007bff;
-            color: #fff;
-            border-bottom: 1px solid #007bff; /* Thêm viền dưới khi tab được chọn */
-        }
-
-        .active-tab {
-            border-bottom: 2px solid orange;
+        .tab-content1 {
+            display: block;
+            padding: 20px;
+            border: 1px solid #aaa;
+            border-top: none;
         }
 
         .divider {
@@ -264,14 +270,14 @@
                 <section class="content-header">
                     <div class="container-fluid">
                         <div>
-                            <div class="tab" onclick="openTab('tab1')"><i class="fa fa-clock"></i> Chờ thanh toán</div>
-                            <div class="tab" onclick="openTab('tab2')"><i class="fas fa-hourglass-start"></i> Chờ xác nhận</div>
-                            <div class="tab" onclick="openTab('tab3')"><i class="fas fa-truck"></i> Đang giao</div>
-                            <div class="tab" onclick="openTab('tab4')"><i class="fas fa-check-circle"></i> Hoàn thành</div>
-                            <div class="tab" onclick="openTab('tab5')"><i class="fas fa-times"></i> Đã hủy</div>
+                            <div class="tab1" id="optab1" onclick="openTab1()"><i class="fa fa-clock"></i> Chờ thanh toán</div>
+                            <div class="tab2" id="optab2" onclick="openTab2()"><i class="fas fa-hourglass-start"></i> Chờ xác nhận</div>
+                            <div class="tab3" id="optab3" onclick="openTab3()"><i class="fas fa-truck"></i> Đang giao</div>
+                            <div class="tab4" id="optab4" onclick="openTab4()"><i class="fas fa-check-circle"></i> Hoàn thành</div>
+                            <div class="tab5" id="optab5" onclick="openTab5()"><i class="fas fa-times"></i> Đã hủy</div>
                         </div>
                         <form method="post">
-                            <div id="tab1" class="tab-content">
+                            <div id="tab1" class="tab-content1">
                                 <c:forEach items="${listHoaDonDTOChuaThanhToan}" var="list">
                                     <p class="invoice-code">${list.hoaDon.ma}</p>
                                     <c:forEach items="${list.hoaDonChiTiets}" var="hdCT">
@@ -476,19 +482,91 @@
 <!-- Template Javascript -->
 <script src="../../../resources/js/main.js"></script>
 <script>
-    function openTab(tabId) {
-        var tabs = document.getElementsByClassName("tab-content");
-        for (var i = 0; i < tabs.length; i++) {
-            tabs[i].style.display = "none";
-        }
-        var tabButtons = document.getElementsByClassName("tab");
-        for (var i = 0; i < tabButtons.length; i++) {
-            tabButtons[i].classList.remove("active");
-        }
-        document.getElementById(tabId).style.display = "block";
-        document.querySelector(".tab[onclick='openTab(\"" + tabId + "\")']").classList.add("active");
-        document.querySelector(".tab[onclick='openTab(\"" + tabId + "\")']").classList.add("active-tab"); // Thêm class active-tab cho tab được chọn
+    function openTab1() {
+        document.getElementById("tab1").style.display = "block";
+        document.getElementById("optab1").style.background = "white";
+
+        document.getElementById("tab2").style.display = "none";
+        document.getElementById("optab2").style.background = "#aaa";
+
+        document.getElementById("tab3").style.display = "none";
+        document.getElementById("optab3").style.background = "#aaa";
+
+        document.getElementById("tab4").style.display = "none";
+        document.getElementById("optab4").style.background = "#aaa";
+
+        document.getElementById("tab5").style.display = "none";
+        document.getElementById("optab5").style.background = "#aaa";
     }
+
+    function openTab2() {
+        document.getElementById("tab2").style.display = "block";
+        document.getElementById("optab2").style.background = "white";
+
+        document.getElementById("tab1").style.display = "none";
+        document.getElementById("optab1").style.background = "#aaa";
+
+        document.getElementById("tab3").style.display = "none";
+        document.getElementById("optab3").style.background = "#aaa";
+
+        document.getElementById("tab4").style.display = "none";
+        document.getElementById("optab4").style.background = "#aaa";
+
+        document.getElementById("tab5").style.display = "none";
+        document.getElementById("optab5").style.background = "#aaa";
+    }
+
+    function openTab3() {
+        document.getElementById("tab3").style.display = "block";
+        document.getElementById("optab3").style.background = "white";
+
+        document.getElementById("tab1").style.display = "none";
+        document.getElementById("optab1").style.background = "#aaa";
+
+        document.getElementById("tab2").style.display = "none";
+        document.getElementById("optab2").style.background = "#aaa";
+
+        document.getElementById("tab4").style.display = "none";
+        document.getElementById("optab4").style.background = "#aaa";
+
+        document.getElementById("tab5").style.display = "none";
+        document.getElementById("optab5").style.background = "#aaa";
+    }
+
+    function openTab4() {
+        document.getElementById("tab4").style.display = "block";
+        document.getElementById("optab4").style.background = "white";
+
+        document.getElementById("tab1").style.display = "none";
+        document.getElementById("optab1").style.background = "#aaa";
+
+        document.getElementById("tab2").style.display = "none";
+        document.getElementById("optab2").style.background = "#aaa";
+
+        document.getElementById("tab3").style.display = "none";
+        document.getElementById("optab3").style.background = "#aaa";
+
+        document.getElementById("tab5").style.display = "none";
+        document.getElementById("optab5").style.background = "#aaa";
+    }
+
+    function openTab5() {
+        document.getElementById("tab5").style.display = "block";
+        document.getElementById("optab5").style.background = "white";
+
+        document.getElementById("tab1").style.display = "none";
+        document.getElementById("optab1").style.background = "#aaa";
+
+        document.getElementById("tab2").style.display = "none";
+        document.getElementById("optab2").style.background = "#aaa";
+
+        document.getElementById("tab3").style.display = "none";
+        document.getElementById("optab3").style.background = "#aaa";
+
+        document.getElementById("tab4").style.display = "none";
+        document.getElementById("optab4").style.background = "#aaa";
+    }
+
 
 </script>
 </body>

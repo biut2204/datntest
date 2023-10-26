@@ -9,6 +9,8 @@ import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,9 @@ public class QuanLiDonHang {
 
     @Autowired
     HoaDonRepo hoaDonRepo;
+
+    @Autowired
+    JavaMailSender mailSender;
 
     @GetMapping("/admin/quan_li_don_hang/*")
     public String viewQuanLiDonHang(HttpServletRequest request, Model model){
@@ -85,18 +90,17 @@ public class QuanLiDonHang {
         hd.setMoTa(hoaDon.getMoTa());
         hoaDonSer.update(hoaDon.getId(), hd);
 
-        hoaDonSer.update(hoaDon.getId(), hoaDon);
         return "redirect:/admin/quan_li_don_hang/" + hoaDon.getMa();
     }
 
     @PostMapping("/admin/don_hang/huy")
     public String huyDonHang(HttpServletRequest request){
-        LocalDate currentDate = LocalDate.now();
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
 
         String maDonHang = request.getParameter("maDonHang");
+        String ghiChu = request.getParameter("ghiChu");
 
         HoaDon hoaDon = hoaDonSer.findByMa(maDonHang);
         HoaDon hd = new HoaDon();
@@ -110,10 +114,17 @@ public class QuanLiDonHang {
         hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
         hd.setKhachHang(hoaDon.getKhachHang());
         hd.setTrangThai(4);
+        hd.setGhiChu(ghiChu);
         hd.setMoTa(hoaDon.getMoTa());
         hoaDonSer.update(hoaDon.getId(), hd);
 
-        hoaDonSer.update(hoaDon.getId(), hoaDon);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(hoaDon.getKhachHang().getEmail());
+        message.setSubject("Thông tin đơn hàng");
+        message.setText(ghiChu);
+
+        mailSender.send(message);
+
         return "redirect:/admin/quan_li_don_hang/" + hoaDon.getMa();
     }
 

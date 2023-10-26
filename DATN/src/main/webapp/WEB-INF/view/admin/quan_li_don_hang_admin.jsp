@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../../../resources/css/add_form.css">
+
     <style>
         #addFormContainer {
             display: none;
@@ -152,6 +153,16 @@
             transform: scale(1.05);
         }
 
+        .btn-button-xnhuy {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-button-xnhuy:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+
         /* Nút Chi tiết */
         .btn-button-ct {
             background-color: #ccc;
@@ -162,6 +173,32 @@
             background-color: #999;
             color: #fff;
             transform: scale(1.05);
+        }
+
+    </style>
+    <style>
+        #addFormContainer1 {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Màu nền với độ trong suốt */
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #addForm1 {
+            padding-left: 10px;
+            margin-top: 10%;
+            width: 100%;
+            height: 100%;
+            background-color: white; /* Màu nền của biểu mẫu */
+            border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
         }
     </style>
 </head>
@@ -175,7 +212,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="../../../index3.html" class="nav-link">Home</a>
+                <a href="/admin/index/1" class="nav-link">Home</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">Contact</a>
@@ -387,8 +424,8 @@
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item menu-open">
-                        <a href="#" class="nav-link active">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link ">
                             <i class="nav-icon fas fa-table"></i>
                             <p>
                                 Tables
@@ -397,7 +434,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="/admin/ao/view/1" class="nav-link active">
+                                <a href="/admin/ao/view/1" class="nav-link ">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Áo</p>
                                 </a>
@@ -503,6 +540,22 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item menu-open">
+                        <a href="/admin/quan_li_don_hang/1" class="nav-link active">
+                            <i class="nav-icon fas fa-money-bill-alt"></i>
+                            <p>
+                                Quản lí hóa đơn
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/chat" class="nav-link">
+                            <i class="nav-icon fas fa-envelope"></i>
+                            <p>
+                                Chat hỗ trợ
+                            </p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
@@ -554,7 +607,7 @@
                 <c:choose>
                     <c:when test="${trangThai == 1}">
                         <button class="button btn-button-xn" formaction="/admin/don_hang/xac_nhan">Xác nhận</button>
-                        <button class="button btn-button-huy" formaction="/admin/don_hang/huy">Hủy đơn</button>
+                        <button class="button btn-button-huy" id="addButton1" onclick="clickHuy()">Hủy đơn</button>
                         <button class="button btn-button-ct" style="margin-left: 71%;" id="addButton" onclick="clickThem()">Chi tiết</button>
                     </c:when>
                     <c:when test="${trangThai == 2}">
@@ -671,7 +724,12 @@
                                                 <td><fmt:formatNumber value="${list.hoaDon.tongTien}" type="currency"
                                                                       currencySymbol="VNĐ"/></td>
                                                 <td>${list.hoaDon.khachHang.ten}</td>
-                                                <td>${list.hoaDon.ngayTao}</td>
+                                                <td>
+                                                    <c:set var="dateTimeString" value="${list.hoaDon.ngayTao}" />
+                                                    <fmt:parseDate value="${dateTimeString}" var="parsedDate" pattern="yyyy-MM-dd'T'HH:mm:ss.SSS" />
+                                                    <fmt:formatDate value="${parsedDate}" var="formattedDate" pattern="yyyy-MM-dd HH:mm:ss" />
+                                                        ${formattedDate}
+                                                </td>
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${list.hoaDon.trangThai ==1}"><p
@@ -747,20 +805,61 @@
                 <h3 style="text-align: center">Hóa đơn:  <strong style="font-size: 35px">${hoaDon.ma}</strong></h3>
                 <div class="d-flex justify-content-between ">
                     <p style="width: 50px">Ảnh</p>
-                    <p style="width: 200px;margin-left: 33px">Tên sản phẩm</p>
-                    <p>Số lượng</p>
-                    <p>Tổng tiền</p>
+                    <p style="width: 200px">Tên sản phẩm</p>
+                    <p style="width: 100px">Số lượng</p>
+                    <p style="width: 100px">Tổng tiền</p>
                 </div>
 
                 <c:forEach items="${hoaDonChiTiets}" var="list">
                     <div class="d-flex justify-content-between ">
-                        <p><img style="width: 50px"
+                        <p><img style="width: 50px; height: 70px; border: 1px solid #6e7881"
                                 src="/images/${list.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
                         <p style="width: 200px">${list.aoChiTiet.ao.ten}</p>
-                        <p>${list.soLuong}</p>
-                        <p>${list.donGia}</p>
+                        <p style="width: 100px">${list.soLuong}</p>
+                        <p style="width: 100px"><fmt:formatNumber value="${list.donGia}" type="currency"
+                                                                  currencySymbol="VNĐ"/></p>
                     </div>
                 </c:forEach>
+                <h5>Tên khách hàng : ${hoaDon.khachHang.ten}</h5>
+                <h5>Sđt khách hàng : ${hoaDon.khachHang.sdt}</h5>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div id="addFormContainer1" style="display: none;">
+    <div class="container-fluid">
+        <div class="container">
+            <form method="post" id="addForm1">
+                <input type="hidden" name="maDonHang" value="${hoaDon.ma}">
+                <h3 style="text-align: center"><strong style="font-size: 35px">Xác nhận hủy đơn hàng</strong></h3>
+                <h5>Mã hóa đơn : <strong>${hoaDon.ma}</strong></h5>
+                <div class="d-flex justify-content-between ">
+                    <p style="width: 50px">Ảnh</p>
+                    <p style="width: 200px">Tên sản phẩm</p>
+                    <p style="width: 100px">Số lượng</p>
+                    <p style="width: 100px">Tổng tiền</p>
+                </div>
+
+                <c:forEach items="${hoaDonChiTiets}" var="list">
+                    <div class="d-flex justify-content-between ">
+                        <p><img style="width: 50px; height: 70px; border: 1px solid #6e7881"
+                                src="/images/${list.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                        <p style="width: 200px">${list.aoChiTiet.ao.ten}</p>
+                        <p style="width: 100px">${list.soLuong}</p>
+                        <p style="width: 100px"><fmt:formatNumber value="${list.donGia}" type="currency"
+                                             currencySymbol="VNĐ"/></p>
+                    </div>
+                </c:forEach>
+                <h5>Tên khách hàng : ${hoaDon.khachHang.ten}</h5>
+                <h5>Sđt khách hàng : ${hoaDon.khachHang.sdt}</h5>
+                <div style="margin-top: 10px">
+                    <label style="font-size: 25px">Lí do hủy đơn hàng :</label>
+                    <br>
+                    <textarea style="width: 50%" name="ghiChu"></textarea>
+                    <br>
+                    <button class="button btn-button-xnhuy" formaction="/admin/don_hang/huy">Hủy đơn</button>
+                </div>
             </form>
         </div>
     </div>
@@ -938,27 +1037,27 @@
             targetStatus.style.backgroundColor = '#ff8b33';
 
             var targetStatus1 = document.querySelector('.status-' + 2);
-            targetStatus1.style.backgroundColor = 'wheat';
+            targetStatus1.style.backgroundColor = '#ccc';
 
             var targetStatus2 = document.querySelector('.status-' + 3);
-            targetStatus2.style.backgroundColor = 'springgreen';
+            targetStatus2.style.backgroundColor = '#ccc';
 
             var targetStatus3 = document.querySelector('.status-' + 4);
             targetStatus3.style.backgroundColor = 'red';
 
             var arrowElements = document.querySelectorAll('.arrow1 i');
             arrowElements.forEach(function (arrow) {
-                arrow.style.color = 'green';
+                arrow.style.color = '#ccc';
             });
 
             var arrowElements1 = document.querySelectorAll('.arrow2 i');
             arrowElements1.forEach(function (arrow) {
-                arrow.style.color = 'green';
+                arrow.style.color = '#ccc';
             });
 
             var arrowElements2 = document.querySelectorAll('.arrow3 i');
             arrowElements2.forEach(function (arrow) {
-                arrow.style.color = 'green';
+                arrow.style.color = '#ccc';
             });
         }
     }
@@ -990,6 +1089,32 @@
     }
 </script>
 <script>
+    var addButton1 = document.getElementById("addButton1");
+    var addFormContainer1 = document.getElementById("addFormContainer1");
+
+    // Add an event listener to the button
+    addButton1.addEventListener("click", function () {
+        // Toggle the visibility of the form container
+        if (addFormContainer1.style.display === "none" || addFormContainer1.style.display === "") {
+            addFormContainer1.style.display = "block";
+        } else {
+            addFormContainer1.style.display = "none";
+        }
+    });
+
+    // Add an event listener to the background overlay
+    addFormContainer1.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer1) {
+            // Hide the form
+            addFormContainer1.style.display = "none";
+        }
+    });
+    function clickHuy() {
+        event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
+    }
+</script>
+<script>
     function filterTable() {
         var fromDate = new Date(document.getElementById("fromDate").value);
         var toDate = new Date(document.getElementById("toDate").value);
@@ -999,7 +1124,7 @@
 
         for (var i = 1; i < rows.length; i++) {
             var cell = rows[i].getElementsByTagName("td")[4];
-            var birthdayStr = cell.textContent.split('T')[0]; // Lấy ngày tháng năm đầu tiên
+            var birthdayStr = cell.textContent.split('T')[0];
 
             var birthday = new Date(birthdayStr);
 

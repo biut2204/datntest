@@ -30,4 +30,7 @@ public interface UsersRepo extends JpaRepository<Users, UUID> {
 
     @Query("select p from Users p where p.role= ?1")
     List<Users> findByRole(RoleEnum role);
+
+    @Query("select p from Users p where p.role= ?1")
+    Users findByRole1(RoleEnum role);
 }

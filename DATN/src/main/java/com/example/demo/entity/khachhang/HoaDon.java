@@ -65,6 +65,9 @@ public class HoaDon {
     @Column(name = "MoTa")
     String moTa;
 
+    @Column(name = "GhiChu")
+    String ghiChu;
+
     @Column(name = "TongTien")
     BigDecimal tongTien;
 

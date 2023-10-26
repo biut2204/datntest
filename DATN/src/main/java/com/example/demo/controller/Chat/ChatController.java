@@ -65,7 +65,8 @@ public class ChatController {
         model.addAttribute("check", ma);
         Users u = userRepository.findByMa(ma);
         model.addAttribute("ten", u.getTen());
-        model.addAttribute("check1", "005");
+        Users u1 = userRepository.findByRole1(RoleEnum.ADMIN);
+        model.addAttribute("check1", u1.getMa());
         List<MessageChat> messages = chatMessageRepository.findAllByBientrunggian(ma);
         model.addAttribute("messages", messages);
         return "/admin/chat_app";

@@ -107,6 +107,21 @@
             background-color: #ffa500; /* Màu cam */
             clip-path: polygon(100% 0, 0 0, 100% 100%);
         }
+
+        .button-layout {
+            background: black;
+            color: white;
+            border: 1px solid white; /* Đường viền ban đầu */
+            padding: 10px 20px; /* Điều chỉnh padding theo ý muốn */
+            transition: border-color 0.3s; /* Hiệu ứng hover */
+        }
+
+        /* CSS cho hover */
+        .button-layout:hover {
+            background: linear-gradient(to bottom, black, white); /* Màu nền khi hover */
+            color: black;
+            border-color: springgreen; /* Màu viền khi hover */
+        }
     </style>
 
     <style>
@@ -157,6 +172,39 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
         }
     </style>
+
+    <style>
+        #addFormContainer2 {
+            display: none;
+            position: fixed;
+            top: 10%;
+            left: 75%;
+            width: 100%;
+            height: 60%;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #addForm2 {
+            padding-left: 10px;
+            margin-top: 10%;
+            width: 21.5%;
+            height: 100%;
+            background-color: white; /* Màu nền của biểu mẫu */
+            border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
+            position: relative;
+        }
+
+        #closeButton {
+            position: absolute;
+            top: 10px;
+            right: 3px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -172,7 +220,8 @@
         <div class="col-lg-4 col-6 text-left">
             <form method="post">
                 <div class="input-group">
-                    <input type="text" class="form-control" name="timKiem" placeholder="Search for products" id="searchInput2" onkeyup="search2()" oninput="toggleAddFormContainer()">
+                    <input type="text" class="form-control" name="timKiem" placeholder="Search for products"
+                           id="searchInput2" onkeyup="search2()" oninput="toggleAddFormContainer()">
                     <div class="input-group-append">
                         <button class="input-group-text bg-transparent text-primary"
                                 formaction="/user/tim_kiem/${idKh}">
@@ -295,7 +344,7 @@
                 </ol>
                 <div class="carousel-inner">
                     <div class="carousel-item position-relative active" style="height: 430px;">
-                        <img class="position-absolute w-100 h-100" src="/images/carousel-1.jpg"
+                        <img class="position-absolute w-100 h-100" src="/images/layout1.jfif"
                              style="object-fit: cover;">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 700px;">
@@ -309,7 +358,7 @@
                         </div>
                     </div>
                     <div class="carousel-item position-relative" style="height: 430px;">
-                        <img class="position-absolute w-100 h-100" src="/images/carousel-2.jpg"
+                        <img class="position-absolute w-100 h-100" src="/images/layout2.jfif"
                              style="object-fit: cover;">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 700px;">
@@ -323,7 +372,7 @@
                         </div>
                     </div>
                     <div class="carousel-item position-relative" style="height: 430px;">
-                        <img class="position-absolute w-100 h-100" src="/images/carousel-3.jpg"
+                        <img class="position-absolute w-100 h-100" src="/images/layout3.jfif"
                              style="object-fit: cover;">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 700px;">
@@ -342,6 +391,14 @@
         <div class="col-lg-4">
             <c:forEach items="${listTop2GiamGiaSanPhams}" var="list">
                 <div class="product-offer mb-30" style="height: 200px;">
+                        <%--                    <c:choose>--%>
+                        <%--                        <c:when test="${vTri.index == 0}">--%>
+                        <%--                            <img class="img-fluid" src="/images/giamgia0.jpg" alt="">--%>
+                        <%--                        </c:when>--%>
+                        <%--                        <c:when test="${vTri.index == 1}">--%>
+                        <%--                            <img class="img-fluid" src="/images/giamgia1.png" alt="">--%>
+                        <%--                        </c:when>--%>
+                        <%--                    </c:choose>--%>
                     <img class="img-fluid" src="/images/test1.jpg" alt="">
                     <div class="offer-text">
                         <h6 class="text-white text-uppercase">Sale ${list.phanTramGiam}%</h6>
@@ -353,8 +410,20 @@
         </div>
     </div>
 </div>
-<!-- Carousel End -->
-<!-- Featured Start -->
+
+
+<button class="btn btn-primary" style="position: fixed;z-index: 90;margin-left: 90%" id="addButton2"
+        onclick="clickThem()">
+    <i class="fab fa-facebook-messenger"></i>
+</button>
+
+
+<div id="addFormContainer2" style="display: none;">
+    <div id="addForm2">
+        <a id="closeButton" onclick="closeForm()">X</a>
+        <iframe src="/user/chat/${idKh}" style="height: 100%"></iframe>
+    </div>
+</div>
 <div class="container-fluid pt-5">
     <div class="row px-xl-5 pb-3">
         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
@@ -388,7 +457,7 @@
 
 <!-- Categories Start -->
 <div class="container-fluid pt-5">
-    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Danh sách loại áo</span>
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">TỦ ĐỒ CHO PHÁI MẠNH</span>
     </h2>
     <div class="row px-xl-5 pb-3">
         <c:forEach items="${listLoaiAos}" var="list">
@@ -445,9 +514,37 @@
         </c:forEach>
     </div>
 </div>
+<div style="width: 100%; height: 800px; background: black; padding-top: 5%">
+    <div class="row">
+        <div class="col-6">
+            <div style="padding-top: 40%;padding-left: 10% ; color: white">
+                <p style="font-size: 30px"><b>Tạo sự thay đổi</b></p>
+                <p style="font-size: 50px"><b>THAY ĐỔI ĐỂ THÀNH CÔNG</b></p>
+                <a href="/user/shop/1" class="button-layout">SHOP NOW</a>
+            </div>
+        </div>
+        <div class="col-6">
+            <img src="/images/home_banner_1_image_1.jpg" style="width: 90%;padding-left: 10%">
+        </div>
+    </div>
+</div>
+<div style="width: 100%; height: 700px; background: black">
+    <div class="row">
+        <div class="col-6">
+            <img src="/images/home_banner_1_image_2.jpg" style="width: 90%; padding-left: 10%">
+        </div>
+        <div class="col-6">
+            <div style="padding-top: 40%;padding-left: 10% ; color: white">
+                <p style="font-size: 30px"><b>Hành trình 3 tháng</b></p>
+                <p style="font-size: 50px"><b>VÌ MỘT VIỆT NAM ĐẸP HƠN</b></p>
+                <button class="button-layout">Xem thêm</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container-fluid py-5">
-    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản phẩm mới nhập</span>
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Bộ sưu tập mới</span>
     </h2>
     <div class="row px-xl-5">
         <div class="col">
@@ -458,7 +555,8 @@
                             <img class="img-fluid" style="width: 100%; height: 350px"
                                  src="/images/${list.ao.anhs.get(0).ten_url}" alt="">
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href="/user/show_gio_hang_index/${idKh}/${list.ao.id}"><i
+                                <a class="btn btn-outline-dark btn-square"
+                                   href="/user/show_gio_hang_index/${idKh}/${list.ao.id}"><i
                                         class="fa fa-shopping-cart"></i></a>
                                 <a class="btn btn-outline-dark btn-square"
                                    href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i class="fa fa-search"></i></a>
@@ -592,23 +690,46 @@
     </div>
 </div>
 
-<!-- Offer Start -->
-<div class="container-fluid pt-5 pb-3">
-    <div class="row px-xl-5">
-        <c:forEach items="${listTop2GiamGiaSanPhams}" var="list">
-            <div class="col-md-6">
-                <div class="product-offer mb-30" style="height: 300px;">
-                    <img class="img-fluid" src="/images/test.jpg" alt="">
-                    <div class="offer-text">
-                        <h6 class="text-white text-uppercase">Sale ${list.phanTramGiam}%</h6>
-                        <h3 class="text-white mb-3">Sale sập sàn</h3>
-                        <a href="" class="btn btn-primary">Shop Now</a>
+
+<div style="background-image:url(//theme.hstatic.net/200000053174/1001115888/14/home_banner_2_bg_image.jpg?v=1210)">
+    <div class="row" style="padding-top: 2%">
+        <div class="col-1">
+        </div>
+        <div class="col-10" ; style="background: white">
+            <div class="row">
+                <div class="col-6">
+                    <div style="padding-top: 60%; padding-left: 20%; color: black; ">
+                        <p style="font-size: 50px"><b>BST Sơ mi 2023</b></p>
+                        <a href="/user/shop/1" class="button-layout">KHÁM PHÁ NGAY</a>
                     </div>
                 </div>
+                <div class="col-6">
+                    <img src="/images/banner4.png" style="width: 100%">
+                </div>
             </div>
-        </c:forEach>
+        </div>
+    </div>
+    <div class="row" style="padding-bottom: 2%">
+        <div class="col-1">
+        </div>
+        <div class="col-10" ; style="background: white">
+            <div class="row">
+                <div class="col-6">
+                    <div style="padding-top: 40%; padding-left: 20%; color: black; ">
+                        <p style="font-size: 30px"><b>TỦ ĐỒ CHO PHÁI MẠNH</b></p>
+                        <p style="font-size: 50px"><b>Lịch Lãm x Tinh Tế x Chuẩn mực</b></p>
+                        <a href="/user/shop/1" class="button-layout">KHÁM PHÁ NGAY</a>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <img src="/images/banner5.png" style="width: 100%">
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<!-- Offer Start -->
+
 <!-- Offer End -->
 
 
@@ -628,7 +749,8 @@
                                                                                        style="width: 100%;height: 350px"
                                                                                        alt=""></a>
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href="/user/show_gio_hang_index/${idKh}/${list.ao.id}"><i
+                                <a class="btn btn-outline-dark btn-square"
+                                   href="/user/show_gio_hang_index/${idKh}/${list.ao.id}"><i
                                         class="fa fa-shopping-cart"></i></a>
                                 <a class="btn btn-outline-dark btn-square"
                                    href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i class="fa fa-search"></i></a>
@@ -652,7 +774,22 @@
         </div>
     </div>
 </div>
-
+<div class="container-fluid pt-5 pb-3">
+    <div class="row px-xl-5">
+        <c:forEach items="${listTop2GiamGiaSanPhams}" var="list">
+            <div class="col-md-6">
+                <div class="product-offer mb-30" style="height: 300px;">
+                    <img class="img-fluid" src="/images/test.jpg" alt="">
+                    <div class="offer-text">
+                        <h6 class="text-white text-uppercase">Sale ${list.phanTramGiam}%</h6>
+                        <h3 class="text-white mb-3">Sale sập sàn</h3>
+                        <a href="" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+</div>
 <!-- Vendor End -->
 <div class="container-fluid py-5">
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Danh sách sản phẩm</span>
@@ -666,7 +803,8 @@
                             <img class="img-fluid" style="width: 100%; height: 350px"
                                  src="/images/${list.anhs.get(0).ten_url}" alt="">
                             <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href="/user/show_gio_hang_index/${idKh}/${list.id}"><i
+                                <a class="btn btn-outline-dark btn-square"
+                                   href="/user/show_gio_hang_index/${idKh}/${list.id}"><i
                                         class="fa fa-shopping-cart"></i></a>
                                 <a class="btn btn-outline-dark btn-square"
                                    href="/user/san_pham_detail/${idKh}/${list.id}"><i class="fa fa-search"></i></a>
@@ -688,14 +826,6 @@
 </div>
 
 <%--chat--%>
-<%--<button class="btn btn-primary" id="addButton" onclick="clickThem()">Chat</button>--%>
-
-<%--<div id="addFormContainer" style="display: none;">--%>
-<%--    <div style="background: white">Admin</div>--%>
-<%--    <div id="addForm">--%>
-<%--        <iframe src="/user/chat/${idKh}" style="height: 100%"></iframe>--%>
-<%--    </div>--%>
-<%--</div>--%>
 
 <!-- Footer Start -->
 <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
@@ -802,6 +932,35 @@
             addFormContainer.style.display = "none";
         }
     });
+</script>
+
+<script>
+    // Get references to the button and form container
+    var addButton = document.getElementById("addButton2");
+    var addFormContainer2 = document.getElementById("addFormContainer2");
+
+    // Add an event listener to the button
+    addButton.addEventListener("click", function () {
+        // Toggle the visibility of the form container
+        if (addFormContainer2.style.display === "none" || addFormContainer2.style.display === "") {
+            addFormContainer2.style.display = "block";
+        } else {
+            addFormContainer2.style.display = "none";
+        }
+    });
+
+    // Add an event listener to the background overlay
+    addFormContainer2.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer2) {
+            // Hide the form
+            addFormContainer2.style.display = "none";
+        }
+    });
+
+    function closeForm() {
+        addFormContainer2.style.display = "none";
+    }
 </script>
 
 <script>

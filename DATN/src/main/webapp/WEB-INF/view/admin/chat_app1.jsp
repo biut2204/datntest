@@ -112,7 +112,7 @@
         }
 
         .chat .chat-history ul {
-            padding: 0
+            padding: 0;
         }
 
         .chat .chat-history ul li {
@@ -355,6 +355,7 @@
         });
     }
 
+
     function showMessage(message) {
         // Tạo các phần tử HTML cho tin nhắn và thời gian
         var chatContent = document.getElementById('chat-content');
@@ -376,6 +377,7 @@
         // Gắn các phần tử HTML vào cấu trúc DOM
         listItem.appendChild(messageText);
         chatContent.appendChild(listItem);
+
     }
 
     function sendMessage() {
