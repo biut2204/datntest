@@ -1,23 +1,31 @@
 package com.example.demo.controller.user;
 
 import com.example.demo.entity.auth.RoleEnum;
+import com.example.demo.entity.chat.MessageChat;
 import com.example.demo.entity.giamgia.GiamGiaSanPham;
 import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
+import com.example.demo.entity.khachhang.DanhGia;
 import com.example.demo.entity.khachhang.GioHang;
+import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.entity.khachhang.Users;
 import com.example.demo.entity.sanpham.Ao;
 import com.example.demo.entity.dto.AoDTO;
+import com.example.demo.entity.sanpham.AoChiTiet;
 import com.example.demo.entity.sanpham.LoaiAo;
+import com.example.demo.repo.ChatMessageRepository;
 import com.example.demo.repo.giamgia.GiamGiaSanPhamChiTietRepo;
 import com.example.demo.repo.sanpham.AoRepo;
+import com.example.demo.repo.users.UsersRepo;
 import com.example.demo.ser.giamgia.GiamGiaSanPhamChiTietSer;
 import com.example.demo.ser.giamgia.GiamGiaSanPhamSer;
 import com.example.demo.ser.sanpham.ChatVaiSer;
 import com.example.demo.ser.sanpham.FormSer;
 import com.example.demo.ser.sanpham.HangSer;
 import com.example.demo.ser.sanpham.MauSacSer;
+import com.example.demo.ser.users.DanhGiaSer;
 import com.example.demo.ser.users.GioHangChiTietSer;
 import com.example.demo.ser.users.GioHangSer;
+import com.example.demo.ser.users.HoaDonSer;
 import com.example.demo.ser.users.UsersSer;
 import com.example.demo.ser.sanpham.AnhSer;
 import com.example.demo.ser.sanpham.AoChiTietSer;
@@ -26,6 +34,7 @@ import com.example.demo.ser.sanpham.LoaiAoSer;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -88,6 +98,21 @@ public class TrangChuController {
     @Autowired
     GiamGiaSanPhamChiTietRepo giamGiaSanPhamChiTietRepo;
 
+    @Autowired
+    DanhGiaSer danhGiaSer;
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    private ChatMessageRepository chatMessageRepository;
+
+    @Autowired
+    private UsersRepo userRepository;
+
+    @Autowired
+    HoaDonSer hoaDonSer;
+
     @GetMapping("/user/trang_chu/*")
     public String trangChu(Model model, HttpServletRequest request, HttpSession session) {
 
@@ -117,6 +142,10 @@ public class TrangChuController {
 
             model.addAttribute("idKh", users.getMa());
             model.addAttribute("soLuongSanPham", soLuongSanPham);
+
+            model.addAttribute("check", ma);
+            List<MessageChat> messages = chatMessageRepository.findAllByBientrunggian(ma);
+            model.addAttribute("messages", messages);
         } catch (Exception e) {
             model.addAttribute("idKh", "2");
         }
@@ -171,6 +200,7 @@ public class TrangChuController {
         List<Ao> listAos = aoSer.findAllByTrangThai(2);
         model.addAttribute("listAos", listAos);
         model.addAttribute("ao", aoSer.findById(UUID.fromString(id)));
+        model.addAttribute("listDanhGias", danhGiaSer.findAllByAo(UUID.fromString(id)));
         model.addAttribute("slAoDaBan", aoSer.soLuongBanByUUID(UUID.fromString(id)));
         model.addAttribute("anhs", anhSer.findAllByAoId(UUID.fromString(id)));
         model.addAttribute("mauSacs", aoChiTietSer.findMauSacByIdAo(UUID.fromString(id)));
@@ -260,6 +290,19 @@ public class TrangChuController {
             model.addAttribute("idKh", "2");
         }
         return "/user/tim_kiem";
+    }
+
+    @GetMapping("/user/danh_gia_view/*")
+    public String danhGiaView(HttpServletRequest request, HttpSession session){
+
+        String url = request.getRequestURI();
+        String[] parts = url.split("/user/danh_gia_view/");
+        String id = parts[1];
+
+        HoaDon hoaDon = hoaDonSer.findId(UUID.fromString(id));
+        session.setAttribute("hoaDonDanhGia",hoaDon);
+
+        return "redirect:/user/don_hang/"+hoaDon.getKhachHang().getMa();
     }
 
     @PostMapping("/user/tim_kiem/*")
@@ -422,5 +465,28 @@ public class TrangChuController {
 
         usersSer.update(users.getId(), users);
         return "redirect:/user/trang_chu/" + users.getMa();
+    }
+
+    @PostMapping("/user/danh_gia")
+    public String addDanhGia(HttpServletRequest request){
+
+        String idKh = request.getParameter("idKh");
+        String aoChiTietId = request.getParameter("aoChiTietId");
+        String rating = request.getParameter("rating");
+        String binhLuan = request.getParameter("binhLuan");
+
+        AoChiTiet aoChiTiet = aoChiTietSer.findById(UUID.fromString(aoChiTietId));
+        Users khachHang = usersSer.findByMa(idKh);
+
+        DanhGia danhGia = new DanhGia();
+        danhGia.setKhachHang(khachHang);
+        danhGia.setAoChiTiet(aoChiTiet);
+        danhGia.setDanhGiaSao(Integer.parseInt(rating));
+        danhGia.setDanhGiaBinhLuan(binhLuan);
+        danhGia.setNgayDanhGia(LocalDateTime.now());
+
+        danhGiaSer.add(danhGia);
+
+        return "redirect:/user/don_hang/"+ idKh;
     }
 }

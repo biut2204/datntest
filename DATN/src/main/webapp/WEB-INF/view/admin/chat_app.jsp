@@ -744,13 +744,12 @@
 </script>
 <script>
     var stompClient = null;
-
     function connect() {
         var socket = new SockJS('/chat');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             var index = document.getElementById("ma").value;
-            stompClient.subscribe('/topic/privateRoomName/' + index, function (message) {
+            stompClient.subscribe('/topic/privateRoomName/'+index, function (message) {
                 showMessage(JSON.parse(message.body));
             });
         });
@@ -759,6 +758,7 @@
     function showMessage(message) {
         // Tạo các phần tử HTML cho tin nhắn và thời gian
         var chatContent = document.getElementById('chat-content');
+        var scrollContainer = document.getElementById('scroll-container');
         var listItem = document.createElement('li');
         var messageText = document.createElement('div');
         var check1 = document.getElementById("ma1").value;
@@ -766,16 +766,19 @@
         listItem.className = "clearfix";
         listItem.style.listStyleType = 'none'; // Loại bỏ dấu chấm (bullet)
         listItem.style.marginBottom = "35px";
-        if (message.users.ma === check1) {
+        if (message.users.ma===check1) {
             messageText.className = "message other-message float-right";
         } else {
             messageText.className = "message my-message";
         }
         // Đặt nội dung tin nhắn
         messageText.textContent = message.content;
+
         // Gắn các phần tử HTML vào cấu trúc DOM
         listItem.appendChild(messageText);
         chatContent.appendChild(listItem);
+        // Focus vào cuối cùng của scroll-container sau khi hiển thị tin nhắn
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
     }
 
 
@@ -784,12 +787,13 @@
         var message = messageInput.value;
         var check = document.getElementById("ma").value;
         var check1 = document.getElementById("ma1").value;
-        stompClient.send("/app/chat.sendPrivateMessage", {}, JSON.stringify({
-            'content': message,
-            'users': {'ma': check1},
-            'bientrunggian': check
-        }));
-        messageInput.value = '';
+        if (message.trim() === "")
+        {
+            alert("không nhập gì thì đừng gửi");
+        }else{
+            stompClient.send("/app/chat.sendPrivateMessage", {}, JSON.stringify({'content': message, 'users': {'ma': check1},'bientrunggian':check}));
+            messageInput.value = '';
+        }
     }
 
     connect();
@@ -797,6 +801,16 @@
     document.getElementById('send').addEventListener('click', function () {
         sendMessage();
     });
+</script>
+<script>
+    // Đảm bảo rằng trang đã tải xong trước khi cuộn xuống cuối trang
+    window.onload = function() {
+        // Lấy đối tượng "scroll-container"
+        var scrollContainer = document.getElementById('scroll-container');
+
+        // Cuộn xuống cuối trang
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+    };
 </script>
 
 <script src="../../../resources/plugins/jquery/jquery.min.js"></script>

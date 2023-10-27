@@ -159,7 +159,7 @@ public class UserController {
     }
 
     @GetMapping("/user/don_hang/*")
-    public String caNhanView(HttpServletRequest request, Model model) {
+    public String caNhanView(HttpServletRequest request, Model model, HttpSession session) {
 
         String url = request.getRequestURI();
         String[] parts = url.split("/user/don_hang/");
@@ -180,6 +180,16 @@ public class UserController {
         List<HoaDonDTO> listHoaDonDTODangGiao = hoaDonSer.findHoaDonDT0(listHoaDonDangGiao);
         List<HoaDonDTO> listHoaDonDTOHoanThanh = hoaDonSer.findHoaDonDT0(listHoaDonHoanThanh);
         List<HoaDonDTO> listHoaDonDTOHuy = hoaDonSer.findHoaDonDT0(listHoaDonHuy);
+
+        HoaDon hoaDon = (HoaDon) session.getAttribute("hoaDonDanhGia");
+
+        if (hoaDon != null) {
+            List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
+            model.addAttribute("hoaDon", hoaDon);
+            model.addAttribute("listHoaDonChiTiets", listHoaDonChiTiets);
+            model.addAttribute("noneOrBlock", "block");
+        }
+        session.removeAttribute("hoaDonDanhGia");
 
         model.addAttribute("idKh", users.getMa());
         model.addAttribute("soLuongSanPham", soLuongSanPham);

@@ -31,7 +31,7 @@
     <style>
         /* Style tab buttons */
         /* Style tab buttons */
-        .tab2,.tab3,.tab4,.tab5{
+        .tab2, .tab3, .tab4, .tab5 {
             display: inline-block;
             padding: 10px 20px;
             background-color: #ccc;
@@ -41,7 +41,8 @@
             margin-right: 5px;
             border-radius: 5px 5px 0 0;
         }
-        .tab1{
+
+        .tab1 {
             display: inline-block;
             padding: 10px 20px;
             background-color: white;
@@ -104,6 +105,66 @@
             background-color: #0056b3; /* Màu nền khi hover qua nút */
         }
 
+    </style>
+    <style>
+        .rating-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .star {
+            font-size: 24px;
+            cursor: pointer;
+            color: #ccc;
+        }
+
+        .star.active {
+            color: #ffcc00;
+        }
+
+        #comment {
+            width: 100%;
+            height: 100px;
+            resize: none;
+        }
+
+        /* Ẩn input radio */
+        input[type="radio"] {
+            display: none;
+        }
+    </style>
+    <style>
+        #addFormContainer1 {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Màu nền với độ trong suốt */
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #addForm1 {
+            background-color: white; /* Màu nền của biểu mẫu */
+            padding: 20px;
+            border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
+        }
+
+        #addForm button[type="submit"] {
+            background-color: #007BFF; /* Màu nền của nút */
+            color: white; /* Màu chữ trắng */
+            border: none;
+            cursor: pointer;
+        }
+
+        #addForm button[type="submit"]:hover {
+            background-color: #0056b3; /* Màu nền khi di chuột vào */
+        }
     </style>
 </head>
 
@@ -254,7 +315,8 @@
                         tin</a></li>
                     <li><i class="fas fa-map-marker" style="width: 20px"></i><a href="" style="color: black;">Địa
                         chỉ</a></li>
-                    <li><i class="fas fa-key" style="width: 20px"></i><a href="/user/doi_mat_khau_view/${idKh}" style="color: black;">Đổi mật khẩu</a>
+                    <li><i class="fas fa-key" style="width: 20px"></i><a href="/user/doi_mat_khau_view/${idKh}"
+                                                                         style="color: black;">Đổi mật khẩu</a>
                     </li>
                 </ul>
 
@@ -270,10 +332,17 @@
                 <section class="content-header">
                     <div class="container-fluid">
                         <div>
-                            <div class="tab1" id="optab1" onclick="openTab1()"><i class="fa fa-clock"></i> Chờ thanh toán</div>
-                            <div class="tab2" id="optab2" onclick="openTab2()"><i class="fas fa-hourglass-start"></i> Chờ xác nhận</div>
-                            <div class="tab3" id="optab3" onclick="openTab3()"><i class="fas fa-truck"></i> Đang giao</div>
-                            <div class="tab4" id="optab4" onclick="openTab4()"><i class="fas fa-check-circle"></i> Hoàn thành</div>
+                            <div class="tab1" id="optab1" onclick="openTab1()"><i class="fa fa-clock"></i> Chờ thanh
+                                toán
+                            </div>
+                            <div class="tab2" id="optab2" onclick="openTab2()"><i class="fas fa-hourglass-start"></i>
+                                Chờ xác nhận
+                            </div>
+                            <div class="tab3" id="optab3" onclick="openTab3()"><i class="fas fa-truck"></i> Đang giao
+                            </div>
+                            <div class="tab4" id="optab4" onclick="openTab4()"><i class="fas fa-check-circle"></i> Hoàn
+                                thành
+                            </div>
                             <div class="tab5" id="optab5" onclick="openTab5()"><i class="fas fa-times"></i> Đã hủy</div>
                         </div>
                         <form method="post">
@@ -282,14 +351,18 @@
                                     <p class="invoice-code">${list.hoaDon.ma}</p>
                                     <c:forEach items="${list.hoaDonChiTiets}" var="hdCT">
                                         <div class="product-info">
-                                            <a href="/user/san_pham_detail/${idKh}/${hdCT.aoChiTiet.ao.id}" style="color: black">
+                                            <a href="/user/san_pham_detail/${idKh}/${hdCT.aoChiTiet.ao.id}"
+                                               style="color: black">
                                                 <p><img src="/images/${hdCT.aoChiTiet.ao.anhs.get(0).ten_url}"
-                                                        style="width: 50px; height: 50px; margin-left: 40px"> ${hdCT.aoChiTiet.ao.ten}</p></a>
-                                                <p style="margin-left: 40px">${hdCT.aoChiTiet.mau_sac.ten}, ${hdCT.aoChiTiet.size.ten}  x  ${hdCT.soLuong}</p>
+                                                        style="width: 50px; height: 50px; margin-left: 40px"> ${hdCT.aoChiTiet.ao.ten}
+                                                </p></a>
+                                            <p style="margin-left: 40px">${hdCT.aoChiTiet.mau_sac.ten}, ${hdCT.aoChiTiet.size.ten}
+                                                x ${hdCT.soLuong}</p>
                                         </div>
                                     </c:forEach>
                                     <p class="total-price">Thành tiền: <label
-                                            style="color: red"> <fmt:formatNumber value="${list.donGia}" type="currency" currencySymbol="VNĐ" /></label></p>
+                                            style="color: red"> <fmt:formatNumber value="${list.donGia}" type="currency"
+                                                                                  currencySymbol="VNĐ"/></label></p>
                                     <p class="total-price">
                                         <a href="/user/hoa_don/view_hoa_don/${list.hoaDon.id}" class="custom-button">Thanh
                                             toán</a>
@@ -303,14 +376,19 @@
                                     <p class="invoice-code">${list.hoaDon.ma}</p>
                                     <c:forEach items="${list.hoaDonChiTiets}" var="hdCT">
                                         <div class="product-info">
-                                            <a href="/user/san_pham_detail/${idKh}/${hdCT.aoChiTiet.ao.id}" style="color: black">
+                                            <a href="/user/san_pham_detail/${idKh}/${hdCT.aoChiTiet.ao.id}"
+                                               style="color: black">
                                                 <p><img src="/images/${hdCT.aoChiTiet.ao.anhs.get(0).ten_url}"
-                                                        style="width: 50px; height: 50px; margin-left: 40px"> ${hdCT.aoChiTiet.ao.ten}</p></a>
-                                            <p style="margin-left: 40px">${hdCT.aoChiTiet.mau_sac.ten}, ${hdCT.aoChiTiet.size.ten}  x  ${hdCT.soLuong}</p>
+                                                        style="width: 50px; height: 50px; margin-left: 40px"> ${hdCT.aoChiTiet.ao.ten}
+                                                </p></a>
+                                            <p style="margin-left: 40px">${hdCT.aoChiTiet.mau_sac.ten}, ${hdCT.aoChiTiet.size.ten}
+                                                x ${hdCT.soLuong}</p>
                                         </div>
                                     </c:forEach>
                                     <p class="total-price">Thành tiền: <label
-                                            style="color: red"> <fmt:formatNumber value="${list.hoaDon.tongTien}" type="currency" currencySymbol="VNĐ" /></label></p>
+                                            style="color: red"> <fmt:formatNumber value="${list.hoaDon.tongTien}"
+                                                                                  type="currency"
+                                                                                  currencySymbol="VNĐ"/></label></p>
                                     <p class="total-price">
                                         <button formaction="/user/hoa_don/huy" name="idHoaDon" value="${list.hoaDon.id}"
                                                 class="custom-button">Hủy
@@ -325,14 +403,19 @@
                                     <p class="invoice-code">${list.hoaDon.ma}</p>
                                     <c:forEach items="${list.hoaDonChiTiets}" var="hdCT">
                                         <div class="product-info">
-                                            <a href="/user/san_pham_detail/${idKh}/${hdCT.aoChiTiet.ao.id}" style="color: black">
+                                            <a href="/user/san_pham_detail/${idKh}/${hdCT.aoChiTiet.ao.id}"
+                                               style="color: black">
                                                 <p><img src="/images/${hdCT.aoChiTiet.ao.anhs.get(0).ten_url}"
-                                                        style="width: 50px; height: 50px; margin-left: 40px"> ${hdCT.aoChiTiet.ao.ten}</p></a>
-                                            <p style="margin-left: 40px">${hdCT.aoChiTiet.mau_sac.ten}, ${hdCT.aoChiTiet.size.ten}  x  ${hdCT.soLuong}</p>
+                                                        style="width: 50px; height: 50px; margin-left: 40px"> ${hdCT.aoChiTiet.ao.ten}
+                                                </p></a>
+                                            <p style="margin-left: 40px">${hdCT.aoChiTiet.mau_sac.ten}, ${hdCT.aoChiTiet.size.ten}
+                                                x ${hdCT.soLuong}</p>
                                         </div>
                                     </c:forEach>
                                     <p class="total-price">Thành tiền: <label
-                                            style="color: red"> <fmt:formatNumber value="${list.hoaDon.tongTien}" type="currency" currencySymbol="VNĐ" /></label></p>
+                                            style="color: red"> <fmt:formatNumber value="${list.hoaDon.tongTien}"
+                                                                                  type="currency"
+                                                                                  currencySymbol="VNĐ"/></label></p>
                                     <p class="total-price">
                                         <button formaction="/user/hoa_don/hoan_thanh" name="idHoaDon"
                                                 value="${list.hoaDon.id}" class="custom-button">Hoàn thành
@@ -346,15 +429,22 @@
                                     <p class="invoice-code">${list.hoaDon.ma}</p>
                                     <c:forEach items="${list.hoaDonChiTiets}" var="hdCT">
                                         <div class="product-info">
-                                            <a href="/user/san_pham_detail/${idKh}/${hdCT.aoChiTiet.ao.id}" style="color: black">
+                                            <a href="/user/san_pham_detail/${idKh}/${hdCT.aoChiTiet.ao.id}"
+                                               style="color: black">
                                                 <p><img src="/images/${hdCT.aoChiTiet.ao.anhs.get(0).ten_url}"
-                                                        style="width: 50px; height: 50px; margin-left: 40px"> ${hdCT.aoChiTiet.ao.ten}</p></a>
-                                            <p style="margin-left: 40px">${hdCT.aoChiTiet.mau_sac.ten}, ${hdCT.aoChiTiet.size.ten}  x  ${hdCT.soLuong}</p>
+                                                        style="width: 50px; height: 50px; margin-left: 40px"> ${hdCT.aoChiTiet.ao.ten}
+                                                </p></a>
+                                            <p style="margin-left: 40px">${hdCT.aoChiTiet.mau_sac.ten}, ${hdCT.aoChiTiet.size.ten}
+                                                x ${hdCT.soLuong}</p>
                                         </div>
                                     </c:forEach>
                                     <p class="total-price">Thành tiền: <label
-                                            style="color: red"> <fmt:formatNumber value="${list.hoaDon.tongTien}" type="currency" currencySymbol="VNĐ" /></label></p>
+                                            style="color: red"> <fmt:formatNumber value="${list.hoaDon.tongTien}"
+                                                                                  type="currency"
+                                                                                  currencySymbol="VNĐ"/></label></p>
                                     <p class="total-price">
+                                        <a href="/user/danh_gia_view/${list.hoaDon.id}" class="custom-button">Đánh
+                                            giá</a>
                                         <a href="/user/hoa_don/mua_lai/${list.hoaDon.id}" class="custom-button">Mua
                                             lại</a>
                                     </p>
@@ -367,14 +457,18 @@
                                     <p class="invoice-code">${list.hoaDon.ma}</p>
                                     <c:forEach items="${list.hoaDonChiTiets}" var="hdCT">
                                         <div class="product-info">
-                                            <a href="/user/san_pham_detail/${idKh}/${hdCT.aoChiTiet.ao.id}" style="color: black">
+                                            <a href="/user/san_pham_detail/${idKh}/${hdCT.aoChiTiet.ao.id}"
+                                               style="color: black">
                                                 <p><img src="/images/${hdCT.aoChiTiet.ao.anhs.get(0).ten_url}"
-                                                        style="width: 50px; height: 50px; margin-left: 40px"> ${hdCT.aoChiTiet.ao.ten}</p></a>
-                                            <p style="margin-left: 40px">${hdCT.aoChiTiet.mau_sac.ten}, ${hdCT.aoChiTiet.size.ten}  x  ${hdCT.soLuong}</p>
+                                                        style="width: 50px; height: 50px; margin-left: 40px"> ${hdCT.aoChiTiet.ao.ten}
+                                                </p></a>
+                                            <p style="margin-left: 40px">${hdCT.aoChiTiet.mau_sac.ten}, ${hdCT.aoChiTiet.size.ten}
+                                                x ${hdCT.soLuong}</p>
                                         </div>
                                     </c:forEach>
                                     <p class="total-price">Thành tiền: <label
-                                            style="color: red"> <fmt:formatNumber value="${list.donGia}" type="currency" currencySymbol="VNĐ" /></label></p>
+                                            style="color: red"> <fmt:formatNumber value="${list.donGia}" type="currency"
+                                                                                  currencySymbol="VNĐ"/></label></p>
                                     <p class="total-price">
                                         <a href="/user/hoa_don/mua_lai/${list.hoaDon.id}" class="custom-button">Mua
                                             lại</a>
@@ -464,6 +558,52 @@
 </div>
 <!-- Footer End -->
 
+<div id="addFormContainer1" style="display: none;">
+    <div class="container-fluid">
+        <div class="container">
+            <form method="post" id="addForm1">
+                <form method="post">
+                    <h1>Đánh giá sản phẩm</h1>
+                    <input type="hidden" name="idKh" value="${hoaDon.khachHang.ma}">
+                    <label>Sản phẩm :</label>
+                    <select class="form-control" name="aoChiTietId">
+                        <c:forEach items="${listHoaDonChiTiets}" var="list">
+                            <option value="${list.aoChiTiet.id}">${list.aoChiTiet.ao.ten}, ${list.aoChiTiet.mau_sac.ten}, ${list.aoChiTiet.size.ten}</option>
+                        </c:forEach>
+                    </select>
+                    <br>
+                    <label>Chất lượng :</label>
+                    <div class="rating-container">
+                        <label class="star" data-rating="1">
+                            ☆
+                            <input type="radio" name="rating" value="1">
+                        </label>
+                        <label class="star" data-rating="2">
+                            ☆
+                            <input type="radio" name="rating" value="2">
+                        </label>
+                        <label class="star" data-rating="3">
+                            ☆
+                            <input type="radio" name="rating" value="3">
+                        </label>
+                        <label class="star" data-rating="4">
+                            ☆
+                            <input type="radio" name="rating" value="4">
+                        </label>
+                        <label class="star" data-rating="5">
+                            ☆
+                            <input type="radio" name="rating" value="5">
+                        </label>
+                    </div>
+                    <br>
+                    <textarea id="comment" placeholder="Nhận xét của bạn" name="binhLuan"></textarea>
+                    <br>
+                    <button type="submit" formaction="/user/danh_gia">Gửi đánh giá</button>
+                </form>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
@@ -566,8 +706,64 @@
         document.getElementById("tab4").style.display = "none";
         document.getElementById("optab4").style.background = "#aaa";
     }
+</script>
+<script>
+    let currentRating = 0;
 
+    // Xử lý sự kiện khi người dùng chọn số sao
+    const stars = document.querySelectorAll('.star');
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const rating = parseInt(star.getAttribute('data-rating'));
+            currentRating = rating;
+            highlightStars(rating);
+            // Đánh dấu nút radio tương ứng
+            const radio = star.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+                console.log("Giá trị radio được chọn: " + radio.value);
+            }
+        });
+    });
 
+    // Tô màu các sao theo đánh giá hiện tại
+    function highlightStars(rating) {
+        stars.forEach(star => {
+            const starRating = parseInt(star.getAttribute('data-rating'));
+            if (starRating <= rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+
+    // Xử lý sự kiện khi người dùng gửi đánh giá
+    function submitRating() {
+        const comment = document.getElementById('comment').value;
+        alert(`Bạn đã đánh giá ${currentRating} sao và để lại bình luận: \n${comment}`);
+    }
+</script>
+<script>
+    // Get references to the button and form container
+    var addFormContainer2 = document.getElementById("addFormContainer1");
+
+    var noneOrBlock = "${noneOrBlock}";
+
+    if (noneOrBlock == "block") {
+        addFormContainer2.style.display = "block";
+    } else {
+        addFormContainer2.style.display = "none";
+    }
+
+    // Add an event listener to the background overlay
+    addFormContainer2.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer2) {
+            // Hide the form
+            addFormContainer2.style.display = "none";
+        }
+    });
 </script>
 </body>
 

@@ -112,7 +112,7 @@
         }
 
         .chat .chat-history ul {
-            padding: 0;
+            padding: 0
         }
 
         .chat .chat-history ul li {
@@ -328,7 +328,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="send"><i class="fa fa-send"></i></span>
                             </div>
-                            <input type="text" id="message" placeholder="Nhập vào đây để viết . . ."
+                            <input type="text" id="message"  placeholder="Nhập vào đây để viết . . ."
                                    class="form-control">
                         </div>
                     </div>
@@ -355,10 +355,10 @@
         });
     }
 
-
     function showMessage(message) {
         // Tạo các phần tử HTML cho tin nhắn và thời gian
         var chatContent = document.getElementById('chat-content');
+        var scrollContainer = document.getElementById('scroll-container');
         var listItem = document.createElement('li');
         var messageText = document.createElement('div');
         var check = document.getElementById("ma").value;
@@ -377,15 +377,19 @@
         // Gắn các phần tử HTML vào cấu trúc DOM
         listItem.appendChild(messageText);
         chatContent.appendChild(listItem);
-
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
     }
 
     function sendMessage() {
         var messageInput = document.getElementById('message');
         var message = messageInput.value;
         var check = document.getElementById("ma").value;
-        stompClient.send("/app/chat.sendPrivateMessage", {}, JSON.stringify({'content': message, 'users': {'ma': check},'bientrunggian':check}));
-        messageInput.value = '';
+        if (message.trim() === "") {
+            alert("không nhập gì thì đừng gửi");
+        }else{
+            stompClient.send("/app/chat.sendPrivateMessage", {}, JSON.stringify({'content': message, 'users': {'ma': check},'bientrunggian':check}));
+            messageInput.value = '';
+        }
     }
 
     connect();
@@ -393,6 +397,16 @@
     document.getElementById('send').addEventListener('click', function () {
         sendMessage();
     });
+</script>
+<script>
+    // Đảm bảo rằng trang đã tải xong trước khi cuộn xuống cuối trang
+    window.onload = function() {
+        // Lấy đối tượng "scroll-container"
+        var scrollContainer = document.getElementById('scroll-container');
+
+        // Cuộn xuống cuối trang
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+    };
 </script>
 </body>
 </html>

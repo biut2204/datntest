@@ -81,6 +81,77 @@
             clip-path: polygon(100% 0, 0 0, 100% 100%);
         }
     </style>
+    <style>
+        .comment-container {
+            max-width: 1390px;
+            margin-left: 50px;
+        }
+
+        .comment {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+
+        .pagination li {
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .pagination li.active {
+            font-weight: bold;
+        }
+
+        .stars1::before {
+            content: "★";
+            color: gold;
+        }
+
+        .stars2::before {
+            content: "★★";
+            color: gold;
+        }
+
+        .stars3::before {
+            content: "★★★";
+            color: gold;
+        }
+        .stars4::before {
+            content: "★★★★";
+            color: gold;
+        }
+        .stars5::before {
+            content: "★★★★★";
+            color: gold;
+        }
+
+        .end1::before {
+            content: "★";
+            color: grey;
+        }
+        .end2::before {
+            content: "★★";
+            color: grey;
+        }
+        .end3::before {
+            content: "★★★";
+            color: grey;
+        }
+        .end4::before {
+            content: "★★★★";
+            color: grey;
+        }
+        .end5::before {
+            content: "★★★★★";
+            color: grey;
+        }
+    </style>
 </head>
 
 <body>
@@ -394,7 +465,28 @@
     </div>
 </div>
 <!-- Shop Detail End -->
-
+<div class="container-fluid py-5">
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Đánh giá sản phẩm</span>
+    </h2>
+    <div class="comment-container">
+        <div id="product-list">
+            <c:forEach items="${listDanhGias}" var="list">
+                <div class="comment">
+                    <p><strong>${list.khachHang.ten}</strong> <span class="stars${list.danhGiaSao}"></span><span class="end${5-list.danhGiaSao}"></span></p>
+                    <c:set var="dateTimeString" value="${list.ngayDanhGia}" />
+                    <fmt:parseDate value="${dateTimeString}" var="parsedDate" pattern="yyyy-MM-dd'T'HH:mm:ss.SSS" />
+                    <fmt:formatDate value="${parsedDate}" var="formattedDate" pattern="dd/MM/yyyy HH:mm:ss" />
+                    <p>${formattedDate} | Phân loại : ${list.aoChiTiet.mau_sac.ten}, ${list.aoChiTiet.size.ten}</p>
+                    <p>${list.danhGiaBinhLuan}</p>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
+    <ul class="pagination">
+        <li class="prev-page">Trước</li>
+        <li class="next-page">Sau</li>
+    </ul>
+</div>
 
 <!-- Products Start -->
 <div class="container-fluid py-5">
@@ -527,7 +619,7 @@
     var input1 = document.getElementById("quantityInput");
 
     // Thêm sự kiện "input" để kiểm tra mỗi khi người dùng nhập
-    input1.addEventListener("input", function() {
+    input1.addEventListener("input", function () {
         // Lấy giá trị hiện tại của input
         var value = this.value;
 
@@ -546,11 +638,11 @@
         var value = parseFloat(input);
         var sl = parseFloat(soLuongTon);
 
-        if (value < sl-1) {
+        if (value < sl - 1) {
             var min = value++;
             document.getElementById("quantityInput").value = min.toFixed(0);
         } else {
-            var max = sl-1;
+            var max = sl - 1;
             document.getElementById("quantityInput").value = max.toFixed(0);
         }
     }
@@ -662,7 +754,67 @@
         input.addEventListener("change", updateProductAvailability);
     });
 </script>
+<script>
+    const commentsPerPage = 5; // Số lượng bình luận hiển thị trên mỗi trang
+    const comments = document.querySelectorAll('.comment');
+    const pagination = document.querySelector('.pagination');
+    const prevPageButton = document.querySelector('.prev-page');
+    const nextPageButton = document.querySelector('.next-page');
+    const pageNumbers = document.querySelectorAll('.page-number');
 
+    let currentPage = 1;
+
+    function showPage(pageNumber) {
+        comments.forEach((comment, index) => {
+            const startIndex = (pageNumber - 1) * commentsPerPage;
+            const endIndex = startIndex + commentsPerPage - 1;
+
+            if (index >= startIndex && index <= endIndex) {
+                comment.style.display = 'block';
+            } else {
+                comment.style.display = 'none';
+            }
+        });
+    }
+
+    function updatePagination() {
+        pageNumbers.forEach((pageNumber, index) => {
+            if (index + 1 === currentPage) {
+                pageNumber.classList.add('active');
+            } else {
+                pageNumber.classList.remove('active');
+            }
+        });
+    }
+
+    prevPageButton.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            showPage(currentPage);
+            updatePagination();
+        }
+    });
+
+    nextPageButton.addEventListener('click', () => {
+        const totalPages = Math.ceil(comments.length / commentsPerPage);
+        if (currentPage < totalPages) {
+            currentPage++;
+            showPage(currentPage);
+            updatePagination();
+        }
+    });
+
+    pageNumbers.forEach((pageNumber, index) => {
+        pageNumber.addEventListener('click', () => {
+            currentPage = index + 1;
+            showPage(currentPage);
+            updatePagination();
+        });
+    });
+
+    showPage(currentPage);
+    updatePagination();
+</script>
 </body>
 
 </html>

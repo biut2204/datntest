@@ -318,7 +318,8 @@
                                 <c:choose>
                                     <c:when test="${list.giaBan == list.ao.giaBan}">
                                         <div class="d-flex align-items-center justify-content-center mt-2">
-                                            <h5 style="color: red;">${list.ao.giaBan}</h5>
+                                            <h5 style="color: red;"><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
+                                                                                      currencySymbol="VNĐ"/></h5>
                                         </div>
                                         <p>Sản phẩm đã bán ${list.slBan}</p>
                                     </c:when>

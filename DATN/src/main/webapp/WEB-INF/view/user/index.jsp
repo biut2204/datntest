@@ -52,7 +52,19 @@
             transform-origin: top right;
             animation: blink 1s infinite alternate;
             white-space: nowrap;
-            background: white;
+        }
+        .label1 {
+            position: absolute;
+            top: -10px;
+            right: -8px;
+            color: red;
+            padding: 5px;
+            padding-left: 278px;
+            font-size: 30px;
+            transform: rotate(0deg);
+            transform-origin: top right;
+            animation: blink 1s infinite alternate;
+            white-space: nowrap;
         }
 
         @keyframes blink {
@@ -412,16 +424,20 @@
 </div>
 
 
-<button class="btn btn-primary" style="position: fixed;z-index: 90;margin-left: 90%" id="addButton2"
-        onclick="clickThem()">
-    <i class="fab fa-facebook-messenger"></i>
-</button>
+<c:choose>
+    <c:when test="${idKh != 2}">
+        <button class="btn btn-primary" style="position: fixed;z-index: 90;margin-left: 90%" id="addButton2"
+                onclick="clickThem()">
+            <i class="fab fa-facebook-messenger"></i>
+        </button>
+    </c:when>
+</c:choose>
 
 
 <div id="addFormContainer2" style="display: none;">
     <div id="addForm2">
         <a id="closeButton" onclick="closeForm()">X</a>
-        <iframe src="/user/chat/${idKh}" style="height: 100%"></iframe>
+        <iframe id="myIframe" src="/user/chat/${idKh}" style="height: 100%"></iframe>
     </div>
 </div>
 <div class="container-fluid pt-5">
@@ -562,7 +578,7 @@
                                    href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i class="fa fa-search"></i></a>
                             </div>
                         </div>
-                        <div class="label">New</div>
+                        <div class="label1"><img src="/images/new_no_phong.png"></div>
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate"
                                href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a>
@@ -756,7 +772,7 @@
                                    href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i class="fa fa-search"></i></a>
                             </div>
                         </div>
-                        <div class="label">${list.giamGiaSanPham.phanTramGiam}% off</div>
+                        <div class="label1"><img src="/images/sale_icon.png"></div>
                         <div class="offer-text">
                             <h6 class="text-black text-center"><a
                                     href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a></h6>
@@ -939,11 +955,20 @@
     var addButton = document.getElementById("addButton2");
     var addFormContainer2 = document.getElementById("addFormContainer2");
 
+    function reloadIframe() {
+        // Lấy thẻ iframe bằng ID
+        var iframe = document.getElementById('myIframe');
+
+        // Tải lại iframe
+        iframe.src = iframe.src;
+    }
+
     // Add an event listener to the button
     addButton.addEventListener("click", function () {
         // Toggle the visibility of the form container
         if (addFormContainer2.style.display === "none" || addFormContainer2.style.display === "") {
             addFormContainer2.style.display = "block";
+            reloadIframe();
         } else {
             addFormContainer2.style.display = "none";
         }
