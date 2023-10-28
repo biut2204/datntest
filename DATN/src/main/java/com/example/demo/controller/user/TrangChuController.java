@@ -12,7 +12,7 @@ import com.example.demo.entity.sanpham.Ao;
 import com.example.demo.entity.dto.AoDTO;
 import com.example.demo.entity.sanpham.AoChiTiet;
 import com.example.demo.entity.sanpham.LoaiAo;
-import com.example.demo.repo.ChatMessageRepository;
+import com.example.demo.repo.chat.ChatMessageRepository;
 import com.example.demo.repo.giamgia.GiamGiaSanPhamChiTietRepo;
 import com.example.demo.repo.sanpham.AoRepo;
 import com.example.demo.repo.users.UsersRepo;

@@ -672,13 +672,19 @@
                                             <input type="text" class="form-control" placeholder="Search...">
                                         </div>
                                         <ul class="list-unstyled chat-list mt-2 mb-0">
-                                            <c:forEach items="${user}" var="u" varStatus="a">
+                                            <c:forEach items="${listChatDTOS}" var="list" varStatus="a">
                                                 <li class="clearfix">
-                                                    <a href="/admin/chat/${u.ma}">
+                                                    <a href="/admin/chat/${list.users.ma}">
                                                         <img src="https://bootdey.com/img/Content/avatar/avatar${a.index+1}.png"
                                                              alt="avatar">
                                                         <div class="about">
-                                                                ${u.ten}
+                                                                ${list.users.ten}
+                                                            <c:choose>
+                                                                <c:when test="${list.sl == 1}">
+                                                                    <span class="right badge badge-danger">new</span>
+                                                                </c:when>
+                                                            </c:choose>
+
                                                         </div>
                                                     </a>
                                                 </li>
@@ -709,7 +715,7 @@
                                             <ul class="m-b-0">
                                                 <c:forEach items="${messages}" var="message">
                                                     <li class="clearfix">
-                                                        <div class="${message.users.ma==check?"message other-message float-right":"message my-message"}">
+                                                        <div class="${message.users.ma==check1?"message other-message float-right":"message my-message"}">
                                                                 ${message.content}
                                                         </div>
                                                     </li>

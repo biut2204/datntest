@@ -1,9 +1,14 @@
 package com.example.demo.controller.Chat;
 
 import com.example.demo.entity.auth.RoleEnum;
+import com.example.demo.entity.chat.DemChat;
 import com.example.demo.entity.chat.MessageChat;
+import com.example.demo.entity.chat.ThoiGian;
+import com.example.demo.entity.dto.ChatDTO;
 import com.example.demo.entity.khachhang.Users;
-import com.example.demo.repo.ChatMessageRepository;
+import com.example.demo.repo.chat.ChatMessageRepository;
+import com.example.demo.repo.chat.DemChatRepository;
+import com.example.demo.repo.chat.ThoiGianRepository;
 import com.example.demo.repo.users.UsersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
@@ -17,6 +22,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -27,6 +35,12 @@ public class ChatController {
     private ChatMessageRepository chatMessageRepository;
     @Autowired
     private UsersRepo userRepository;
+
+    @Autowired
+    private DemChatRepository demChatRepository;
+
+    @Autowired
+    private ThoiGianRepository thoiGianRepository;
 
     @MessageMapping("/chat.sendMessage")
     @SendTo("/topic/publicChatRoom/")
@@ -46,6 +60,14 @@ public class ChatController {
         message.setTimestamp(LocalDateTime.now());
         message.setBientrunggian(message.getBientrunggian());
         chatMessageRepository.save(message);
+        if (message.getUsers().getRole()==RoleEnum.MENBER){
+            demChatRepository.save(new DemChat(null,message.getBientrunggian()));
+            ThoiGian thoiGian = new ThoiGian();
+            thoiGian.setId(Integer.parseInt(message.getUsers().getMa()));
+            thoiGian.setUsers(message.getUsers());
+            thoiGian.setTimestamp(LocalDateTime.now());
+            thoiGianRepository.save(thoiGian);
+        }
         // Xử lý tin nhắn ở đây và gửi lại cho phòng riêng tư cụ thể
         messagingTemplate.convertAndSend("/topic/privateRoomName/" + message.getBientrunggian(), message);
         return message;
@@ -61,7 +83,8 @@ public class ChatController {
 
     @GetMapping("admin/chat/{ma}")
     public String chatPage1(@PathVariable String ma, Model model) {
-        model.addAttribute("user",userRepository.findByRole(RoleEnum.MENBER));
+//        model.addAttribute("user",userRepository.findByRole(RoleEnum.MENBER));
+        model.addAttribute("user",chatMessageRepository.Alluser());
         model.addAttribute("check", ma);
         Users u = userRepository.findByMa(ma);
         model.addAttribute("ten", u.getTen());
@@ -73,7 +96,33 @@ public class ChatController {
     }
     @GetMapping("admin/chat")
     public String chatPage12(Model model) {
-        model.addAttribute("user",userRepository.findByRole(RoleEnum.MENBER));
+
+        List<Users> listUsers = chatMessageRepository.Alluser();
+
+        List<ChatDTO> listChatDTOS = new ArrayList<>();
+
+        for (Users users : listUsers){
+            String bienTrungGianByUser = chatMessageRepository.bienTrungGianByUser(users.getId());
+
+            List<MessageChat> listMessageChatByUsers = chatMessageRepository.listChatByUser(users.getId());
+            List<MessageChat> listMessageChats = chatMessageRepository.listChat(bienTrungGianByUser);
+
+            ChatDTO chatDTO = new ChatDTO();
+
+            if(listMessageChatByUsers.get(0).getId() == listMessageChats.get(0).getId()){
+                chatDTO.setSl(1);
+            }else {
+                chatDTO.setSl(0);
+            }
+
+            chatDTO.setUsers(users);
+
+            listChatDTOS.add(chatDTO);
+        }
+
+        model.addAttribute("user",chatMessageRepository.Alluser());
+        model.addAttribute("listChatDTOS",listChatDTOS);
+        demChatRepository.deleteAll();
         return "/admin/chat_app";
     }
 //    @GetMapping("/chat/admin")

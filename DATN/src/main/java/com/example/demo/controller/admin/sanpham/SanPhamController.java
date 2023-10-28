@@ -11,6 +11,7 @@ import com.example.demo.entity.sanpham.LoaiAo;
 import com.example.demo.entity.sanpham.MauSac;
 import com.example.demo.entity.sanpham.Size;
 import com.example.demo.entity.dto.ThongKeDTO;
+import com.example.demo.repo.chat.DemChatRepository;
 import com.example.demo.ser.sanpham.AnhSer;
 import com.example.demo.ser.sanpham.AoChiTietSer;
 import com.example.demo.ser.sanpham.AoSer;
@@ -79,6 +80,9 @@ public class SanPhamController {
     @Autowired
     HoaDonSer hoaDonSer;
 
+    @Autowired
+    DemChatRepository demChatRepository;
+
     @GetMapping("/admin/index/*")
     public String index(Model model, @RequestParam(name = "pageNo", required = false, defaultValue = "0") Integer pageNo) {
         LocalDateTime ngayHienTai = LocalDateTime.now();
@@ -99,6 +103,7 @@ public class SanPhamController {
         model.addAttribute("soDonHoanThanh", soDonHoanThanh);
         model.addAttribute("soDonHuy", soDonHuy);
         model.addAttribute("page", page);
+        model.addAttribute("allChat",demChatRepository.count());
 
         return "/admin/index";
     }

@@ -297,8 +297,6 @@ public class UserController {
 
         hoaDonSer.add(hoaDon);
 
-
-
         if (chon != null) {
             for (String selectedValue : chon) {
                 HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();

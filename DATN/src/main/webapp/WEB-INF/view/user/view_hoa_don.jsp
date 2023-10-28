@@ -255,7 +255,8 @@ ${ngayTao}
             <div class="col-lg-6">
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Địa chỉ nhận hàng</span>
                 </h5>
-                <input type="checkbox" name="diaChiChon" value="diaChiCu" id="checkbox1" onchange="kiemTraDiaChiCu()">Địa chỉ ban đầu
+                <input type="checkbox" name="diaChiChon" value="diaChiCu" id="checkbox1" onchange="kiemTraDiaChiCu()">Địa
+                chỉ ban đầu
                 <div id="view_dia_chi_cu" style="display:block">
                     <div class="bg-light p-30 mb-5">
                         <div class="row">
@@ -297,7 +298,8 @@ ${ngayTao}
                         </div>
                     </div>
                 </div>
-                <input type="checkbox" name="diaChiChon" value="diaChiMoi" id="checkbox2" onclick="toggleView('view_dia_chi_moi')">Địa
+                <input type="checkbox" name="diaChiChon" value="diaChiMoi" id="checkbox2"
+                       onclick="toggleView('view_dia_chi_moi')">Địa
                 chỉ
                 mới
                 <div id="view_dia_chi_moi" style="display:none">
@@ -343,7 +345,7 @@ ${ngayTao}
                 <div class="bg-light p-30 mb-5">
                     <div class="border-bottom">
                         <h6 class="mb-3">Sản phẩm</h6>
-                        <c:forEach items="${listHoaDonChiTietDTOS}" var="list">
+                        <c:forEach items="${listHoaDonChiTietDTOS}" var="list" varStatus="vTri">
                             <div class="d-flex justify-content-between ">
                                 <p><img style="width: 50px"
                                         src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
@@ -351,6 +353,8 @@ ${ngayTao}
                                 <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
                                 <p>${list.hoaDonChiTiet.soLuong}</p>
                             </div>
+                            <input type="hidden" id="slTon${vTri.index + 1}" value="${list.hoaDonChiTiet.aoChiTiet.slton}">
+                            <input type="hidden" id="sl${vTri.index + 1}" value="${list.hoaDonChiTiet.soLuong}">
                         </c:forEach>
                     </div>
                     <div class="border-bottom pt-3 pb-2">
@@ -390,8 +394,9 @@ ${ngayTao}
                                                    <c:if test="${list.soLuongSanPham > slDK || list.soTienHoaDon > tongTienDK}">disabled</c:if>>
                                             <label for="${list.ma}" class="radio-label"></label>
                                             <span class="voucher-name">${list.ten}</span>
-                                            <span class="voucher-condition" style="margin-left: 20px;"><a href="#" style=" color: #0e84b5"
-                                                                               onclick="showCondition('Số sản phẩm trên ${list.soLuongSanPham} và tổng tiền hóa đơn trên ${list.soTienHoaDon}')">Xem điều kiện</a></span>
+                                            <span class="voucher-condition" style="margin-left: 20px;"><a href="#"
+                                                                                                          style=" color: #0e84b5"
+                                                                                                          onclick="showCondition('Số sản phẩm trên ${list.soLuongSanPham} và tổng tiền hóa đơn trên ${list.soTienHoaDon}')">Xem điều kiện</a></span>
                                         </div>
                                     </c:forEach>
                                 </div>
@@ -425,7 +430,7 @@ ${ngayTao}
                             </div>
                         </div>
                         <button class="btn btn-block btn-primary font-weight-bold py-3"
-                                formaction="/user/hoa_don/dat_hang/${idHoaDon}">Đặt hàng
+                                formaction="/user/hoa_don/dat_hang/${idHoaDon}" onclick="kiemTra()">Đặt hàng
                         </button>
                     </div>
                 </div>
@@ -585,14 +590,14 @@ ${ngayTao}
     var checkbox2 = document.getElementById("checkbox2");
 
     // Thêm sự kiện cho checkbox1 để kiểm tra trạng thái của checkbox2
-    checkbox1.addEventListener("change", function() {
+    checkbox1.addEventListener("change", function () {
         if (checkbox1.checked) {
             checkbox2.checked = false;
         }
     });
 
     // Thêm sự kiện cho checkbox2 để kiểm tra trạng thái của checkbox1
-    checkbox2.addEventListener("change", function() {
+    checkbox2.addEventListener("change", function () {
         if (checkbox2.checked) {
             checkbox1.checked = false;
         }
@@ -663,6 +668,23 @@ ${ngayTao}
         var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
 
         priceInput.value = gia1WithCurrency2;
+    }
+</script>
+<script>
+    function kiemTra() {
+
+        for (var i = 0; i < 99; i++) {
+            var slTon = parseFloat(document.getElementById("slTon" + (i + 1)).value); // Sửa lỗi ở đây
+            var sl = parseFloat(document.getElementById("sl" + (i + 1)).value); // Sửa lỗi ở đây
+
+            console.log(sl);
+            console.log(slTon);
+
+            if (sl > slTon) {
+                alert('Số lượng chọn quá lớn cho sản phẩm vị trí ' + (i + 1));
+                event.preventDefault();
+            }
+        }
     }
 </script>
 </body>

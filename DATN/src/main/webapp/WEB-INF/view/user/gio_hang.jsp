@@ -167,7 +167,6 @@
 <div class="container-fluid">
     <form method="post">
         <div class="row px-xl-5">
-
             <div class="col-lg-8 table-responsive mb-5">
                 <table class="table table-light table-borderless table-hover text-center mb-0">
                     <thead class="thead-dark">
@@ -192,7 +191,9 @@
                                 src="/images/${list.aoChiTiet.ao.anhs.get(0).ten_url}" alt=""
                                 style="width: 50px;"></a>
                             </td>
+
                             <input type="hidden" name="idAoChiTiet" value="${list.aoChiTiet.id}">
+                            <input type="hidden" id="slTon${vTri.index + 1}" value="${list.aoChiTiet.slton}">
 
                             <td class="align-middle" style="text-align: left"> ${list.aoChiTiet.ao.ten}</td>
                             <td class="align-middle">${list.aoChiTiet.mau_sac.ten}, ${list.aoChiTiet.size.ten}</td>
@@ -235,7 +236,7 @@
                             <h5 id="total"></h5>
                         </div>
                         <button class="btn btn-block btn-primary font-weight-bold my-3 py-3"
-                                formaction="/user/hoa_don/add/${idKh}">Xuất hóa đơn
+                                formaction="/user/hoa_don/add/${idKh}" onclick="kiemTra()">Xuất hóa đơn
                         </button>
                     </div>
                 </div>
@@ -374,6 +375,33 @@
 
     }
 
+</script>
+<script>
+    function kiemTra() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var coCheckboxDuocChon = false;
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                coCheckboxDuocChon = true;
+                var slTon = parseFloat(document.getElementById("slTon" + (i + 1)).value); // Sửa lỗi ở đây
+                var sl = parseFloat(document.getElementById("sl" + (i + 1)).value); // Sửa lỗi ở đây
+
+                console.log(sl);
+                console.log(slTon);
+
+                if (sl > slTon) {
+                    alert('Số lượng chọn quá lớn cho sản phẩm vị trí ' + (i + 1));
+                    event.preventDefault();
+                }
+            }
+        }
+
+        if (!coCheckboxDuocChon) {
+            alert('Bạn chưa chọn bất kỳ mặt hàng nào.');
+            event.preventDefault();
+        }
+    }
 </script>
 
 <script>
