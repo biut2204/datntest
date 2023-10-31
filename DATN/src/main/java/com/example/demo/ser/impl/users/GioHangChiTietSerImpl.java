@@ -57,4 +57,14 @@ public class GioHangChiTietSerImpl implements GioHangChiTietSer {
     public Long soLuongSanPhamGioHang(UUID id) {
         return gioHangChiTietRepo.soLuongSanPhamGioHang(id);
     }
+
+    @Override
+    public void delete(UUID id) {
+        gioHangChiTietRepo.deleteById(id);
+    }
+
+    @Override
+    public GioHangChiTiet findByKhachHangAndAoChiTiet(UUID idKh, UUID idAoChiTiet) {
+        return gioHangChiTietRepo.findByKhachHangAndAoChiTiet(idKh, idAoChiTiet);
+    }
 }

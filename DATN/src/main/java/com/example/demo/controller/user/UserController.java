@@ -106,6 +106,20 @@ public class UserController {
         return "/user/gio_hang";
     }
 
+    @GetMapping("/user/gio_hang/delete/*/*")
+    public String deleteGioHang(HttpServletRequest request){
+        String url = request.getRequestURI();
+        String[] parts = url.split("/user/gio_hang/delete/");
+        String pStr = parts[1];
+        String[] p = pStr.split("/");
+
+        String idKh = p[0];
+        String idGioHangChiTiet = p[1];
+
+        gioHangChiTietSer.delete(UUID.fromString(idGioHangChiTiet));
+        return "redirect:/user/gio_hang/view/"+ idKh;
+    }
+
     @GetMapping("/user/hoa_don/view_hoa_don/*")
     public String viewHoaDon(HttpServletRequest request, Model model) {
 
@@ -266,13 +280,28 @@ public class UserController {
 
         AoChiTiet aoChiTiet = aoChiTietSer.findIdByIdAoMsSize(UUID.fromString(idAo), UUID.fromString(mauSac), UUID.fromString(size));
 
-        GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
+        GioHangChiTiet checkGHCT = gioHangChiTietSer.findByKhachHangAndAoChiTiet(users.getId(), aoChiTiet.getId());
+        if(checkGHCT == null){
+            GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
 
-        gioHangChiTiet.setGioHang(gioHangSer.findByIdKH(users.getId()));
-        gioHangChiTiet.setAoChiTiet(aoChiTiet);
-        gioHangChiTiet.setSoLuong(Integer.parseInt(sl));
+            gioHangChiTiet.setGioHang(gioHangSer.findByIdKH(users.getId()));
+            gioHangChiTiet.setAoChiTiet(aoChiTiet);
+            gioHangChiTiet.setSoLuong(Integer.parseInt(sl));
 
-        gioHangChiTietSer.add(gioHangChiTiet);
+            gioHangChiTietSer.add(gioHangChiTiet);
+        }else {
+            GioHangChiTiet ghct = new GioHangChiTiet();
+
+            int soLuong = checkGHCT.getSoLuong() + Integer.parseInt(sl);
+
+            ghct.setGioHang(checkGHCT.getGioHang());
+            ghct.setAoChiTiet(checkGHCT.getAoChiTiet());
+            ghct.setSoLuong(soLuong);
+            ghct.setDonGia(checkGHCT.getDonGia());
+            ghct.setTrangThai(checkGHCT.getTrangThai());
+
+            gioHangChiTietSer.update(checkGHCT.getId(), ghct);
+        }
         return "redirect:/user/gio_hang/view/" + users.getMa();
     }
 
@@ -479,6 +508,24 @@ public class UserController {
         hd.setTrangThai(3);
         hd.setMoTa(hoaDon.getMoTa());
         hoaDonSer.update(hoaDon.getId(), hd);
+
+        List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
+
+        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
+            AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
+
+            GioHangChiTiet gioHangChiTiet = gioHangChiTietSer.findByKhachHangAndAoChiTiet(hoaDon.getKhachHang().getId(), act.getId());
+            GioHangChiTiet ghct = new GioHangChiTiet();
+
+            ghct.setGioHang(gioHangChiTiet.getGioHang());
+            ghct.setAoChiTiet(gioHangChiTiet.getAoChiTiet());
+            ghct.setSoLuong(gioHangChiTiet.getSoLuong());
+            ghct.setDonGia(gioHangChiTiet.getDonGia());
+            ghct.setTrangThai(1);
+
+            gioHangChiTietSer.update(gioHangChiTiet.getId(), ghct);
+        }
+
         return "redirect:/user/don_hang/" + hoaDon.getKhachHang().getMa();
     }
 

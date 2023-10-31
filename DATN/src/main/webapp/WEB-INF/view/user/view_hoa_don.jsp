@@ -28,6 +28,10 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../resources/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <style>
         .form-group {
             margin-bottom: 20px;
@@ -112,6 +116,32 @@
 
         /* Các quy tắc CSS khác ở đây */
 
+    </style>
+
+    <style>
+        /* CSS cho hiệu ứng chạy thời gian 2s */
+        .swal2-popup {
+            position: relative;
+        }
+
+        .swal2-popup .progress-bar-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #007bff; /* Màu của thanh thời gian */
+            animation: slide-out 2s linear; /* Hiệu ứng chạy thời gian 2s */
+        }
+
+        @keyframes slide-out {
+            0% {
+                width: 100%;
+            }
+            100% {
+                width: 0%;
+            }
+        }
     </style>
 </head>
 
@@ -681,7 +711,14 @@ ${ngayTao}
             console.log(slTon);
 
             if (sl > slTon) {
-                alert('Số lượng chọn quá lớn cho sản phẩm vị trí ' + (i + 1));
+                Swal.fire({
+                    icon: 'warning',
+                    html: '<div class="swal-text">Số lượng chọn quá lớn cho sản phẩm</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                    allowOutsideClick: true,
+                });
+                setTimeout(() => {
+                    Swal.close();
+                }, 2000);
                 event.preventDefault();
             }
         }

@@ -28,6 +28,34 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../resources/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        /* CSS cho hiệu ứng chạy thời gian 2s */
+        .swal2-popup {
+            position: relative;
+        }
+
+        .swal2-popup .progress-bar-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #007bff; /* Màu của thanh thời gian */
+            animation: slide-out 2s linear; /* Hiệu ứng chạy thời gian 2s */
+        }
+
+        @keyframes slide-out {
+            0% {
+                width: 100%;
+            }
+            100% {
+                width: 0%;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -213,7 +241,7 @@
                                 <input type="hidden" id="vTri" value="${vTri.index + 1}">
                             </td>
                             <td class="align-middle">
-                                <button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
+                                <a href="/user/gio_hang/delete/${idKh}/${list.gioHangChiTiet.id}" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
                             </td>
                         </tr>
                     </c:forEach>
@@ -391,14 +419,28 @@
                 console.log(slTon);
 
                 if (sl > slTon) {
-                    alert('Số lượng chọn quá lớn cho sản phẩm vị trí ' + (i + 1));
+                    Swal.fire({
+                        icon: 'warning',
+                        html: '<div class="swal-text">Số lượng chọn quá lớn cho sản phẩm</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                        allowOutsideClick: true,
+                    });
+                    setTimeout(() => {
+                        Swal.close();
+                    }, 2000);
                     event.preventDefault();
                 }
             }
         }
 
         if (!coCheckboxDuocChon) {
-            alert('Bạn chưa chọn bất kỳ mặt hàng nào.');
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Bạn chưa chọn bất kỳ mặt hàng nào.</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                allowOutsideClick: true,
+            });
+            setTimeout(() => {
+                Swal.close();
+            }, 2000);
             event.preventDefault();
         }
     }

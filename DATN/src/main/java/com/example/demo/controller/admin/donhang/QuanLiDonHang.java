@@ -1,10 +1,13 @@
 package com.example.demo.controller.admin.donhang;
 
+import com.example.demo.entity.khachhang.GioHangChiTiet;
 import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.entity.khachhang.HoaDonChiTiet;
 import com.example.demo.entity.khachhang.Users;
 import com.example.demo.entity.dto.DonHangDTO;
+import com.example.demo.entity.sanpham.AoChiTiet;
 import com.example.demo.repo.users.HoaDonRepo;
+import com.example.demo.ser.users.GioHangChiTietSer;
 import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,6 +37,9 @@ public class QuanLiDonHang {
 
     @Autowired
     JavaMailSender mailSender;
+
+    @Autowired
+    GioHangChiTietSer gioHangChiTietSer;
 
     @GetMapping("/admin/quan_li_don_hang/*")
     public String viewQuanLiDonHang(HttpServletRequest request, Model model){
@@ -165,7 +171,23 @@ public class QuanLiDonHang {
 
         hoaDonSer.update(hoaDon.getId(), hd);
 
-        hoaDonSer.update(hoaDon.getId(), hoaDon);
+        List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
+
+        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
+            AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
+
+            GioHangChiTiet gioHangChiTiet = gioHangChiTietSer.findByKhachHangAndAoChiTiet(hoaDon.getKhachHang().getId(), act.getId());
+            GioHangChiTiet ghct = new GioHangChiTiet();
+
+            ghct.setGioHang(gioHangChiTiet.getGioHang());
+            ghct.setAoChiTiet(gioHangChiTiet.getAoChiTiet());
+            ghct.setSoLuong(gioHangChiTiet.getSoLuong());
+            ghct.setDonGia(gioHangChiTiet.getDonGia());
+            ghct.setTrangThai(1);
+
+            gioHangChiTietSer.update(gioHangChiTiet.getId(), ghct);
+        }
+
         return "redirect:/admin/quan_li_don_hang/" + hoaDon.getMa();
     }
 }

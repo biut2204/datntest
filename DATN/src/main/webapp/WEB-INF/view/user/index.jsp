@@ -29,6 +29,9 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../resources/css/style.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <style>
         .gia {
             color: red;
@@ -53,6 +56,7 @@
             animation: blink 1s infinite alternate;
             white-space: nowrap;
         }
+
         .label1 {
             position: absolute;
             top: -10px;
@@ -215,6 +219,32 @@
             top: 10px;
             right: 3px;
             cursor: pointer;
+        }
+    </style>
+
+    <style>
+        /* CSS cho hiệu ứng chạy thời gian 2s */
+        .swal2-popup {
+            position: relative;
+        }
+
+        .swal2-popup .progress-bar-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #007bff; /* Màu của thanh thời gian */
+            animation: slide-out 1s linear;
+        }
+
+        @keyframes slide-out {
+            0% {
+                width: 100%;
+            }
+            100% {
+                width: 0%;
+            }
         }
     </style>
 </head>
@@ -401,24 +431,22 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <c:forEach items="${listTop2GiamGiaSanPhams}" var="list">
                 <div class="product-offer mb-30" style="height: 200px;">
-                        <%--                    <c:choose>--%>
-                        <%--                        <c:when test="${vTri.index == 0}">--%>
-                        <%--                            <img class="img-fluid" src="/images/giamgia0.jpg" alt="">--%>
-                        <%--                        </c:when>--%>
-                        <%--                        <c:when test="${vTri.index == 1}">--%>
-                        <%--                            <img class="img-fluid" src="/images/giamgia1.png" alt="">--%>
-                        <%--                        </c:when>--%>
-                        <%--                    </c:choose>--%>
                     <img class="img-fluid" src="/images/test1.jpg" alt="">
                     <div class="offer-text">
-                        <h6 class="text-white text-uppercase">Sale ${list.phanTramGiam}%</h6>
-                        <h3 class="text-white mb-3">Sale sập sàn</h3>
+                        <h6 class="text-white text-uppercase">Sản phẩm bán chạy</h6>
+                        <h3 class="text-white mb-3">Hot</h3>
                         <a href="" class="btn btn-primary">Shop Now</a>
                     </div>
                 </div>
-            </c:forEach>
+            <div class="product-offer mb-30" style="height: 200px;">
+                <img class="img-fluid" src="/images/test1.jpg" alt="">
+                <div class="offer-text">
+                    <h6 class="text-white text-uppercase">Sản phẩm mới</h6>
+                    <h3 class="text-white mb-3">New</h3>
+                    <a href="" class="btn btn-primary">Shop Now</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -504,7 +532,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
                     <div class="product-img position-relative overflow-hidden">
-                        <img class="img-fluid" style="width: 100%; height: 350px"
+                        <img class="img-fluid" style="width: 100%; height: 350px; border: 2px solid #3bac8b"
                              src="/images/${list.ao.anhs.get(0).ten_url}" alt="">
                         <div class="product-action">
                             <a class="btn btn-outline-dark btn-square"
@@ -568,7 +596,7 @@
                 <c:forEach items="${listAoDTOMoi}" var="list">
                     <div class="product-item bg-light">
                         <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid" style="width: 100%; height: 350px"
+                            <img class="img-fluid" style="width: 100%; height: 350px; border: 2px solid #3bac8b"
                                  src="/images/${list.ao.anhs.get(0).ten_url}" alt="">
                             <div class="product-action">
                                 <a class="btn btn-outline-dark btn-square"
@@ -582,10 +610,27 @@
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate"
                                href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5><strong><fmt:formatNumber value="${list.giaBan}" type="currency"
-                                                              currencySymbol="VNĐ"/></strong></h5>
-                            </div>
+                            <c:choose>
+                                <c:when test="${list.giaBan == list.ao.giaBan}">
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <h5 style="color: red;"><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
+                                                                                  currencySymbol="VNĐ"/></h5>
+                                    </div>
+                                    <p>Sản phẩm đã bán ${list.slBan}</p>
+                                </c:when>
+                                <c:when test="${list.giaBan < list.ao.giaBan}">
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <h6 class="text-muted ml-2">
+                                            <del><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
+                                                                   currencySymbol="VNĐ"/></del>
+                                        </h6>
+                                        <h5 style="color: red;"><fmt:formatNumber value="${list.giaBan}"
+                                                                                  type="currency"
+                                                                                  currencySymbol="VNĐ"/></h5>
+                                    </div>
+                                    <p>Sản phẩm đã bán ${list.slBan}</p>
+                                </c:when>
+                            </c:choose>
                         </div>
                     </div>
                 </c:forEach>
@@ -715,8 +760,8 @@
             <div class="row">
                 <div class="col-6">
                     <div style="padding-top: 60%; padding-left: 20%; color: black; ">
-                        <p style="font-size: 50px"><b>BST Sơ mi 2023</b></p>
-                        <a href="/user/shop/1" class="button-layout">KHÁM PHÁ NGAY</a>
+                        <p style="font-size: 50px"><b>BST Sơ mi</b></p>
+                        <a href="/user/loc_theo_loai_ao/${idKh}/LA003" class="button-layout">KHÁM PHÁ NGAY</a>
                     </div>
                 </div>
                 <div class="col-6">
@@ -734,7 +779,7 @@
                     <div style="padding-top: 40%; padding-left: 20%; color: black; ">
                         <p style="font-size: 30px"><b>TỦ ĐỒ CHO PHÁI MẠNH</b></p>
                         <p style="font-size: 50px"><b>Lịch Lãm x Tinh Tế x Chuẩn mực</b></p>
-                        <a href="/user/shop/1" class="button-layout">KHÁM PHÁ NGAY</a>
+                        <a href="/user/loc_theo_loai_ao/${idKh}/LA003" class="button-layout">KHÁM PHÁ NGAY</a>
                     </div>
                 </div>
                 <div class="col-6">
@@ -762,7 +807,7 @@
                         <div class="product-img position-relative overflow-hidden">
                             <a href="/user/san_pham_detail/${idKh}/${list.ao.id}"><img class="img-fluid"
                                                                                        src="/images/${list.ao.anhs.get(0).ten_url}"
-                                                                                       style="width: 100%;height: 350px"
+                                                                                       style="width: 100%;height: 350px; border: 2px solid #3bac8b"
                                                                                        alt=""></a>
                             <div class="product-action">
                                 <a class="btn btn-outline-dark btn-square"
@@ -816,23 +861,41 @@
                 <c:forEach items="${listAos}" var="list">
                     <div class="product-item bg-light">
                         <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid" style="width: 100%; height: 350px"
-                                 src="/images/${list.anhs.get(0).ten_url}" alt="">
+                            <img class="img-fluid" style="width: 100%; height: 350px; border: 2px solid #3bac8b"
+                                 src="/images/${list.ao.anhs.get(0).ten_url}" alt="">
                             <div class="product-action">
                                 <a class="btn btn-outline-dark btn-square"
-                                   href="/user/show_gio_hang_index/${idKh}/${list.id}"><i
+                                   href="/user/show_gio_hang_index/${idKh}/${list.ao.id}"><i
                                         class="fa fa-shopping-cart"></i></a>
                                 <a class="btn btn-outline-dark btn-square"
-                                   href="/user/san_pham_detail/${idKh}/${list.id}"><i class="fa fa-search"></i></a>
+                                   href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i class="fa fa-search"></i></a>
                             </div>
                         </div>
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate"
-                               href="/user/san_pham_detail/${idKh}/${list.id}">${list.ten}</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5><strong><fmt:formatNumber value="${list.giaBan}" type="currency"
-                                                              currencySymbol="VNĐ"/></strong></h5>
-                            </div>
+                               href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a>
+                            <c:choose>
+                                <c:when test="${list.giaBan == list.ao.giaBan}">
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <h5 style="color: red;"><fmt:formatNumber value="${list.ao.giaBan}"
+                                                                                  type="currency"
+                                                                                  currencySymbol="VNĐ"/></h5>
+                                    </div>
+                                    <p>Sản phẩm đã bán ${list.slBan}</p>
+                                </c:when>
+                                <c:when test="${list.giaBan < list.ao.giaBan}">
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <h6 class="text-muted ml-2">
+                                            <del><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
+                                                                   currencySymbol="VNĐ"/></del>
+                                        </h6>
+                                        <h5 style="color: red;"><fmt:formatNumber value="${list.giaBan}"
+                                                                                  type="currency"
+                                                                                  currencySymbol="VNĐ"/></h5>
+                                    </div>
+                                    <p>Sản phẩm đã bán ${list.slBan}</p>
+                                </c:when>
+                            </c:choose>
                         </div>
                     </div>
                 </c:forEach>
@@ -1016,6 +1079,8 @@
 
     var input1 = document.getElementById("quantityInput");
 
+    var addFormContainer = document.getElementById("addFormContainer");
+
     // Thêm sự kiện "input" để kiểm tra mỗi khi người dùng nhập
     input1.addEventListener("input", function () {
         // Lấy giá trị hiện tại của input
@@ -1073,19 +1138,55 @@
         var hasError = false;
 
         if (idKh == 2) {
-            alert("Bạn chưa đăng nhập");
+            addFormContainer.style.display = "none";
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Bạn chưa đăng nhập</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                allowOutsideClick: true,
+            });
+            setTimeout(() => {
+                Swal.close();
+                addFormContainer.style.display = "block";
+            }, 1000);
             hasError = true;
         }
         if (!selectedMauSac || !selectedSize) {
-            alert("Vui lòng chọn cả màu sắc hoặc kích thước áo");
+            addFormContainer.style.display = "none";
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Vui lòng chọn cả màu sắc hoặc kích thước áo</div><div class="progress-bar-container"></div>',
+                allowOutsideClick: true // Cho phép đóng thông báo bằng cách nhấp bên ngoài
+            });
+            setTimeout(() => {
+                Swal.close();
+                addFormContainer.style.display = "block";
+            }, 1000);
             hasError = true;
         }
         if (sl == 0) {
-            alert("Sản phẩm đã hết, bạn vui lòng chọn sản phẩm khác");
+            addFormContainer.style.display = "none";
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Sản phẩm đã hết, bạn vui lòng chọn sản phẩm khác</div><div class="progress-bar-container"></div>',
+                allowOutsideClick: true // Cho phép đóng thông báo bằng cách nhấp bên ngoài
+            });
+            setTimeout(() => {
+                Swal.close();
+                addFormContainer.style.display = "block";
+            }, 1000);
             hasError = true;
         }
         if (value > sl) {
-            alert("Số lượng tồn không đủ");
+            addFormContainer.style.display = "none";
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Số lượng tồn không đủ</div><div class="progress-bar-container"></div>',
+                allowOutsideClick: true // Cho phép đóng thông báo bằng cách nhấp bên ngoài
+            });
+            setTimeout(() => {
+                Swal.close();
+                addFormContainer.style.display = "block";
+            }, 1000);
             hasError = true;
         }
         if (hasError) {

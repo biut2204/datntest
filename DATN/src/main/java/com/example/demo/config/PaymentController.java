@@ -1,12 +1,14 @@
 package com.example.demo.config;
 
 import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
+import com.example.demo.entity.khachhang.GioHangChiTiet;
 import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.entity.khachhang.HoaDonChiTiet;
 import com.example.demo.entity.sanpham.Ao;
 import com.example.demo.entity.sanpham.AoChiTiet;
 import com.example.demo.ser.giamgia.GiamGiaSanPhamChiTietSer;
 import com.example.demo.ser.sanpham.AoChiTietSer;
+import com.example.demo.ser.users.GioHangChiTietSer;
 import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,6 +51,9 @@ public class PaymentController {
 
     @Autowired
     GiamGiaSanPhamChiTietSer giamGiaSanPhamChiTietSer;
+
+    @Autowired
+    GioHangChiTietSer gioHangChiTietSer;
 
     private String generatePaymentUrl(String ma, BigDecimal tongTien) throws UnsupportedEncodingException {
         String vnp_Version = "2.1.0";
@@ -192,6 +197,17 @@ public class PaymentController {
             aoChiTiet.setTrangthai(act.getTrangthai());
 
             aoChiTietSer.update(act.getId(), aoChiTiet);
+
+            GioHangChiTiet gioHangChiTiet = gioHangChiTietSer.findByKhachHangAndAoChiTiet(hoaDon.getKhachHang().getId(), act.getId());
+            GioHangChiTiet ghct = new GioHangChiTiet();
+
+            ghct.setGioHang(gioHangChiTiet.getGioHang());
+            ghct.setAoChiTiet(gioHangChiTiet.getAoChiTiet());
+            ghct.setSoLuong(gioHangChiTiet.getSoLuong());
+            ghct.setDonGia(gioHangChiTiet.getDonGia());
+            ghct.setTrangThai(1);
+
+            gioHangChiTietSer.update(gioHangChiTiet.getId(), ghct);
         }
 
         session.removeAttribute("maHoaDon");

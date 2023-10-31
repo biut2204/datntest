@@ -171,7 +171,7 @@
             <!-- Price Start -->
             <form method="post">
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3">Giá <i style="display: inline-block" class="fas fa-angle-down"
+                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Giá </p><i style="display: inline-block" class="fas fa-angle-down"
                                                          onclick="toggleView('view_anh2')"></i></span>
                 </h5>
                 <div id="view_anh2" style="display:block">
@@ -200,7 +200,7 @@
 
                 <!-- Color Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3">Form <i style="display: inline-block" class="fas fa-angle-down"
+                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Form </p><i style="display: inline-block" class="fas fa-angle-down"
                                                           onclick="toggleView('view_anh3')"></i></span>
                 </h5>
                 <div id="view_anh3" style="display:block">
@@ -216,7 +216,7 @@
                     </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3">Hãng <i style="display: inline-block" class="fas fa-angle-down"
+                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Hãng </p><i style="display: inline-block" class="fas fa-angle-down"
                                                           onclick="toggleView('view_anh4')"></i></span>
                 </h5>
                 <div id="view_anh4" style="display:block">
@@ -232,7 +232,7 @@
                     </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3">Loại áo <i style="display: inline-block" class="fas fa-angle-down"
+                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Loại áo </p><i style="display: inline-block" class="fas fa-angle-down"
                                                              onclick="toggleView('view_anh5')"></i></span>
                 </h5>
                 <div id="view_anh5" style="display:block">
@@ -248,7 +248,7 @@
                     </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3">Chất vải <i style="display: inline-block" class="fas fa-angle-down"
+                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Chất vải </p><i style="display: inline-block" class="fas fa-angle-down"
                                                               onclick="toggleView('view_anh6')"></i></span>
                 </h5>
                 <div id="view_anh6" style="display:block">
@@ -264,7 +264,7 @@
                     </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3">Màu sắc <i style="display: inline-block" class="fas fa-angle-down"
+                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Màu sắc </p><i style="display: inline-block" class="fas fa-angle-down"
                                                              onclick="toggleView('view_anh7')"></i></span>
                 </h5>
                 <div id="view_anh7" style="display:block">

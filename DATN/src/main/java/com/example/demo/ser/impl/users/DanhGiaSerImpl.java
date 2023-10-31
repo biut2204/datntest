@@ -24,4 +24,14 @@ public class DanhGiaSerImpl implements DanhGiaSer {
     public List<DanhGia> findAllByAo(UUID idAo) {
         return danhGiaRepo.findAllByAo(idAo);
     }
+
+    @Override
+    public Integer tongDanhGiaSao(UUID idAo) {
+        return danhGiaRepo.tongDanhGiaSao(idAo);
+    }
+
+    @Override
+    public int tongNguoiDanhGia(UUID idAo) {
+        return danhGiaRepo.tongNguoiDanhGia(idAo);
+    }
 }

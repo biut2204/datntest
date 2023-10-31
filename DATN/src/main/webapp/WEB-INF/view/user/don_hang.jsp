@@ -34,7 +34,7 @@
         .tab2, .tab3, .tab4, .tab5 {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #ccc;
+            background-color: #aaa;
             cursor: pointer;
             border: 1px solid #aaa;
             border-bottom: none; /* Loại bỏ viền dưới của tab */
@@ -163,6 +163,21 @@
         }
 
         #addForm button[type="submit"]:hover {
+            background-color: #0056b3; /* Màu nền khi di chuột vào */
+        }
+    </style>
+    <style>
+        .custom-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff; /* Màu nền */
+            color: #fff; /* Màu chữ */
+            text-decoration: none;
+            border-radius: 5px; /* Góc bo tròn */
+            transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+        }
+
+        .custom-button:hover {
             background-color: #0056b3; /* Màu nền khi di chuột vào */
         }
     </style>

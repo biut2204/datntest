@@ -29,6 +29,8 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../resources/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
         .gia {
             color: red;
@@ -83,7 +85,7 @@
     </style>
     <style>
         .comment-container {
-            max-width: 1390px;
+            max-width: 94%;
             margin-left: 50px;
         }
 
@@ -91,6 +93,18 @@
             border: 1px solid #ddd;
             margin-bottom: 10px;
             padding: 10px;
+            background: white;
+        }
+
+        .comment1 {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #ffebe6;
+            font-size: 25px;
+            color: #ff6600;
+            width: 100%;
+            height: 140px;
         }
 
         .pagination {
@@ -110,46 +124,212 @@
 
         .stars1::before {
             content: "★";
-            color: gold;
+            color: #ff6600;
         }
 
         .stars2::before {
             content: "★★";
-            color: gold;
+            color: #ff6600;
         }
 
         .stars3::before {
             content: "★★★";
-            color: gold;
+            color: #ff6600;
         }
+
         .stars4::before {
             content: "★★★★";
-            color: gold;
+            color: #ff6600;
         }
+
         .stars5::before {
             content: "★★★★★";
-            color: gold;
+            color: #ff6600;
         }
 
         .end1::before {
             content: "★";
             color: grey;
         }
+
         .end2::before {
             content: "★★";
             color: grey;
         }
+
         .end3::before {
             content: "★★★";
             color: grey;
         }
+
         .end4::before {
             content: "★★★★";
             color: grey;
         }
+
         .end5::before {
             content: "★★★★★";
             color: grey;
+        }
+
+        .test1::before {
+            content: "★";
+            background: linear-gradient(90deg, #ff6600 20%, grey 10%, grey 60%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .test2::before {
+            content: "★";
+            background: linear-gradient(90deg, #ff6600 27%, grey 10%, grey 60%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .test3::before {
+            content: "★";
+            background: linear-gradient(90deg, #ff6600 33%, grey 10%, grey 60%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .test4::before {
+            content: "★";
+            background: linear-gradient(90deg, #ff6600 42%, grey 10%, grey 60%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .test5::before {
+            content: "★";
+            background: linear-gradient(90deg, #ff6600 50%, grey 10%, grey 60%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .test6::before {
+            content: "★";
+            background: linear-gradient(90deg, #ff6600 58%, grey 10%, grey 60%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .test7::before {
+            content: "★";
+            background: linear-gradient(90deg, #ff6600 67%, grey 10%, grey 60%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .test8::before {
+            content: "★";
+            background: linear-gradient(90deg, #ff6600 73%, grey 10%, grey 60%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .test9::before {
+            content: "★";
+            background: linear-gradient(90deg, #ff6600 80%, grey 10%, grey 60%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .test10::before {
+            content: "★";
+            background: linear-gradient(90deg, #ff6600 100%, grey 10%, grey 60%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
+
+        /* Thiết lập kiểu cho các nút trước và sau */
+        .prev-page, .next-page {
+            width: 80px;
+            text-align: center;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        /* Hiệu ứng hover cho nút */
+        .prev-page:hover, .next-page:hover {
+            background-color: #0056b3;
+        }
+
+        /* Hiệu ứng active khi nút được nhấp */
+        .prev-page:active, .next-page:active {
+            background-color: #003d80;
+        }
+
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        label.checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        label.checkbox-label::before {
+            content: " ";
+            display: inline-block;
+            width: 80px; /* Độ rộng hình vuông */
+            height: 40px; /* Chiều cao hình vuông */
+            border: 0.5px solid #6e7881; /* Viền */
+            background-color: transparent; /* Màu nền */
+            position: absolute; /* Điều chỉnh khoảng cách giữa hình vuông và label */
+            top: 0;
+            border-radius: 4px; /* Độ cong viền */
+        }
+
+        input[type="checkbox"]:checked + label.checkbox-label::before {
+            border: 2px solid #ffa500; /* Đổi màu border thành màu cam */
+        }
+        label.checkbox-label1{
+            background: white;
+            width: 80px;height: 40px;
+            border-radius: 4px;
+            padding-left: 15px;
+            font-size: 20px;
+            padding-top: 5px
+        }
+    </style>
+    <style>
+        /* CSS cho hiệu ứng chạy thời gian 2s */
+        .swal2-popup {
+            position: relative;
+        }
+
+        .swal2-popup .progress-bar-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #007bff; /* Màu của thanh thời gian */
+            animation: slide-out 2s linear; /* Hiệu ứng chạy thời gian 2s */
+        }
+
+        @keyframes slide-out {
+            0% {
+                width: 100%;
+            }
+            100% {
+                width: 0%;
+            }
         }
     </style>
 </head>
@@ -470,12 +650,34 @@
     </h2>
     <div class="comment-container">
         <div id="product-list">
+            <div class="comment1">
+                <div style="width: 30%;float: left;height: 100%; padding-left: 20px">
+                    <p><strong style="font-size: 30px;">${danhGiaSao}.${danhGiaDu}</strong> trên 5</p>
+                    <p style="font-size: 35px"><span class="stars${danhGiaSao}"></span><span
+                            class="test${danhGiaDu}"></span></p>
+                </div>
+                <div style="width: 70%;float: left;padding-top: 20px">
+                    <form>
+                        <input type="checkbox" id="stars1" name="rating" value="stars1" onclick="filterComments()">
+                        <label class="checkbox-label" for="stars1"><label class="checkbox-label1">1 Sao</label></label>
+                        <input type="checkbox" id="stars2" name="rating" value="stars2" onclick="filterComments()">
+                        <label class="checkbox-label" for="stars2"><label class="checkbox-label1">2 Sao</label></label>
+                        <input type="checkbox" id="stars3" name="rating" value="stars3" onclick="filterComments()">
+                        <label class="checkbox-label" for="stars3"><label class="checkbox-label1">3 Sao</label></label>
+                        <input type="checkbox" id="stars4" name="rating" value="stars4" onclick="filterComments()">
+                        <label class="checkbox-label" for="stars4"><label class="checkbox-label1">4 Sao</label></label>
+                        <input type="checkbox" id="stars5" name="rating" value="stars5" onclick="filterComments()">
+                        <label class="checkbox-label" for="stars5"><label class="checkbox-label1">5 Sao</label></label>
+                    </form>
+                </div>
+            </div>
             <c:forEach items="${listDanhGias}" var="list">
                 <div class="comment">
-                    <p><strong>${list.khachHang.ten}</strong> <span class="stars${list.danhGiaSao}"></span><span class="end${5-list.danhGiaSao}"></span></p>
-                    <c:set var="dateTimeString" value="${list.ngayDanhGia}" />
-                    <fmt:parseDate value="${dateTimeString}" var="parsedDate" pattern="yyyy-MM-dd'T'HH:mm:ss.SSS" />
-                    <fmt:formatDate value="${parsedDate}" var="formattedDate" pattern="dd/MM/yyyy HH:mm:ss" />
+                    <p><strong>${list.khachHang.ten}</strong> <span class="stars${list.danhGiaSao}"></span><span
+                            class="end${5-list.danhGiaSao}"></span></p>
+                    <c:set var="dateTimeString" value="${list.ngayDanhGia}"/>
+                    <fmt:parseDate value="${dateTimeString}" var="parsedDate" pattern="yyyy-MM-dd'T'HH:mm:ss.SSS"/>
+                    <fmt:formatDate value="${parsedDate}" var="formattedDate" pattern="dd/MM/yyyy HH:mm:ss"/>
                     <p>${formattedDate} | Phân loại : ${list.aoChiTiet.mau_sac.ten}, ${list.aoChiTiet.size.ten}</p>
                     <p>${list.danhGiaBinhLuan}</p>
                 </div>
@@ -675,19 +877,47 @@
         var hasError = false;
 
         if (idKh == 2) {
-            alert("Bạn chưa đăng nhập");
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Bạn chưa đăng nhập</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                allowOutsideClick: true // Cho phép đóng thông báo bằng cách nhấp bên ngoài
+            });
+            setTimeout(() => {
+                Swal.close();
+            }, 2000);
             hasError = true;
         }
         if (!selectedMauSac || !selectedSize) {
-            alert("Vui lòng chọn cả màu sắc hoặc kích thước áo");
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Vui lòng chọn cả màu sắc hoặc kích thước áo</div><div class="progress-bar-container"></div>',
+                allowOutsideClick: true // Cho phép đóng thông báo bằng cách nhấp bên ngoài
+            });
+            setTimeout(() => {
+                Swal.close();
+            }, 2000);
             hasError = true;
         }
         if (sl == 0) {
-            alert("Sản phẩm đã hết, bạn vui lòng chọn sản phẩm khác");
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Sản phẩm đã hết, bạn vui lòng chọn sản phẩm khác</div><div class="progress-bar-container"></div>',
+                allowOutsideClick: true // Cho phép đóng thông báo bằng cách nhấp bên ngoài
+            });
+            setTimeout(() => {
+                Swal.close();
+            }, 2000);
             hasError = true;
         }
         if (value > sl) {
-            alert("Số lượng tồn không đủ");
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Số lượng tồn không đủ</div><div class="progress-bar-container"></div>',
+                allowOutsideClick: true // Cho phép đóng thông báo bằng cách nhấp bên ngoài
+            });
+            setTimeout(() => {
+                Swal.close();
+            }, 2000);
             hasError = true;
         }
         if (hasError) {
@@ -814,6 +1044,29 @@
 
     showPage(currentPage);
     updatePagination();
+</script>
+<script>
+    function filterComments() {
+        const selectedRatings = document.querySelectorAll('input[name="rating"]:checked');
+        const comments = document.querySelectorAll('.comment');
+
+        comments.forEach(comment => {
+            const stars = Array.from(comment.querySelectorAll('span[class^="stars"]'));
+            const shouldDisplay = selectedRatings.length === 0 || stars.some(star => {
+                return Array.from(selectedRatings).some(selectedRating => selectedRating.value === star.className);
+            });
+
+            comment.style.display = shouldDisplay ? 'block' : 'none';
+        });
+
+        // Cập nhật trạng thái của các checkbox tương ứng với số sao
+        selectedRatings.forEach(selectedRating => {
+            const checkbox = document.getElementById(selectedRating.value);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+        });
+    }
 </script>
 </body>
 

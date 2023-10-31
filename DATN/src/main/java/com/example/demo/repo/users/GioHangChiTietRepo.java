@@ -13,6 +13,9 @@ public interface GioHangChiTietRepo extends JpaRepository<GioHangChiTiet, UUID> 
     @Query("select ghct from GioHangChiTiet ghct where ghct.gioHang.id = ?1 and ghct.trangThai = 0")
     List<GioHangChiTiet> findByIdGH(UUID id);
 
-    @Query("select count(ghct.gioHang.id) from GioHangChiTiet ghct where ghct.gioHang.id = ?1")
+    @Query("select count(ghct.gioHang.id) from GioHangChiTiet ghct where ghct.gioHang.id = ?1 and ghct.trangThai = 0")
     Long soLuongSanPhamGioHang(UUID id);
+
+    @Query("select ghct from GioHangChiTiet ghct where ghct.gioHang.khachHang.id = ?1 and ghct.aoChiTiet.id = ?2")
+    GioHangChiTiet findByKhachHangAndAoChiTiet(UUID idKh, UUID idAoChiTiet);
 }

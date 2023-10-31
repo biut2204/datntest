@@ -7,6 +7,7 @@ import com.example.demo.entity.dto.ThongKeDTO;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,5 +45,21 @@ public interface HoaDonSer {
     List<DonHangDTO> findAllByOrderByNgayTaoDesc();
 
     Page<HoaDon> listHoaDonTheoNgay(LocalDate date, Integer pageNo);
+
+    Integer doanhThuTheoNgay(LocalDate date);
+
+    Integer soLuongKhachMuaTheoNgay(LocalDate date);
+
+    List<Double> doanhThuTheoThang(LocalDate date1, LocalDate date2);
+
+    List<Integer> getDataThang(LocalDate date1, LocalDate date2);
+
+    List<HoaDon> listHoaDonByNgayChoXacNhan(LocalDate localDate);
+
+    List<HoaDon> listHoaDonByNgayDangGiao(LocalDate localDate);
+
+    List<HoaDon> listHoaDonByNgayHoanThanh(LocalDate localDate);
+
+    List<HoaDon> listHoaDonByNgayHuy(LocalDate localDate);
 
 }

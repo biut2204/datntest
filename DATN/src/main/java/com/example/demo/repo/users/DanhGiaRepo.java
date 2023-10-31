@@ -13,4 +13,10 @@ public interface DanhGiaRepo extends JpaRepository<DanhGia, UUID> {
 
     @Query("select dg from DanhGia dg where dg.aoChiTiet.ao.id = ?1 ORDER BY dg.ngayDanhGia DESC")
     List<DanhGia> findAllByAo(UUID idAo);
+
+    @Query("select sum(dg.danhGiaSao) from DanhGia dg where dg.aoChiTiet.ao.id = ?1")
+    Integer tongDanhGiaSao(UUID idAo);
+
+    @Query("select count(dg.id) from DanhGia dg where dg.aoChiTiet.ao.id = ?1")
+    int tongNguoiDanhGia(UUID idAo);
 }

@@ -1,11 +1,18 @@
 package com.example.demo.ser.impl.users;
 
+import com.example.demo.entity.dto.HoaDonChiTietDTO;
+import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
+import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.entity.khachhang.HoaDonChiTiet;
+import com.example.demo.entity.sanpham.Ao;
+import com.example.demo.repo.giamgia.GiamGiaSanPhamChiTietRepo;
 import com.example.demo.repo.users.HoaDonChiTietRepo;
 import com.example.demo.ser.users.HoaDonChiTietSer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,6 +22,9 @@ public class HoaDonChiTietSerImpl implements HoaDonChiTietSer {
 
     @Autowired
     HoaDonChiTietRepo hoaDonChiTietRepo;
+
+    @Autowired
+    GiamGiaSanPhamChiTietRepo giamGiaSanPhamChiTietRepo;
 
     @Override
     public void add(HoaDonChiTiet hoaDonChiTiet) {
@@ -41,4 +51,40 @@ public class HoaDonChiTietSerImpl implements HoaDonChiTietSer {
             hoaDonChiTietRepo.save(hoaDonChiTiet);
         }
     }
+
+    @Override
+    public Integer soLuongBanTheoNgay(LocalDate date) {
+        return hoaDonChiTietRepo.soLuongBanTheoNgay(date);
+    }
+
+    @Override
+    public List<Integer> soLuongBanTheoThang(LocalDate date1, LocalDate date2) {
+        return hoaDonChiTietRepo.soLuongBanTheoThang(date1,date2);
+    }
+
+    @Override
+    public List<HoaDonChiTietDTO> listHoaDonTheoNgay(List<HoaDon> listHoaDons) {
+        List<HoaDonChiTietDTO> listHoaDonChiTietDTOS = new ArrayList<>();
+        for (HoaDon hoaDon : listHoaDons){
+            List<HoaDonChiTiet> hoaDonChiTiets = hoaDonChiTietRepo.findByHoaDon(hoaDon.getId());
+            for (HoaDonChiTiet hoaDonChiTiet : hoaDonChiTiets) {
+                Ao ao = hoaDonChiTiet.getAoChiTiet().getAo();
+                GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietRepo.findByIdAoAndTrangThai(ao.getId());
+
+                HoaDonChiTietDTO hoaDonChiTietDTO = new HoaDonChiTietDTO();
+                int gia;
+
+                if (giamGiaSanPhamChiTiet != null) {
+                    gia = ao.getGiaBan().toBigInteger().intValue() * (100 - giamGiaSanPhamChiTiet.getGiamGiaSanPham().getPhanTramGiam()) / 100;
+                } else {
+                    gia = ao.getGiaBan().toBigInteger().intValue();
+                }
+                hoaDonChiTietDTO.setHoaDonChiTiet(hoaDonChiTiet);
+                hoaDonChiTietDTO.setGia(gia);
+                listHoaDonChiTietDTOS.add(hoaDonChiTietDTO);
+            }
+        }
+        return listHoaDonChiTietDTOS;
+    }
+
 }

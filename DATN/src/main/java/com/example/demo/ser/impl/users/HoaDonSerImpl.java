@@ -190,4 +190,44 @@ public class HoaDonSerImpl implements HoaDonSer {
         return hoaDonRepo.listHoaDonTheoNgay(date, pageable);
     }
 
+    @Override
+    public Integer doanhThuTheoNgay(LocalDate date) {
+        return hoaDonRepo.doanhThuTheoNgay(date);
+    }
+
+    @Override
+    public Integer soLuongKhachMuaTheoNgay(LocalDate date) {
+        return hoaDonRepo.soLuongKhachMuaTheoNgay(date);
+    }
+
+    @Override
+    public List<Double> doanhThuTheoThang(LocalDate date1, LocalDate date2) {
+        return hoaDonRepo.doanhThuTheoThang(date1,date2);
+    }
+
+    @Override
+    public List<Integer> getDataThang(LocalDate date1, LocalDate date2) {
+        return hoaDonRepo.getDataThang(date1,date2);
+    }
+
+    @Override
+    public List<HoaDon> listHoaDonByNgayChoXacNhan(LocalDate localDate) {
+        return hoaDonRepo.listHoaDonByNgayChoXacNhan(localDate);
+    }
+
+    @Override
+    public List<HoaDon> listHoaDonByNgayDangGiao(LocalDate localDate) {
+        return hoaDonRepo.listHoaDonByNgayDangGiao(localDate);
+    }
+
+    @Override
+    public List<HoaDon> listHoaDonByNgayHoanThanh(LocalDate localDate) {
+        return hoaDonRepo.listHoaDonByNgayHoanThanh(localDate);
+    }
+
+    @Override
+    public List<HoaDon> listHoaDonByNgayHuy(LocalDate localDate) {
+        return hoaDonRepo.listHoaDonByNgayHuy(localDate);
+    }
+
 }

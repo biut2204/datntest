@@ -120,7 +120,8 @@ public class TrangChuController {
         List<AoDTO> listTop8Aos = aoSer.findTop8AoBanChay();
         List<GiamGiaSanPham> listTop2GiamGiaSanPhams = giamGiaSanPhamSer.findTop2GiamGiaSanPham();
         List<GiamGiaSanPhamChiTiet> listGiamGiaSanPhamChiTiets = giamGiaSanPhamChiTietSer.findAllByTrangThai(0);
-        List<Ao> listAos = aoSer.findAllByTrangThai(2);
+        List<Ao> listAo = aoSer.findAllByTrangThai(2);
+        List<AoDTO> listAos = aoSer.findByAo(listAo);
         List<Ao> listAoMoiTrongThang = aoSer.findAoNhapTrongThangHienTai();
         List<AoDTO> listAoDTOMoi = aoSer.findByAo(listAoMoiTrongThang);
 
@@ -197,7 +198,21 @@ public class TrangChuController {
             model.addAttribute("idKh", "2");
         }
 
+        Integer tongDanhGiaSao = danhGiaSer.tongDanhGiaSao(UUID.fromString(id));
+        int tongNguoiDanhGia = danhGiaSer.tongNguoiDanhGia(UUID.fromString(id));
+        int danhGiaSao ;
+        int danhGiaDu ;
+        if(tongNguoiDanhGia == 0){
+            danhGiaSao = 5;
+            danhGiaDu = 0;
+        }else {
+            float danhGiaSaoFloat = (float) tongDanhGiaSao / tongNguoiDanhGia;
+            danhGiaSao = (int) danhGiaSaoFloat;
+            danhGiaDu = Math.round((danhGiaSaoFloat - danhGiaSao) * 10);
+        }
+
         List<Ao> listAos = aoSer.findAllByTrangThai(2);
+
         model.addAttribute("listAos", listAos);
         model.addAttribute("ao", aoSer.findById(UUID.fromString(id)));
         model.addAttribute("listDanhGias", danhGiaSer.findAllByAo(UUID.fromString(id)));
@@ -205,6 +220,8 @@ public class TrangChuController {
         model.addAttribute("anhs", anhSer.findAllByAoId(UUID.fromString(id)));
         model.addAttribute("mauSacs", aoChiTietSer.findMauSacByIdAo(UUID.fromString(id)));
         model.addAttribute("sizes", aoChiTietSer.findSizeByIdAo(UUID.fromString(id)));
+        model.addAttribute("danhGiaSao", danhGiaSao);
+        model.addAttribute("danhGiaDu", danhGiaDu);
 
 
         try {

@@ -21,21 +21,74 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
     <style>
-        /*#container {*/
-        /*    text-align: center;*/
-        /*}*/
+        .divider {
+            border-bottom: 1px dashed #aaa;
+            margin: 10px 0;
+        }
+        button#prevPageButton,
+        button#nextPageButton,
+        button#prevPageButton2,
+        button#nextPageButton2,
+        button#prevPageButton3,
+        button#nextPageButton3,
+        button#prevPageButton4,
+        button#nextPageButton4{
+            background-color: #007bff; /* Màu nền */
+            color: #fff; /* Màu chữ */
+            border: none;
+            padding: 10px 20px; /* Kích thước nút */
+            margin: 5px; /* Khoảng cách giữa nút */
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
 
-        /*#button-container {*/
-        /*    display: inline-block;*/
-        /*    margin-top: 20px;*/
-        /*}*/
+            /* Bo tròn các góc */
+            border-radius: 5px;
+        }
 
-        /*button {*/
-        /*    padding: 10px;*/
-        /*    margin: 5px;*/
-        /*    font-size: 16px;*/
-        /*    width: 100px;*/
-        /*}*/
+        /* Hover effect */
+        button#prevPageButton:hover,
+        button#nextPageButton:hover,
+        button#prevPageButton2:hover,
+        button#nextPageButton2:hover,
+        button#prevPageButton3:hover,
+        button#nextPageButton3:hover,
+        button#prevPageButton4:hover,
+        button#nextPageButton4:hover{
+            background-color: #0056b3; /* Màu nền thay đổi khi hover */
+        }
+    </style>
+    <style>
+        #addFormContainer1, #addFormContainer2, #addFormContainer3, #addFormContainer4 {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Màu nền với độ trong suốt */
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #addForm1, #addForm2, #addForm3, #addForm4 {
+            background-color: white; /* Màu nền của biểu mẫu */
+            padding: 20px;
+            border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
+        }
+
+        #addForm1 button[type="submit"], #addForm2 button[type="submit"], #addForm3 button[type="submit"], #addForm4 button[type="submit"] {
+            background-color: #007BFF; /* Màu nền của nút */
+            color: white; /* Màu chữ trắng */
+            border: none;
+            cursor: pointer;
+        }
+
+        #addForm1 button[type="submit"]:hover, #addForm2 button[type="submit"]:hover, #addForm3 button[type="submit"]:hover, #addForm4 button[type="submit"]:hover {
+            background-color: #0056b3; /* Màu nền khi di chuột vào */
+        }
     </style>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -232,13 +285,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="../../../index.html" class="nav-link active">
+                                <a href="/admin/index/1" class="nav-link active">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Dashboard v1</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../../../index2.html" class="nav-link">
+                                <a href="/admin/thong_ke/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Dashboard v2</p>
                                 </a>
@@ -389,7 +442,8 @@
                             <i class="nav-icon fas fa-envelope"></i>
                             <p>
                                 Chat hỗ trợ
-                                <span style="${allChat==0?"display: none;":""}" class="right badge badge-danger">${allChat}</span>
+                                <span style="${allChat==0?"display: none;":""}"
+                                      class="right badge badge-danger">${allChat}</span>
                             </p>
                         </a>
                     </li>
@@ -407,8 +461,8 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-<%--                        <h1>Ngày hiện tại <c:set var="dateFormat" value="dd/MM/yyyy"/>--%>
-<%--                            <fmt:formatDate value="${ngayHienTai}" pattern="${dateFormat}"/>--%>
+                        <%--                        <h1>Ngày hiện tại <c:set var="dateFormat" value="dd/MM/yyyy"/>--%>
+                        <%--                            <fmt:formatDate value="${ngayHienTai}" pattern="${dateFormat}"/>--%>
                         </h1>
                     </div>
                 </div>
@@ -429,7 +483,8 @@
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a class="small-box-footer" id="addButton1">Thêm thông tin <i
+                                    class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -445,7 +500,8 @@
                             <div class="icon">
                                 <i class="ion ion-person-add"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a class="small-box-footer" id="addButton2">Thêm thông tin <i
+                                    class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <div class="col-lg-3 col-6">
@@ -459,7 +515,8 @@
                             <div class="icon">
                                 <i class="ion ion-stats-bars"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a class="small-box-footer" id="addButton3">Thêm thông tin <i
+                                    class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -474,13 +531,107 @@
                             <div class="icon">
                                 <i class="ion ion-pie-graph"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a class="small-box-footer" id="addButton4">Thêm thông tin <i
+                                    class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
                 </div>
             </div>
         </section>
+        <div id="addFormContainer1" style="display: none;">
+            <div class="container-fluid">
+                <div class="container">
+                    <form method="post" id="addForm1">
+                        <h3 style="text-align: center">Đơn mới chờ xác nhận</h3>
+                        <div class="data-item">
+                            <c:forEach items="${listHoaDonChoXacNhanDTOS}" var="list" varStatus="vTri">
+                                <div class="d-flex justify-content-between ">
+                                    <p><img style="width: 50px"
+                                            src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                                    <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
+                                    <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
+                                    <p>${list.hoaDonChiTiet.soLuong}</p>
+                                </div>
+                                <div class="divider"></div>
+                            </c:forEach>
+                        </div>
+                        <button id="prevPageButton">Pre</button>
+                        <button id="nextPageButton">Next</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div id="addFormContainer2" style="display: none;">
+            <div class="container-fluid">
+                <div class="container">
+                    <form method="post" id="addForm2">
+                        <h3 style="text-align: center">Đơn đang giao</h3>
+                        <div class="data-item">
+                            <c:forEach items="${listHoaDonDangGiaoDTOS}" var="list" varStatus="vTri">
+                                <div class="d-flex justify-content-between ">
+                                    <p><img style="width: 50px"
+                                            src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                                    <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
+                                    <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
+                                    <p>${list.hoaDonChiTiet.soLuong}</p>
+                                </div>
+                                <div class="divider"></div>
+                            </c:forEach>
+                        </div>
+                        <button id="prevPageButton2">Pre</button>
+                        <button id="nextPageButton2">Next</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="addFormContainer3" style="display: none;">
+            <div class="container-fluid">
+                <div class="container">
+                    <form method="post" id="addForm3">
+                        <h3 style="text-align: center">Đơn mới hoàn thành</h3>
+                        <div class="data-item">
+                            <c:forEach items="${listHoaDonHoanThanhDTOS}" var="list" varStatus="vTri">
+                                <div class="d-flex justify-content-between ">
+                                    <p><img style="width: 50px"
+                                            src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                                    <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
+                                    <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
+                                    <p>${list.hoaDonChiTiet.soLuong}</p>
+                                </div>
+                                <div class="divider"></div>
+                            </c:forEach>
+                        </div>
+                        <button id="prevPageButton3">Pre</button>
+                        <button id="nextPageButton3">Next</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="addFormContainer4" style="display: none;">
+            <div class="container-fluid">
+                <div class="container">
+                    <form method="post" id="addForm4">
+                        <h3 style="text-align: center">Đơn mới hủy</h3>
+                        <div class="data-item">
+                            <c:forEach items="${listHoaDonHuyDTOS}" var="list" varStatus="vTri">
+                                <div class="d-flex justify-content-between ">
+                                    <p><img style="width: 50px"
+                                            src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                                    <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
+                                    <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
+                                    <p>${list.hoaDonChiTiet.soLuong}</p>
+                                </div>
+                                <div class="divider"></div>
+                            </c:forEach>
+                        </div>
+                        <button id="prevPageButton4">Pre</button>
+                        <button id="nextPageButton4">Next</button>
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <!-- Left col -->
             <section class="col-lg-7 connectedSortable">
@@ -532,16 +683,24 @@
                                 </div>
                                 <c:choose>
                                     <c:when test="${list.trangThai == 1}">
-                                        <div style="display: inline-block;width: 100px;text-align: center;background: #ff8b33;border-radius: 15px">Chờ xác nhận</div>
+                                        <div style="display: inline-block;width: 100px;text-align: center;background: #ff8b33;border-radius: 15px">
+                                            Chờ xác nhận
+                                        </div>
                                     </c:when>
                                     <c:when test="${list.trangThai == 2}">
-                                        <div style="display: inline-block;width: 100px;text-align: center;background: wheat;border-radius: 15px">Đang giao</div>
+                                        <div style="display: inline-block;width: 100px;text-align: center;background: wheat;border-radius: 15px">
+                                            Đang giao
+                                        </div>
                                     </c:when>
                                     <c:when test="${list.trangThai == 3}">
-                                        <div style="display: inline-block;width: 100px;text-align: center;background: springgreen;border-radius: 15px">Hoàn thành</div>
+                                        <div style="display: inline-block;width: 100px;text-align: center;background: springgreen;border-radius: 15px">
+                                            Hoàn thành
+                                        </div>
                                     </c:when>
                                     <c:when test="${list.trangThai == 4}">
-                                        <div style="display: inline-block;width: 100px;text-align: center;background: red;border-radius: 15px">Hủy</div>
+                                        <div style="display: inline-block;width: 100px;text-align: center;background: red;border-radius: 15px">
+                                            Hủy
+                                        </div>
                                     </c:when>
                                 </c:choose>
 
@@ -726,6 +885,261 @@
         myChart.update();
     }
 </script>
+<script>
+    // Get references to the button and form container
+    var addButton1 = document.getElementById("addButton1");
+    var addFormContainer1 = document.getElementById("addFormContainer1");
 
+    // Add an event listener to the button
+    addButton1.addEventListener("click", function () {
+        // Toggle the visibility of the form container
+        if (addFormContainer1.style.display === "none" || addFormContainer1.style.display === "") {
+            addFormContainer1.style.display = "block";
+        } else {
+            addFormContainer1.style.display = "none";
+        }
+    });
+
+    // Add an event listener to the background overlay
+    addFormContainer1.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer1) {
+            // Hide the form
+            addFormContainer1.style.display = "none";
+        }
+    });
+</script>
+<script>
+    // Get references to the button and form container
+    var addButton2 = document.getElementById("addButton2");
+    var addFormContainer2 = document.getElementById("addFormContainer2");
+
+    // Add an event listener to the button
+    addButton2.addEventListener("click", function () {
+        // Toggle the visibility of the form container
+        if (addFormContainer2.style.display === "none" || addFormContainer2.style.display === "") {
+            addFormContainer2.style.display = "block";
+        } else {
+            addFormContainer2.style.display = "none";
+        }
+    });
+
+    // Add an event listener to the background overlay
+    addFormContainer2.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer2) {
+            // Hide the form
+            addFormContainer2.style.display = "none";
+        }
+    });
+</script>
+<script>
+    // Get references to the button and form container
+    var addButton3 = document.getElementById("addButton3");
+    var addFormContainer3 = document.getElementById("addFormContainer3");
+
+    // Add an event listener to the button
+    addButton3.addEventListener("click", function () {
+        // Toggle the visibility of the form container
+        if (addFormContainer3.style.display === "none" || addFormContainer3.style.display === "") {
+            addFormContainer3.style.display = "block";
+        } else {
+            addFormContainer3.style.display = "none";
+        }
+    });
+
+    // Add an event listener to the background overlay
+    addFormContainer3.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer3) {
+            // Hide the form
+            addFormContainer3.style.display = "none";
+        }
+    });
+</script>
+<script>
+    // Get references to the button and form container
+    var addButton4 = document.getElementById("addButton4");
+    var addFormContainer4 = document.getElementById("addFormContainer4");
+
+    // Add an event listener to the button
+    addButton4.addEventListener("click", function () {
+        // Toggle the visibility of the form container
+        if (addFormContainer4.style.display === "none" || addFormContainer4.style.display === "") {
+            addFormContainer4.style.display = "block";
+        } else {
+            addFormContainer4.style.display = "none";
+        }
+    });
+
+    // Add an event listener to the background overlay
+    addFormContainer4.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer4) {
+            // Hide the form
+            addFormContainer4.style.display = "none";
+        }
+    });
+</script>
+<script>
+    var dataContainer1 = document.getElementById("addFormContainer1");
+    var dataItems = dataContainer1.getElementsByClassName("data-item");
+    var itemsPerPage = 4; // Số lượng dữ liệu trên mỗi trang
+    var currentPage = 1; // Trang hiện tại
+
+    function showDataOnPage(page) {
+        for (var i = 0; i < dataItems.length; i++) {
+            dataItems[i].style.display = "none"; // Ẩn tất cả các dữ liệu
+        }
+
+        var startIndex = (page - 1) * itemsPerPage;
+        var endIndex = startIndex + itemsPerPage;
+
+        for (var i = startIndex; i < endIndex && i < dataItems.length; i++) {
+            dataItems[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
+        }
+    }
+
+    // Gọi hàm hiển thị trang đầu tiên khi trang web được nạp
+    showDataOnPage(currentPage);
+
+    // Xử lý nút "Trang trước"
+    document.getElementById("prevPageButton").addEventListener("click", function () {
+        if (currentPage > 1) {
+            currentPage--;
+            showDataOnPage(currentPage);
+        }
+    });
+
+    // Xử lý nút "Trang tiếp theo"
+    document.getElementById("nextPageButton").addEventListener("click", function () {
+        var maxPage = Math.ceil(dataItems.length / itemsPerPage);
+        if (currentPage < maxPage) {
+            currentPage++;
+            showDataOnPage(currentPage);
+        }
+    });
+
+</script>
+<script>
+    var dataContainer2 = document.getElementById("addFormContainer2");
+    var dataItems = dataContainer2.getElementsByClassName("data-item");
+    var itemsPerPage = 4; // Số lượng dữ liệu trên mỗi trang
+    var currentPage = 1; // Trang hiện tại
+
+    function showDataOnPage(page) {
+        for (var i = 0; i < dataItems.length; i++) {
+            dataItems[i].style.display = "none"; // Ẩn tất cả các dữ liệu
+        }
+
+        var startIndex = (page - 1) * itemsPerPage;
+        var endIndex = startIndex + itemsPerPage;
+
+        for (var i = startIndex; i < endIndex && i < dataItems.length; i++) {
+            dataItems[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
+        }
+    }
+
+    // Gọi hàm hiển thị trang đầu tiên khi trang web được nạp
+    showDataOnPage(currentPage);
+
+    // Xử lý nút "Trang trước"
+    document.getElementById("prevPageButton2").addEventListener("click", function () {
+        if (currentPage > 1) {
+            currentPage--;
+            showDataOnPage(currentPage);
+        }
+    });
+
+    // Xử lý nút "Trang tiếp theo"
+    document.getElementById("nextPageButton2").addEventListener("click", function () {
+        var maxPage = Math.ceil(dataItems.length / itemsPerPage);
+        if (currentPage < maxPage) {
+            currentPage++;
+            showDataOnPage(currentPage);
+        }
+    });
+
+</script>
+<script>
+    var dataContainer3 = document.getElementById("addFormContainer3");
+    var dataItems = dataContainer3.getElementsByClassName("data-item");
+    var itemsPerPage = 4; // Số lượng dữ liệu trên mỗi trang
+    var currentPage = 1; // Trang hiện tại
+
+    function showDataOnPage(page) {
+        for (var i = 0; i < dataItems.length; i++) {
+            dataItems[i].style.display = "none"; // Ẩn tất cả các dữ liệu
+        }
+
+        var startIndex = (page - 1) * itemsPerPage;
+        var endIndex = startIndex + itemsPerPage;
+
+        for (var i = startIndex; i < endIndex && i < dataItems.length; i++) {
+            dataItems[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
+        }
+    }
+
+    // Gọi hàm hiển thị trang đầu tiên khi trang web được nạp
+    showDataOnPage(currentPage);
+
+    // Xử lý nút "Trang trước"
+    document.getElementById("prevPageButton3").addEventListener("click", function () {
+        if (currentPage > 1) {
+            currentPage--;
+            showDataOnPage(currentPage);
+        }
+    });
+
+    // Xử lý nút "Trang tiếp theo"
+    document.getElementById("nextPageButton3").addEventListener("click", function () {
+        var maxPage = Math.ceil(dataItems.length / itemsPerPage);
+        if (currentPage < maxPage) {
+            currentPage++;
+            showDataOnPage(currentPage);
+        }
+    });
+
+</script>
+<script>
+    var dataContainer4 = document.getElementById("addFormContainer4");
+    var dataItems = dataContainer4.getElementsByClassName("data-item");
+    var itemsPerPage = 4; // Số lượng dữ liệu trên mỗi trang
+    var currentPage = 1; // Trang hiện tại
+
+    function showDataOnPage(page) {
+        for (var i = 0; i < dataItems.length; i++) {
+            dataItems[i].style.display = "none"; // Ẩn tất cả các dữ liệu
+        }
+
+        var startIndex = (page - 1) * itemsPerPage;
+        var endIndex = startIndex + itemsPerPage;
+
+        for (var i = startIndex; i < endIndex && i < dataItems.length; i++) {
+            dataItems[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
+        }
+    }
+
+    // Gọi hàm hiển thị trang đầu tiên khi trang web được nạp
+    showDataOnPage(currentPage);
+
+    // Xử lý nút "Trang trước"
+    document.getElementById("prevPageButton4").addEventListener("click", function () {
+        if (currentPage > 1) {
+            currentPage--;
+            showDataOnPage(currentPage);
+        }
+    });
+
+    // Xử lý nút "Trang tiếp theo"
+    document.getElementById("nextPageButton4").addEventListener("click", function () {
+        var maxPage = Math.ceil(dataItems.length / itemsPerPage);
+        if (currentPage < maxPage) {
+            currentPage++;
+            showDataOnPage(currentPage);
+        }
+    });
+
+</script>
 </body>
 </html>

@@ -16,6 +16,16 @@ public interface HoaDonChiTietRepo extends JpaRepository<HoaDonChiTiet, UUID> {
     @Query("select hdct from HoaDonChiTiet hdct where hdct.hoaDon.id = ?1")
     List<HoaDonChiTiet> findByHoaDon(UUID id);
 
-    @Query("select sum(hdct.soLuong) from HoaDonChiTiet hdct where CAST(hdct.hoaDon.ngayHoanThanh AS DATE) = ?1")
+    @Query("select sum(hdct.soLuong) from HoaDonChiTiet hdct where (CAST(hdct.hoaDon.ngayHoanThanh AS DATE) = ?1 and hdct.hoaDon.trangThai = 3)")
     int soLuongBanTheoNgayThanhToan(LocalDate ngayHoanThanh);
+
+    @Query(value = "select sum(hdct.SoLuong) from HoaDonChiTiet hdct join HoaDon hd on hdct.IdHoaDon = hd.Id where hd.TrangThai = 3 and Cast(hd.NgayHoanThanh as date) = ?1",nativeQuery = true)
+    Integer soLuongBanTheoNgay(LocalDate date);
+
+    @Query("SELECT sum(hdct.soLuong)\n" +
+            "FROM HoaDonChiTiet hdct\n" +
+            "WHERE  CAST(hdct.hoaDon.ngayThanhToan AS DATE) >= ?1 AND CAST(hdct.hoaDon.ngayThanhToan AS DATE) <= ?2\n" +
+            "GROUP BY DATEPART(month , CAST(hdct.hoaDon.ngayThanhToan AS DATE)), DATEPART(year , CAST(hdct.hoaDon.ngayThanhToan AS DATE))\n" +
+            "ORDER BY DATEPART(month , CAST(hdct.hoaDon.ngayThanhToan AS DATE)), DATEPART(year , CAST(hdct.hoaDon.ngayThanhToan AS DATE))")
+    List<Integer> soLuongBanTheoThang(LocalDate date1, LocalDate date2);
 }

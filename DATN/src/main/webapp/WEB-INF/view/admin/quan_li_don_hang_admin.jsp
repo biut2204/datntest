@@ -997,6 +997,30 @@
         if (status == 1) {
             var targetStatus = document.querySelector('.status-' + 1);
             targetStatus.style.backgroundColor = '#ff8b33';
+
+            var targetStatus1 = document.querySelector('.status-' + 2);
+            targetStatus1.style.display = 'none';
+
+            var targetStatus2 = document.querySelector('.status-' + 3);
+            targetStatus2.style.display = 'none';
+
+            var targetStatus3 = document.querySelector('.status-' + 4);
+            targetStatus3.style.display = 'none';
+
+            var arrowElements = document.querySelectorAll('.arrow1 i');
+            arrowElements.forEach(function (arrow) {
+                arrow.style.display = 'none';
+            });
+
+            var arrowElements1 = document.querySelectorAll('.arrow2 i');
+            arrowElements1.forEach(function (arrow) {
+                arrow.style.display = 'none';
+            });
+
+            var arrowElements2 = document.querySelectorAll('.arrow3 i');
+            arrowElements2.forEach(function (arrow) {
+                arrow.style.display = 'none';
+            });
         }
         if (status == 2) {
             var targetStatus = document.querySelector('.status-' + 1);
@@ -1005,9 +1029,25 @@
             var targetStatus1 = document.querySelector('.status-' + 2);
             targetStatus1.style.backgroundColor = 'wheat';
 
+            var targetStatus2 = document.querySelector('.status-' + 3);
+            targetStatus2.style.display = 'none';
+
+            var targetStatus3 = document.querySelector('.status-' + 4);
+            targetStatus3.style.display = 'none';
+
             var arrowElements = document.querySelectorAll('.arrow1 i');
             arrowElements.forEach(function (arrow) {
                 arrow.style.color = 'green';
+            });
+
+            var arrowElements1 = document.querySelectorAll('.arrow2 i');
+            arrowElements1.forEach(function (arrow) {
+                arrow.style.display = 'none';
+            });
+
+            var arrowElements2 = document.querySelectorAll('.arrow3 i');
+            arrowElements2.forEach(function (arrow) {
+                arrow.style.display = 'none';
             });
         }
 
@@ -1021,6 +1061,9 @@
             var targetStatus2 = document.querySelector('.status-' + 3);
             targetStatus2.style.backgroundColor = 'springgreen';
 
+            var targetStatus3 = document.querySelector('.status-' + 4);
+            targetStatus3.style.display = 'none';
+
             var arrowElements = document.querySelectorAll('.arrow1 i');
             arrowElements.forEach(function (arrow) {
                 arrow.style.color = 'green';
@@ -1029,6 +1072,11 @@
             var arrowElements1 = document.querySelectorAll('.arrow2 i');
             arrowElements1.forEach(function (arrow) {
                 arrow.style.color = 'green';
+            });
+
+            var arrowElements2 = document.querySelectorAll('.arrow3 i');
+            arrowElements2.forEach(function (arrow) {
+                arrow.style.display = 'none';
             });
         }
 
@@ -1037,27 +1085,27 @@
             targetStatus.style.backgroundColor = '#ff8b33';
 
             var targetStatus1 = document.querySelector('.status-' + 2);
-            targetStatus1.style.backgroundColor = '#ccc';
+            targetStatus1.style.display = 'none';
 
             var targetStatus2 = document.querySelector('.status-' + 3);
-            targetStatus2.style.backgroundColor = '#ccc';
+            targetStatus2.style.display = 'none';
 
             var targetStatus3 = document.querySelector('.status-' + 4);
             targetStatus3.style.backgroundColor = 'red';
 
             var arrowElements = document.querySelectorAll('.arrow1 i');
             arrowElements.forEach(function (arrow) {
-                arrow.style.color = '#ccc';
+                arrow.style.display = 'none';
             });
 
             var arrowElements1 = document.querySelectorAll('.arrow2 i');
             arrowElements1.forEach(function (arrow) {
-                arrow.style.color = '#ccc';
+                arrow.style.display = 'none';
             });
 
             var arrowElements2 = document.querySelectorAll('.arrow3 i');
             arrowElements2.forEach(function (arrow) {
-                arrow.style.color = '#ccc';
+                arrow.style.color = 'green';
             });
         }
     }
