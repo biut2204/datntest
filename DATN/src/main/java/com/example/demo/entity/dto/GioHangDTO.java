@@ -1,6 +1,7 @@
 package com.example.demo.entity.dto;
 
 import com.example.demo.entity.khachhang.GioHangChiTiet;
+import com.example.demo.entity.khachhang.HoaDonChiTiet;
 import com.example.demo.entity.sanpham.AoChiTiet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,4 +19,6 @@ public class GioHangDTO {
     int gia;
 
     GioHangChiTiet gioHangChiTiet;
+
+    HoaDonChiTiet hoaDonChiTiet;
 }

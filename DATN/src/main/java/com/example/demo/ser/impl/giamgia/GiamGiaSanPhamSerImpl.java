@@ -22,7 +22,7 @@ public class GiamGiaSanPhamSerImpl implements GiamGiaSanPhamSer {
 
     @Override
     public List<GiamGiaSanPham> getAll() {
-        return giamGiaSanPhamRepo.findAll();
+        return giamGiaSanPhamRepo.findAllByTrangThai();
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,7 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, UUID> {
     @Query("select hd from HoaDon hd where hd.trangThai = ?1")
     Page<HoaDon> listHoaDonFindByTrangThai( int trangThai, Pageable pageable);
 
-    @Query("select hd from HoaDon hd where hd.khachHang.id = ?1 and hd.trangThai = ?2")
+    @Query("select hd from HoaDon hd where hd.khachHang.id = ?1 and hd.trangThai = ?2 order by hd.ngayTao DESC")
     List<HoaDon> findByUserAndTrangThai(UUID id, int trangThai);
 
     @Query("select hd from HoaDon hd where hd.ma = ?1")
@@ -46,14 +47,14 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, UUID> {
     @Query("SELECT COUNT(hd.ma) FROM HoaDon hd WHERE  CAST(hd.ngayHuy AS DATE) = ?1 AND hd.trangThai = 4")
     int countHoaDonHuyByNgayHienTai(LocalDate date);
 
-    @Query("SELECT hd FROM HoaDon hd WHERE CAST(hd.ngayChoXacNhan AS date) = ?1 or CAST(hd.ngayXacNhan AS date) = ?1 or CAST(hd.ngayHoanThanh AS date) = ?1 or CAST(hd.ngayHuy AS date) = ?1")
+    @Query("SELECT hd FROM HoaDon hd WHERE CAST(hd.ngayChoXacNhan AS date) = ?1 or CAST(hd.ngayXacNhan AS date) = ?1 or CAST(hd.ngayHoanThanh AS date) = ?1 or CAST(hd.ngayHuy AS date) = ?1  order by hd.ngayTao DESC")
     Page<HoaDon> listHoaDonTheoNgay( LocalDate date, Pageable pageable);
 
     @Query(value = "select * from HoaDon where TrangThai = 1 or TrangThai = 2 or TrangThai = 3 or TrangThai = 4 order by NgayTao DESC",nativeQuery = true)
     List<HoaDon> findAllByOrderByNgayTaoDesc();
 
     @Query("select sum(hd.tongTien) from HoaDon hd where cast(hd.ngayThanhToan as date)  = ?1")
-    Integer doanhThuTheoNgay(LocalDate date);
+    Double doanhThuTheoNgay(LocalDate date);
 
     @Query("SELECT COUNT(hd.khachHang) FROM HoaDon hd\n" +
             "WHERE cast(hd.ngayThanhToan as date)  = ?1\n" +
@@ -85,4 +86,27 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, UUID> {
 
     @Query("select hd from HoaDon hd where cast(hd.ngayHuy as date) = ?1 and hd.trangThai = 4")
     List<HoaDon> listHoaDonByNgayHuy(LocalDate localDate);
+
+    @Query("SELECT  sum(hd.tongTien) " +
+            "FROM HoaDon hd " +
+            "WHERE cast(hd.ngayThanhToan as date) >= ?1 AND cast(hd.ngayThanhToan as date) <= ?2 " +
+            "GROUP BY DATEPART(MONTH, cast(hd.ngayThanhToan as date) ), DATEPART(YEAR, cast(hd.ngayThanhToan as date)) " +
+            "ORDER BY DATEPART(YEAR, cast(hd.ngayThanhToan as date)), DATEPART(MONTH, cast(hd.ngayThanhToan as date))")
+    Double doanhThuThangHienTai(LocalDate date1, LocalDate date2);
+
+    @Query("select sum(hd.tongTien) from HoaDon hd where month(hd.ngayHoanThanh) = ?1 and year(hd.ngayHoanThanh) = ?2 and hd.trangThai = 3")
+    BigDecimal tongTienTheoThangNam(int month, int year);
+
+    @Query("select sum(hd.tongTien) from HoaDon hd where month(hd.ngayHuy) = ?1 and year(hd.ngayHuy) = ?2 and hd.trangThai = 4")
+    BigDecimal tongTienHuyTheoThangNam(int month, int year);
+
+    @Query("select count(hd.id) from HoaDon hd where month(hd.ngayHoanThanh) = ?1 and year(hd.ngayHoanThanh) = ?2 and hd.trangThai = 3")
+    int soDonHoanThanh(int month, int year);
+
+    @Query("select count(hd.id) from HoaDon hd where month(hd.ngayHuy) = ?1 and year(hd.ngayHuy) = ?2 and hd.trangThai = 4")
+    int soDonHuy(int month, int year);
+
+    @Query(value = "SELECT DISTINCT YEAR(NgayTao) AS Nam\n" +
+            "FROM HoaDon;",nativeQuery = true)
+    List<String> listYearByHoaDon();
 }

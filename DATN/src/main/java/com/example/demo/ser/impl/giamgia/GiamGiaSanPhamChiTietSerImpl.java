@@ -34,4 +34,19 @@ public class GiamGiaSanPhamChiTietSerImpl implements GiamGiaSanPhamChiTietSer {
     public GiamGiaSanPhamChiTiet findByIdAoAndTrangThai(UUID id) {
         return giamGiaSanPhamChiTietRepo.findByIdAoAndTrangThai(id);
     }
+
+    @Override
+    public List<GiamGiaSanPhamChiTiet> findAllByGiamGiaSP(UUID id) {
+        return giamGiaSanPhamChiTietRepo.findAllByGiamGiaSP(id);
+    }
+
+    @Override
+    public void update(UUID id, GiamGiaSanPhamChiTiet update) {
+        GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietRepo.findById(id).orElse(null);
+        giamGiaSanPhamChiTiet.setAo(update.getAo());
+        giamGiaSanPhamChiTiet.setGiamGiaSanPham(update.getGiamGiaSanPham());
+        giamGiaSanPhamChiTiet.setSoTienDaGiam(update.getSoTienDaGiam());
+        giamGiaSanPhamChiTiet.setTrangThai(update.getTrangThai());
+        giamGiaSanPhamChiTietRepo.save(giamGiaSanPhamChiTiet);
+    }
 }

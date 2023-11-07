@@ -1,11 +1,13 @@
 package com.example.demo.ser.users;
 
+import com.example.demo.entity.dto.BieuDoDTO;
 import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.entity.dto.DonHangDTO;
 import com.example.demo.entity.dto.HoaDonDTO;
 import com.example.demo.entity.dto.ThongKeDTO;
 import org.springframework.data.domain.Page;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,8 @@ public interface HoaDonSer {
     void update(UUID id, HoaDon updateHoaDon);
 
     void add(HoaDon hoaDon);
+
+    void delete(UUID id);
 
     Long tongSl(UUID id);
 
@@ -46,7 +50,7 @@ public interface HoaDonSer {
 
     Page<HoaDon> listHoaDonTheoNgay(LocalDate date, Integer pageNo);
 
-    Integer doanhThuTheoNgay(LocalDate date);
+    Double doanhThuTheoNgay(LocalDate date);
 
     Integer soLuongKhachMuaTheoNgay(LocalDate date);
 
@@ -62,4 +66,7 @@ public interface HoaDonSer {
 
     List<HoaDon> listHoaDonByNgayHuy(LocalDate localDate);
 
+    Double doanhThuThangHienTai(LocalDate date1, LocalDate date2);
+
+    List<BieuDoDTO> listBieuDo();
 }

@@ -25,6 +25,7 @@
             border-bottom: 1px dashed #aaa;
             margin: 10px 0;
         }
+
         button#prevPageButton,
         button#nextPageButton,
         button#prevPageButton2,
@@ -32,7 +33,7 @@
         button#prevPageButton3,
         button#nextPageButton3,
         button#prevPageButton4,
-        button#nextPageButton4{
+        button#nextPageButton4 {
             background-color: #007bff; /* Màu nền */
             color: #fff; /* Màu chữ */
             border: none;
@@ -53,7 +54,7 @@
         button#prevPageButton3:hover,
         button#nextPageButton3:hover,
         button#prevPageButton4:hover,
-        button#nextPageButton4:hover{
+        button#nextPageButton4:hover {
             background-color: #0056b3; /* Màu nền thay đổi khi hover */
         }
     </style>
@@ -285,13 +286,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="/admin/index/1" class="nav-link active">
+                                <a href="../../../index.html" class="nav-link active">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Dashboard v1</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/thong_ke/1" class="nav-link">
+                                <a href="../../../index2.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Dashboard v2</p>
                                 </a>
@@ -368,6 +369,29 @@
                                 <a href="/admin/size/view/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Size</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item ">
+                        <a href="#" class="nav-link ">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>
+                                Quản Lý Tài Khoản
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/admin/nhanvien/1" class="nav-link ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Nhân Viên</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/khachhang/1" class="nav-link ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Khách Hàng</p>
                                 </a>
                             </li>
                         </ul>
@@ -642,18 +666,36 @@
                             <i class="fas fa-chart-pie mr-1"></i>
                             Thống kê
                         </h3>
+                        <div class="card-tools">
+                            <ul class="nav nav-pills ml-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Day</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#sales-chart" data-toggle="tab">Month</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div><!-- /.card-header -->
+
                     <div class="card-body">
-                        <div class="chart tab-pane active" id="revenue-chart"
-                             style="position: relative; height: 450px;">
-                            <div id="container">
-                                <canvas id="myChart" width="400" height="200"></canvas>
-                                <div id="button-container">
-                                    <button id="prevWeek">Trước</button>
-                                    <button id="nextWeek">Sau</button>
+                        <div class="tab-content p-0">
+                            <!-- Morris chart - Sales -->
+                            <div class="chart tab-pane active" id="revenue-chart"
+                                 style="position: relative; height: 450px;">
+                                <div id="container">
+                                    <canvas id="myChart" width="400" height="200"></canvas>
+                                    <div id="button-container">
+                                        <button id="prevWeek">Trước</button>
+                                        <button id="nextWeek">Sau</button>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 450px;">
+                                <canvas id="myChart1" width="400" height="200"></canvas>
+                            </div>
                         </div>
+
                     </div><!-- /.card-body -->
                 </div>
             </section>
@@ -676,34 +718,35 @@
                     <div class="card-body" style="background: white; color: #0a0e14">
                         <c:forEach items="${page.content}" var="list">
                             <div style="margin-bottom: 10px">
-                                <div style="display: inline-block;width: 100px">${list.ma}</div>
-                                <div style="display: inline-block;width: 150px">${list.khachHang.ten}</div>
-                                <div style="display: inline-block;width: 100px">
-                                    <fmt:formatNumber value="${list.tongTien}" type="currency" currencySymbol="VNĐ"/>
-                                </div>
-                                <c:choose>
-                                    <c:when test="${list.trangThai == 1}">
-                                        <div style="display: inline-block;width: 100px;text-align: center;background: #ff8b33;border-radius: 15px">
-                                            Chờ xác nhận
-                                        </div>
-                                    </c:when>
-                                    <c:when test="${list.trangThai == 2}">
-                                        <div style="display: inline-block;width: 100px;text-align: center;background: wheat;border-radius: 15px">
-                                            Đang giao
-                                        </div>
-                                    </c:when>
-                                    <c:when test="${list.trangThai == 3}">
-                                        <div style="display: inline-block;width: 100px;text-align: center;background: springgreen;border-radius: 15px">
-                                            Hoàn thành
-                                        </div>
-                                    </c:when>
-                                    <c:when test="${list.trangThai == 4}">
-                                        <div style="display: inline-block;width: 100px;text-align: center;background: red;border-radius: 15px">
-                                            Hủy
-                                        </div>
-                                    </c:when>
-                                </c:choose>
-
+                                <a href="/admin/quan_li_don_hang/${list.ma}" style="color: black">
+                                    <div style="display: inline-block;width: 100px">${list.ma}</div>
+                                    <div style="display: inline-block;width: 150px">${list.khachHang.ten}</div>
+                                    <div style="display: inline-block;width: 100px">
+                                        <fmt:formatNumber value="${list.tongTien}" type="currency" currencySymbol="VNĐ"/>
+                                    </div>
+                                    <c:choose>
+                                        <c:when test="${list.trangThai == 1}">
+                                            <div style="display: inline-block;width: 100px;text-align: center;background: #ff8b33;border-radius: 15px">
+                                                Chờ xác nhận
+                                            </div>
+                                        </c:when>
+                                        <c:when test="${list.trangThai == 2}">
+                                            <div style="display: inline-block;width: 100px;text-align: center;background: wheat;border-radius: 15px">
+                                                Đang giao
+                                            </div>
+                                        </c:when>
+                                        <c:when test="${list.trangThai == 3}">
+                                            <div style="display: inline-block;width: 100px;text-align: center;background: springgreen;border-radius: 15px">
+                                                Hoàn thành
+                                            </div>
+                                        </c:when>
+                                        <c:when test="${list.trangThai == 4}">
+                                            <div style="display: inline-block;width: 100px;text-align: center;background: red;border-radius: 15px">
+                                                Hủy
+                                            </div>
+                                        </c:when>
+                                    </c:choose>
+                                </a>
                             </div>
                         </c:forEach>
                         <ul class="pagination">
@@ -1009,6 +1052,7 @@
             currentPage--;
             showDataOnPage(currentPage);
         }
+        event.preventDefault();
     });
 
     // Xử lý nút "Trang tiếp theo"
@@ -1018,6 +1062,7 @@
             currentPage++;
             showDataOnPage(currentPage);
         }
+        event.preventDefault();
     });
 
 </script>
@@ -1049,6 +1094,7 @@
             currentPage--;
             showDataOnPage(currentPage);
         }
+        event.preventDefault();
     });
 
     // Xử lý nút "Trang tiếp theo"
@@ -1058,6 +1104,7 @@
             currentPage++;
             showDataOnPage(currentPage);
         }
+        event.preventDefault();
     });
 
 </script>
@@ -1089,6 +1136,7 @@
             currentPage--;
             showDataOnPage(currentPage);
         }
+        event.preventDefault();
     });
 
     // Xử lý nút "Trang tiếp theo"
@@ -1098,6 +1146,7 @@
             currentPage++;
             showDataOnPage(currentPage);
         }
+        event.preventDefault();
     });
 
 </script>
@@ -1129,6 +1178,7 @@
             currentPage--;
             showDataOnPage(currentPage);
         }
+        event.preventDefault();
     });
 
     // Xử lý nút "Trang tiếp theo"
@@ -1138,8 +1188,82 @@
             currentPage++;
             showDataOnPage(currentPage);
         }
+        event.preventDefault();
     });
 
+</script>
+<script>
+    // Lấy dữ liệu từ model và chuyển đổi thành mảng JavaScript
+    var labels = [];
+    var soDonHoanThanhData = [];
+    var soDonHuyData = [];
+    var tongTienHoanThanhData = [];
+    var tongTienHuyData = [];
+
+    <c:forEach var="bieuDoDTO" items="${listBieuDoDTOS}">
+    labels.push("${bieuDoDTO.thang}");
+    soDonHoanThanhData.push(${bieuDoDTO.soDonHoanThanh});
+    soDonHuyData.push(${bieuDoDTO.soDonHuy});
+    tongTienHoanThanhData.push(${bieuDoDTO.tongTienHoanThanh});
+    tongTienHuyData.push(${bieuDoDTO.tongTienHuy});
+    </c:forEach>
+
+    var ctx = document.getElementById('myChart1').getContext('2d');
+
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Số đơn hoàn thành',
+                data: soDonHoanThanhData,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Màu của cột
+                borderColor: 'rgba(75, 192, 192, 1)', // Màu viền của cột
+                borderWidth: 1,
+                yAxisID: 'left-y-axis'
+            }, {
+                label: 'Số đơn hủy',
+                data: soDonHuyData,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Màu của cột
+                borderColor: 'rgba(255, 99, 132, 1)', // Màu viền của cột
+                borderWidth: 1,
+                yAxisID: 'left-y-axis'
+            }, {
+                label: 'Tổng tiền hoàn thành',
+                data: tongTienHoanThanhData,
+                type: 'line', // Loại biểu đồ là Line
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)', // Màu của đường
+                yAxisID: 'right-y-axis'
+            }, {
+                label: 'Tổng tiền hủy',
+                data: tongTienHuyData,
+                type: 'line', // Loại biểu đồ là Line
+                fill: false,
+                borderColor: 'rgba(255, 99, 132, 1)', // Màu của đường
+                yAxisID: 'right-y-axis'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    id: 'left-y-axis',
+                    type: 'linear',
+                    position: 'left',
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }, {
+                    id: 'right-y-axis',
+                    type: 'linear',
+                    position: 'right',
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 </script>
 </body>
 </html>

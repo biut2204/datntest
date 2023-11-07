@@ -17,9 +17,19 @@ public interface HoaDonChiTietSer {
 
     void update(UUID id, HoaDonChiTiet updateHDCT);
 
+    void delete(UUID id);
+
+    HoaDonChiTiet findById(UUID id);
+
+    int soLuongHoaDonCHiTietByHoaDon(UUID id);
+
+    HoaDonChiTiet findByHoaDonAndAoChiTiet(UUID idHoaDon, UUID idACT);
+
     Integer soLuongBanTheoNgay(LocalDate date);
 
     List<Integer> soLuongBanTheoThang(LocalDate date1, LocalDate date2);
 
     List<HoaDonChiTietDTO> listHoaDonTheoNgay(List<HoaDon> listHoaDons);
+
+    Integer soLuongBanThangHienTai(LocalDate date1, LocalDate date2);
 }

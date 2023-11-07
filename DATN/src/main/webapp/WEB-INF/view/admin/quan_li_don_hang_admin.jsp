@@ -43,6 +43,7 @@
             padding: 20px;
             border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
+            margin-top: 10%;
         }
 
         #addForm button[type="submit"] {
@@ -83,7 +84,6 @@
         .status {
             width: 20%;
             height: 100px;
-            background-color: gray;
             text-align: center;
             line-height: 100px;
             font-size: 22px;
@@ -92,13 +92,30 @@
             transition: background-color 0.3s;
         }
 
+        .status-1{
+            backgroundColor : #ff8b33;
+            background: #ff8b33;
+        }
+        .status-2{
+            backgroundColor : wheat;
+            background : wheat;
+        }
+        .status-3{
+            backgroundColor : springgreen;
+            background : springgreen;
+        }
+        .status-4{
+            backgroundColor : red;
+            background : red;
+        }
+
         .arrow1,
         .arrow2,
         .arrow3 {
             width: 30px;
             height: 30px;
             margin-top: 25px;
-            color: gray;
+            color: green;
             font-size: 40px;
         }
 
@@ -112,10 +129,6 @@
             border: 1px solid #ccc;
             padding: 8px;
             text-align: left;
-        }
-
-        .status-1, .status-2, .status-3, .status-4 {
-            background-color: gray;
         }
 
         /**/
@@ -581,26 +594,68 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
-        <section class="content">
-            <div class="container-fluid">
-                <div class="status-container">
-                    <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i> Đang
-                        chờ xác nhận
+        <div id="no_1">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="status-container">
+                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i> Đang
+                            chờ xác nhận
+                        </div>
                     </div>
-                    <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
-                    <div class="status status-2" onclick="showStatus('2')"><i class="fas fa-truck"></i> Đang giao</div>
-                    <div class="arrow arrow2"><i class="fas fa-arrow-right"></i></div>
-                    <div class="status status-3" onclick="showStatus('3')"><i class="fas fa-check-circle"></i> Hoàn
-                        thành
-                    </div>
-                    <div class="arrow arrow3"><i class="fas fa-arrow-right"></i></div>
-                    <div class="status status-4" onclick="showStatus('4')"><i class="fas fa-times-circle"></i> Hủy</div>
+                    <!-- /.row -->
                 </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
-        </section>
-
+                <!-- /.container-fluid -->
+            </section>
+        </div>
+        <div id="no_2" style="display: none">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="status-container">
+                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i> Đang
+                            chờ xác nhận
+                        </div>
+                        <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
+                        <div class="status status-2" onclick="showStatus('2')"style="margin-right: 50%"><i class="fas fa-truck"></i> Đang giao</div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+        </div>
+        <div id="no_3" style="display: none">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="status-container">
+                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i> Đang
+                            chờ xác nhận
+                        </div>
+                        <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
+                        <div class="status status-2" onclick="showStatus('2')"><i class="fas fa-truck"></i> Đang giao</div>
+                        <div class="arrow arrow2"><i class="fas fa-arrow-right"></i></div>
+                        <div class="status status-3" onclick="showStatus('3')"style="margin-right: 25%"><i class="fas fa-check-circle"></i> Hoàn
+                            thành
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+        </div>
+        <div id="no_4" style="display: none">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="status-container">
+                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i> Đang
+                            chờ xác nhận
+                        </div>
+                        <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
+                        <div class="status status-4" onclick="showStatus('4')" style="margin-right: 50%"><i class="fas fa-times-circle"></i> Hủy</div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+        </div>
         <section class="content" style="margin-bottom: 20px">
             <form method="post">
                 <input type="hidden" name="maDonHang" value="${hoaDon.ma}">
@@ -975,138 +1030,43 @@
 <script>
 
     window.onload = function () {
-        showStatus('${trangThai}'); // Hiển thị trạng thái 'Đang chờ xác nhận' mặc định
+        showStatus('${trangThai}');
     };
 
-    function resetStatus() {
-        // Đặt lại màu xám cho tất cả các ô
-        document.querySelectorAll('.status').forEach(function (el) {
-            el.style.backgroundColor = 'gray';
-        });
-
-        // Đặt lại màu xám cho tất cả các mũi tên
-        document.querySelectorAll('.arrow').forEach(function (arrow) {
-            arrow.style.color = 'gray';
-        });
-    }
 
     function showStatus(status) {
         event.preventDefault();
-        resetStatus();
+
+        var no_1 = document.getElementById("no_1");
+        var no_2 = document.getElementById("no_2");
+        var no_3 = document.getElementById("no_3");
+        var no_4 = document.getElementById("no_4");
 
         if (status == 1) {
-            var targetStatus = document.querySelector('.status-' + 1);
-            targetStatus.style.backgroundColor = '#ff8b33';
-
-            var targetStatus1 = document.querySelector('.status-' + 2);
-            targetStatus1.style.display = 'none';
-
-            var targetStatus2 = document.querySelector('.status-' + 3);
-            targetStatus2.style.display = 'none';
-
-            var targetStatus3 = document.querySelector('.status-' + 4);
-            targetStatus3.style.display = 'none';
-
-            var arrowElements = document.querySelectorAll('.arrow1 i');
-            arrowElements.forEach(function (arrow) {
-                arrow.style.display = 'none';
-            });
-
-            var arrowElements1 = document.querySelectorAll('.arrow2 i');
-            arrowElements1.forEach(function (arrow) {
-                arrow.style.display = 'none';
-            });
-
-            var arrowElements2 = document.querySelectorAll('.arrow3 i');
-            arrowElements2.forEach(function (arrow) {
-                arrow.style.display = 'none';
-            });
+            no_1.style.display = "block";
+            no_2.style.display = "none";
+            no_3.style.display = "none";
+            no_4.style.display = "none";
         }
         if (status == 2) {
-            var targetStatus = document.querySelector('.status-' + 1);
-            targetStatus.style.backgroundColor = '#ff8b33';
-
-            var targetStatus1 = document.querySelector('.status-' + 2);
-            targetStatus1.style.backgroundColor = 'wheat';
-
-            var targetStatus2 = document.querySelector('.status-' + 3);
-            targetStatus2.style.display = 'none';
-
-            var targetStatus3 = document.querySelector('.status-' + 4);
-            targetStatus3.style.display = 'none';
-
-            var arrowElements = document.querySelectorAll('.arrow1 i');
-            arrowElements.forEach(function (arrow) {
-                arrow.style.color = 'green';
-            });
-
-            var arrowElements1 = document.querySelectorAll('.arrow2 i');
-            arrowElements1.forEach(function (arrow) {
-                arrow.style.display = 'none';
-            });
-
-            var arrowElements2 = document.querySelectorAll('.arrow3 i');
-            arrowElements2.forEach(function (arrow) {
-                arrow.style.display = 'none';
-            });
+            no_2.style.display = "block";
+            no_1.style.display = "none";
+            no_3.style.display = "none";
+            no_4.style.display = "none";
         }
 
         if (status == 3) {
-            var targetStatus = document.querySelector('.status-' + 1);
-            targetStatus.style.backgroundColor = '#ff8b33';
-
-            var targetStatus1 = document.querySelector('.status-' + 2);
-            targetStatus1.style.backgroundColor = 'wheat';
-
-            var targetStatus2 = document.querySelector('.status-' + 3);
-            targetStatus2.style.backgroundColor = 'springgreen';
-
-            var targetStatus3 = document.querySelector('.status-' + 4);
-            targetStatus3.style.display = 'none';
-
-            var arrowElements = document.querySelectorAll('.arrow1 i');
-            arrowElements.forEach(function (arrow) {
-                arrow.style.color = 'green';
-            });
-
-            var arrowElements1 = document.querySelectorAll('.arrow2 i');
-            arrowElements1.forEach(function (arrow) {
-                arrow.style.color = 'green';
-            });
-
-            var arrowElements2 = document.querySelectorAll('.arrow3 i');
-            arrowElements2.forEach(function (arrow) {
-                arrow.style.display = 'none';
-            });
+            no_3.style.display = "block";
+            no_2.style.display = "none";
+            no_1.style.display = "none";
+            no_4.style.display = "none";
         }
 
         if (status == 4) {
-            var targetStatus = document.querySelector('.status-' + 1);
-            targetStatus.style.backgroundColor = '#ff8b33';
-
-            var targetStatus1 = document.querySelector('.status-' + 2);
-            targetStatus1.style.display = 'none';
-
-            var targetStatus2 = document.querySelector('.status-' + 3);
-            targetStatus2.style.display = 'none';
-
-            var targetStatus3 = document.querySelector('.status-' + 4);
-            targetStatus3.style.backgroundColor = 'red';
-
-            var arrowElements = document.querySelectorAll('.arrow1 i');
-            arrowElements.forEach(function (arrow) {
-                arrow.style.display = 'none';
-            });
-
-            var arrowElements1 = document.querySelectorAll('.arrow2 i');
-            arrowElements1.forEach(function (arrow) {
-                arrow.style.display = 'none';
-            });
-
-            var arrowElements2 = document.querySelectorAll('.arrow3 i');
-            arrowElements2.forEach(function (arrow) {
-                arrow.style.color = 'green';
-            });
+            no_4.style.display = "block";
+            no_2.style.display = "none";
+            no_3.style.display = "none";
+            no_1.style.display = "none";
         }
     }
 </script>

@@ -1,5 +1,6 @@
 package com.example.demo.ser.impl.users;
 
+import com.example.demo.entity.dto.BieuDoDTO;
 import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
 import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.entity.khachhang.HoaDonChiTiet;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +75,11 @@ public class HoaDonSerImpl implements HoaDonSer {
     @Override
     public void add(HoaDon hoaDon) {
         hoaDonRepo.save(hoaDon);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        hoaDonRepo.deleteById(id);
     }
 
     @Override
@@ -156,7 +163,7 @@ public class HoaDonSerImpl implements HoaDonSer {
     }
 
     @Override
-    public int soLuongHoaDonHoanThanhTheoNgay(LocalDate date){
+    public int soLuongHoaDonHoanThanhTheoNgay(LocalDate date) {
         return hoaDonRepo.soLuongHoaDonHoanThanhTheoNgay(date);
     }
 
@@ -170,7 +177,7 @@ public class HoaDonSerImpl implements HoaDonSer {
 
         List<DonHangDTO> listDonHangDTOS = new ArrayList<>();
         List<HoaDon> listHoaDons = hoaDonRepo.findAllByOrderByNgayTaoDesc();
-        for (HoaDon hoaDon : listHoaDons){
+        for (HoaDon hoaDon : listHoaDons) {
             DonHangDTO donHangDTO = new DonHangDTO();
 
             int sl = Math.toIntExact(hoaDonRepo.tongSl(hoaDon.getId()));
@@ -191,7 +198,7 @@ public class HoaDonSerImpl implements HoaDonSer {
     }
 
     @Override
-    public Integer doanhThuTheoNgay(LocalDate date) {
+    public Double doanhThuTheoNgay(LocalDate date) {
         return hoaDonRepo.doanhThuTheoNgay(date);
     }
 
@@ -202,12 +209,12 @@ public class HoaDonSerImpl implements HoaDonSer {
 
     @Override
     public List<Double> doanhThuTheoThang(LocalDate date1, LocalDate date2) {
-        return hoaDonRepo.doanhThuTheoThang(date1,date2);
+        return hoaDonRepo.doanhThuTheoThang(date1, date2);
     }
 
     @Override
     public List<Integer> getDataThang(LocalDate date1, LocalDate date2) {
-        return hoaDonRepo.getDataThang(date1,date2);
+        return hoaDonRepo.getDataThang(date1, date2);
     }
 
     @Override
@@ -228,6 +235,59 @@ public class HoaDonSerImpl implements HoaDonSer {
     @Override
     public List<HoaDon> listHoaDonByNgayHuy(LocalDate localDate) {
         return hoaDonRepo.listHoaDonByNgayHuy(localDate);
+    }
+
+    @Override
+    public Double doanhThuThangHienTai(LocalDate date1, LocalDate date2) {
+        return hoaDonRepo.doanhThuThangHienTai(date1, date2);
+    }
+
+    @Override
+    public List<BieuDoDTO> listBieuDo() {
+
+        List<BieuDoDTO> listBieuDoDTOS = new ArrayList<>();
+
+        List<String> listYear = hoaDonRepo.listYearByHoaDon();
+
+        LocalDate currentDate = LocalDate.now();
+        int currentMonth = currentDate.getMonthValue();
+        int currentYear = currentDate.getYear();
+
+
+        for (int i = 1; i <= currentMonth; i++) {
+            BieuDoDTO bieuDoDTO = new BieuDoDTO();
+
+            BigDecimal tongTien = hoaDonRepo.tongTienTheoThangNam(i, currentYear);
+            BigDecimal tt;
+            if (tongTien == null) {
+                tt = BigDecimal.valueOf(0);
+            } else {
+                tt = tongTien;
+            }
+
+            BigDecimal tongTienHuy = hoaDonRepo.tongTienHuyTheoThangNam(i, currentYear);
+            BigDecimal ttHuy;
+            if (tongTienHuy == null) {
+                ttHuy = BigDecimal.valueOf(0);
+            } else {
+                ttHuy = tongTienHuy;
+            }
+
+            int soDonHoanThanh = hoaDonRepo.soDonHoanThanh(i, currentYear);
+            int soDonHuy = hoaDonRepo.soDonHuy(i, currentYear);
+
+            String thang = "tháng " + i;
+
+            bieuDoDTO.setThang(thang);
+            bieuDoDTO.setTongTienHoanThanh(tt);
+            bieuDoDTO.setTongTienHuy(ttHuy);
+            bieuDoDTO.setSoDonHoanThanh(soDonHoanThanh);
+            bieuDoDTO.setSoDonHuy(soDonHuy);
+
+            listBieuDoDTOS.add(bieuDoDTO);
+        }
+
+        return listBieuDoDTOS;
     }
 
 }

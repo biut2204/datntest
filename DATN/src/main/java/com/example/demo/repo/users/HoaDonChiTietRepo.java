@@ -28,4 +28,17 @@ public interface HoaDonChiTietRepo extends JpaRepository<HoaDonChiTiet, UUID> {
             "GROUP BY DATEPART(month , CAST(hdct.hoaDon.ngayThanhToan AS DATE)), DATEPART(year , CAST(hdct.hoaDon.ngayThanhToan AS DATE))\n" +
             "ORDER BY DATEPART(month , CAST(hdct.hoaDon.ngayThanhToan AS DATE)), DATEPART(year , CAST(hdct.hoaDon.ngayThanhToan AS DATE))")
     List<Integer> soLuongBanTheoThang(LocalDate date1, LocalDate date2);
+
+    @Query("SELECT sum(hdct.soLuong)\n" +
+            "FROM HoaDonChiTiet hdct\n" +
+            "WHERE  CAST(hdct.hoaDon.ngayThanhToan AS DATE) >= ?1 AND CAST(hdct.hoaDon.ngayThanhToan AS DATE) <= ?2\n" +
+            "GROUP BY DATEPART(month , CAST(hdct.hoaDon.ngayThanhToan AS DATE)), DATEPART(year , CAST(hdct.hoaDon.ngayThanhToan AS DATE))\n" +
+            "ORDER BY DATEPART(month , CAST(hdct.hoaDon.ngayThanhToan AS DATE)), DATEPART(year , CAST(hdct.hoaDon.ngayThanhToan AS DATE))")
+    Integer soLuongBanThangHienTai(LocalDate date1, LocalDate date2);
+
+    @Query("select count(hdct.id) from HoaDonChiTiet hdct where hdct.hoaDon.id = ?1")
+    int soLuongHoaDonCHiTietByHoaDon(UUID id);
+
+    @Query("select hdct from HoaDonChiTiet hdct where hdct.hoaDon.id = ?1 and hdct.aoChiTiet.id = ?2")
+    HoaDonChiTiet findByHoaDonAndAoChiTiet(UUID idHoaDon, UUID idACT);
 }

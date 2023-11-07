@@ -41,7 +41,7 @@ public class Users {
     private String gioiTinh;
 
     @Column(name = "NgaySinh")
-    private Date ngay_sinh;
+    private String ngay_sinh;
 
     @Column(name = "DiaChi")
     private String dia_chi;

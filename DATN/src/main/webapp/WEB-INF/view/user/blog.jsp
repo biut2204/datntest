@@ -28,63 +28,98 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../resources/css/style.css" rel="stylesheet">
-
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        .gia {
-            color: red;
-            font-weight: bold;
-            font-size: larger;
+        .banner img {
+            width: 100%;
+            height: 100% s;
+            top: 100px;
+        }
+        .banner_dow img {
+            width: 300px;
+            padding: 50px 50px;
+            margin: 10px 0;
+        }
+
+        /* banner dưới */
+        .banner_dow1 img {
+            width: 70%;
+            padding: 0px 200px;
+            margin: 50px 10px;
+            top: 20px;
             text-align: center;
         }
-
-        .gia del {
-            color: gray;
+        .categories {
+            margin: 30px 50px;
+            list-style-type: none;
+            text-align: center;
+            font-size: 30px;
+        }
+        .noidung {
+            padding: 20px;
+            margin: 20px;
         }
 
-        .label {
+        .noidung p {
+            font-size: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            letter-spacing: 1px;
+        }
+        .bosuutap .heading-blog {
+            font-size: 40px;
+            text-align: center;
+            margin-top: 100px;
+            margin-bottom: 80px;
+            position: relative;
+            word-spacing: 6px;
+        }
+
+        /* làm đẹp cho h3 (dấu gạch 2 bên) */
+        .bosuutap .heading-blog:after {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            color: black;
-            padding: 5px;
-            font-size: 5px;
-            transform: rotate(-45deg);
-            transform-origin: top right;
-            animation: blink 1s infinite alternate;
+            content: "";
+            width: 200px;
+            height: 7px;
+            background-color: black;
+            top: 50px;
+            left: 43%;
         }
 
-        @keyframes blink {
-            0% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-    </style>
-    <style>
-        #addFormContainer {
-            display: none;
-            position: fixed;
-            top: 50%;
-            padding-left: 80%;
-            width: 100%;
-            height: 150%; /* Màu nền với độ trong suốt */
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            display: flex;
+        .bosuutap h4 {
+            font-size: 23px;
         }
 
-        #addForm {
-            width: 100%;
-            height: 300px;
-            background-color: white; /* Màu nền của biểu mẫu */
-            border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
+        .bosuutap p {
+            font-size: 19px;
+        }
+
+        /* làm đẹp cho h3 (dấu gạch 2 bên) */
+        .bosuutap .heading3:after {
+            position: absolute;
+            content: "";
+            width: 200px;
+            height: 7px;
+            background-color: black;
+            top: 50px;
+            left: 43%;
+        }
+
+        /* chỉnh bộ sưu tập */
+        .bosuutap .list-bst .bst {
+            text-align: center;
+            width: 30%;
+            margin: 20px 15px;
+            display: inline-block;
+            line-height: 26px;
+        }
+
+        .bosuutap .list-bst .bst img {
+            max-width: 100%;
+        }
+
+        .bosuutap .list-bst .bst:hover {
+            box-shadow: rgb(0 0 0 / 13%) 0px 10px 20px 0px, rgb(0 0 0 / 19%) 0px 3px 9px 0px;
+            transition: all .3s liner;
         }
     </style>
 </head>
@@ -95,8 +130,8 @@
     <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
         <div class="col-lg-4">
             <a href="/user/trang_chu/${idKh}" class="text-decoration-none">
-                <span class="h1 text-uppercase text-primary bg-dark px-2">SD</span>
-                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">99</span>
+                <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
+                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
             </a>
         </div>
         <div class="col-lg-4 col-6 text-left">
@@ -114,7 +149,7 @@
         </div>
         <div class="col-lg-4 col-6 text-right">
             <p class="m-0">Customer Service</p>
-            <h5 class="m-0">+84 987 654 321</h5>
+            <h5 class="m-0">+012 345 6789</h5>
         </div>
     </div>
 </div>
@@ -143,10 +178,10 @@
             <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="/user/trang_chu/${idKh}" class="nav-item nav-link active">Trang chủ</a>
+                        <a href="/user/trang_chu/${idKh}" class="nav-item nav-link ">Trang chủ</a>
                         <a href="/user/shop/${idKh}" class="nav-item nav-link">Cửa hàng</a>
                         <a href="/user/contact/${idKh}" class="nav-item nav-link">Thông tin cửa hàng</a>
-                        <a href="/user/blog/${idKh}" class="nav-item nav-link">Bài viết</a>
+                        <a href="/user/blog/${idKh}" class="nav-item nav-link active">Bài viết</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                         <c:choose>
@@ -175,40 +210,68 @@
     </div>
 </div>
 <!-- Navbar End -->
-<!-- Carousel Start -->
-<div class="container-fluid pt-5 pb-3">
-    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">${loaiAo.ten}</span>
-    </h2>
 
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
     <div class="row px-xl-5">
-        <c:forEach items="${listAoDTOS}" var="list">
-            <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                <div class="product-item bg-light mb-4">
-                    <div class="product-img position-relative overflow-hidden">
-                        <img class="img-fluid" style="width: 100%; height: 350px"
-                             src="/images/${list.ao.anhs.get(0).ten_url}" alt="">
-                        <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square"
-                               href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i class="fa fa-search"></i></a>
-                        </div>
-                    </div>
-                    <div class="text-center py-4">
-                        <a class="h6 text-decoration-none text-truncate"
-                           href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a>
-                        <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5><strong><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
-                                                          currencySymbol="VNĐ"/></strong></h5>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-center mt-2">
-                            <span class="ml-2">${list.slBan} sản phẩm đã bán</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/user/trang_chu/${idKh}">Trang chủ</a>
+                <span class="breadcrumb-item active">Bài viết</span>
+            </nav>
+        </div>
     </div>
 </div>
+<!-- Breadcrumb End -->
+
+
+<!-- Contact Start -->
+<div class="container-fluid">
+    <div class="banner">
+        <img src="/images/banner4.jpg"/>
+    </div>
+    <ul class="categories">
+        <li class="category"><strong>/Blog/</strong></li>
+    </ul>
+    <div class="noidung">
+        <p>Áo sơ mi nam là một trong những trang phục không thể thiếu trong tủ đồ của mọi quýng. Với sự đa dng về kiểu dáng,
+            màu sắc và chất liệu, áo sơ mi mangến cho phái mạnh sự lịch lãm và phong cách.</p><br>
+        <p>Một trong những kiểu áo sơ mi nam phổ biến nhất là áo sơ mi cổ điển. Với cổ áo bẻ, nút cài phía trước và tay dài,
+            áo sơ mi cổ điển tạo nên vẻ trang nhã và thanh lịch cho người mặc. Chúngích hợp để diện trong các buổi làm việc
+            chuyên nghiệp hoặc các dịp trang trọng.</p><br>
+        <p>Ngoài ra, áo sơ mi nam còn có nhiều kiểu dáng khác nhau như áo sơ mi dài tay, áo sơ mi ngắn tay, áo sơ mi caro,
+            áo sơ mi kẻ sọc và nhiều hơn nữa. Mỗi kiểu áo mang đến một cái nhìn riêng biệt và phù hợp với các hoàn cảnh khác
+            nhau.</p><br>
+        <p>Khi phối áo sơ mi nam, bạn có thể kết hợp với quần jeans để tạo nên phong cách cá nhân và thoải mái. Nếu muốn
+            trông lịch sự hơn, bạn có thể chọn quần âu hoặc quần kaki để tạo nên bộ trang phục công việc hoặc dạo phố.</p>
+        <p>Để áo sơ mi nam luôn mới và bền, hãy chú đến cách chăm sóc. Hầu hết các loại áo sơ đều yêu cầu giặt nhiệt độ nhẹ
+            và
+            ở nhiệt độ thích hợp để tránh làm hỏng chất liệu và hình dáng của áo.</p><br>
+        <p>Với sự đa dạng về kiểu dáng và cách phối đồ, áo sơ mi nam là một lựa chọn tuyệt vời để thể hiện phong cách và cá
+            nhân hóa trang phục. Hãy khámá thêm v áo sơ nam trên blog của chúng tôi để tìm kim những gợi ý và thông tin hữu
+            ích cho phong cách của bạn.</p><br>
+    </div>
+    <div class="bosuutap">
+        <h3 class="heading-blog">Báo<i class='bx bxs-hot'></i></h3>
+        <div class="list-bst">
+            <div class="bst">
+                <img src="/images/bst1.webp" alt="">
+                <h4>Vest trắng cho chú rể: Cách phối màu và phụ kiện để không nhàm chán</h4>
+            </div>
+            <div class="bst">
+                <img src="/images/bst3.webp" alt="">
+                <h4>BILUXURY RA MẮT BỘ SƯU TẬP HÈ 2022 - MUA SẮM TRÚNG QUÀ TO LÊN ĐẾN 1 TỶ ĐỒNG</h4>
+            </div>
+            <div class="bst">
+                <img src="/images/bst2.webp" alt="">
+                <h4>BILUXURY RA MẮT BST THÁNG 6 MỚI - ƯU ĐÃI MUA 2 TẶNG 1</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact End -->
+
 
 <!-- Footer Start -->
 <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
@@ -276,7 +339,7 @@
             </p>
         </div>
         <div class="col-md-6 px-xl-0 text-center text-md-right">
-            <img class="img-fluid" src="img/payments.png" alt="">
+            <img class="img-fluid" src="../../../resources/img/payments.png" alt="">
         </div>
     </div>
 </div>
@@ -285,6 +348,8 @@
 
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>

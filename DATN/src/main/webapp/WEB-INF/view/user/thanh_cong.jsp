@@ -18,7 +18,7 @@
 <script>
     setTimeout(function() {
         window.location.href = "/user/trang_chu/${idKh}";
-    }, 5000);
+    }, 2000);
 </script>
 </body>
 </html>

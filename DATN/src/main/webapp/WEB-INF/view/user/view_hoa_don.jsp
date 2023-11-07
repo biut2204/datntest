@@ -32,6 +32,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
         .form-group {
             margin-bottom: 20px;
@@ -183,56 +185,26 @@ ${ngayTao}
         <div class="col-lg-3 d-none d-lg-block">
             <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse"
                href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
-                <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Categories</h6>
+                <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Thể loại</h6>
                 <i class="fa fa-angle-down text-dark"></i>
             </a>
             <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
                  id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                 <div class="navbar-nav w-100">
-                    <div class="nav-item dropdown dropright">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dresses <i
-                                class="fa fa-angle-right float-right mt-1"></i></a>
-                        <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
-                            <a href="" class="dropdown-item">Men's Dresses</a>
-                            <a href="" class="dropdown-item">Women's Dresses</a>
-                            <a href="" class="dropdown-item">Baby's Dresses</a>
-                        </div>
-                    </div>
-                    <a href="" class="nav-item nav-link">Shirts</a>
-                    <a href="" class="nav-item nav-link">Jeans</a>
-                    <a href="" class="nav-item nav-link">Swimwear</a>
-                    <a href="" class="nav-item nav-link">Sleepwear</a>
-                    <a href="" class="nav-item nav-link">Sportswear</a>
-                    <a href="" class="nav-item nav-link">Jumpsuits</a>
-                    <a href="" class="nav-item nav-link">Blazers</a>
-                    <a href="" class="nav-item nav-link">Jackets</a>
-                    <a href="" class="nav-item nav-link">Shoes</a>
+                    <c:forEach items="${listLoaiAos}" var="list">
+                        <a href="/user/loc_theo_loai_ao/${idKh}/${list.ma}" class="nav-item nav-link">${list.ten}</a>
+                    </c:forEach>
                 </div>
             </nav>
         </div>
         <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
-                <a href="" class="text-decoration-none d-block d-lg-none">
-                    <span class="h1 text-uppercase text-dark bg-light px-2">Multi</span>
-                    <span class="h1 text-uppercase text-light bg-primary px-2 ml-n1">Shop</span>
-                </a>
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="index.html" class="nav-item nav-link">Home</a>
-                        <a href="shop.html" class="nav-item nav-link">Shop</a>
-                        <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Pages <i
-                                    class="fa fa-angle-down mt-1"></i></a>
-                            <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                <a href="checkout.html" class="dropdown-item active">Checkout</a>
-                            </div>
-                        </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                        <a href="/user/trang_chu/${idKh}" class="nav-item nav-link active">Trang chủ</a>
+                        <a href="/user/shop/${idKh}" class="nav-item nav-link">Cửa hàng</a>
+                        <a href="/user/contact/${idKh}" class="nav-item nav-link">Thông tin cửa hàng</a>
+                        <a href="/user/blog/${idKh}" class="nav-item nav-link">Bài viết</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                         <c:choose>
@@ -249,7 +221,7 @@ ${ngayTao}
                                 </a>
                             </c:when>
                             <c:when test="${idKh == 2}">
-                                <a href="" class="btn px-0 ml-3">
+                                <a href="/login" class="btn px-0 ml-3">
                                     <i class="fas fa-user text-primary"></i>
                                 </a>
                             </c:when>
@@ -285,7 +257,7 @@ ${ngayTao}
             <div class="col-lg-6">
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Địa chỉ nhận hàng</span>
                 </h5>
-                <input type="checkbox" name="diaChiChon" value="diaChiCu" id="checkbox1" onchange="kiemTraDiaChiCu()">Địa
+                <input type="checkbox" name="diaChiChon" value="diaChiCu" id="checkbox1" >Địa
                 chỉ ban đầu
                 <div id="view_dia_chi_cu" style="display:block">
                     <div class="bg-light p-30 mb-5">
@@ -309,19 +281,20 @@ ${ngayTao}
                                        readonly>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Quốc gia</label>
+                                <label>Tỉnh</label>
                                 <input class="form-control" type="text" name="quocGia"
-                                       placeholder="${khachHang.quoc_gia}" value="${khachHang.quoc_gia}" readonly>
+                                       placeholder="${khachHang.quoc_gia}" value="${khachHang.quoc_gia}" id="tinh" readonly>
+
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Thành phố</label>
+                                <label>Huyện : </label>
                                 <input class="form-control" type="text" name="thanhPho"
-                                       placeholder="${khachHang.thanh_pho}" value="${khachHang.thanh_pho}" id="diaChiCu"
+                                       placeholder="${khachHang.thanh_pho}" value="${khachHang.thanh_pho}" id="huyen"
                                        readonly>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Địa chỉ</label>
-                                <input class="form-control" type="text" name="diaChi" value="${khachHang.dia_chi}"
+                                <label>Xã :</label>
+                                <input class="form-control" type="text" name="diaChi"  id="xa"value="${khachHang.dia_chi}"
                                        placeholder="${khachHang.dia_chi}"
                                        readonly>
                             </div>
@@ -329,9 +302,7 @@ ${ngayTao}
                     </div>
                 </div>
                 <input type="checkbox" name="diaChiChon" value="diaChiMoi" id="checkbox2"
-                       onclick="toggleView('view_dia_chi_moi')">Địa
-                chỉ
-                mới
+                       onclick="toggleView('view_dia_chi_moi')">Địa chỉ mới
                 <div id="view_dia_chi_moi" style="display:none">
                     <div class="bg-light p-30 mb-5">
                         <div class="bg-light p-30 mb-5">
@@ -349,19 +320,26 @@ ${ngayTao}
                                     <input class="form-control" name="sdt1" type="text" placeholder="Số điện thoại">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label>Quốc gia</label>
-                                    <input class="form-control" name="quocGia1" type="text" placeholder="Quôc gia">
+                                    <label for="province">Tỉnh:</label>
+                                    <select id="province" class="form-control" onchange="loadDistricts(); checkSelection()">
+                                        <option value="">Chọn tỉnh</option>
+                                    </select>
+                                    <input type="hidden" id="tinh1" name="quocGia1">
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label for="district">Huyện:</label>
+                                    <select id="district"class="form-control"  onchange="loadWards(); checkSelection()" disabled>
+                                        <option value="">Chọn huyện</option>
+                                    </select>
+                                    <input type="hidden" id="huyen1" name="thanhPho1">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label>Thành phố</label>
-
-                                    <input class="form-control" name="thanhPho1" id="diaChiMoi"
-                                           oninput="kiemTraDiaChiMoi()" type="text" placeholder="Thành phố">
-
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    <label>Địa chỉ</label>
-                                    <input class="form-control" name="diaChi1" type="text" placeholder="Địa chỉ">
+                                    <label for="ward">Xã:</label>
+                                    <select id="ward"class="form-control"  onchange="checkSelection()" disabled>
+                                        <option value="">Chọn xã</option>
+                                    </select>
+                                    <input type="hidden" id="xa1" name="diaChi1">
                                 </div>
                             </div>
                         </div>
@@ -618,94 +596,216 @@ ${ngayTao}
 
     var checkbox1 = document.getElementById("checkbox1");
     var checkbox2 = document.getElementById("checkbox2");
+    var view_dia_chi_cu = document.getElementById("view_dia_chi_cu");
+    var view_dia_chi_moi = document.getElementById("view_dia_chi_moi");
+
+    var bothUnchecked = true;
 
     // Thêm sự kiện cho checkbox1 để kiểm tra trạng thái của checkbox2
-    checkbox1.addEventListener("change", function () {
+    checkbox1.addEventListener("change", async function () {
         if (checkbox1.checked) {
             checkbox2.checked = false;
+            view_dia_chi_moi.style.display = "none";
+            view_dia_chi_cu.style.display = "block";
+            await findCalculateShipping();
         }
+        checkBothUnchecked();
     });
 
     // Thêm sự kiện cho checkbox2 để kiểm tra trạng thái của checkbox1
     checkbox2.addEventListener("change", function () {
         if (checkbox2.checked) {
             checkbox1.checked = false;
+            view_dia_chi_moi.style.display = "block";
         }
+        checkBothUnchecked();
     });
+    function checkBothUnchecked() {
+        if (!checkbox1.checked && !checkbox2.checked) {
+            const shippingCost = 0;
+
+            var tongSoTien = currentPrice + shippingCost;
+            priceInput1.value = tongSoTien;
+
+            var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+            var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
+
+            document.getElementById("ship").value = gia1WithCurrency3;
+
+            var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+            var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
+
+            priceInput.value = gia1WithCurrency2;
+            bothUnchecked = true;
+        }
+        if (!checkbox1.checked && checkbox2.checked) {
+            const shippingCost = 0;
+
+            var tongSoTien = currentPrice + shippingCost;
+            priceInput1.value = tongSoTien;
+
+            var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+            var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
+
+            document.getElementById("ship").value = gia1WithCurrency3;
+
+            var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+            var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
+
+            priceInput.value = gia1WithCurrency2;
+            bothUnchecked = true;
+        }
+    }
+
+    // Thêm sự kiện onchange cho các combobox
+
+    // Hàm để cập nhật giá trị các input dựa trên các combobox đã chọn
+
+
+
+    async function findProvinceIdByName(provinceName) {
+        const response = await fetch(`http://localhost:8080/public/provinces`);
+        const data = await response.json();
+
+        for (const province of data.data) {
+            if (province.ProvinceName === provinceName) {
+                return province.ProvinceID;
+            }
+        }
+
+        return null;
+    }
+
+    async function findProvinceNameById(provinceid) {
+        const response = await fetch(`http://localhost:8080/public/provinces`);
+        const data = await response.json();
+
+        for (const province of data.data) {
+            if (province.ProvinceID === provinceid) {
+                return province.ProvinceName;
+            }
+        }
+
+        return null;
+    }
+
+    async function findDistrictIdByName(districtName, provinceId) {
+        const response = await fetch('http://localhost:8080/public/districts?province_id='+provinceId);
+        const data = await response.json();
+
+        for (const district of data.data) {
+            if (district.DistrictName === districtName) {
+                return district.DistrictID;
+            }
+        }
+
+        // Trả về null nếu không tìm thấy huyện nào có tên tương ứng
+        return null;
+    }
+
+    async function findWardIdByName(wardName, districtId) {
+        const response = await fetch('http://localhost:8080/public/wards?district_id='+districtId);
+        const data = await response.json();
+
+        for (const ward of data.data) {
+            if (ward.WardName === wardName) {
+                return ward.WardCode;
+            }
+        }
+
+        // Trả về null nếu không tìm thấy xã nào có tên tương ứng
+        return null;
+    }
+
+    async function findCalculateShipping() {
+        var tinh = document.getElementById("tinh").value;
+        var provinceName = tinh;
+        var provinceId = await findProvinceIdByName(provinceName);
+
+
+        var huyen = document.getElementById("huyen").value;
+        var districtName = huyen;
+        var districtId = await findDistrictIdByName(districtName, provinceId);
+
+        var xa = document.getElementById("xa").value;
+        var wardName = xa;
+        var wardId = await findWardIdByName(wardName, districtId);
+
+        const transportationFeeDTO = {
+            toDistrictId: districtId,
+            toWardCode: wardId,
+            quantity: 1,
+            insuranceValue: 0
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/public/transportationFee', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(transportationFeeDTO)
+            });
+
+            const data = await response.json();
+
+            if (data && data.code === 200) {
+                const shippingCost = data.data.total;
+
+                var tongSoTien = currentPrice + shippingCost;
+                priceInput1.value = tongSoTien;
+
+                var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+                var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
+
+                document.getElementById("ship").value = gia1WithCurrency3;
+
+                var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+                var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
+
+                priceInput.value = gia1WithCurrency2;
+
+            } else {
+                document.getElementById("shippingCost").innerText = "Không thể tính phí vận chuyển.";
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById("shippingCost").innerText = "Lỗi khi tính phí vận chuyển. Chi tiết lỗi: " + error.message;
+        }
+    }
+
 
     // JavaScript code để kiểm tra địa chỉ cũ
-    function kiemTraDiaChiCu() {
-        var diaChiCu = document.getElementById("diaChiCu").value;
-        var priceInput = document.getElementById("price");
-        var priceInput1 = document.getElementById("price1");
-        var currentPrice = parseFloat(${tongTien});
-        if (diaChiCu.includes("Hà Nội")) {
-            var ship = 20000;
-        } else if (diaChiCu.includes("Bắc Ninh")) {
-            var ship = 25000;
-        } else if (diaChiCu.includes("Hồ Chí Minh")) {
-            var ship = 80000;
-        } else if (diaChiCu.includes("Hải Dương")) {
-            var ship = 25000;
-        } else if (diaChiCu.includes("Quảng Ninh")) {
-            var ship = 40000;
-        }
-        var tongSoTien = currentPrice + ship;
-        priceInput1.value = tongSoTien;
 
-        var gia1Formatted3 = ship.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
-
-        var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
-
-        document.getElementById("ship").value = gia1WithCurrency3;
-
-        var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
-
-        var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
-
-        priceInput.value = gia1WithCurrency2;
-    }
-
-    // JavaScript code để kiểm tra địa chỉ mới sau khi nhập xong và rời khỏi ô văn bản
-    function kiemTraDiaChiMoi() {
-        var diaChiMoi = document.getElementById("diaChiMoi").value;
-        var priceInput = document.getElementById("price");
-        var priceInput1 = document.getElementById("price1");
-        var currentPrice = parseFloat(${tongTien});
-        if (diaChiMoi.includes("Hà Nội")) {
-            var ship = 20000;
-        } else if (diaChiMoi.includes("Bắc Ninh")) {
-            var ship = 25000;
-        } else if (diaChiMoi.includes("Hồ Chí Minh")) {
-            var ship = 80000;
-        } else if (diaChiMoi.includes("Hải Dương")) {
-            var ship = 25000;
-        } else if (diaChiMoi.includes("Quảng Ninh")) {
-            var ship = 40000;
-        }
-
-        var tongSoTien = currentPrice + ship;
-        priceInput1.value = tongSoTien;
-
-        var gia1Formatted3 = ship.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
-
-        var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
-
-        document.getElementById("ship").value = gia1WithCurrency3;
-
-        var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
-
-        var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
-
-        priceInput.value = gia1WithCurrency2;
-    }
 </script>
 <script>
     function kiemTra() {
 
+        var box1 = document.getElementById("checkbox1");
+        var box2 = document.getElementById("checkbox2");
+
+        if (!box1.checked && !box2.checked) {
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Bạn chưa chọn địa chỉ</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                allowOutsideClick: true,
+            });
+            setTimeout(() => {
+                Swal.close();
+            }, 2000);
+            event.preventDefault();
+        }
+
         for (var i = 0; i < 99; i++) {
-            var slTon = parseFloat(document.getElementById("slTon" + (i + 1)).value); // Sửa lỗi ở đây
-            var sl = parseFloat(document.getElementById("sl" + (i + 1)).value); // Sửa lỗi ở đây
+            var slTon = parseFloat(document.getElementById("slTon" + (i + 1)).value);
+            var sl = parseFloat(document.getElementById("sl" + (i + 1)).value);
+
 
             console.log(sl);
             console.log(slTon);
@@ -723,6 +823,164 @@ ${ngayTao}
             }
         }
     }
+</script>
+<script>
+
+    var priceInput = document.getElementById("price");
+    var priceInput1 = document.getElementById("price1");
+    var currentPrice = parseFloat(${tongTien});
+
+    async function loadProvinces() {
+        const response = await fetch(`http://localhost:8080/public/provinces`);
+        const data = await response.json();
+
+        const provinceSelect = document.getElementById("province");
+        provinceSelect.innerHTML = '<option value="">Chọn tỉnh</option>';
+
+        for (const province of data.data) { // Thay đổi dòng này để lấy dữ liệu từ data.data
+            const option = document.createElement("option");
+            option.value = province.ProvinceID;
+            option.text = province.ProvinceName;
+            provinceSelect.appendChild(option);
+            console.log(province.ProvinceID, province.ProvinceName);
+        }
+    }
+
+    async function loadDistricts() {
+        const provinceId = document.getElementById("province").value;
+
+        if (!provinceId) {
+            return;
+        }
+
+        const response = await fetch('http://localhost:8080/public/districts?province_id='+ provinceId);
+        const data = await response.json();
+
+        const districtSelect = document.getElementById("district");
+        districtSelect.innerHTML = '<option value="">Chọn huyện</option>';
+
+        for (const district of data.data) {
+            const option = document.createElement("option");
+            option.value = district.DistrictID;
+            option.text = district.DistrictName;
+            districtSelect.appendChild(option);
+        }
+
+        districtSelect.disabled = false;
+        document.getElementById("ward").disabled = true;
+        document.getElementById("message").innerText = "";
+    }
+
+    async function loadWards() {
+        const districtId = document.getElementById("district").value;
+
+        if (!districtId) {
+            return;
+        }
+
+        const response = await fetch('http://localhost:8080/public/wards?district_id='+ districtId);
+        const data = await response.json();
+
+        const wardSelect = document.getElementById("ward");
+        wardSelect.innerHTML = '<option value="">Chọn xã</option>';
+
+        for (const ward of data.data) {
+            const option = document.createElement("option");
+            option.value = ward.WardCode;
+            option.text = ward.WardName;
+            wardSelect.appendChild(option);
+        }
+
+        wardSelect.disabled = false;
+        document.getElementById("message").innerText = "";
+    }
+
+    function checkSelection() {
+        const provinceSelect = document.getElementById("province");
+        const districtSelect = document.getElementById("district");
+        const wardSelect = document.getElementById("ward");
+
+        const provinceName = provinceSelect.options[provinceSelect.selectedIndex].text;
+        const districtName = districtSelect.options[districtSelect.selectedIndex].text;
+        const wardName = wardSelect.options[wardSelect.selectedIndex].text;
+
+        if (provinceName) {
+            document.getElementById("tinh1").value= provinceName;
+        }
+
+        if (districtName) {
+            document.getElementById("huyen1").value= districtName;
+        }
+
+        if (wardName) {
+            document.getElementById("xa1").value= wardName;
+        }
+
+        if (provinceName && districtName && wardName) {
+            calculateShipping();
+        } else {
+            document.getElementById("message").innerText = "";
+            // Khóa nút tính phí nếu không đủ điều kiện
+            document.getElementById("shippingCost").innerText = "";
+        }
+    }
+
+    async function calculateShipping() {
+        const districtSelect = document.getElementById("district");
+        const wardSelect = document.getElementById("ward");
+        const toDistrictId = districtSelect.value;
+        const toWardCode = wardSelect.value;
+
+        const transportationFeeDTO = {
+            toDistrictId: toDistrictId,
+            toWardCode: toWardCode,
+            quantity: 1,
+            insuranceValue: 0
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/public/transportationFee', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(transportationFeeDTO)
+            });
+
+            const data = await response.json();
+
+            if (data && data.code === 200) {
+                const shippingCost = data.data.total;
+
+                var tongSoTien = currentPrice + shippingCost;
+                priceInput1.value = tongSoTien;
+
+                var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+                var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
+
+                document.getElementById("ship").value = gia1WithCurrency3;
+
+                var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+                var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
+
+                priceInput.value = gia1WithCurrency2;
+
+            } else {
+                document.getElementById("shippingCost").innerText = "Không thể tính phí vận chuyển.";
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById("shippingCost").innerText = "Lỗi khi tính phí vận chuyển. Chi tiết lỗi: " + error.message;
+        }
+    }
+
+    loadProvinces();
+    document.getElementById("province").addEventListener("change", loadDistricts);
+    document.getElementById("district").addEventListener("change", loadWards);
+    document.getElementById("ward").addEventListener("change", checkSelection);
+
 </script>
 </body>
 

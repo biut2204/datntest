@@ -37,4 +37,7 @@ public class MessageChat {
     private Users users;
     @Column(name = "bientrunggian")
     private String bientrunggian;
+
+    @Column(name = "TrangThai")
+    private int trangThai;
 }

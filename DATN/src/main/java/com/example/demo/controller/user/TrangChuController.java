@@ -179,6 +179,56 @@ public class TrangChuController {
         return "/user/index";
     }
 
+    @GetMapping("/user/contact/*")
+    public String contact( HttpServletRequest request, Model model){
+        String url = request.getRequestURI();
+        String[] parts = url.split("/user/contact/");
+        String ma = parts[1];
+
+        try {
+            Users users = usersSer.findByMa(ma);
+            GioHang gioHang = gioHangSer.findByIdKH(users.getId());
+            Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
+
+            model.addAttribute("idKh", users.getMa());
+            model.addAttribute("soLuongSanPham", soLuongSanPham);
+
+            model.addAttribute("check", ma);
+            List<MessageChat> messages = chatMessageRepository.findAllByBientrunggian(ma);
+            model.addAttribute("messages", messages);
+        } catch (Exception e) {
+            model.addAttribute("idKh", "2");
+        }
+        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
+        model.addAttribute("listLoaiAos", listLoaiAos);
+        return "/user/contact";
+    }
+
+    @GetMapping("/user/blog/*")
+    public String blog( HttpServletRequest request, Model model){
+        String url = request.getRequestURI();
+        String[] parts = url.split("/user/blog/");
+        String ma = parts[1];
+
+        try {
+            Users users = usersSer.findByMa(ma);
+            GioHang gioHang = gioHangSer.findByIdKH(users.getId());
+            Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
+
+            model.addAttribute("idKh", users.getMa());
+            model.addAttribute("soLuongSanPham", soLuongSanPham);
+
+            model.addAttribute("check", ma);
+            List<MessageChat> messages = chatMessageRepository.findAllByBientrunggian(ma);
+            model.addAttribute("messages", messages);
+        } catch (Exception e) {
+            model.addAttribute("idKh", "2");
+        }
+        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
+        model.addAttribute("listLoaiAos", listLoaiAos);
+        return "/user/blog";
+    }
+
     @GetMapping("/user/san_pham_detail/*/*")
     public String sanPhamDetail(HttpServletRequest request, Model model) {
 
@@ -280,6 +330,9 @@ public class TrangChuController {
         model.addAttribute("items", listAoDTOS);
         model.addAttribute("loaiAo", loaiAo);
 
+        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
+        model.addAttribute("listLoaiAos", listLoaiAos);
+
         return "/user/tim_kiem";
     }
 
@@ -295,6 +348,9 @@ public class TrangChuController {
         model.addAttribute("listLoaiAo", loaiAoSer.findAllByTrangThai(1));
         model.addAttribute("listMauSac", mauSacSer.findAllByTrangThai(1));
         model.addAttribute("items", aoSer.findAllAoDTO());
+
+        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
+        model.addAttribute("listLoaiAos", listLoaiAos);
 
         try {
             Users users = usersSer.findByMa(ma);
@@ -320,6 +376,12 @@ public class TrangChuController {
         session.setAttribute("hoaDonDanhGia",hoaDon);
 
         return "redirect:/user/don_hang/"+hoaDon.getKhachHang().getMa();
+    }
+
+    @GetMapping("/logout")
+    public String logOut(HttpSession session){
+        session.removeAttribute("userLogged1");
+        return "redirect:/login";
     }
 
     @PostMapping("/user/tim_kiem/*")
@@ -398,17 +460,18 @@ public class TrangChuController {
 
     /* Minh Công code*/
 
-    @GetMapping("/user/contact/*")
-    public String contact(Model model, HttpServletRequest request) {
+    @GetMapping("/user/thong_tin/*")
+    public String thongTin(Model model, HttpServletRequest request) {
 
         String url = request.getRequestURI();
-        String[] parts = url.split("/user/contact/");
+        String[] parts = url.split("/user/thong_tin/");
         String maOrEmail = parts[1];
 
         System.out.println(maOrEmail);
 
         if (usersSer.findByMa(maOrEmail) != null) {
             model.addAttribute("kh", usersSer.findByMa(maOrEmail));
+            model.addAttribute("idKh", usersSer.findByMa(maOrEmail).getMa());
         } else if (usersSer.findByMa(maOrEmail) == null) {
 
             int test = usersSer.demLoginGG(maOrEmail);
@@ -416,6 +479,7 @@ public class TrangChuController {
 
             if (test > 0) {
                 model.addAttribute("kh", usersSer.findByEmail(maOrEmail));
+                model.addAttribute("idKh", usersSer.findByEmail(maOrEmail).getMa());
             } else if (test == 0) {
                 Users users = new Users();
 
@@ -425,6 +489,7 @@ public class TrangChuController {
                 users.setMa(ma);
                 users.setEmail(maOrEmail);
                 users.setRole(RoleEnum.MENBER);
+                users.setTrangThai(1);
 
                 usersSer.add(users);
 
@@ -440,9 +505,14 @@ public class TrangChuController {
                 gioHangSer.add(g);
 
                 model.addAttribute("kh", users);
+                model.addAttribute("idKh", users.getMa());
             }
         }
-        return "/user/contact";
+
+        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
+        model.addAttribute("listLoaiAos", listLoaiAos);
+
+        return "/user/thong_tin";
     }
 
     @GetMapping("/user/repass/{ma}")
@@ -461,24 +531,35 @@ public class TrangChuController {
         return "redirect:/user/trang_chu/" + users.getMa();
     }
 
-    @PostMapping("/user/contact-done/{ma}")
-    public String contactdone(HttpServletRequest request, @PathVariable String ma) {
-        Users users = usersSer.findByMa(ma);
+    @PostMapping("/user/contact-done/{maOrEmail}")
+    public String contactdone(HttpServletRequest request, @PathVariable String maOrEmail) {
+
+        Users users = null;
+
+        if (usersSer.findByMa(maOrEmail) != null) {
+            users = usersSer.findByMa(maOrEmail);
+        }
+        if (usersSer.findByEmail(maOrEmail) != null){
+            users = usersSer.findByEmail(maOrEmail);
+        }
+
+        String ten = request.getParameter("ten");
         String ns = request.getParameter("ngaySinh");
         String gt = request.getParameter("gioiTinh");
-        String dt = request.getParameter("diaChi");
-        String tp = request.getParameter("thanhPho");
-        String qg = request.getParameter("quocGia");
+        String dt = request.getParameter("diaChi1");
+        String tp = request.getParameter("thanhPho1");
+        String qg = request.getParameter("quocGia1");
         String sdt = request.getParameter("soDienThoai");
+        String matKhau = request.getParameter("matKhau");
 
-        LocalDate ngaySinh = LocalDate.parse(ns);
-
-        users.setNgay_sinh(Date.from(ngaySinh.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        users.setTen(ten);
+        users.setNgay_sinh(ns);
         users.setGioiTinh(gt);
         users.setDia_chi(dt);
         users.setThanh_pho(tp);
         users.setQuoc_gia(qg);
         users.setSdt(sdt);
+        users.setMatKhau(matKhau);
 
         usersSer.update(users.getId(), users);
         return "redirect:/user/trang_chu/" + users.getMa();

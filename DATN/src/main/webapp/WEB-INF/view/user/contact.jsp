@@ -28,6 +28,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../resources/css/style.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
@@ -35,19 +36,20 @@
 <div class="container-fluid">
     <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
         <div class="col-lg-4">
-            <a href="/user/trang_chu/${kh.ma}" class="text-decoration-none">
-                <span class="h1 text-uppercase text-primary bg-dark px-2">SD</span>
-                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">99</span>
+            <a href="/user/trang_chu/${idKh}" class="text-decoration-none">
+                <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
+                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
             </a>
         </div>
         <div class="col-lg-4 col-6 text-left">
-            <form action="">
+            <form method="post">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
+                    <input type="text" class="form-control" name="timKiem" placeholder="Search for products">
                     <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
+                        <button class="input-group-text bg-transparent text-primary"
+                                formaction="/user/tim_kiem/${idKh}">
+                            <i class="fa fa-search"></i>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -67,68 +69,47 @@
         <div class="col-lg-3 d-none d-lg-block">
             <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse"
                href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
-                <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Categories</h6>
+                <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Thể loại</h6>
                 <i class="fa fa-angle-down text-dark"></i>
             </a>
             <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
                  id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                 <div class="navbar-nav w-100">
-                    <div class="nav-item dropdown dropright">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dresses <i
-                                class="fa fa-angle-right float-right mt-1"></i></a>
-                        <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
-                            <a href="" class="dropdown-item">Men's Dresses</a>
-                            <a href="" class="dropdown-item">Women's Dresses</a>
-                            <a href="" class="dropdown-item">Baby's Dresses</a>
-                        </div>
-                    </div>
-                    <a href="" class="nav-item nav-link">Shirts</a>
-                    <a href="" class="nav-item nav-link">Jeans</a>
-                    <a href="" class="nav-item nav-link">Swimwear</a>
-                    <a href="" class="nav-item nav-link">Sleepwear</a>
-                    <a href="" class="nav-item nav-link">Sportswear</a>
-                    <a href="" class="nav-item nav-link">Jumpsuits</a>
-                    <a href="" class="nav-item nav-link">Blazers</a>
-                    <a href="" class="nav-item nav-link">Jackets</a>
-                    <a href="" class="nav-item nav-link">Shoes</a>
+                    <c:forEach items="${listLoaiAos}" var="list">
+                        <a href="/user/loc_theo_loai_ao/${idKh}/${list.ma}" class="nav-item nav-link">${list.ten}</a>
+                    </c:forEach>
                 </div>
             </nav>
         </div>
         <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
-                <a href="" class="text-decoration-none d-block d-lg-none">
-                    <span class="h1 text-uppercase text-dark bg-light px-2">Multi</span>
-                    <span class="h1 text-uppercase text-light bg-primary px-2 ml-n1">Shop</span>
-                </a>
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="index.html" class="nav-item nav-link">Home</a>
-                        <a href="shop.html" class="nav-item nav-link">Shop</a>
-                        <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i
-                                    class="fa fa-angle-down mt-1"></i></a>
-                            <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                <a href="checkout.html" class="dropdown-item">Checkout</a>
-                            </div>
-                        </div>
-                        <a href="contact.html" class="nav-item nav-link active">Contact</a>
+                        <a href="/user/trang_chu/${idKh}" class="nav-item nav-link ">Trang chủ</a>
+                        <a href="/user/shop/${idKh}" class="nav-item nav-link">Cửa hàng</a>
+                        <a href="/user/contact/${idKh}" class="nav-item nav-link active">Thông tin cửa hàng</a>
+                        <a href="/user/blog/${idKh}" class="nav-item nav-link">Bài viết</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
-                        <a href="" class="btn px-0">
-                            <i class="fas fa-heart text-primary"></i>
-                            <span class="badge text-secondary border border-secondary rounded-circle"
-                                  style="padding-bottom: 2px;">0</span>
-                        </a>
-                        <a href="" class="btn px-0 ml-3">
-                            <i class="fas fa-shopping-cart text-primary"></i>
-                            <span class="badge text-secondary border border-secondary rounded-circle"
-                                  style="padding-bottom: 2px;">0</span>
-                        </a>
+                        <c:choose>
+                            <c:when test="${idKh != 2}">
+                                <a href="/user/don_hang/${idKh}" class="btn px-0">
+                                    <i class="fa fa-user"></i>
+                                    <span class="badge text-secondary border border-secondary rounded-circle"
+                                          style="padding-bottom: 2px;">${idKh}</span>
+                                </a>
+                                <a href="/user/gio_hang/view/${idKh}" class="btn px-0 ml-3">
+                                    <i class="fas fa-shopping-cart text-primary"></i>
+                                    <span class="badge text-secondary border border-secondary rounded-circle"
+                                          style="padding-bottom: 2px;">${soLuongSanPham}</span>
+                                </a>
+                            </c:when>
+                            <c:when test="${idKh == 2}">
+                                <a href="/login" class="btn px-0 ml-3">
+                                    <i class="fas fa-user text-primary"></i>
+                                </a>
+                            </c:when>
+                        </c:choose>
                     </div>
                 </div>
             </nav>
@@ -143,8 +124,8 @@
     <div class="row px-xl-5">
         <div class="col-12">
             <nav class="breadcrumb bg-light mb-30">
-                <a class="breadcrumb-item text-dark" href="#">Home</a>
-                <span class="breadcrumb-item active">Contact</span>
+                <a class="breadcrumb-item text-dark" href="/user/trang_chu/${idKh}">Trang chủ</a>
+                <span class="breadcrumb-item active">Thông tin cửa hàng</span>
             </nav>
         </div>
     </div>
@@ -154,81 +135,65 @@
 
 <!-- Contact Start -->
 <div class="container-fluid">
-    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Thông tin cá nhân</span>
-    </h2>
-    <div class="row px-xl-5">
-        <div class="col-lg-7 mb-5">
-            <div class="contact-form bg-light p-30">
-                <div id="success"></div>
-                <form method="post" action="/user/contact-done/${kh.ma}">
-                    <div class="control-group">
-                        <label>Họ và Tên</label>
-                        <input type="text" class="form-control" readonly value="${kh.ten}">
-                    </div>
-                    <div class="control-group">
-                        <label>Ngày Sinh</label>
-                        <input type="date" class="form-control" id="ngaySinh"
-                               required="required" name="ngaySinh" value="${kh.ngay_sinh}"/>
-                    </div>
-                    <div class="control-group">
-                        <label>Giới Tính</label><br>
-                        <input type="radio" value="1" name="gioiTinh" checked/> Nam <br>
-                        <input type="radio" value="0" name="gioiTinh" ${kh.gioiTinh==0?"checked":""}/> Nữ
-                    </div>
-                    <div class="control-group">
-                        <label>Địa chỉ</label>
-                        <input type="text" class="form-control" id="diaChi" placeholder="Địa chỉ của bạn"
-                               required value="${kh.dia_chi}"
-                               name="diaChi"/>
-                        <p class="help-block text-danger"></p>
-                    </div>
-                    <div class="control-group">
-                        <label>Thành Phố</label>
-                        <input type="text" class="form-control" id="thanhPho" placeholder="Thành Phố của bạn"
-                               required name="thanhPho" value="${kh.thanh_pho}"/>
-                        <p class="help-block text-danger"></p>
-                    </div>
-                    <div class="control-group">
-                        <label>Quốc gia</label>
-                        <input type="text" class="form-control" id="quocGia" placeholder="Quốc gia của bạn"
-                               required value="${kh.quoc_gia}"
-                               name="quocGia"/>
-                        <p class="help-block text-danger"></p>
-                    </div>
-                    <div class="control-group">
-                        <label>Số điện thoại</label>
-                        <input type="text" class="form-control" id="soDienThoai" placeholder="Số điện thoại của bạn"
-                               required
-                               name="soDienThoai" value="${kh.sdt}"/>
-                        <p class="help-block text-danger"></p>
-                    </div>
-                    <div class="control-group">
-                        <label>Email</label>
-                        <input type="text" class="form-control" readonly value="${kh.email}">
-                    </div>
-                    <div class="control-group">
-                        <label>Mật khẩu</label>
-                        <input type="text" class="form-control" readonly value="${kh.matKhau}">
-                    </div>
-                    <button class="btn btn-primary py-2 px-4" type="submit">Bổ sung</button>
-            </div>
-            </form>
-            <a href="/user/repass/${kh.ma}"><button>Đổi mật khẩu</button></a>
+    <div style="padding-left: 25%;padding-top: 20px;padding-bottom: 20px; color: #0a0e14">
+        <p>
+            <span style="display: inline-block;"><b>BILUXURY CẦU GIẤY</b></span>
+            <span style="display: inline-block; padding-left: 500px" onclick="toggleView('view_anh')">Xem showroom<i
+                    class="bx bx-chevron-down"></i></span>
+        </p>
+        <p style="margin-top: 10px">Địa chỉ: 337 Cầu Giấy, P.Dịch Vọng, Q.Cầu Giấy, TP.Hà Nội</p>
+        <p>Thời gian hot động: 8 giờ 30 - 22 giờ 00 (kể cả CN và ngày lễ)</p>
+        <p><i class="bx bx-phone"></i>Điện thoại : 0987 654 321</p>
+        <p style="padding-top: 5px" onclick="toggleView('view_ban_do')">Xem bản đồ</p>
+        <div id="view_anh" style="display:none">
+            <img src="/images/cua_hang_1.jpg">
+        </div>
+        <div id="view_ban_do" style="display:none">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.9762349427897!2d105.78904797492916!3d21.033636880616914!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab4859fca08b%3A0xf2dd26df24102f!2zNi81Mi8zMzcgxJAuIEPhuqd1IEdp4bqleSwgVOG7lSAyMiwgQ-G6p3UgR2nhuqV5LCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1690245710226!5m2!1svi!2s"
+                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div>
-    <div class="col-lg-5 mb-5">
-        <div class="bg-light p-30 mb-30">
-            <iframe style="width: 100%; height: 250px;"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
-                    frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    <hr style="border-style: dashed; margin-left: 25%; margin-right: 20%;background-color: #0a0e14">
+    <div style="padding-left: 25%;padding-top: 20px;padding-bottom: 20px; color: #0a0e14">
+        <p>
+            <span style="display: inline-block;"><b>BILUXURY PHỐ HUẾ</b></span>
+            <span style="display: inline-block; padding-left: 508px" onclick="toggleView('view_anh1')">Xem showroom<i
+                    class="bx bx-chevron-down"></i></span>
+        </p>
+        <p style="margin-top: 10px">Địa chỉ: 353 Phố Huế, P.Phố Huế, Q.Hai Bà Trưng, TP.Hà Nội</p>
+        <p>Thời gian hoạt động: 8 giờ 30 - 22 giờ 00 (kể cả CN và ngày lễ)</p>
+        <p><i class="bx bx-phone"></i>Điện thoại : 0987 654 321</p>
+        <p style="padding-top: 5px" onclick="toggleView('view_ban_do1')">Xem bản đồ</p>
+        <div id="view_anh1" style="display:none">
+            <img src="/images/cua_hang_2.jpg">
         </div>
-        <div class="bg-light p-30 mb-3">
-            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-            <p class="mb-2"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+        <div id="view_ban_do1" style="display:none">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.592239288326!2d105.84910337492842!3d21.008976280635366!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab8ac64ad877%3A0x4d037d359123a296!2zMzUzIFAuIEh14bq_LCBQaOG7kSBIdeG6vywgSGFpIELDoCBUcsawbmcsIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1690246078294!5m2!1svi!2s"
+                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div>
-</div>
+    <hr style="border-style: dashed;margin-left: 25%;margin-right: 20%;background-color: #0a0e14">
+    <div style="padding-left: 25%;padding-top: 20px; color: #0a0e14">
+        <p>
+            <span style="display: inline-block;"><b>BILUXURY 505 NGUYỄN TRÃI</b></span>
+            <span style="display: inline-block; padding-left: 440px" onclick="toggleView('view_anh2')">Xem showroom<i
+                    class="bx bx-chevron-down"></i></span>
+        </p>
+        <p style="margin-top: 10px">Địa chỉ: 505 Nguyễn Trãi, P.Thanh Xuân Nam, Q.Thanh Xuân, TP.Hà Nội</p>
+        <p>Thời gian hot động: 8 giờ 30 - 22 giờ 00 (kể cả CN và ngày lễ)</p>
+        <p><i class="bx bx-phone"></i>Điện thoại : 0987 654 321</p>
+        <p style="padding-top: 5px" onclick="toggleView('view_ban_do2')">Xem bản đồ</p>
+        <div id="view_anh2" style="display:none">
+            <img src="/images/cua_hang_3.jpg">
+        </div>
+        <div id="view_ban_do2" style="display:none">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.134615851906!2d105.79279387852336!3d20.987240330763495!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135acc710f79043%3A0x9c4f7dd368a69f93!2zNTA1IMSQLiBOZ3V54buFbiBUcsOjaSwgVGhhbmggWHXDom4gTmFtLCBUaGFuaCBYdcOibiwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1690246115056!5m2!1svi!2s"
+                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
 </div>
 <!-- Contact End -->
 
@@ -322,6 +287,12 @@
 
 <!-- Template Javascript -->
 <script src="../../../resources/js/main.js"></script>
+<script>
+    function toggleView(elementId) {
+        var element = document.getElementById(elementId);
+        element.style.display = (element.style.display === "block") ? "none" : "block";
+    }
+</script>
 </body>
 
 </html>

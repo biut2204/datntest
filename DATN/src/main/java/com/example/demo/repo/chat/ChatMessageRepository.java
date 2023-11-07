@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface ChatMessageRepository extends JpaRepository<MessageChat,Integer> {
     List<MessageChat> findAllByBientrunggian(String a);
 
-    @Query("select u , t from MessageChat m inner join Users u on m.users = u inner join ThoiGian t on t.users=u group by u,t order by t.timestamp desc")
+    @Query("select u , t from MessageChat m inner join Users u on m.users = u inner join ThoiGian t on t.users=u where u.role='MENBER' group by u,t order by t.timestamp desc")
     List<Users> Alluser();
 
 

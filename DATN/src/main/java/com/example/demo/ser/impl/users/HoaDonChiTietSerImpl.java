@@ -53,6 +53,26 @@ public class HoaDonChiTietSerImpl implements HoaDonChiTietSer {
     }
 
     @Override
+    public void delete(UUID id) {
+        hoaDonChiTietRepo.deleteById(id);
+    }
+
+    @Override
+    public HoaDonChiTiet findById(UUID id) {
+        return hoaDonChiTietRepo.findById(id).orElse(null);
+    }
+
+    @Override
+    public int soLuongHoaDonCHiTietByHoaDon(UUID id) {
+        return hoaDonChiTietRepo.soLuongHoaDonCHiTietByHoaDon(id);
+    }
+
+    @Override
+    public HoaDonChiTiet findByHoaDonAndAoChiTiet(UUID idHoaDon, UUID idACT) {
+        return hoaDonChiTietRepo.findByHoaDonAndAoChiTiet(idHoaDon,idACT);
+    }
+
+    @Override
     public Integer soLuongBanTheoNgay(LocalDate date) {
         return hoaDonChiTietRepo.soLuongBanTheoNgay(date);
     }
@@ -85,6 +105,11 @@ public class HoaDonChiTietSerImpl implements HoaDonChiTietSer {
             }
         }
         return listHoaDonChiTietDTOS;
+    }
+
+    @Override
+    public Integer soLuongBanThangHienTai(LocalDate date1, LocalDate date2) {
+        return hoaDonChiTietRepo.soLuongBanThangHienTai(date1,date2);
     }
 
 }

@@ -28,6 +28,9 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../resources/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
         /* Style tab buttons */
         /* Style tab buttons */
@@ -45,7 +48,7 @@
         .tab1 {
             display: inline-block;
             padding: 10px 20px;
-            background-color: white;
+            background-color: #aaa;
             cursor: pointer;
             border: 1px solid #aaa;
             border-bottom: none; /* Loại bỏ viền dưới của tab */
@@ -62,7 +65,7 @@
         }
 
         .tab-content1 {
-            display: block;
+            display: none;
             padding: 20px;
             border: 1px solid #aaa;
             border-top: none;
@@ -181,6 +184,31 @@
             background-color: #0056b3; /* Màu nền khi di chuột vào */
         }
     </style>
+    <style>
+        /* CSS cho hiệu ứng chạy thời gian 2s */
+        .swal2-popup {
+            position: relative;
+        }
+
+        .swal2-popup .progress-bar-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #007bff; /* Màu của thanh thời gian */
+            animation: slide-out 1s linear; /* Hiệu ứng chạy thời gian 2s */
+        }
+
+        @keyframes slide-out {
+            0% {
+                width: 100%;
+            }
+            100% {
+                width: 0%;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -221,56 +249,26 @@
         <div class="col-lg-3 d-none d-lg-block">
             <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse"
                href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
-                <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Categories</h6>
+                <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Thể loại</h6>
                 <i class="fa fa-angle-down text-dark"></i>
             </a>
             <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
                  id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                 <div class="navbar-nav w-100">
-                    <div class="nav-item dropdown dropright">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dresses <i
-                                class="fa fa-angle-right float-right mt-1"></i></a>
-                        <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
-                            <a href="" class="dropdown-item">Men's Dresses</a>
-                            <a href="" class="dropdown-item">Women's Dresses</a>
-                            <a href="" class="dropdown-item">Baby's Dresses</a>
-                        </div>
-                    </div>
-                    <a href="" class="nav-item nav-link">Shirts</a>
-                    <a href="" class="nav-item nav-link">Jeans</a>
-                    <a href="" class="nav-item nav-link">Swimwear</a>
-                    <a href="" class="nav-item nav-link">Sleepwear</a>
-                    <a href="" class="nav-item nav-link">Sportswear</a>
-                    <a href="" class="nav-item nav-link">Jumpsuits</a>
-                    <a href="" class="nav-item nav-link">Blazers</a>
-                    <a href="" class="nav-item nav-link">Jackets</a>
-                    <a href="" class="nav-item nav-link">Shoes</a>
+                    <c:forEach items="${listLoaiAos}" var="list">
+                        <a href="/user/loc_theo_loai_ao/${idKh}/${list.ma}" class="nav-item nav-link">${list.ten}</a>
+                    </c:forEach>
                 </div>
             </nav>
         </div>
         <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
-                <a href="" class="text-decoration-none d-block d-lg-none">
-                    <span class="h1 text-uppercase text-dark bg-light px-2">Multi</span>
-                    <span class="h1 text-uppercase text-light bg-primary px-2 ml-n1">Shop</span>
-                </a>
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="index.html" class="nav-item nav-link">Home</a>
-                        <a href="shop.html" class="nav-item nav-link">Shop</a>
-                        <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i
-                                    class="fa fa-angle-down mt-1"></i></a>
-                            <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                <a href="checkout.html" class="dropdown-item">Checkout</a>
-                            </div>
-                        </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                        <a href="/user/trang_chu/${idKh}" class="nav-item nav-link">Trang chủ</a>
+                        <a href="/user/shop/${idKh}" class="nav-item nav-link">Cửa hàng</a>
+                        <a href="/user/contact/${idKh}" class="nav-item nav-link">Thông tin cửa hàng</a>
+                        <a href="/user/blog/${idKh}" class="nav-item nav-link">Bài viết</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                         <c:choose>
@@ -287,7 +285,7 @@
                                 </a>
                             </c:when>
                             <c:when test="${idKh == 2}">
-                                <a href="" class="btn px-0 ml-3">
+                                <a href="/login" class="btn px-0 ml-3">
                                     <i class="fas fa-user text-primary"></i>
                                 </a>
                             </c:when>
@@ -306,9 +304,9 @@
     <div class="row px-xl-5">
         <div class="col-12">
             <nav class="breadcrumb bg-light mb-30">
-                <a class="breadcrumb-item text-dark" href="#">Home</a>
-                <a class="breadcrumb-item text-dark" href="#">Shop</a>
-                <span class="breadcrumb-item">Shopping Cart</span>
+                <a class="breadcrumb-item text-dark" href="/user/trang_chu/${idKh}">Trang chủ</a>
+                <a class="breadcrumb-item text-dark" href="/user/don_hang/${idKh}">Thông tin</a>
+                <span class="breadcrumb-item">Đơn hàng</span>
             </nav>
         </div>
     </div>
@@ -326,10 +324,8 @@
                         class="bg-secondary pr-3">Tài khoản của tôi</span>
                 </h5>
                 <ul class="list-unstyled">
-                    <li><i class="fas fa-info-circle" style="width: 20px"></i><a href="" style="color: black;">Thông
+                    <li><i class="fas fa-info-circle" style="width: 20px"></i><a href="/user/thong_tin/${idKh}" style="color: black;">Thông
                         tin</a></li>
-                    <li><i class="fas fa-map-marker" style="width: 20px"></i><a href="" style="color: black;">Địa
-                        chỉ</a></li>
                     <li><i class="fas fa-key" style="width: 20px"></i><a href="/user/doi_mat_khau_view/${idKh}"
                                                                          style="color: black;">Đổi mật khẩu</a>
                     </li>
@@ -341,6 +337,13 @@
                 <ul class="list-unstyled" style="background-color: #ff8b33">
                     <li><i class="fas fa-shopping-cart" style="width: 20px"></i>
                         <a href="/user/don_hang/${idKh}" style="color: black;">Danh sách đơn hàng</a></li>
+                </ul>
+                <h5 class="section-title position-relative text-uppercase mb-3"><span
+                        class="bg-secondary pr-3">Đăng xuất</span>
+                </h5>
+                <ul class="list-unstyled" >
+                    <li><i class="fas fa-sign-out-alt" style="width: 20px"></i>
+                        <a href="#" style="color: black;" onclick="confirmLogout();">Đăng xuất</a></li>
                 </ul>
             </div>
             <div class="col-lg-10">
@@ -379,6 +382,7 @@
                                             style="color: red"> <fmt:formatNumber value="${list.donGia}" type="currency"
                                                                                   currencySymbol="VNĐ"/></label></p>
                                     <p class="total-price">
+                                        <a href="/user/hoa_don/chinh_sua/${list.hoaDon.ma}" class="custom-button">Chỉnh sửa</a>
                                         <a href="/user/hoa_don/view_hoa_don/${list.hoaDon.id}" class="custom-button">Thanh
                                             toán</a>
                                     </p>
@@ -613,7 +617,7 @@
                     <br>
                     <textarea id="comment" placeholder="Nhận xét của bạn" name="binhLuan"></textarea>
                     <br>
-                    <button type="submit" formaction="/user/danh_gia">Gửi đánh giá</button>
+                    <button type="submit" formaction="/user/danh_gia" onclick="validateComment()">Gửi đánh giá</button>
                 </form>
             </form>
         </div>
@@ -636,6 +640,36 @@
 
 <!-- Template Javascript -->
 <script src="../../../resources/js/main.js"></script>
+<script>
+    function validateComment() {
+        var comment = document.getElementById("comment").value;
+        var addFormContainer = document.getElementById("addFormContainer1");
+        var forbiddenWords = ["lol", "cc", "dm","vai","lon","du","me","concac","đéo","con cặc"];
+        var foundForbiddenWord = false;
+
+        forbiddenWords.forEach(function(word) {
+            if (comment.toLowerCase().includes(word)) {
+                foundForbiddenWord = true;
+            }
+        });
+        if (foundForbiddenWord) {
+            addFormContainer.style.display = 'none';
+            Swal.fire({
+                icon: 'error',
+                html: '<div class="swal-text">Xin lỗi, từ ngữ bạn sử dụng không phù hợp</div><div class="progress-bar-container"></div>',
+                allowOutsideClick: true
+
+            });
+
+            setTimeout(() => {
+                Swal.close();
+                addFormContainer.style.display = 'block';
+            }, 1000);
+
+            event.preventDefault();
+        }
+    }
+</script>
 <script>
     function openTab1() {
         document.getElementById("tab1").style.display = "block";
@@ -767,8 +801,14 @@
 
     if (noneOrBlock == "block") {
         addFormContainer2.style.display = "block";
+
+        document.getElementById("tab4").style.display = "block";
+        document.getElementById("optab4").style.background = "white";
     } else {
         addFormContainer2.style.display = "none";
+
+        document.getElementById("tab1").style.display = "block";
+        document.getElementById("optab1").style.background = "white";
     }
 
     // Add an event listener to the background overlay
@@ -779,6 +819,22 @@
             addFormContainer2.style.display = "none";
         }
     });
+</script>
+<script>
+    function confirmLogout() {
+        Swal.fire({
+            icon: 'warning',
+            text: 'Bạn có chắc chắn muốn đăng xuất?',
+            showCancelButton: true,
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy bỏ'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng đồng ý đăng xuất, chuyển họ đến trang đăng xuất
+                window.location.href = "/logout";
+            }
+        });
+    }
 </script>
 </body>
 

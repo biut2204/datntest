@@ -14,4 +14,8 @@ public interface GiamGiaSanPhamChiTietSer {
     List<GiamGiaSanPhamChiTiet> findAllByTrangThai(Integer trangThai);
 
     GiamGiaSanPhamChiTiet findByIdAoAndTrangThai(UUID id);
+
+    List<GiamGiaSanPhamChiTiet> findAllByGiamGiaSP(UUID id);
+
+    void update(UUID id, GiamGiaSanPhamChiTiet update);
 }

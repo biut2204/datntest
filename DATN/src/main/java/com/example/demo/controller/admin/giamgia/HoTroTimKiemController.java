@@ -2,8 +2,10 @@ package com.example.demo.controller.admin.giamgia;
 
 import com.example.demo.entity.giamgia.GiamGiaHoaDon;
 import com.example.demo.entity.giamgia.GiamGiaSanPham;
+import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
 import com.example.demo.entity.sanpham.Ao;
 import com.example.demo.ser.giamgia.GiamGiaHoaDonSer;
+import com.example.demo.ser.giamgia.GiamGiaSanPhamChiTietSer;
 import com.example.demo.ser.giamgia.GiamGiaSanPhamSer;
 import com.example.demo.ser.sanpham.AoChiTietSer;
 import com.example.demo.ser.sanpham.AoSer;
@@ -36,6 +38,9 @@ public class HoTroTimKiemController {
 
     @Autowired
     AoSer aoSer;
+
+    @Autowired
+    GiamGiaSanPhamChiTietSer giamGiaSanPhamChiTietSer;
 
     private List<String> performSearch(String keyword) {
         // Thực hiện tìm kiếm trong danh sách dữ liệu của bạn và trả về kết quả
@@ -109,7 +114,7 @@ public class HoTroTimKiemController {
         return Collections.emptyList();
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 * * * ?")
     public void updateTrangThai() {
         LocalDate localDate = LocalDate.now();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -118,6 +123,20 @@ public class HoTroTimKiemController {
                 String ngayKetThucStr = dateFormat.format(giamGiaSanPham.getNgayKetThuc());
                 LocalDate ngayKetThuc = LocalDate.parse(ngayKetThucStr);
                 if (localDate.compareTo(ngayKetThuc) > 0){
+
+                    List<GiamGiaSanPhamChiTiet> listGG = giamGiaSanPhamChiTietSer.findAllByGiamGiaSP(giamGiaSanPham.getId());
+
+                    for (GiamGiaSanPhamChiTiet update : listGG){
+                        GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = new GiamGiaSanPhamChiTiet();
+
+                        giamGiaSanPhamChiTiet.setAo(update.getAo());
+                        giamGiaSanPhamChiTiet.setGiamGiaSanPham(update.getGiamGiaSanPham());
+                        giamGiaSanPhamChiTiet.setSoTienDaGiam(update.getSoTienDaGiam());
+                        giamGiaSanPhamChiTiet.setTrangThai(1);
+
+                        giamGiaSanPhamChiTietSer.update(update.getId(),giamGiaSanPhamChiTiet);
+                    }
+
                     GiamGiaSanPham giamGiaSanPham1 = new GiamGiaSanPham();
 
                     giamGiaSanPham1.setMa(giamGiaSanPham.getMa());
@@ -162,7 +181,7 @@ public class HoTroTimKiemController {
                     giamGiaHoaDon1.setSoTienHoaDon(giamGiaHoaDon.getSoTienHoaDon());
                     giamGiaHoaDon1.setTrangThai(1);
 
-                    giamGiaHoaDonSer.update(giamGiaHoaDon1.getId(),giamGiaHoaDon1);
+                    giamGiaHoaDonSer.update(giamGiaHoaDon.getId(),giamGiaHoaDon1);
                     System.out.println("Oke");
                 }else {
                     GiamGiaHoaDon giamGiaHoaDon1 = new GiamGiaHoaDon();

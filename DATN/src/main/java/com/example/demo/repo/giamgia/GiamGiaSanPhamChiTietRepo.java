@@ -16,4 +16,7 @@ public interface GiamGiaSanPhamChiTietRepo extends JpaRepository<GiamGiaSanPhamC
 
     @Query("select gg from GiamGiaSanPhamChiTiet gg where gg.ao.id = ?1 and gg.trangThai = 0")
     GiamGiaSanPhamChiTiet findByIdAoAndTrangThai(UUID id);
+
+    @Query("select gg from GiamGiaSanPhamChiTiet gg where gg.giamGiaSanPham.id = ?1")
+    List<GiamGiaSanPhamChiTiet> findAllByGiamGiaSP(UUID id);
 }

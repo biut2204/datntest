@@ -43,8 +43,9 @@ public class WebMVCConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry){
 
         //chỉ xem member
-        registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/profile","/product/list","/category/list");
+//        registry.addInterceptor(userInterceptor)
+//                .addPathPatterns("/user/**")
+//                .excludePathPatterns("/user/trang_chu/*","/user/tim_kiem/*","/user/san_pham_detail/*/*");
 
         registry.addInterceptor(satffInterceptor)
                 .addPathPatterns("/admin/index/*","/admin/ao/view/*");

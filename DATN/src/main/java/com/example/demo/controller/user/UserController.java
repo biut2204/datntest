@@ -1,5 +1,6 @@
 package com.example.demo.controller.user;
 
+import com.example.demo.entity.dto.Province;
 import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
 import com.example.demo.entity.khachhang.GioHang;
 import com.example.demo.entity.khachhang.GioHangChiTiet;
@@ -11,8 +12,10 @@ import com.example.demo.entity.sanpham.AoChiTiet;
 import com.example.demo.entity.dto.GioHangDTO;
 import com.example.demo.entity.dto.HoaDonChiTietDTO;
 import com.example.demo.entity.dto.HoaDonDTO;
+import com.example.demo.entity.sanpham.LoaiAo;
 import com.example.demo.ser.giamgia.GiamGiaHoaDonSer;
 import com.example.demo.ser.giamgia.GiamGiaSanPhamChiTietSer;
+import com.example.demo.ser.sanpham.LoaiAoSer;
 import com.example.demo.ser.users.GioHangChiTietSer;
 import com.example.demo.ser.users.GioHangSer;
 import com.example.demo.ser.sanpham.AoChiTietSer;
@@ -22,6 +25,7 @@ import com.example.demo.ser.users.UsersSer;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
@@ -29,6 +33,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -68,6 +73,9 @@ public class UserController {
     @Autowired
     JavaMailSender mailSender;
 
+    @Autowired
+    LoaiAoSer loaiAoSer;
+
     @GetMapping("/user/gio_hang/view/*")
     public String viewGioHang(HttpServletRequest request, Model model) {
 
@@ -102,6 +110,10 @@ public class UserController {
             listGioHangChiTiets.add(gioHangDTO);
         }
         model.addAttribute("listGioHangChiTiets", listGioHangChiTiets);
+        model.addAttribute("checkGH", "0");
+
+        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
+        model.addAttribute("listLoaiAos", listLoaiAos);
 
         return "/user/gio_hang";
     }
@@ -169,6 +181,9 @@ public class UserController {
         model.addAttribute("idHoaDon", id);
         model.addAttribute("khachHang", hoaDon.getKhachHang());
 
+        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
+        model.addAttribute("listLoaiAos", listLoaiAos);
+
         return "/user/view_hoa_don";
     }
 
@@ -212,6 +227,9 @@ public class UserController {
         model.addAttribute("listHoaDonDTODangGiao", listHoaDonDTODangGiao);
         model.addAttribute("listHoaDonDTOHoanThanh", listHoaDonDTOHoanThanh);
         model.addAttribute("listHoaDonDTOHuy", listHoaDonDTOHuy);
+
+        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
+        model.addAttribute("listLoaiAos", listLoaiAos);
 
         return "/user/don_hang";
     }
@@ -262,7 +280,80 @@ public class UserController {
         model.addAttribute("taiKhoan", users);
         model.addAttribute("soLuongSanPham", soLuongSanPham);
 
+        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
+        model.addAttribute("listLoaiAos", listLoaiAos);
+
         return "/user/doi_mat_khau";
+    }
+
+    @GetMapping("/user/hoa_don/chinh_sua/*")
+    public String hoaDonChinhSua(HttpServletRequest request, Model model){
+
+        String url = request.getRequestURI();
+        String[] parts = url.split("/user/hoa_don/chinh_sua/");
+        String ma = parts[1];
+
+        HoaDon hoaDon = hoaDonSer.findByMa(ma);
+
+        Users users = hoaDon.getKhachHang();
+        GioHang gioHang = gioHangSer.findByIdKH(users.getId());
+
+        Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
+
+        model.addAttribute("idKh", users.getMa());
+        model.addAttribute("soLuongSanPham", soLuongSanPham);
+
+        List<HoaDonChiTiet> list = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
+        List<GioHangDTO> listGioHangChiTiets = new ArrayList<>();
+        for (HoaDonChiTiet hoaDonChiTiet : list) {
+            Ao ao = hoaDonChiTiet.getAoChiTiet().getAo();
+            GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietSer.findByIdAoAndTrangThai(ao.getId());
+
+            GioHangDTO gioHangDTO = new GioHangDTO();
+            int gia;
+            if (giamGiaSanPhamChiTiet != null) {
+                gia = ao.getGiaBan().toBigInteger().intValue() * (100 - giamGiaSanPhamChiTiet.getGiamGiaSanPham().getPhanTramGiam()) / 100;
+            } else {
+                gia = ao.getGiaBan().toBigInteger().intValue();
+            }
+            gioHangDTO.setAoChiTiet(hoaDonChiTiet.getAoChiTiet());
+            gioHangDTO.setGia(gia);
+            gioHangDTO.setHoaDonChiTiet(hoaDonChiTiet);
+            listGioHangChiTiets.add(gioHangDTO);
+        }
+        model.addAttribute("listGioHangChiTiets", listGioHangChiTiets);
+        model.addAttribute("checkGH", "1");
+        model.addAttribute("maHoaDon", hoaDon.getMa());
+
+        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
+        model.addAttribute("listLoaiAos", listLoaiAos);
+
+        return "/user/gio_hang";
+    }
+
+    @GetMapping("/user/hoa_don_chinh_sua/delete/*")
+    public String hoaDonChinhSuaDelete(HttpServletRequest request){
+        String url = request.getRequestURI();
+        String[] p = url.split("/user/hoa_don_chinh_sua/delete/");
+
+        String idHoaDonChiTiet = p[1];
+
+        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietSer.findById(UUID.fromString(idHoaDonChiTiet));
+
+        HoaDon hoaDon = hoaDonChiTiet.getHoaDon();
+
+        String idKh = hoaDon.getKhachHang().getMa();
+
+        hoaDonChiTietSer.delete(UUID.fromString(idHoaDonChiTiet));
+
+        int soHDCT = hoaDonChiTietSer.soLuongHoaDonCHiTietByHoaDon(hoaDon.getId());
+
+        if(soHDCT == 0){
+            hoaDonSer.delete(hoaDon.getId());
+            return "redirect:/user/don_hang/"+idKh;
+        }
+
+        return "redirect:/user/hoa_don/chinh_sua/"+hoaDonChiTiet.getHoaDon().getMa();
     }
 
     @PostMapping("/user/gio_hang/add_gio_hang/*")
@@ -339,6 +430,37 @@ public class UserController {
         return "redirect:/user/hoa_don/view_hoa_don/" + hoaDon.getId();
     }
 
+    @PostMapping("/user/hoa_don_chinh_sua/update/*")
+    public String hoaDonChinhSuaUpdate(HttpServletRequest request, Model model,
+                                       @RequestParam(value = "chon", required = false) List<String> chon,
+                                       @RequestParam(value = "idAoChiTiet", required = false) List<UUID> idAoChiTiet,
+                                       @RequestParam(value = "soLuong", required = false) List<String> soLuong){
+
+        String url = request.getRequestURI();
+        String[] parts = url.split("/user/hoa_don_chinh_sua/update/");
+        String ma = parts[1];
+
+        HoaDon hoaDon = hoaDonSer.findByMa(ma);
+
+        if (chon != null) {
+            for (String selectedValue : chon) {
+
+                HoaDonChiTiet updateHDCT = hoaDonChiTietSer.findByHoaDonAndAoChiTiet(hoaDon.getId(), idAoChiTiet.get(Integer.parseInt(selectedValue)));
+
+                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+
+                hoaDonChiTiet.setAoChiTiet(updateHDCT.getAoChiTiet());
+                hoaDonChiTiet.setHoaDon(updateHDCT.getHoaDon());
+                hoaDonChiTiet.setDonGia(updateHDCT.getDonGia());
+                hoaDonChiTiet.setTrangThai(updateHDCT.getTrangThai());
+                hoaDonChiTiet.setSoLuong(Integer.parseInt(soLuong.get(Integer.parseInt(selectedValue))));
+
+                hoaDonChiTietSer.update(updateHDCT.getId(), hoaDonChiTiet);
+            }
+        }
+        return "redirect:/user/don_hang/"+hoaDon.getKhachHang().getMa();
+    }
+
     @PostMapping("/user/hoa_don/dat_hang/*")
     public String datHang(HttpServletRequest request, Model model, HttpSession session) {
 
@@ -375,10 +497,10 @@ public class UserController {
         hd.setKhachHang(hoaDon.getKhachHang());
         hd.setTrangThai(1);
         if (diaChiChon.equals("diaChiMoi")) {
-            hd.setMoTa("Người nhận: " + ten1 + " , Email: " + email1 + " , Sđt nhận hàng: " + sdt1 + " , Địa chỉ giao hàng" + diaChi1 + " " + thanhPho1 + " " + quocGia1);
+            hd.setMoTa("Người nhận: " + ten1 + " , Email: " + email1 + " , Sđt nhận hàng: " + sdt1 + " , Địa chỉ giao hàng" + diaChi1 + " huyện " + thanhPho1 + " tỉnh " + quocGia1);
             hoaDonSer.update(hoaDon.getId(), hd);
         } else {
-            hd.setMoTa("Người nhận: " + ten + " , Email: " + email + " , Sđt nhận hàng: " + sdt + " , Địa chỉ giao hàng" + diaChi + " " + thanhPho + " " + quocGia);
+            hd.setMoTa("Người nhận: " + ten + " , Email: " + email + " , Sđt nhận hàng: " + sdt + " , Địa chỉ giao hàng" + diaChi + " huyện " + thanhPho + " tỉnh " + quocGia);
         }
 
         hoaDonSer.update(hoaDon.getId(), hd);
@@ -515,15 +637,9 @@ public class UserController {
             AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
 
             GioHangChiTiet gioHangChiTiet = gioHangChiTietSer.findByKhachHangAndAoChiTiet(hoaDon.getKhachHang().getId(), act.getId());
-            GioHangChiTiet ghct = new GioHangChiTiet();
-
-            ghct.setGioHang(gioHangChiTiet.getGioHang());
-            ghct.setAoChiTiet(gioHangChiTiet.getAoChiTiet());
-            ghct.setSoLuong(gioHangChiTiet.getSoLuong());
-            ghct.setDonGia(gioHangChiTiet.getDonGia());
-            ghct.setTrangThai(1);
-
-            gioHangChiTietSer.update(gioHangChiTiet.getId(), ghct);
+            if(gioHangChiTiet != null){
+                gioHangChiTietSer.delete(gioHangChiTiet.getId());
+            }
         }
 
         return "redirect:/user/don_hang/" + hoaDon.getKhachHang().getMa();

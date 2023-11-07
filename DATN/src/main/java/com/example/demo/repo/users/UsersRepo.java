@@ -33,4 +33,12 @@ public interface UsersRepo extends JpaRepository<Users, UUID> {
 
     @Query("select p from Users p where p.role= ?1")
     Users findByRole1(RoleEnum role);
+
+    @Query("select u from Users u where u.role='MENBER'")
+    List<Users> findAllKhachHang();
+
+    Users findUsersById(UUID id);
+
+    @Query("select u from Users u where u.role='STAFF'")
+    List<Users> findAllNhanVien();
 }

@@ -11,7 +11,7 @@
     <title>AdminLTE 3 | DataTables</title>
     <!-- Thêm FontAwesome CSS vào trang của bạn (hoặc sử dụng bất kỳ thư viện biểu tượng nào khác) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link rel="stylesheet" href="../../../resources/css/thongke.css">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -393,9 +393,9 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-<%--                        <h1>Ngày hiện tại <c:set var="dateFormat" value="dd/MM/yyyy"/>--%>
-<%--                            <fmt:formatDate value="${ngayHienTai}" pattern="${dateFormat}"/>--%>
-<%--                        </h1>--%>
+                        <%--                        <h1>Ngày hiện tại <c:set var="dateFormat" value="dd/MM/yyyy"/>--%>
+                        <%--                            <fmt:formatDate value="${ngayHienTai}" pattern="${dateFormat}"/>--%>
+                        <%--                        </h1>--%>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -503,8 +503,8 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <h6 class="mb-0 "> Doanh Thu </h6>
-                            <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) so với tháng trước. </p>
+                            <h6 class="mb-0 "> Doanh Thu (Tháng hiện tại) </h6>
+                            <p class="text-sm " style="color: orangered"> ${doanhThuThangHienTai} VNĐ </p>
                             <hr class="dark horizontal">
                             <div id="error-message" class="hidden" style="display: none">Ngày không hợp lệ. Vui lòng kiểm tra lại.</div>
                             <div class="filter-container">
@@ -532,9 +532,11 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <h6 class="mb-0 ">Số lượng áo đã bán</h6>
-                            <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) so với tháng trước. </p>
+                            <h6 class="mb-0 ">Số Lượng Áo Đã Bán (Tháng hiện tại)</h6>
+                            <p class="text-sm " style="color: orangered"> ${soLuongBanThangHienTai} cái </p>
                             <hr class="dark horizontal">
+                            <div id="error-message1" class="hidden" style="display: none">Ngày không hợp lệ. Vui lòng kiểm tra lại.</div>
+
                             <div class="filter-container">
                                 <div class="filter-item">
                                     <label for="start-date">Từ ngày:</label>
@@ -546,10 +548,10 @@
                                 </div>
                                 <button id="filter-button1"><i class="fas fa-filter"></i></button>
                             </div>
-<%--                            <div class="d-flex ">--%>
-<%--                                <i class="material-icons text-sm my-auto me-1">schedule</i>--%>
-<%--                                <p class="mb-0 text-sm">just updated</p>--%>
-<%--                            </div>--%>
+                            <%--                            <div class="d-flex ">--%>
+                            <%--                                <i class="material-icons text-sm my-auto me-1">schedule</i>--%>
+                            <%--                                <p class="mb-0 text-sm">just updated</p>--%>
+                            <%--                            </div>--%>
                         </div>
                     </div>
                 </div>
@@ -721,9 +723,9 @@
     }
 </script>
 <script>
-    var ctx = document.getElementById("chart-bars").getContext("2d");
+    var ctx1 = document.getElementById("chart-bars").getContext("2d");
 
-    new Chart(ctx, {
+    new Chart(ctx1, {
         type: "bar",
         data: {
             labels: ["M", "T", "W", "T", "F", "S", "S"],
@@ -803,16 +805,35 @@
     });
 
     // Lấy ngày hiện tại
+
+
+    // Tạo một mảng chứa nhãn (tên tháng) cho 5 tháng gần nhất
+
+    // Lấy ngày hiện tại
     const currentDate = new Date();
 
     // Tạo một mảng chứa nhãn (tên tháng) cho 5 tháng gần nhất
-    const labels1 = [];
+    const labels1 =[];
     for (let i = 4; i >= 0; i--) {
         const date = new Date(currentDate);
+
+        // Kiểm tra xem tháng hiện tại có 31 ngày hay không
+        const isCurrentMonth31Days = date.getDate() === 31;
+
+        // Trừ đi 1 tháng
         date.setMonth(currentDate.getMonth() - i);
+
+        // Kiểm tra xem tháng mới có thay đổi ngày hay không
+        if (isCurrentMonth31Days && date.getDate() !== 31) {
+            date.setDate(0); // Đặt ngày cuối cùng của tháng
+        }
+
         const monthName = date.toLocaleString('default', { month: 'short' });
         labels1.push(monthName);
     }
+    console.log(labels1); // In mảng các tên tháng
+
+
     var dataDoanhThu = ${listDoanhThu};
 
     var ctx2 = document.getElementById("chart-line").getContext("2d");
@@ -897,64 +918,73 @@
             },
         },
     });
-        var errorMessage = document.getElementById("error-message");
-        var filterButton = document.getElementById('filter-button');
-        filterButton.addEventListener('click', function() {
-            var startDate = document.getElementById('start-date').value;
-            var endDate = document.getElementById('end-date').value;
+    var errorMessage = document.getElementById("error-message");
+    var filterButton = document.getElementById('filter-button');
+    filterButton.addEventListener('click', function() {
+        var startDate = document.getElementById('start-date').value;
+        var endDate = document.getElementById('end-date').value;
 
-            var startDateInput = new Date(startDate);
-            var endDateInput = new Date(endDate);
+        if (!startDate || !endDate) {
+            errorMessage.textContent = "Vui lòng nhập cả ngày bắt đầu và ngày kết thúc.";
+            errorMessage.style.display = "block";
+            setTimeout(function() {
+                errorMessage.style.display = "none";
+            }, 3000); // 3 giây
+            return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không được nhập
+        }
 
-            var currentDate = new Date();
+        var startDateInput = new Date(startDate);
+        var endDateInput = new Date(endDate);
 
-            var twelveMonthsAgo = new Date(currentDate);
-            twelveMonthsAgo.setMonth(currentDate.getMonth() - 12);
+        var currentDate = new Date();
 
-            if (endDateInput > currentDate) {
-                errorMessage.textContent = "Ngày kết thúc không thể sau ngày hiện tại.";
-                errorMessage.style.display = "block";
-                setTimeout(function() {
-                    errorMessage.style.display = "none";
-                }, 3000); // 3 giây
-                return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
-            }
-            if (startDateInput > endDateInput) {
-                errorMessage.textContent = "Ngày bắt đầu không thể sau ngày kết thúc.";
-                errorMessage.style.display = "block";
-                setTimeout(function() {
-                    errorMessage.style.display = "none";
-                }, 3000); // 3 giây
-                return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
-            }
-            // Kiểm tra xem ngày bắt đầu không nằm trước ngày 12 tháng trước
-            if (startDateInput < twelveMonthsAgo) {
-                errorMessage.textContent = "Ngày bắt đầu không thể trước 12 tháng trước.";
-                errorMessage.style.display = "block";
-                setTimeout(function() {
-                    errorMessage.style.display = "none";
-                }, 3000); // 3 giây
-                return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
-            }
+        var twelveMonthsAgo = new Date(currentDate);
+        twelveMonthsAgo.setMonth(currentDate.getMonth() - 12);
 
-            // Nếu mọi thứ hợp lệ, ẩn thông báo lỗi
-            errorMessage.style.display = "none";
+        if (endDateInput > currentDate) {
+            errorMessage.textContent = "Ngày kết thúc không thể sau ngày hiện tại.";
+            errorMessage.style.display = "block";
+            setTimeout(function() {
+                errorMessage.style.display = "none";
+            }, 3000); // 3 giây
+            return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
+        }
+        if (startDateInput > endDateInput) {
+            errorMessage.textContent = "Ngày bắt đầu không thể sau ngày kết thúc.";
+            errorMessage.style.display = "block";
+            setTimeout(function() {
+                errorMessage.style.display = "none";
+            }, 3000); // 3 giây
+            return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
+        }
+        // Kiểm tra xem ngày bắt đầu không nằm trước ngày 12 tháng trước
+        if (startDateInput < twelveMonthsAgo) {
+            errorMessage.textContent = "Ngày bắt đầu không thể trước 12 tháng trước.";
+            errorMessage.style.display = "block";
+            setTimeout(function() {
+                errorMessage.style.display = "none";
+            }, 3000); // 3 giây
+            return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
+        }
+
+        // Nếu mọi thứ hợp lệ, ẩn thông báo lỗi
+        errorMessage.style.display = "none";
 
         // Sử dụng Fetch API để gửi yêu cầu đến máy chủ hoặc API
         fetch('/api/chart-data-doanhthu?startDate=' + startDate + '&endDate=' + endDate)
-        .then(response => response.json())
-        .then(data => {
-        // Cập nhật dữ liệu của biểu đồ với dữ liệu mới
-        chart2.data.labels = data.labels;
-        chart2.data.datasets[0].data = data.datasetData;
-        chart2.update();
-    })
-        .catch(error => console.error(error));
+            .then(response => response.json())
+            .then(data => {
+                // Cập nhật dữ liệu của biểu đồ với dữ liệu mới
+                chart2.data.labels = data.labels;
+                chart2.data.datasets[0].data = data.datasetData;
+                chart2.update();
+            })
+            .catch(error => console.error(error));
     });
 
     var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
     var dataSoLuong = ${listSoLuong}
-    new Chart3(ctx3, {
+    var chart3= new Chart(ctx3, {
         type: "line",
         data: {
             labels: labels1,
@@ -1032,6 +1062,69 @@
                 },
             },
         },
+    });
+    var errorMessage1 = document.getElementById("error-message1");
+    var filterButton1 = document.getElementById('filter-button1');
+    filterButton1.addEventListener('click', function() {
+        var startDate1 = document.getElementById('start-date1').value;
+        var endDate1 = document.getElementById('end-date1').value;
+
+        if (!startDate1 || !endDate1) {
+            errorMessage1.textContent = "Vui lòng nhập cả ngày bắt đầu và ngày kết thúc.";
+            errorMessage1.style.display = "block";
+            setTimeout(function() {
+                errorMessage1.style.display = "none";
+            }, 3000); // 3 giây
+            return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không được nhập
+        }
+
+        var startDateInput1 = new Date(startDate1);
+        var endDateInput1 = new Date(endDate1);
+
+        var currentDate = new Date();
+
+        var twelveMonthsAgo = new Date(currentDate);
+        twelveMonthsAgo.setMonth(currentDate.getMonth() - 12);
+
+        if (endDateInput1 > currentDate) {
+            errorMessage1.textContent = "Ngày kết thúc không thể sau ngày hiện tại.";
+            errorMessage1.style.display = "block";
+            setTimeout(function() {
+                errorMessage1.style.display = "none";
+            }, 3000); // 3 giây
+            return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
+        }
+        if (startDateInput1 > endDateInput1) {
+            errorMessage1.textContent = "Ngày bắt đầu không thể sau ngày kết thúc.";
+            errorMessage1.style.display = "block";
+            setTimeout(function() {
+                errorMessage1.style.display = "none";
+            }, 3000); // 3 giây
+            return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
+        }
+        // Kiểm tra xem ngày bắt đầu không nằm trước ngày 12 tháng trước
+        if (startDateInput1 < twelveMonthsAgo) {
+            errorMessage1.textContent = "Ngày bắt đầu không thể trước 12 tháng trước.";
+            errorMessage1.style.display = "block";
+            setTimeout(function() {
+                errorMessage1.style.display = "none";
+            }, 3000); // 3 giây
+            return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
+        }
+
+        // Nếu mọi thứ hợp lệ, ẩn thông báo lỗi
+        errorMessage1.style.display = "none";
+
+        // Sử dụng Fetch API để gửi yêu cầu đến máy chủ hoặc API
+        fetch('/api/chart-data-soluongban?startDate=' + startDate1 + '&endDate=' + endDate1)
+            .then(response => response.json())
+            .then(data => {
+                // Cập nhật dữ liệu của biểu đồ với dữ liệu mới
+                chart3.data.labels = data.labels;
+                chart3.data.datasets[0].data = data.datasetData;
+                chart3.update();
+            })
+            .catch(error => console.error(error));
     });
 </script>
 <script src="../assets/js/core/popper.min.js"></script>

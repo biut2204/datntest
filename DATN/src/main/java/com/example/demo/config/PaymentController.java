@@ -197,17 +197,6 @@ public class PaymentController {
             aoChiTiet.setTrangthai(act.getTrangthai());
 
             aoChiTietSer.update(act.getId(), aoChiTiet);
-
-            GioHangChiTiet gioHangChiTiet = gioHangChiTietSer.findByKhachHangAndAoChiTiet(hoaDon.getKhachHang().getId(), act.getId());
-            GioHangChiTiet ghct = new GioHangChiTiet();
-
-            ghct.setGioHang(gioHangChiTiet.getGioHang());
-            ghct.setAoChiTiet(gioHangChiTiet.getAoChiTiet());
-            ghct.setSoLuong(gioHangChiTiet.getSoLuong());
-            ghct.setDonGia(gioHangChiTiet.getDonGia());
-            ghct.setTrangThai(1);
-
-            gioHangChiTietSer.update(gioHangChiTiet.getId(), ghct);
         }
 
         session.removeAttribute("maHoaDon");

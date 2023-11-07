@@ -29,4 +29,7 @@ public interface GiamGiaSanPhamRepo extends JpaRepository<GiamGiaSanPham, UUID> 
 
     @Query(value = "select top 2 gg.Id from ChuongTrinhGiamGiaSanPham gg where gg.TrangThai = 0 order by gg.PhanTramGiam desc ",nativeQuery = true)
     List<UUID> findTop2GiamGiaSanPham();
+
+    @Query("select gg from GiamGiaSanPham gg where gg.trangThai = 1")
+    List<GiamGiaSanPham> findAllByTrangThai();
 }

@@ -21,8 +21,8 @@ import lombok.ToString;
 @Entity
 public class DemChat {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private String id;
     @Column(name = "bientrunggian")
     private String bientrunggian;
 }

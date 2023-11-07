@@ -1,4 +1,4 @@
-package com.example.demo.controller.admin.donhang;
+package com.example.demo.controller.admin.quanli;
 
 import com.example.demo.entity.khachhang.GioHangChiTiet;
 import com.example.demo.entity.khachhang.HoaDon;
@@ -177,15 +177,9 @@ public class QuanLiDonHang {
             AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
 
             GioHangChiTiet gioHangChiTiet = gioHangChiTietSer.findByKhachHangAndAoChiTiet(hoaDon.getKhachHang().getId(), act.getId());
-            GioHangChiTiet ghct = new GioHangChiTiet();
-
-            ghct.setGioHang(gioHangChiTiet.getGioHang());
-            ghct.setAoChiTiet(gioHangChiTiet.getAoChiTiet());
-            ghct.setSoLuong(gioHangChiTiet.getSoLuong());
-            ghct.setDonGia(gioHangChiTiet.getDonGia());
-            ghct.setTrangThai(1);
-
-            gioHangChiTietSer.update(gioHangChiTiet.getId(), ghct);
+            if(gioHangChiTiet != null){
+                gioHangChiTietSer.delete(gioHangChiTiet.getId());
+            }
         }
 
         return "redirect:/admin/quan_li_don_hang/" + hoaDon.getMa();
