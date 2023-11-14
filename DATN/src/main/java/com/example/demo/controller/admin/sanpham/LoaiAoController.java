@@ -2,6 +2,7 @@ package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.LoaiAo;
 import com.example.demo.repo.sanpham.LoaiAoRepo;
+import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.LoaiAoSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class LoaiAoController {
     @Autowired
     LoaiAoRepo loaiAoRepo;
 
+    @Autowired
+    ChatSer chatSer;
+
     @GetMapping("/admin/loai_ao/view/*")
     public String view(Model model, HttpServletRequest request) {
 
@@ -47,7 +51,7 @@ public class LoaiAoController {
         } catch (Exception e) {
             model.addAttribute("checkAnh", "2");
         }
-
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/loai_ao";
     }
 

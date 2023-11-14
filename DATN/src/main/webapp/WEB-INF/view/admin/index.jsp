@@ -96,7 +96,7 @@
             transition: color 0.3s; /* Hiệu ứng chuyển đổi màu sắc trong 0.3 giây */
         }
         .listDonHang:hover{
-            color: red;
+            color: #0000C0;
         }
     </style>
 </head>
@@ -294,7 +294,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="../../../index.html" class="nav-link active">
+                                <a href="/admin/index/1" class="nav-link active">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Dashboard v1</p>
                                 </a>

@@ -13,6 +13,7 @@ import com.example.demo.entity.sanpham.MauSac;
 import com.example.demo.entity.sanpham.Size;
 import com.example.demo.entity.dto.ThongKeDTO;
 import com.example.demo.repo.chat.DemChatRepository;
+import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.AnhSer;
 import com.example.demo.ser.sanpham.AoChiTietSer;
 import com.example.demo.ser.sanpham.AoSer;
@@ -91,6 +92,8 @@ public class SanPhamController {
     @Autowired
     HoaDonChiTietSer hoaDonChiTietSer;
 
+    @Autowired
+    ChatSer chatSer;
 
 
     @GetMapping("/admin/ao/view/*")
@@ -143,6 +146,7 @@ public class SanPhamController {
         } catch (Exception e) {
 
         }
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/ao";
     }
 

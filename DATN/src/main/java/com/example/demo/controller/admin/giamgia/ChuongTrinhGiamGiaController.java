@@ -4,6 +4,7 @@ import com.example.demo.entity.giamgia.GiamGiaHoaDon;
 import com.example.demo.entity.giamgia.GiamGiaSanPham;
 import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
 import com.example.demo.entity.sanpham.Ao;
+import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.giamgia.GiamGiaSanPhamChiTietSer;
 import com.example.demo.ser.sanpham.AoSer;
 import com.example.demo.ser.giamgia.GiamGiaHoaDonSer;
@@ -33,6 +34,9 @@ public class ChuongTrinhGiamGiaController {
 
     @Autowired
     AoSer aoSer;
+
+    @Autowired
+    ChatSer chatSer;
 
     @Autowired
     GiamGiaSanPhamChiTietSer giamGiaSanPhamChiTietSer;
@@ -78,7 +82,7 @@ public class ChuongTrinhGiamGiaController {
         } catch (Exception e) {
 
         }
-
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/add/add_chuong_trinh";
     }
 
@@ -87,7 +91,7 @@ public class ChuongTrinhGiamGiaController {
 
         List<GiamGiaSanPham> listGiamGiaSanPhams = giamGiaSanPhamSer.getAll();
         model.addAttribute("listGiamGiaSanPhams", listGiamGiaSanPhams);
-
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/chuong_trinh_giam_gia_sp";
     }
 
@@ -95,6 +99,7 @@ public class ChuongTrinhGiamGiaController {
     public String viewApDung(Model model) {
         List<GiamGiaSanPhamChiTiet> listGiamGiaSanPhamChiTiets = giamGiaSanPhamChiTietSer.getAll();
         model.addAttribute("listGiamGiaSanPhamChiTiets",listGiamGiaSanPhamChiTiets);
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/add/ap_dung";
     }
 
@@ -103,7 +108,7 @@ public class ChuongTrinhGiamGiaController {
 
         List<GiamGiaHoaDon> listGiamGiaHoaDons = giamGiaHoaDonSer.getAll();
         model.addAttribute("listGiamGiaHoaDons", listGiamGiaHoaDons);
-
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/chuong_trinh_giam_gia_hd";
     }
 

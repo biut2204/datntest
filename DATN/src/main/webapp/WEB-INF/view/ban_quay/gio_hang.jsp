@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="../../../resources/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="../../../resources/css/add_form.css">
+    <%--    <link rel="stylesheet" href="../../../resources/css/add_form.css">--%>
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -41,10 +41,189 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <%--    <link href="../../../resources/css/style.css" rel="stylesheet">--%>
-    <link rel="stylesheet" href="../../../resources/css/add_form2.css">
+    <%--    <link rel="stylesheet" href="../../../resources/css/add_form2.css">--%>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <style>
+        #addFormContainer {
+
+            position: fixed;
+            top: 0;
+            left: 0;
+            /*padding-top: 15%;*/
+            padding-left: 3%;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Màu nền với độ trong suốt */
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #addForm {
+            background-color: white;
+            /* Màu nền của biểu mẫu */
+            /*padding: 20px;*/
+            border-radius: 5px;
+            /* Góc bo tròn cho khung biểu mẫu */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            /* Đổ bóng cho biểu mẫu */
+        }
+
+        #addForm button[type="submit"] {
+            background-color: #007BFF;
+            /* Màu nền của nút */
+            color: white;
+            /* Màu chữ trắng */
+            border: none;
+            cursor: pointer;
+        }
+
+        #addForm button[type="submit"]:hover {
+            background-color: #0056b3;
+            /* Màu nền khi di chuột vào */
+        }
+
+        #addFormContainer1 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            /*padding-top: 15%;*/
+            padding-left: 18%;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Màu nền với độ trong suốt */
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #addForm1 {
+            background-color: white;
+            width: 70%;
+            height: 300px;
+            /* Màu nền của biểu mẫu */
+            /*padding: 20px;*/
+            border-radius: 5px;
+            /* Góc bo tròn cho khung biểu mẫu */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            /* Đổ bóng cho biểu mẫu */
+        }
+
+        #addForm1 button[type="submit"] {
+            background-color: #007BFF;
+            /* Màu nền của nút */
+            color: white;
+            /* Màu chữ trắng */
+            border: none;
+            cursor: pointer;
+        }
+
+        #addForm1 button[type="submit"]:hover {
+            background-color: #0056b3;
+            /* Màu nền khi di chuột vào */
+        }
+
+        #addFormContainer2 {
+
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-left: 18%;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Màu nền với độ trong suốt */
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #addForm2 {
+            width: 80%;
+            height: 300px;
+            background-color: white;
+            /* Màu nền của biểu mẫu */
+            padding: 20px;
+            border-radius: 5px;
+            /* Góc bo tròn cho khung biểu mẫu */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            /* Đổ bóng cho biểu mẫu */
+        }
+
+        #addForm2 button[type="submit"] {
+            background-color: #007BFF;
+            /* Màu nền của nút */
+            color: white;
+            /* Màu chữ trắng */
+            border: none;
+            cursor: pointer;
+        }
+
+        #addForm2 button[type="submit"]:hover {
+            background-color: #0056b3;
+            /* Màu nền khi di chuột vào */
+        }
+
+        .gia {
+            color: red;
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .gia del {
+            color: gray;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        /* Tạo hình vuông tùy chỉnh và tạo một hình vuông giả bằng cách sử dụng một phần tử div */
+        label.radio-label {
+            display: inline-flex;
+            align-items: center; /* Căn giữa theo chiều dọc */
+            position: relative;
+            cursor: pointer;
+        }
+
+        label.radio-label::before {
+            content: " ";
+            display: inline-block;
+            width: 130%; /* Độ rộng hình vuông */
+            height: 130%; /* Chiều cao hình vuông */
+            border: 0.5px solid #6e7881; /* Viền */
+            background-color: transparent; /* Màu nền */
+            position: absolute; /* Điều chỉnh khoảng cách giữa hình vuông và label */
+            top: 0;
+            border-radius: 4px; /* Độ cong viền */
+        }
+
+        /* Điều khiển màu nền của hình vuông khi được chọn */
+        input[type="radio"]:checked + label.radio-label::before {
+            border: 2px solid #ffa500; /* Đổi màu border thành màu cam */
+        }
+
+        /* Tạo góc bên dưới bên phải màu cam */
+        input[type="radio"]:checked + label.radio-label::after {
+            content: "";
+            position: absolute;
+            bottom: 58%; /* Điều chỉnh vị trí theo chiều dọc */
+            right: -30%; /* Điều chỉnh vị trí theo chiều ngang */
+            width: 20px; /* Độ rộng của góc cam */
+            height: 12px; /* Chiều cao của góc cam */
+            background-color: #ffa500; /* Màu cam */
+            clip-path: polygon(100% 0, 0 0, 100% 100%);
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -240,7 +419,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="../../../index.html" class="nav-link">
+                                <a href="/admin/index/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Dashboard v1</p>
                                 </a>
@@ -303,7 +482,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/form/view/1" class="nav-link active">
+                                <a href="/admin/form/view/1" class="nav-link ">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Form áo</p>
                                 </a>
@@ -344,7 +523,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/khachhang/1" class="nav-link active">
+                                <a href="/admin/khachhang/1" class="nav-link ">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Khách Hàng</p>
                                 </a>
@@ -491,7 +670,7 @@
                                                             </td>
                                                             <input type="hidden" name="idAoChiTiet"
                                                                    value="${list.aoChiTiet.id}">
-
+                                                            <input type="hidden" id="slTon${vTri.index + 1}" value="${list.aoChiTiet.slton}">
                                                             <td class="align-middle"
                                                                 style="text-align: left"> ${list.aoChiTiet.ao.ten}</td>
                                                             <td class="align-middle">${list.aoChiTiet.mau_sac.ten}, ${list.aoChiTiet.size.ten}</td>
@@ -757,7 +936,8 @@
                                                 <div class="bg-light p-30">
 
                                                     <button class="btn btn-block btn-warning font-weight-bold py-3 "
-                                                            formaction="/admin/ban-quay/thanh-toan/${hoaDon}">
+
+                                                            formaction="/admin/ban-quay/thanh-toan/${hoaDon}" onclick="kiemTra()">
                                                         Thanh toán
                                                     </button>
                                                 </div>
@@ -869,15 +1049,15 @@
             </div>
         </section>
         <div id="addFormContainer1" style="display: ${noneOrBlock};border: 2px">
-            <div class="container-fluid " style="margin-top: 160px; padding-left: 16%">
-                <div class="card " style="width: 1000px; height: 500px">
-                    <div class="row px-xl-5 m-3 align-self-center">
+            <div class="container-fluid " style="margin-top: 160px; ">
+                <div class="card " style="width: 1000px; height: 450px">
+                    <div class="row px-xl-5 m-3 ">
                         <div class="col-lg-5 mb-30 border">
                             <div id="product-carousel" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner bg-light">
                                     <c:forEach items="${anhs}" var="list" varStatus="status">
                                         <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
-                                            <img class="" style="width: 100%; height: 450px"
+                                            <img class="" style="width: 100%; height: 400px"
                                                  src="/images/${list.ten_url}" alt="Image">
                                         </div>
                                     </c:forEach>
@@ -908,7 +1088,7 @@
                                     </c:when>
                                     <c:when test="${giamgia == 2}">
                                         <div class="gia">
-                                            <p>
+                                            <p class="ml-2">
                                                 <strong><fmt:formatNumber value="${ao.giaBan}" type="currency"
                                                                           currencySymbol="VNĐ"/></strong>
                                             </p>
@@ -975,24 +1155,7 @@
                 </div>
             </div>
         </div>
-        <div id="addFormContainer3" style="display: none;">
-            <div class="container-fluid">
-                <div class="container">
-                    <form method="post" id="addForm3">
-                        <div>
-                            <label>Ghi chú</label>
-                            <textarea name="moTa"
-                                      style="width: 100%; height: 150px"></textarea>
-                        </div>
 
-                        <button class="btn btn-primary" formaction="/admin/form/update" type="submit"
-                                onclick="addProduct()">Cập nhật
-                        </button>
-
-                    </form>
-                </div>
-            </div>
-        </div>
         <%--        <div id="addFormContainer2" style="display: none;border: 2px">--%>
         <%--            <div class="container-fluid" style="margin-top: 100px">--%>
         <%--                <div class="container">--%>
@@ -1187,17 +1350,23 @@
         var hasError = false;
 
         if (!selectedMauSac || !selectedSize) {
+            addFormContainer.style.display = "none";
+            addFormContainer1.style.display = "none";
             Swal.fire({
                 icon: 'warning',
-                html: '<div class="swal-text">Vui lòng chọn cả màu sắc hoặc kích thước áo</div><div class="progress-bar-container"></div>',
+                html: '<div class="swal-text">Vui lòng chọn cả màu sắc và kích thước áo</div><div class="progress-bar-container"></div>',
                 allowOutsideClick: true // Cho phép đóng thông báo bằng cách nhấp bên ngoài
             });
             setTimeout(() => {
                 Swal.close();
-            }, 2000);
+                addFormContainer.style.display = "block";
+                addFormContainer1.style.display = "block";
+            }, 1000);
             hasError = true;
         }
         if (sl == 0) {
+            addFormContainer.style.display = "none";
+            addFormContainer1.style.display = "none";
             Swal.fire({
                 icon: 'warning',
                 html: '<div class="swal-text">Sản phẩm đã hết, bạn vui lòng chọn sản phẩm khác</div><div class="progress-bar-container"></div>',
@@ -1205,10 +1374,14 @@
             });
             setTimeout(() => {
                 Swal.close();
-            }, 2000);
+                addFormContainer.style.display = "block";
+                addFormContainer1.style.display = "block";
+            }, 1000);
             hasError = true;
         }
         if (value > sl) {
+            addFormContainer.style.display = "none";
+            addFormContainer1.style.display = "none";
             Swal.fire({
                 icon: 'warning',
                 html: '<div class="swal-text">Số lượng tồn không đủ</div><div class="progress-bar-container"></div>',
@@ -1216,7 +1389,9 @@
             });
             setTimeout(() => {
                 Swal.close();
-            }, 2000);
+                addFormContainer.style.display = "block";
+                addFormContainer1.style.display = "block";
+            }, 1000);
             hasError = true;
         }
         if (hasError) {
@@ -1224,6 +1399,50 @@
         }
     }
 
+</script>
+
+<script>
+    function kiemTra() {
+
+        var listHoaDonChiTiet = ${listHoaDonChiTiets}; // Use the appropriate way to get the list from your server-side code
+        var hasError = false;
+        for (var i = 0; i < 99; i++) {
+            var slTon = parseFloat(document.getElementById("slTon" + (i + 1)).value); // Sửa lỗi ở đây
+            var sl = parseFloat(document.getElementById("sl" + (i + 1)).value); // Sửa lỗi ở đây
+
+            console.log(sl);
+            console.log(slTon);
+
+            if (listHoaDonChiTiet.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    html: '<div class="swal-text">Giỏ hàng của bạn hiện đang trống. Vui lòng thêm sản phẩm vào giỏ hàng.</div>',
+                    allowOutsideClick: true,
+                });
+                setTimeout(() => {
+                    Swal.close();
+                }, 1000);
+                hasError = true;
+            }
+
+            if (sl > slTon) {
+                Swal.fire({
+                    icon: 'warning',
+                    html: '<div class="swal-text">Số lượng tồn không đủ</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                    allowOutsideClick: true,
+                });
+                setTimeout(() => {
+                    Swal.close();
+                }, 1000);
+                hasError = true;
+            }
+            if (hasError) {
+                event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
+            }
+        }
+
+
+    }
 </script>
 
 <script>
@@ -1477,35 +1696,35 @@
     }
 
 </script>
-<script>
-    // Get references to the button and form container
-    var addButton3 = document.getElementById("addButton3");
-    var addFormContainer3 = document.getElementById("addFormContainer3");
+<%--<script>--%>
+<%--    // Get references to the button and form container--%>
+<%--    var addButton3 = document.getElementById("addButton3");--%>
+<%--    var addFormContainer3 = document.getElementById("addFormContainer3");--%>
 
-    // Add an event listener to the button
-    addButton3.addEventListener("click", function () {
-        // Toggle the visibility of the form container
-        if (addFormContainer3.style.display === "none" || addFormContainer3.style.display === "") {
-            addFormContainer3.style.display = "block";
-        } else {
-            addFormContainer3.style.display = "none";
-        }
-    });
+<%--    // Add an event listener to the button--%>
+<%--    addButton3.addEventListener("click", function () {--%>
+<%--        // Toggle the visibility of the form container--%>
+<%--        if (addFormContainer3.style.display === "none" || addFormContainer3.style.display === "") {--%>
+<%--            addFormContainer3.style.display = "block";--%>
+<%--        } else {--%>
+<%--            addFormContainer3.style.display = "none";--%>
+<%--        }--%>
+<%--    });--%>
 
-    // Add an event listener to the background overlay
-    addFormContainer3.addEventListener("click", function (event) {
-        // Check if the click occurred outside the form
-        if (event.target === addFormContainer3) {
-            // Hide the form
-            addFormContainer3.style.display = "none";
-        }
-    });
+<%--    // Add an event listener to the background overlay--%>
+<%--    addFormContainer3.addEventListener("click", function (event) {--%>
+<%--        // Check if the click occurred outside the form--%>
+<%--        if (event.target === addFormContainer3) {--%>
+<%--            // Hide the form--%>
+<%--            addFormContainer3.style.display = "none";--%>
+<%--        }--%>
+<%--    });--%>
 
-    function clickTrangChu() {
-        event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
-    }
+<%--    function clickTrangChu() {--%>
+<%--        event.preventDefault(); // Ngăn chặn submit form nếu có lỗi--%>
+<%--    }--%>
 
-</script>
+<%--</script>--%>
 
 <script>
 
@@ -1721,30 +1940,6 @@
 <%--        priceInput.value = gia1WithCurrency2;--%>
 <%--    }--%>
 <%--</script>--%>
-<script>
-    function kiemTra() {
-
-        for (var i = 0; i < 99; i++) {
-            var slTon = parseFloat(document.getElementById("slTon" + (i + 1)).value); // Sửa lỗi ở đây
-            var sl = parseFloat(document.getElementById("sl" + (i + 1)).value); // Sửa lỗi ở đây
-
-            console.log(sl);
-            console.log(slTon);
-
-            if (sl > slTon) {
-                Swal.fire({
-                    icon: 'warning',
-                    html: '<div class="swal-text">Số lượng chọn quá lớn cho sản phẩm</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
-                    allowOutsideClick: true,
-                });
-                setTimeout(() => {
-                    Swal.close();
-                }, 2000);
-                event.preventDefault();
-            }
-        }
-    }
-</script>
 
 <script>
     $(document).ready(function () {

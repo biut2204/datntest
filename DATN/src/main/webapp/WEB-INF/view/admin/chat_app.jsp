@@ -489,7 +489,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="../../../index.html" class="nav-link">
+                            <a href="/admin/index/1" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Dashboard v1</p>
                             </a>
@@ -572,6 +572,29 @@
                             <a href="/admin/size/view/1" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Size</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item ">
+                    <a href="#" class="nav-link ">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>
+                            Quản Lý Tài Khoản
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/admin/nhanvien/1" class="nav-link ">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Nhân Viên</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/khachhang/1" class="nav-link ">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Khách Hàng</p>
                             </a>
                         </li>
                     </ul>

@@ -15,6 +15,7 @@ import com.example.demo.entity.sanpham.LoaiAo;
 import com.example.demo.entity.sanpham.MauSac;
 import com.example.demo.entity.sanpham.Size;
 import com.example.demo.repo.users.UsersRepo;
+import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.giamgia.GiamGiaSanPhamChiTietSer;
 import com.example.demo.ser.sanpham.AnhSer;
 import com.example.demo.ser.sanpham.AoChiTietSer;
@@ -92,6 +93,9 @@ public class BanQuayController {
     @Autowired
     private HoaDonChiTietSer hoaDonChiTietSer;
 
+    @Autowired
+    ChatSer chatSer;
+
     @GetMapping("/trang-chu")
     public String view(Model model, HttpServletRequest request ) {
 
@@ -104,6 +108,7 @@ public class BanQuayController {
 
         ArrayList<Users> listKH= (ArrayList<Users>) usersSer.getAll();
         model.addAttribute("listKH",listKH);
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
 
 //        int tongSoLuong= hoaDonChiTietSer.soLuongSanPham(5,);
 //        model.addAttribute("soSanPham",tongSoLuong);
@@ -140,7 +145,7 @@ public class BanQuayController {
         hoaDon.setMa("Ma" + now.getHour() + now.getMinute() + now.getSecond());
         hoaDon.setKhachHang(null);
         hoaDon.setNhanVien(user);
-
+        hoaDon.setHinhThuc(1);
         hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(5);
 
@@ -172,6 +177,7 @@ public class BanQuayController {
         model.addAttribute("listAos", listAos);
         model.addAttribute("listHangs", listHangs);
         model.addAttribute("idHoaDon", id);
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
 //Detail
         String aoDetail = (String) session.getAttribute("aoDetail");
 
@@ -180,16 +186,16 @@ public class BanQuayController {
             model.addAttribute("noneOrBlock","none");
         }else {
             model.addAttribute("noneOrBlock","block");
-            Ao aoDeatl = aoSer.findByMa(aoDetail);
-            model.addAttribute("ao", aoSer.findById(aoDeatl.getId()));
-            model.addAttribute("slAoDaBan", aoSer.soLuongBanByUUID(aoDeatl.getId()));
-            model.addAttribute("anhs", anhSer.findAllByAoId(aoDeatl.getId()));
-            model.addAttribute("mauSacs", aoChiTietSer.findMauSacByIdAo(aoDeatl.getId()));
-            model.addAttribute("sizes", aoChiTietSer.findSizeByIdAo(aoDeatl.getId()));
-
+            Ao aoDetail1 = aoSer.findByMa(aoDetail);
+            model.addAttribute("ao", aoSer.findById(aoDetail1.getId()));
+            model.addAttribute("slAoDaBan", aoSer.soLuongBanByUUID(aoDetail1.getId()));
+            model.addAttribute("anhs", anhSer.findAllByAoId(aoDetail1.getId()));
+            model.addAttribute("mauSacs", aoChiTietSer.findMauSacByIdAo(aoDetail1.getId()));
+            model.addAttribute("sizes", aoChiTietSer.findSizeByIdAo(aoDetail1.getId()));
+            System.out.println(aoDetail1.getId());
 
             try {
-                GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietSer.findByIdAoAndTrangThai(aoDeatl.getId());
+                GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietSer.findByIdAoAndTrangThai(aoDetail1.getId());
                 model.addAttribute("giamgia", giamGiaSanPhamChiTiet.getGiamGiaSanPham().getPhanTramGiam());
                 model.addAttribute("time", giamGiaSanPhamChiTiet.getGiamGiaSanPham().getNgayKetThuc());
             } catch (Exception e) {
@@ -336,7 +342,8 @@ public class BanQuayController {
     @PostMapping("/thanh-toan/{id}")
     public String thanhToan(Model model, @PathVariable("id") UUID id,
                             @RequestParam("tongTien") BigDecimal tongTien,
-                            @RequestParam("ghiChu") String ghiChu){
+                            @RequestParam("ghiChu") String ghiChu,
+                            @RequestParam("soLuong") Integer soLuong){
 
         HoaDon hoaDon1= hoaDonSer.findId(id);
 
@@ -351,6 +358,48 @@ public class BanQuayController {
             hoaDonSer.update(id,hoaDon);
         }
 
+        }
+        List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon1.getId());
+
+        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
+            Ao ao = hoaDonChiTiet.getAoChiTiet().getAo();
+
+            GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietSer.findByIdAoAndTrangThai(ao.getId());
+
+            int gia;
+
+            if (giamGiaSanPhamChiTiet != null) {
+                gia = ao.getGiaBan().toBigInteger().intValue() * (100 - giamGiaSanPhamChiTiet.getGiamGiaSanPham().getPhanTramGiam()) / 100;
+            } else {
+                gia = ao.getGiaBan().toBigInteger().intValue();
+            }
+
+            int donGia = gia * hoaDonChiTiet.getSoLuong();
+            BigDecimal bigDecimalDonGia = new BigDecimal(donGia);
+
+            HoaDonChiTiet hdct = new HoaDonChiTiet();
+            hdct.setHoaDon(hoaDonChiTiet.getHoaDon());
+            hdct.setAoChiTiet(hoaDonChiTiet.getAoChiTiet());
+            hdct.setSoLuong(hoaDonChiTiet.getSoLuong());
+            hdct.setDonGia(bigDecimalDonGia);
+
+            hoaDonChiTietSer.update(hoaDonChiTiet.getId(), hdct);
+
+            AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
+
+            AoChiTiet aoChiTiet = new AoChiTiet();
+
+            int slTon = act.getSlton() - hoaDonChiTiet.getSoLuong();
+            int slBan = act.getSlban() + hoaDonChiTiet.getSoLuong();
+
+            aoChiTiet.setMau_sac(act.getMau_sac());
+            aoChiTiet.setSize(act.getSize());
+            aoChiTiet.setAo(act.getAo());
+            aoChiTiet.setSlton(slTon);
+            aoChiTiet.setSlban(slBan);
+            aoChiTiet.setTrangthai(act.getTrangthai());
+
+            aoChiTietSer.update(act.getId(), aoChiTiet);
         }
 
         model.addAttribute("hoaDon", hoaDon1.getId());

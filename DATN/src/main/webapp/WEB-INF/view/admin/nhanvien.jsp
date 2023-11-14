@@ -249,7 +249,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="../../../index.html" class="nav-link">
+                                <a href="/admin/index/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Dashboard v1</p>
                                 </a>
@@ -429,6 +429,8 @@
                             <i class="nav-icon fas fa-envelope"></i>
                             <p>
                                 Chat hỗ trợ
+                                <span style="${allChat==0?"display: none;":""}"
+                                      class="right badge badge-danger">${allChat}</span>
                             </p>
                         </a>
                     </li>
@@ -477,9 +479,9 @@
                                             <th>Tên</th>
                                             <th>Ngày Sinh</th>
                                             <th>Giới Tính</th>
-                                            <th>Địa chỉ</th>
-                                            <th>Thành Phố</th>
-                                            <th>Quốc Gia</th>
+                                            <th>Xã</th>
+                                            <th>Huyện</th>
+                                            <th>Tỉnh</th>
                                             <th>SDT</th>
                                             <th>Email</th>
                                             <th>Mật Khẩu</th>
@@ -516,9 +518,9 @@
                                             <th>Tên</th>
                                             <th>Ngày Sinh</th>
                                             <th>Giới Tính</th>
-                                            <th>Địa chỉ</th>
-                                            <th>Thành Phố</th>
-                                            <th>Quốc Gia</th>
+                                            <th>Xã</th>
+                                            <th>Huyện</th>
+                                            <th>Tỉnh</th>
                                             <th>SDT</th>
                                             <th>Email</th>
                                             <th>Mật Khẩu</th>
@@ -593,7 +595,7 @@
                                 <select id="ward" class="form-control" onchange="checkSelection()" disabled>
                                     <option value="">${item.dia_chi}</option>
                                 </select>
-                                <input type="hidden" id="xa1" name="diaChi">
+                                <input type="hidden" id="xa1" name="diaChi" value="${item.dia_chi}">
 
                                 <span id="errorDiaChi" class="text-danger"></span>
                             </div>
@@ -604,7 +606,7 @@
                                         disabled>
                                     <option value="">${item.thanh_pho}</option>
                                 </select>
-                                <input type="hidden" id="huyen1" name="thanh_pho">
+                                <input type="hidden" id="huyen1" name="thanh_pho" value="${item.thanh_pho}">
 
                                 <span id="errorThanhPho" class="text-danger"></span>
                             </div>
@@ -615,7 +617,7 @@
                                 <select id="province"  class="form-control" onchange="loadDistricts(); checkSelection()">
                                     <option value="">${item.quoc_gia}</option>
                                 </select>
-                                <input type="hidden" id="tinh1" name="quoc_gia">
+                                <input type="hidden" id="tinh1" name="quoc_gia" value="${item.quoc_gia}">
                                 <span id="errorQuocGia" class="text-danger"></span>
                             </div>
                         </div>
@@ -666,13 +668,13 @@
                                 </div>
                             </div>
                         </fieldset>
-                        <button class="btn btn-primary" formaction="/admin/nhanvien/add" type="submit"
-                                onclick="addProduct()">Thêm Mới
+                        <button  hidden id="bt1" class="btn btn-primary" formaction="/admin/nhanvien/add" type="submit"
+                                 onclick="addProduct()">Thêm Mới
                         </button>
-                        <button class="btn btn-primary" formaction="/admin/nhanvien/update" type="submit"
-                                onclick="addProduct()">Cập nhật
+                        <button  id="bt3" class="btn btn-primary" formaction="/admin/nhanvien/update" type="submit"
+                                 onclick="addProduct()">Cập nhật
                         </button>
-                        <button class="btn btn-primary" formaction="/admin/nhanvien/clear" type="submit">Clear</button>
+                        <button hidden id="bt2" class="btn btn-primary" formaction="/admin/nhanvien/clear" type="submit">Clear</button>
                     </form>
 
                 </div>
@@ -733,17 +735,22 @@
     // Get references to the button and form container
     var addButton = document.getElementById("addButton");
     var addFormContainer = document.getElementById("addFormContainer");
+    var bt1 = document.getElementById("bt1");
+    var bt2 = document.getElementById("bt2");
+    var bt3 = document.getElementById("bt3");
 
     // Add an event listener to the button
     addButton.addEventListener("click", function () {
         // Toggle the visibility of the form container
         if (addFormContainer.style.display === "none" || addFormContainer.style.display === "") {
             addFormContainer.style.display = "block";
+            bt1.hidden=false;
+            bt2.hidden=false;
+            bt3.hidden=true;
         } else {
             addFormContainer.style.display = "none";
         }
     });
-
     // Add an event listener to the background overlay
     addFormContainer.addEventListener("click", function (event) {
         // Check if the click occurred outside the form

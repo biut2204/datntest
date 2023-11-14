@@ -2,6 +2,7 @@ package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.HuongDanBaoQuan;
 import com.example.demo.repo.sanpham.HuongDanBaoQuanRepo;
+import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.HuongDanBaoQuanSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class HuongDanBaoQuanController {
     @Autowired
     HuongDanBaoQuanRepo huongDanBaoQuanRepo;
 
+    @Autowired
+    ChatSer chatSer;
+
     @GetMapping("/admin/huong_dan_bao_quan/view/*")
     public String view(Model model, HttpServletRequest request) {
         List<HuongDanBaoQuan> listHuongDanBaoQuans = huongDanBaoQuanSer.getAll();
@@ -37,7 +41,7 @@ public class HuongDanBaoQuanController {
         } catch (Exception e) {
 
         }
-
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/huong_dan_bao_quan";
     }
 

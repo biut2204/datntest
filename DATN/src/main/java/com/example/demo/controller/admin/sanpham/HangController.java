@@ -2,6 +2,7 @@ package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.Hang;
 import com.example.demo.repo.sanpham.HangRepo;
+import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.HangSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class HangController {
     @Autowired
     HangRepo hangRepo;
 
+    @Autowired
+    ChatSer chatSer;
+
     @GetMapping("/admin/hang/view/*")
     public String view(Model model, HttpServletRequest request) {
 
@@ -38,7 +42,7 @@ public class HangController {
         } catch (Exception e) {
 
         }
-
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/hang";
     }
 

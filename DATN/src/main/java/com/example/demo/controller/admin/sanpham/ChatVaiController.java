@@ -3,6 +3,7 @@ package com.example.demo.controller.admin.sanpham;
 import com.example.demo.entity.sanpham.ChatVai;
 import com.example.demo.entity.sanpham.HuongDanBaoQuan;
 import com.example.demo.repo.sanpham.ChatVaiRepo;
+import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.ChatVaiSer;
 import com.example.demo.ser.sanpham.HuongDanBaoQuanSer;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +28,9 @@ public class ChatVaiController {
     @Autowired
     ChatVaiRepo chatVaiRepo;
 
+    @Autowired
+    ChatSer chatSer;
+
     @GetMapping("/admin/chat_vai/view/*")
     public String view(Model model, HttpServletRequest request) {
 
@@ -46,7 +50,7 @@ public class ChatVaiController {
         } catch (Exception e) {
 
         }
-
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/chat_vai";
     }
 

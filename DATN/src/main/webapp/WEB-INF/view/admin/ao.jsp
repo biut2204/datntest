@@ -281,7 +281,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="../../../index.html" class="nav-link">
+                                <a href="/admin/index/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Dashboard v1</p>
                                 </a>
@@ -368,6 +368,29 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item ">
+                        <a href="#" class="nav-link ">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>
+                                Quản Lý Tài Khoản
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/admin/nhanvien/1" class="nav-link ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Nhân Viên</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/khachhang/1" class="nav-link ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Khách Hàng</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon far fa-plus-square"></i>
@@ -438,6 +461,8 @@
                             <i class="nav-icon fas fa-envelope"></i>
                             <p>
                                 Chat hỗ trợ
+                                <span style="${allChat==0?"display: none;":""}"
+                                      class="right badge badge-danger">${allChat}</span>
                             </p>
                         </a>
                     </li>
@@ -721,13 +746,13 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label>Giá Nhập :</label>
-                                    <input type="text" class="form-control" value="${item.giaNhap}"
+                                    <input type="number" class="form-control" value="${item.giaNhap}"
                                            placeholder="Giá Nhập Sản Phẩm" name="gianhap1">
                                     <span id="errorGiaNhap1" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Giá Bán :</label>
-                                    <input type="text" class="form-control" value="${item.giaBan}"
+                                    <input type="number" class="form-control" value="${item.giaBan}"
                                            placeholder="Giá Bán Sản Phẩm" name="giaban1">
                                     <span id="errorGiaBan1" class="text-danger"></span>
                                 </div>
@@ -979,13 +1004,13 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label>Giá Nhập <span class="text-danger">(*)</span> :</label>
-                                    <input type="text" class="form-control"
+                                    <input type="number" class="form-control"
                                            placeholder="Giá Nhập Sản Phẩm" name="gianhap">
                                     <span id="errorGiaNhap" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Giá Bán <span class="text-danger">(*)</span> :</label>
-                                    <input type="text" class="form-control"
+                                    <input type="number" class="form-control"
                                            placeholder="Giá Bán Sản Phẩm" name="giaban">
                                     <span id="errorGiaBan" class="text-danger"></span>
                                 </div>
@@ -1185,6 +1210,13 @@
             errorTen.innerText = '';
         }
 
+        if (mota.trim() === '') {
+            errorMoTa.innerText = 'Vui lòng nhập mô tả.';
+            hasError = true;
+        } else {
+            errorTen.innerText = '';
+        }
+
         if (gianhap.trim() === '') {
             errorGiaNhap.innerText = 'Vui lòng nhập giá nhập.';
             hasError = true;
@@ -1196,21 +1228,29 @@
             errorGiaBan.innerText = 'Vui lòng nhập giá bán.';
             hasError = true;
         } else {
-            errorTen.innerText = '';
+            // Validation for the 'Giá Bán' (not less than Giá Nhập)
+            if (parseFloat(giaban) < parseFloat(gianhap)) {
+                errorGiaBan.innerText = 'Giá bán không được nhỏ hơn giá nhập.';
+                hasError = true;
+            } else {
+                errorGiaBan.innerText = '';
+            }
         }
 
-        if (mota.trim() === '') {
-            errorMoTa.innerText = 'Vui lòng nhập mô tả.';
-            hasError = true;
-        } else {
-            errorTen.innerText = '';
-        }
-
+        // Validation for the 'Ngày Nhập' (not greater than current date and not empty)
         if (ngayNhap.trim() === '') {
-            errorNgayChon.innerText = 'Vui lòng nhập ngày nhập';
+            errorNgayChon.innerText = 'Vui lòng nhập ngày nhập.';
             hasError = true;
         } else {
-            errorNgayChon.innerText = '';
+            var currentDate = new Date();
+            var inputDate = new Date(ngayNhap);
+
+            if (inputDate > currentDate) {
+                errorNgayChon.innerText = 'Ngày nhập không được lớn hơn ngày hiện tại.';
+                hasError = true;
+            } else {
+                errorNgayChon.innerText = '';
+            }
         }
 
         if (hasError) {

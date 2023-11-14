@@ -3,6 +3,7 @@ package com.example.demo.controller.admin.quanli;
 import com.example.demo.entity.auth.RoleEnum;
 import com.example.demo.entity.khachhang.Users;
 import com.example.demo.repo.users.UsersRepo;
+import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.users.UsersSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class TaiKhoanController {
     @Autowired
     UsersSer usersSer;
 
+    @Autowired
+    ChatSer chatSer;
+
     @GetMapping("/admin/khachhang/*")
     public String view(Model model, HttpServletRequest request) {
 
@@ -36,6 +40,7 @@ public class TaiKhoanController {
         } catch (Exception e) {
 
         }
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/khachhang";
     }
 
@@ -120,7 +125,33 @@ public class TaiKhoanController {
         } catch (Exception e) {
 
         }
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/nhanvien";
+    }
+
+    @PostMapping("/admin/nhanvien/update")
+    public String update1(Model model, HttpServletRequest request) {
+        String id = request.getParameter("id");
+        String ma = request.getParameter("ma");
+        String ten = request.getParameter("ten");
+        String diaChi = request.getParameter("diaChi");
+        String gioiTinh = request.getParameter("gioiTinh");
+        String ngaySinh = request.getParameter("ngay_sinh");
+        String thanhPho = request.getParameter("thanh_pho");
+        String quocGia = request.getParameter("quoc_gia");
+        String sdt = request.getParameter("sdt");
+        String email = request.getParameter("email");
+        String matKhau = request.getParameter("matKhau");
+        Integer trangthai = Integer.parseInt(request.getParameter("trangthai"));
+
+        Users users = new Users(UUID.fromString(id), ma, ten, gioiTinh, ngaySinh, diaChi, thanhPho, quocGia, sdt, email, matKhau, RoleEnum.STAFF, trangthai);
+        Users user = usersSer.findById(UUID.fromString(id));
+        users.setMa(user.getMa());
+        usersRepo.save(users);
+        System.out.println(diaChi);
+        System.out.println(thanhPho);
+        System.out.println(quocGia);
+        return "redirect:/admin/nhanvien/1";
     }
 
     @PostMapping("/admin/khachhang/detail")

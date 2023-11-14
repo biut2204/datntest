@@ -8,6 +8,7 @@ import com.example.demo.entity.dto.DonHangDTO;
 import com.example.demo.entity.sanpham.AoChiTiet;
 import com.example.demo.repo.sanpham.AoChiTietRepo;
 import com.example.demo.repo.users.HoaDonRepo;
+import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.AoChiTietSer;
 import com.example.demo.ser.users.GioHangChiTietSer;
 import com.example.demo.ser.users.HoaDonChiTietSer;
@@ -46,6 +47,9 @@ public class QuanLiDonHang {
     @Autowired
     AoChiTietSer aoChiTietSer;
 
+    @Autowired
+    ChatSer chatSer;
+
     @GetMapping("/admin/quan_li_don_hang/*")
     public String viewQuanLiDonHang(HttpServletRequest request, Model model){
 
@@ -67,6 +71,7 @@ public class QuanLiDonHang {
         List<DonHangDTO> listDonHangDTOS = hoaDonSer.findAllByOrderByNgayTaoDesc();
 
         model.addAttribute("listDonHangDTOS", listDonHangDTOS);
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
 
         return "/admin/quan_li_don_hang_admin";
     }

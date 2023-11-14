@@ -2,6 +2,7 @@ package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.Size;
 import com.example.demo.repo.sanpham.SizeRepo;
+import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.SizeSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class SizeController {
     @Autowired
     SizeRepo sizeRepo;
 
+    @Autowired
+    ChatSer chatSer;
+
     @GetMapping("/admin/size/view/*")
     public String view(Model model, HttpServletRequest request) {
 
@@ -38,7 +42,7 @@ public class SizeController {
         } catch (Exception e) {
 
         }
-
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/size";
     }
 

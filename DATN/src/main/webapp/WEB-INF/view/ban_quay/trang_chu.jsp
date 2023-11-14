@@ -209,7 +209,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="../../../index.html" class="nav-link">
+                                <a href="/admin/index/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Dashboard v1</p>
                                 </a>
@@ -272,7 +272,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/form/view/1" class="nav-link active">
+                                <a href="/admin/form/view/1" class="nav-link ">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Form áo</p>
                                 </a>
@@ -313,7 +313,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/khachhang/1" class="nav-link active">
+                                <a href="/admin/khachhang/1" class="nav-link ">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Khách Hàng</p>
                                 </a>

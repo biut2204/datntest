@@ -354,7 +354,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="../../../index.html" class="nav-link">
+                                <a href="/admin/index/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Dashboard v1</p>
                                 </a>
@@ -441,6 +441,29 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item ">
+                        <a href="#" class="nav-link ">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>
+                                Quản Lý Tài Khoản
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/admin/nhanvien/1" class="nav-link ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Nhân Viên</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/khachhang/1" class="nav-link ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Khách Hàng</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item menu-open">
                         <a href="#" class="nav-link active">
                             <i class="nav-icon far fa-plus-square"></i>
@@ -511,6 +534,8 @@
                             <i class="nav-icon fas fa-envelope"></i>
                             <p>
                                 Chat hỗ trợ
+                                <span style="${allChat==0?"display: none;":""}"
+                                      class="right badge badge-danger">${allChat}</span>
                             </p>
                         </a>
                     </li>
@@ -528,7 +553,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-<%--                        <h1>DataTables</h1>--%>
+                        <%--                        <h1>DataTables</h1>--%>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">

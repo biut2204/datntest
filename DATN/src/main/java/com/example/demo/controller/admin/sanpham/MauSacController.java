@@ -2,6 +2,7 @@ package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.MauSac;
 import com.example.demo.repo.sanpham.MauSacRepo;
+import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.MauSacSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class MauSacController {
     @Autowired
     MauSacRepo mauSacRepo;
 
+    @Autowired
+    ChatSer chatSer;
+
     @GetMapping("/admin/mau_sac/view/*")
     public String view(Model model, HttpServletRequest request) {
 
@@ -38,7 +42,7 @@ public class MauSacController {
         } catch (Exception e) {
 
         }
-
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/mau_sac";
     }
 

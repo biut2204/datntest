@@ -2,6 +2,7 @@ package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.Form;
 import com.example.demo.repo.sanpham.FormRepo;
+import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.FormSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class FormController {
     @Autowired
     FormRepo formRepo;
 
+    @Autowired
+    ChatSer chatSer;
+
     @GetMapping("/admin/form/view/*")
     public String view(Model model, HttpServletRequest request) {
 
@@ -38,7 +42,7 @@ public class FormController {
         } catch (Exception e) {
 
         }
-
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/form";
     }
 

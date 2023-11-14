@@ -401,14 +401,14 @@
             </div>
         </div>
         <div class="col-lg-4">
-                <div class="product-offer mb-30" style="height: 200px;">
-                    <img class="img-fluid" src="/images/test1.jpg" alt="">
-                    <div class="offer-text">
-                        <h6 class="text-white text-uppercase">Sản phẩm bán chạy</h6>
-                        <h3 class="text-white mb-3">Hot</h3>
-                        <a href="" class="btn btn-primary">Shop Now</a>
-                    </div>
+            <div class="product-offer mb-30" style="height: 200px;">
+                <img class="img-fluid" src="/images/test1.jpg" alt="">
+                <div class="offer-text">
+                    <h6 class="text-white text-uppercase">Sản phẩm bán chạy</h6>
+                    <h3 class="text-white mb-3">Hot</h3>
+                    <a href="" class="btn btn-primary">Shop Now</a>
                 </div>
+            </div>
             <div class="product-offer mb-30" style="height: 200px;">
                 <img class="img-fluid" src="/images/test1.jpg" alt="">
                 <div class="offer-text">
@@ -514,7 +514,8 @@
                     </div>
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate"
-                           href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a>
+                           href="/user/san_pham_detail/${idKh}/${list.ao.id}"
+                           style="display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${list.ao.ten}</a>
                         <div class="d-flex align-items-center justify-content-center mt-2">
                             <h5><strong><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
                                                           currencySymbol="VNĐ"/></strong></h5>
@@ -579,7 +580,8 @@
                         <div class="label1"><img src="/images/new_no_phong.png"></div>
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate"
-                               href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a>
+                               href="/user/san_pham_detail/${idKh}/${list.ao.id}"
+                               style="display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${list.ao.ten}</a>
                             <c:choose>
                                 <c:when test="${list.giaBan == list.ao.giaBan}">
                                     <div class="d-flex align-items-center justify-content-center mt-2">
@@ -788,17 +790,32 @@
                             </div>
                         </div>
                         <div class="label1"><img src="/images/sale_icon.png"></div>
-                        <div class="offer-text">
-                            <h6 class="text-black text-center"><a
-                                    href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a></h6>
+                        <div class="text-center py-4">
+                            <div class="offer-text">
+                                    <%--                            <h6 class="text-black text-center">--%>
+                                <a class="h6 text-decoration-none text-truncate "
+                                   href="/user/san_pham_detail/${idKh}/${list.ao.id}"
+                                   style="display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${list.ao.ten}</a>
+                                    <%--                            </h6>--%>
+                            </div>
+                            <div class="gia">
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+
+
+                                    <h6 class="text-muted ml-2">
+                                        <del><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
+                                                               currencySymbol="VNĐ"/></del>
+                                    </h6>
+                                    <h5 style="color: red;">
+                                        <fmt:formatNumber
+                                                value="${list.ao.giaBan * (100 - list.giamGiaSanPham.phanTramGiam)/100}"
+                                                type="currency" currencySymbol="VNĐ"/>
+                                    </h5>
+
+                                </div>
+                            </div>
                         </div>
-                        <div class="gia">
-                            <del><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
-                                                   currencySymbol="VNĐ"/></del>
-                            <strong><fmt:formatNumber
-                                    value="${list.ao.giaBan * (100 - list.giamGiaSanPham.phanTramGiam)/100}"
-                                    type="currency" currencySymbol="VNĐ"/></strong>
-                        </div>
+
                     </div>
                 </c:forEach>
             </div>
@@ -843,7 +860,9 @@
                         </div>
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate"
-                               href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a>
+
+                               href="/user/san_pham_detail/${idKh}/${list.ao.id}"
+                               style="display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${list.ao.ten}</a>
                             <c:choose>
                                 <c:when test="${list.giaBan == list.ao.giaBan}">
                                     <div class="d-flex align-items-center justify-content-center mt-2">
