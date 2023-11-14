@@ -180,4 +180,9 @@ public class AoSerImpl implements AoSer {
     public Long soLuongBanByUUID(UUID id) {
         return aoRepo.soLuongBanByUUID(id);
     }
+
+    @Override
+    public Ao findByMa(String ma) {
+        return aoRepo.findByMa(ma);
+    }
 }

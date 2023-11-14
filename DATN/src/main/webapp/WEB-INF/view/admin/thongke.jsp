@@ -255,10 +255,10 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="../widgets.html" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
+                        <a href="/admin/ban-quay/trang-chu" class="nav-link">
+                            <i class="nav-icon fas fa-store"></i>
                             <p>
-                                Widgets
+                                Bán Quầy
                                 <span class="right badge badge-danger">New</span>
                             </p>
                         </a>
@@ -557,8 +557,15 @@
                 </div>
             </div>
         </section>
-
+        <canvas id="myChart1" width="400" height="200"></canvas>
+        <select id="loaiAo">
+            <c:forEach items="${listLoaiAo}" var="list">
+                <option value="${list.ma}">${list.ten}</option>
+            </c:forEach>
+        </select>
+        <canvas id="myChart2" width="400" height="200"></canvas>
     </div>
+
     <!-- /.content-wrapper -->
     <footer class="main-footer">
         <div class="float-right d-none d-sm-block">
@@ -1126,6 +1133,131 @@
             })
             .catch(error => console.error(error));
     });
+</script>
+<script>
+    // Lấy dữ liệu từ model và chuyển đổi thành mảng JavaScript
+    var labels = [];
+    var soLuongBan = [];
+    var soLuongTon = [];
+
+    <c:forEach var="bieuDoDTO" items="${listThongKeSoLuongAoDTOS}">
+    labels.push("${bieuDoDTO.loaiAo.ten}");
+    soLuongBan.push(${bieuDoDTO.slBan});
+    soLuongTon.push(${bieuDoDTO.slTon});
+    </c:forEach>
+
+    var ctx = document.getElementById('myChart1').getContext('2d');
+
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Số lượng bán',
+                data: soLuongBan,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Màu của cột
+                borderColor: 'rgba(75, 192, 192, 1)', // Màu viền của cột
+                borderWidth: 1,
+                yAxisID: 'left-y-axis'
+            }, {
+                label: 'Số lượng tồn',
+                data: soLuongTon,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Màu của cột
+                borderColor: 'rgba(255, 99, 132, 1)', // Màu viền của cột
+                borderWidth: 1,
+                yAxisID: 'left-y-axis'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    id: 'left-y-axis',
+                    type: 'linear',
+                    position: 'left',
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }, {
+                    id: 'right-y-axis',
+                    type: 'linear',
+                    position: 'right',
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        var ctx = document.getElementById('myChart2').getContext('2d');
+        var myChart2 = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Số lượng bán',
+                    data: [],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                    {
+                        label: 'Số lượng tồn',
+                        data: [],
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        function drawChart(maLoaiAo) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+
+                    var tenAo = data.map(function (item) {
+                        return item.tenAo;
+                    });
+
+                    var slBan = data.map(function (item) {
+                        return item.slBan;
+                    });
+
+                    var slTon = data.map(function (item) {
+                        return item.slTon;
+                    });
+
+                    myChart2.data.labels = tenAo;
+                    myChart2.data.datasets[0].data = slBan;
+                    myChart2.data.datasets[1].data = slTon;
+                    myChart2.update();
+                }
+            };
+            xhttp.open("GET", "http://localhost:8080/api/thong_ke_so_luong_ao/" + maLoaiAo, true);
+            xhttp.send();
+        }
+
+        document.getElementById("loaiAo").addEventListener("change", function () {
+            var selectedValue = this.value;
+            drawChart(selectedValue);
+        });
+
+        // Vẽ biểu đồ mặc định khi trang tải lên
+        drawChart(document.getElementById("loaiAo").value);
+    });
+
 </script>
 <script src="../assets/js/core/popper.min.js"></script>
 <script src="../assets/js/core/bootstrap.min.js"></script>

@@ -96,7 +96,6 @@ public class ChatController {
 
     @GetMapping("admin/chat/{ma}")
     public String chatPage1(@PathVariable String ma, Model model) {
-//        model.addAttribute("user",userRepository.findByRole(RoleEnum.MENBER));
         model.addAttribute("user",chatMessageRepository.Alluser());
         model.addAttribute("check", ma);
         Users u = userRepository.findByMa(ma);
@@ -121,7 +120,27 @@ public class ChatController {
         messageChat.setTrangThai(0);
 
         chatSer.update(upChat.getId(), messageChat);
+        List<Users> listUsers = chatMessageRepository.Alluser();
 
+        List<ChatDTO> listChatDTOS = new ArrayList<>();
+
+        for (Users users : listUsers){
+            String bienTrungGianByUser1 = chatMessageRepository.bienTrungGianByUser(users.getId());
+
+            List<MessageChat> listMessageChats1 = chatMessageRepository.listChat(bienTrungGianByUser1);
+            ChatDTO chatDTO = new ChatDTO();
+            if(listMessageChats1.get(0).getTrangThai() == 0){
+                chatDTO.setSl(0);
+            }else {
+                chatDTO.setSl(1);
+            }
+            chatDTO.setUsers(users);
+            listChatDTOS.add(chatDTO);
+        }
+
+        model.addAttribute("user",chatMessageRepository.Alluser());
+        model.addAttribute("listChatDTOS",listChatDTOS);
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/chat_app";
     }
     @GetMapping("admin/chat")
@@ -151,6 +170,7 @@ public class ChatController {
 
         model.addAttribute("user",chatMessageRepository.Alluser());
         model.addAttribute("listChatDTOS",listChatDTOS);
+        model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         demChatRepository.deleteAll();
         return "/admin/chat_app";
     }

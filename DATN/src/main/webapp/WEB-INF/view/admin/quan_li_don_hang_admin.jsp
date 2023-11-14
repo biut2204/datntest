@@ -429,10 +429,10 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="../widgets.html" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
+                        <a href="/admin/ban-quay/trang-chu" class="nav-link">
+                            <i class="nav-icon fas fa-store"></i>
                             <p>
-                                Widgets
+                                Bán Quầy
                                 <span class="right badge badge-danger">New</span>
                             </p>
                         </a>
@@ -711,11 +711,14 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <c:choose>
-                                        <c:when test="${hoaDon.ngayThanhToan != hoaDon.ngayTao }">
-                                            <label>Thanh toán: <span style="margin-left: 105px;background: #C594C5;padding: 10px;border-radius: 15px">Khi nhận hàng</span></label>
+                                        <c:when test="${hoaDon.hinhThuc == 1 }">
+                                            <label>Thanh toán: <span style="margin-left: 105px;background: #C594C5;padding: 10px;border-radius: 15px">Tại quầy</span></label>
                                         </c:when>
-                                        <c:when test="${hoaDon.ngayThanhToan == hoaDon.ngayTao }">
-                                            <label>Thanh toán: <span style="margin-left: 105px;background: #abdec7;padding: 10px;border-radius: 15px">VnPay</span></label>
+                                        <c:when test="${hoaDon.hinhThuc == 2 }">
+                                            <label>Thanh toán: <span style="margin-left: 105px;background: #abdec7;padding: 10px;border-radius: 15px">Thanh toán Vnpay</span></label>
+                                        </c:when>
+                                        <c:when test="${hoaDon.hinhThuc == 3 }">
+                                            <label>Thanh toán: <span style="margin-left: 105px;background: #fff3c6;padding: 10px;border-radius: 15px">Thanh toán khi nhận hàng</span></label>
                                         </c:when>
                                     </c:choose>
                                 </div>
@@ -903,7 +906,7 @@
                         <p style="width: 200px">${list.aoChiTiet.ao.ten}</p>
                         <p style="width: 100px">${list.soLuong}</p>
                         <p style="width: 100px"><fmt:formatNumber value="${list.donGia}" type="currency"
-                                             currencySymbol="VNĐ"/></p>
+                                                                  currencySymbol="VNĐ"/></p>
                     </div>
                 </c:forEach>
                 <h5>Tên khách hàng : ${hoaDon.khachHang.ten}</h5>
@@ -943,21 +946,7 @@
 <!-- Page specific script -->
 <script>
     $(document).ready(function () {
-        $('#searchText1').on('input', function () {
-            var searchText = $(this).val().toLowerCase();
-            $('#example1 tbody tr').each(function () {
-                var rowText = $(this).text().toLowerCase();
-                if (rowText.includes(searchText)) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
-        });
-    });
-</script>
-<script>
-    $(document).ready(function () {
+
         // Sự kiện thay đổi combobox
         $('#searchText2').on('change', function () {
             var selectedValue = $(this).val().toLowerCase();

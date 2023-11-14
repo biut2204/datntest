@@ -12,4 +12,7 @@ import java.util.UUID;
 public interface MauSacRepo extends JpaRepository<MauSac, UUID> {
     @Query("select ms from MauSac ms where ms.trangthai = ?1")
     List<MauSac> findAllByTrangThai(Integer trangThai);
+
+    @Query("select count(ms.id) from MauSac ms")
+    Integer soMS();
 }

@@ -30,4 +30,16 @@ public interface AoChiTietRepo extends JpaRepository<AoChiTiet, UUID> {
 
     @Query("select p from AoChiTiet p where p.ao.ma = ?1 and p.mau_sac.ma = ?2 and p.size.ma = ?3")
     AoChiTiet findByMaAoMsSize(String id, String idMauSac, String idSize);
+
+    @Query("select sum(act.slban) from AoChiTiet act where act.ao.loaiAo.id = ?1")
+    Integer soLuongAoBanByLoaiAo(UUID id);
+
+    @Query("select sum(act.slton) from AoChiTiet act where act.ao.loaiAo.id = ?1")
+    Integer soLuongAoTonByLoaiAo(UUID id);
+
+    @Query("select sum(act.slban) from AoChiTiet act where act.ao.id = ?1")
+    Integer soLuongAoBanByAo(UUID id);
+
+    @Query("select sum(act.slton) from AoChiTiet act where act.ao.id = ?1")
+    Integer soLuongAoTonByAo(UUID id);
 }

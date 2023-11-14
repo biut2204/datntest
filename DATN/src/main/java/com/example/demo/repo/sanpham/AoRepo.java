@@ -31,6 +31,7 @@ public interface AoRepo extends JpaRepository<Ao, UUID> {
     @Query("select a from Ao a where a.loaiAo.ma = ?1 and a.trangThai = 2")
     List<Ao> listAoFindByLoaiAo(String ma);
 
+
     @Query("select sum(act.slban) from AoChiTiet act where act.ao.id = ?1")
     Long soLuongBanByUUID(UUID id);
 
@@ -63,4 +64,8 @@ public interface AoRepo extends JpaRepository<Ao, UUID> {
             @Param("maxPrice") BigDecimal maxPrice,
             @Param("mauSacIds") List<UUID> mauSacIds
     );
+
+    @Query("select p from Ao p where p.ma = ?1")
+    Ao findByMa(String ma);
+
 }

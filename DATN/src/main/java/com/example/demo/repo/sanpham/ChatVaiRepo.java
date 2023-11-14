@@ -13,4 +13,7 @@ public interface ChatVaiRepo extends JpaRepository<ChatVai, UUID> {
 
     @Query("select cv from ChatVai cv where cv.trangthai = ?1")
     List<ChatVai> findAllByTrangThai(Integer trangThai);
+
+    @Query("select count(cv.id) from ChatVai cv")
+    Integer soCV();
 }

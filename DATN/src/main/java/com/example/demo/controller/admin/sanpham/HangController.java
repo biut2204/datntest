@@ -1,6 +1,7 @@
 package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.Hang;
+import com.example.demo.repo.sanpham.HangRepo;
 import com.example.demo.ser.sanpham.HangSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class HangController {
 
     @Autowired
     HangSer hangSer;
+
+    @Autowired
+    HangRepo hangRepo;
 
     @GetMapping("/admin/hang/view/*")
     public String view(Model model, HttpServletRequest request) {
@@ -41,14 +45,15 @@ public class HangController {
     @PostMapping("/admin/hang/add")
     public String add(Model model, HttpServletRequest request) {
 
-        String ma = request.getParameter("ma");
+        int slHang = hangRepo.soHang() + 1;
+
         String ten = request.getParameter("ten");
         String diaChi = request.getParameter("diaChi");
         String trangthai = request.getParameter("trangthai");
 
         Hang hang = new Hang();
 
-        hang.setMa(ma);
+        hang.setMa("Hang"+slHang);
         hang.setTen(ten);
         hang.setDiaChi(diaChi);
         hang.setTrangthai(Integer.parseInt(trangthai));
@@ -61,15 +66,16 @@ public class HangController {
     public String update(Model model, HttpServletRequest request) {
 
         String id = request.getParameter("id");
-        String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
         String diaChi = request.getParameter("diaChi");
         String trangthai = request.getParameter("trangthai");
 
+        Hang h = hangSer.findById(UUID.fromString(id));
+
         Hang hang = new Hang();
 
-        hang.setMa(ma);
         hang.setTen(ten);
+        hang.setMa(h.getMa());
         hang.setDiaChi(diaChi);
         hang.setTrangthai(Integer.parseInt(trangthai));
 

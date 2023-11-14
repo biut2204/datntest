@@ -13,4 +13,7 @@ public interface FormRepo extends JpaRepository<Form, UUID> {
 
     @Query("select f from Form f where f.trangthai = ?1")
     List<Form> findAllByTrangThai(Integer trangThai);
+
+    @Query("select count(f.id) from Form f")
+    Integer soF();
 }

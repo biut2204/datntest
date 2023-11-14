@@ -1,5 +1,7 @@
 package com.example.demo.ser.sanpham;
 
+import com.example.demo.entity.dto.AoDTO;
+import com.example.demo.entity.dto.ThongKeSoLuongAoDTO;
 import com.example.demo.entity.sanpham.AoChiTiet;
 import com.example.demo.entity.sanpham.MauSac;
 import com.example.demo.entity.sanpham.Size;
@@ -24,5 +26,9 @@ public interface AoChiTietSer {
     AoChiTiet findIdByIdAoMsSize(UUID id, UUID idMauSac, UUID idSize);
 
     int soLuongAoChiTietByIdAo(UUID id);
+
+    List<ThongKeSoLuongAoDTO> thongKeSoLuongAoDTO();
+
+    List<AoDTO> thongKeAoDto(String ma);
 
 }

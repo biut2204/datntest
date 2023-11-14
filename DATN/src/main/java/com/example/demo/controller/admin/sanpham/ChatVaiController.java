@@ -2,6 +2,7 @@ package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.ChatVai;
 import com.example.demo.entity.sanpham.HuongDanBaoQuan;
+import com.example.demo.repo.sanpham.ChatVaiRepo;
 import com.example.demo.ser.sanpham.ChatVaiSer;
 import com.example.demo.ser.sanpham.HuongDanBaoQuanSer;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,9 @@ public class ChatVaiController {
 
     @Autowired
     HuongDanBaoQuanSer huongDanBaoQuanSer;
+
+    @Autowired
+    ChatVaiRepo chatVaiRepo;
 
     @GetMapping("/admin/chat_vai/view/*")
     public String view(Model model, HttpServletRequest request) {
@@ -48,7 +52,7 @@ public class ChatVaiController {
 
     @PostMapping("/admin/chat_vai/add")
     public String add(HttpServletRequest request){
-        String ma = request.getParameter("ma");
+        int slCv = chatVaiRepo.soCV() + 1;
         String ten = request.getParameter("ten");
         String thongtin = request.getParameter("thongtin");
         String huongDanBaoQuanId = request.getParameter("huongDanBaoQuanId");
@@ -58,7 +62,7 @@ public class ChatVaiController {
 
         ChatVai chatVai = new ChatVai();
 
-        chatVai.setMa(ma);
+        chatVai.setMa("CV"+slCv);
         chatVai.setTen(ten);
         chatVai.setThongtin(thongtin);
         chatVai.setHuong_dan_bao_quan(huong_dan_bao_quan);
@@ -72,7 +76,6 @@ public class ChatVaiController {
     @PostMapping("/admin/chat_vai/update")
     public String update(HttpServletRequest request){
         String id = request.getParameter("id");
-        String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
         String thongtin = request.getParameter("thongtin");
         String huongDanBaoQuanId = request.getParameter("huongDanBaoQuanId");
@@ -80,10 +83,11 @@ public class ChatVaiController {
 
         HuongDanBaoQuan huong_dan_bao_quan = huongDanBaoQuanSer.findById(UUID.fromString(huongDanBaoQuanId));
 
+        ChatVai cv = chatVaiSer.findById(UUID.fromString(id));
         ChatVai chatVai = new ChatVai();
 
-        chatVai.setMa(ma);
         chatVai.setTen(ten);
+        chatVai.setMa(cv.getMa());
         chatVai.setThongtin(thongtin);
         chatVai.setHuong_dan_bao_quan(huong_dan_bao_quan);
         chatVai.setTrangthai(Integer.parseInt(trangthai));

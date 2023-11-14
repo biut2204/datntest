@@ -73,4 +73,13 @@ public class UsersSerImpl implements UsersSer {
     public int demLoginGG(String email) {
         return usersRepo.demLoginGG(email);
     }
+
+    @Override
+    public Users findByHD(UUID id) {
+        return usersRepo.findByHD(id);
+    }
+    @Override
+    public List<Users> findAllKhachHang() {
+        return usersRepo.findAllKhachHang();
+    }
 }

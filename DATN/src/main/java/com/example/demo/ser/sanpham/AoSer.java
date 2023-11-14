@@ -38,4 +38,6 @@ public interface AoSer {
     List<Ao> timKiemNangCao(UUID idChatVai, UUID idLoaiAo, UUID idForm, UUID idHang, BigDecimal minPrice, BigDecimal maxPrice, List<UUID> mauSacIds);
 
     Long soLuongBanByUUID(UUID id);
+
+    Ao findByMa(String ma);
 }

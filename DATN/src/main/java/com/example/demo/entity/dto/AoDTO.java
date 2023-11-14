@@ -17,7 +17,11 @@ public class AoDTO {
 
     Ao ao;
 
+    String tenAo;
+
     Long slBan;
+
+    Integer slTon;
 
     int giaBan;
 }

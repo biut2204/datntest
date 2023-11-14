@@ -13,4 +13,7 @@ public interface HuongDanBaoQuanRepo extends JpaRepository<HuongDanBaoQuan, UUID
 
     @Query("select hdbq from HuongDanBaoQuan hdbq where hdbq.trangthai = ?1")
     List<HuongDanBaoQuan> findByAllByTrangThai(Integer trangThai);
+
+    @Query("select count(hdbq.id) from HuongDanBaoQuan hdbq")
+    Integer soHDBQ();
 }

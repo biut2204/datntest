@@ -1,6 +1,7 @@
 package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.LoaiAo;
+import com.example.demo.repo.sanpham.LoaiAoRepo;
 import com.example.demo.ser.sanpham.LoaiAoSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class LoaiAoController {
     @Autowired
     LoaiAoSer loaiAoSer;
 
+    @Autowired
+    LoaiAoRepo loaiAoRepo;
+
     @GetMapping("/admin/loai_ao/view/*")
     public String view(Model model, HttpServletRequest request) {
 
@@ -50,7 +54,7 @@ public class LoaiAoController {
     @PostMapping("/admin/loai_ao/add")
     public String add(@RequestPart("tenURL") MultipartFile file, Model model, HttpServletRequest request) {
 
-        String ma = request.getParameter("ma");
+        int slLA = loaiAoRepo.soLA() + 1;
         String ten = request.getParameter("ten");
         String trangthai = request.getParameter("trangthai");
 
@@ -66,7 +70,7 @@ public class LoaiAoController {
 
         LoaiAo loaiAo = new LoaiAo();
 
-        loaiAo.setMa(ma);
+        loaiAo.setMa("LA" + slLA);
         loaiAo.setTen(ten);
         loaiAo.setTenURL(file.getOriginalFilename());
         loaiAo.setTrangthai(Integer.parseInt(trangthai));
@@ -76,10 +80,9 @@ public class LoaiAoController {
     }
 
     @PostMapping("/admin/loai_ao/update")
-    public String update(@RequestPart("tenURL") MultipartFile file,Model model, HttpServletRequest request) {
+    public String update(@RequestPart("tenURL") MultipartFile file, Model model, HttpServletRequest request) {
 
         String id = request.getParameter("id");
-        String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
         String trangthai = request.getParameter("trangthai");
 
@@ -93,9 +96,10 @@ public class LoaiAoController {
             e.printStackTrace();
         }
 
+        LoaiAo la = loaiAoSer.findById(UUID.fromString(id));
         LoaiAo loaiAo = new LoaiAo();
 
-        loaiAo.setMa(ma);
+        loaiAo.setMa(la.getMa());
         loaiAo.setTen(ten);
         loaiAo.setTenURL(file.getOriginalFilename());
         loaiAo.setTrangthai(Integer.parseInt(trangthai));
@@ -110,7 +114,7 @@ public class LoaiAoController {
         String id = request.getParameter("detail");
         LoaiAo loaiAo = loaiAoSer.findById(UUID.fromString(id));
 
-        return "redirect:/admin/loai_ao/view/"+ loaiAo.getId();
+        return "redirect:/admin/loai_ao/view/" + loaiAo.getId();
     }
 
     @PostMapping("/admin/loai_ao/clear")

@@ -413,6 +413,7 @@ public class UserController {
         hoaDon.setMa("Ma" + now.getHour() + now.getMinute() + now.getSecond());
         hoaDon.setKhachHang(khachHang);
         hoaDon.setNgayTao(LocalDateTime.now());
+        hoaDon.setHinhThuc(0);
         hoaDon.setTrangThai(0);
 
         hoaDonSer.add(hoaDon);
@@ -502,6 +503,7 @@ public class UserController {
         } else {
             hd.setMoTa("Người nhận: " + ten + " , Email: " + email + " , Sđt nhận hàng: " + sdt + " , Địa chỉ giao hàng" + diaChi + " huyện " + thanhPho + " tỉnh " + quocGia);
         }
+        hd.setHinhThuc(3);
 
         hoaDonSer.update(hoaDon.getId(), hd);
 
@@ -509,9 +511,7 @@ public class UserController {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(mail);
         message.setSubject("Thông tin đơn hàng");
-        message.setText("Chúc mừng bạn đã đặt hàng thành công đơn hàng với mã đơn hàng : " + hoaDon.getMa());
-
-        mailSender.send(message);
+        String bodymail = "";
 
         if (hinhThuc.equals("bank")) {
             session.setAttribute("maHoaDon", hoaDon.getMa());
@@ -560,7 +560,14 @@ public class UserController {
             aoChiTiet.setTrangthai(act.getTrangthai());
 
             aoChiTietSer.update(act.getId(), aoChiTiet);
+            bodymail += hdct.getAoChiTiet().getAo().getTen()+" "+hdct.getAoChiTiet().getSize().getTen()+" x "+hdct.getSoLuong()+"\n";
         }
+        message.setText("Chúc mừng bạn đã đặt hàng thành công sản phẩm từ SD-99" +
+                "\nMã đơn hàng : " + hoaDon.getMa()
+                +"\nSản phẩm :\n"+bodymail+"\nTổng tiền : "+hoaDon.getTongTien()+" VND"+
+                "\nCảm ơn bạn đã mua hàng");
+
+        mailSender.send(message);
 
         return "/user/thanh_cong";
     }
@@ -582,6 +589,7 @@ public class UserController {
         hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
         hd.setNgayHuy(LocalDateTime.now());
         hd.setKhachHang(hoaDon.getKhachHang());
+        hd.setHinhThuc(hoaDon.getHinhThuc());
         hd.setTrangThai(4);
         hd.setMoTa(hoaDon.getMoTa());
         hoaDonSer.update(hoaDon.getId(), hd);
@@ -627,6 +635,7 @@ public class UserController {
         hd.setNgayHoanThanh(LocalDateTime.now());
         hd.setKhachHang(hoaDon.getKhachHang());
         hd.setNgayThanhToan(LocalDateTime.now());
+        hd.setHinhThuc(hoaDon.getHinhThuc());
         hd.setTrangThai(3);
         hd.setMoTa(hoaDon.getMoTa());
         hoaDonSer.update(hoaDon.getId(), hd);

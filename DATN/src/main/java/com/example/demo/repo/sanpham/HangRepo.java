@@ -13,4 +13,8 @@ public interface HangRepo extends JpaRepository<Hang, UUID> {
 
     @Query("select h from Hang h where h.trangthai = ?1")
     List<Hang> findAllByTrangThai(Integer trangThai);
+
+    @Query("select count(h.id) from Hang h")
+    Integer soHang();
+
 }

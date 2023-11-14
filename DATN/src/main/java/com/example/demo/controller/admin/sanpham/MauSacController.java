@@ -1,6 +1,7 @@
 package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.MauSac;
+import com.example.demo.repo.sanpham.MauSacRepo;
 import com.example.demo.ser.sanpham.MauSacSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class MauSacController {
 
     @Autowired
     MauSacSer mauSacSer;
+
+    @Autowired
+    MauSacRepo mauSacRepo;
 
     @GetMapping("/admin/mau_sac/view/*")
     public String view(Model model, HttpServletRequest request) {
@@ -41,13 +45,13 @@ public class MauSacController {
     @PostMapping("/admin/mau_sac/add")
     public String add(Model model, HttpServletRequest request) {
 
-        String ma = request.getParameter("ma");
+        int slCv = mauSacRepo.soMS() + 1;
         String ten = request.getParameter("ten");
         String trangthai = request.getParameter("trangthai");
 
         MauSac mauSac = new MauSac();
 
-        mauSac.setMa(ma);
+        mauSac.setMa("MauSac"+slCv);
         mauSac.setTen(ten);
         mauSac.setTrangthai(Integer.parseInt(trangthai));
 
@@ -59,13 +63,13 @@ public class MauSacController {
     public String update(Model model, HttpServletRequest request) {
 
         String id = request.getParameter("id");
-        String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
         String trangthai = request.getParameter("trangthai");
 
+        MauSac ms = mauSacSer.findById(UUID.fromString(id));
         MauSac mauSac = new MauSac();
 
-        mauSac.setMa(ma);
+        mauSac.setMa(ms.getMa());
         mauSac.setTen(ten);
         mauSac.setTrangthai(Integer.parseInt(trangthai));
 

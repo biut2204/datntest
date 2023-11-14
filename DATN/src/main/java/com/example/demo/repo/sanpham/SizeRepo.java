@@ -12,4 +12,7 @@ import java.util.UUID;
 public interface SizeRepo extends JpaRepository<Size, UUID> {
     @Query("select sz from Size sz where sz.trangthai = ?1")
     List<Size> findAllByTrangThai(Integer trangThai);
+
+    @Query("select count(s.id) from Size s")
+    Integer soS();
 }

@@ -228,10 +228,10 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="../widgets.html" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
+                        <a href="/admin/ban-quay/trang-chu" class="nav-link">
+                            <i class="nav-icon fas fa-store"></i>
                             <p>
-                                Widgets
+                                Bán Quầy
                                 <span class="right badge badge-danger">New</span>
                             </p>
                         </a>
@@ -457,15 +457,9 @@
         <div id="addFormContainer" style="display: none;">
             <div class="container-fluid">
                 <div class="container">
-                    <h3 style="text-align: center">HÃNG</h3>
                     <form method="post" id="addForm">
+                        <h3 style="text-align: center">HÃNG</h3>
                         <input type="hidden" name="id" value="${item.id}">
-                        <div class="form-group">
-                            <label for="formGroupExampleInput">Mã <span class="text-danger">(*)</span> :</label>
-                            <input type="text" name="ma" value="${item.ma}" class="form-control"
-                                   id="formGroupExampleInput" placeholder="Mã ">
-                            <span id="errorMa" class="text-danger"></span>
-                        </div>
                         <div class="form-group">
                             <label for="formGroupExampleInput2">Tên <span class="text-danger">(*)</span> :</label>
                             <input type="text" name="ten" value="${item.ten}" class="form-control"
@@ -594,20 +588,11 @@
 </script>
 <script>
     function addProduct() {
-        var ma = document.getElementsByName('ma')[0].value;
         var ten = document.getElementsByName('ten')[0].value;
         var diaChi = document.getElementsByName('diaChi')[0].value;
-        var errorMa = document.getElementById('errorMa');
         var errorTen = document.getElementById('errorTen');
         var errorDiaChi = document.getElementById('errorDiaChi');
         var hasError = false;
-
-        if (ma.trim() === '') {
-            errorMa.innerText = 'Vui lòng nhập mã.';
-            hasError = true;
-        } else {
-            errorMa.innerText = '';
-        }
 
         if (ten.trim() === '') {
             errorTen.innerText = 'Vui lòng nhập tên.';

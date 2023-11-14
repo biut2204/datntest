@@ -790,10 +790,25 @@ ${ngayTao}
         var box1 = document.getElementById("checkbox1");
         var box2 = document.getElementById("checkbox2");
 
-        if (!box1.checked && !box2.checked) {
+        var radioBank = document.getElementById("banktransfer");
+        var radioCash = document.getElementById("directcheck");
+
+        if ((!box1.checked && !box2.checked) || (box1.checked && !validateDiaChiCu()) || (box2.checked && !validateDiaChiMoi())) {
             Swal.fire({
                 icon: 'warning',
-                html: '<div class="swal-text">Bạn chưa chọn địa chỉ</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                html: '<div class="swal-text">Vui lòng điền đầy đủ thông tin để nhận hàng</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                allowOutsideClick: true,
+            });
+            setTimeout(() => {
+                Swal.close();
+            }, 2000);
+            event.preventDefault();
+        }
+
+        if (!radioBank.checked && !radioCash.checked) {
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Vui lòng chọn phương thức thanh toán</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
                 allowOutsideClick: true,
             });
             setTimeout(() => {
@@ -822,6 +837,32 @@ ${ngayTao}
                 event.preventDefault();
             }
         }
+    }
+
+    function validateDiaChiCu() {
+        // Kiểm tra các trường trong địa chỉ cũ và trả về true nếu đầy đủ, ngược lại trả về false
+        // Ví dụ:
+        var ten = document.getElementsByName("ten")[0].value;
+        var email = document.getElementsByName("email")[0].value;
+        var sdt = document.getElementsByName("sdt")[0].value;
+        var quocGia = document.getElementById("tinh").value;
+        var thanhPho = document.getElementById("huyen").value;
+        var diaChi = document.getElementById("xa").value;
+
+        return ten && email && sdt && quocGia && thanhPho && diaChi;
+    }
+
+    function validateDiaChiMoi() {
+        // Kiểm tra các trường trong địa chỉ mới và trả về true nếu đầy đủ, ngược lại trả về false
+        // Ví dụ:
+        var ten1 = document.getElementsByName("ten1")[0].value;
+        var email1 = document.getElementsByName("email1")[0].value;
+        var sdt1 = document.getElementsByName("sdt1")[0].value;
+        var tinh1 = document.getElementById("province").value;
+        var huyen1 = document.getElementById("district").value;
+        var xa1 = document.getElementById("ward").value;
+
+        return ten1 && email1 && sdt1 && tinh1 && huyen1 && xa1;
     }
 </script>
 <script>

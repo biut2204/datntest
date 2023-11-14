@@ -1,6 +1,7 @@
 package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.HuongDanBaoQuan;
+import com.example.demo.repo.sanpham.HuongDanBaoQuanRepo;
 import com.example.demo.ser.sanpham.HuongDanBaoQuanSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class HuongDanBaoQuanController {
 
     @Autowired
     HuongDanBaoQuanSer huongDanBaoQuanSer;
+
+    @Autowired
+    HuongDanBaoQuanRepo huongDanBaoQuanRepo;
 
     @GetMapping("/admin/huong_dan_bao_quan/view/*")
     public String view(Model model, HttpServletRequest request) {
@@ -39,14 +43,14 @@ public class HuongDanBaoQuanController {
 
     @PostMapping("/admin/huong_dan_bao_quan/add")
     public String add(HttpServletRequest request) {
-        String ma = request.getParameter("ma");
+        int slHDBQ = huongDanBaoQuanRepo.soHDBQ() + 1;
         String ten = request.getParameter("ten");
         String chitiet = request.getParameter("chitiet");
         String trangthai = request.getParameter("trangthai");
 
         HuongDanBaoQuan huongDanBaoQuan = new HuongDanBaoQuan();
 
-        huongDanBaoQuan.setMa(ma);
+        huongDanBaoQuan.setMa("HDBQ"+ slHDBQ);
         huongDanBaoQuan.setTen(ten);
         huongDanBaoQuan.setChitiet(chitiet);
         huongDanBaoQuan.setTrangthai(Integer.parseInt(trangthai));
@@ -58,14 +62,15 @@ public class HuongDanBaoQuanController {
     @PostMapping("/admin/huong_dan_bao_quan/update")
     public String update(HttpServletRequest request) {
         String id = request.getParameter("id");
-        String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
         String chitiet = request.getParameter("chitiet");
         String trangthai = request.getParameter("trangthai");
 
+        HuongDanBaoQuan hdbq = huongDanBaoQuanSer.findById(UUID.fromString(id));
+
         HuongDanBaoQuan huongDanBaoQuan = new HuongDanBaoQuan();
 
-        huongDanBaoQuan.setMa(ma);
+        huongDanBaoQuan.setMa(hdbq.getMa());
         huongDanBaoQuan.setTen(ten);
         huongDanBaoQuan.setChitiet(chitiet);
         huongDanBaoQuan.setTrangthai(Integer.parseInt(trangthai));

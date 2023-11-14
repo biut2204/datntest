@@ -6,7 +6,9 @@ import com.example.demo.entity.khachhang.HoaDonChiTiet;
 import com.example.demo.entity.khachhang.Users;
 import com.example.demo.entity.dto.DonHangDTO;
 import com.example.demo.entity.sanpham.AoChiTiet;
+import com.example.demo.repo.sanpham.AoChiTietRepo;
 import com.example.demo.repo.users.HoaDonRepo;
+import com.example.demo.ser.sanpham.AoChiTietSer;
 import com.example.demo.ser.users.GioHangChiTietSer;
 import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
@@ -40,6 +42,9 @@ public class QuanLiDonHang {
 
     @Autowired
     GioHangChiTietSer gioHangChiTietSer;
+
+    @Autowired
+    AoChiTietSer aoChiTietSer;
 
     @GetMapping("/admin/quan_li_don_hang/*")
     public String viewQuanLiDonHang(HttpServletRequest request, Model model){
@@ -92,6 +97,7 @@ public class QuanLiDonHang {
         hd.setNgayXacNhan(LocalDateTime.now());
         hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
         hd.setKhachHang(hoaDon.getKhachHang());
+        hd.setHinhThuc(hoaDon.getHinhThuc());
         hd.setTrangThai(2);
         hd.setMoTa(hoaDon.getMoTa());
         hoaDonSer.update(hoaDon.getId(), hd);
@@ -119,10 +125,32 @@ public class QuanLiDonHang {
         hd.setNgayHuy(LocalDateTime.now());
         hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
         hd.setKhachHang(hoaDon.getKhachHang());
+        hd.setHinhThuc(hoaDon.getHinhThuc());
         hd.setTrangThai(4);
         hd.setGhiChu(ghiChu);
         hd.setMoTa(hoaDon.getMoTa());
         hoaDonSer.update(hoaDon.getId(), hd);
+
+        List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
+
+        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
+
+            AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
+
+            AoChiTiet aoChiTiet = new AoChiTiet();
+
+            int slTon = act.getSlton() + hoaDonChiTiet.getSoLuong();
+            int slBan = act.getSlban() - hoaDonChiTiet.getSoLuong();
+
+            aoChiTiet.setMau_sac(act.getMau_sac());
+            aoChiTiet.setSize(act.getSize());
+            aoChiTiet.setAo(act.getAo());
+            aoChiTiet.setSlton(slTon);
+            aoChiTiet.setSlban(slBan);
+            aoChiTiet.setTrangthai(act.getTrangthai());
+
+            aoChiTietSer.update(act.getId(), aoChiTiet);
+        }
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(hoaDon.getKhachHang().getEmail());
@@ -160,6 +188,7 @@ public class QuanLiDonHang {
         hd.setNgayXacNhan(hoaDon.getNgayXacNhan());
         hd.setNgayHoanThanh(LocalDateTime.now());
         hd.setKhachHang(hoaDon.getKhachHang());
+        hd.setHinhThuc(hoaDon.getHinhThuc());
         hd.setTrangThai(3);
         hd.setMoTa(hoaDon.getMoTa());
 

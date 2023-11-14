@@ -274,7 +274,7 @@ public class SanPhamController {
         ao.setNgayNhap(updateAo.getNgayNhap());
         ao.setGiaNhap(updateAo.getGiaNhap());
         ao.setGiaBan(updateAo.getGiaBan());
-        ao.setTrangThai(1);
+        ao.setTrangThai(updateAo.getTrangThai());
 
         aoSer.update(updateAo.getId(), ao);
 

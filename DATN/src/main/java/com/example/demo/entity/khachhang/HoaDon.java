@@ -71,6 +71,9 @@ public class HoaDon {
     @Column(name = "TongTien")
     BigDecimal tongTien;
 
+    @Column(name = "HinhThuc")
+    int hinhThuc;
+
     @Column(name = "TrangThai")
     int trangThai;
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.Size;
+import com.example.demo.repo.sanpham.SizeRepo;
 import com.example.demo.ser.sanpham.SizeSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class SizeController {
 
     @Autowired
     SizeSer sizeSer;
+
+    @Autowired
+    SizeRepo sizeRepo;
 
     @GetMapping("/admin/size/view/*")
     public String view(Model model, HttpServletRequest request) {
@@ -41,13 +45,13 @@ public class SizeController {
     @PostMapping("/admin/size/add")
     public String add(Model model, HttpServletRequest request) {
 
-        String ma = request.getParameter("ma");
+        int slS = sizeRepo.soS() + 1;
         String ten = request.getParameter("ten");
         String trangthai = request.getParameter("trangthai");
 
         Size size = new Size();
 
-        size.setMa(ma);
+        size.setMa("Size"+slS);
         size.setTen(ten);
         size.setTrangthai(Integer.parseInt(trangthai));
 
@@ -59,13 +63,13 @@ public class SizeController {
     public String update(Model model, HttpServletRequest request) {
 
         String id = request.getParameter("id");
-        String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
         String trangthai = request.getParameter("trangthai");
 
+        Size s = sizeSer.findById(UUID.fromString(id));
         Size size = new Size();
 
-        size.setMa(ma);
+        size.setMa(s.getMa());
         size.setTen(ten);
         size.setTrangthai(Integer.parseInt(trangthai));
 

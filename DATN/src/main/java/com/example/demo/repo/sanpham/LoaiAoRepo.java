@@ -15,4 +15,7 @@ public interface LoaiAoRepo extends JpaRepository<LoaiAo, UUID> {
     List<LoaiAo> findAllByTrangThai(Integer trangThai);
 
     LoaiAo findByMa(String ma);
+
+    @Query("select count(la.id) from LoaiAo la")
+    Integer soLA();
 }

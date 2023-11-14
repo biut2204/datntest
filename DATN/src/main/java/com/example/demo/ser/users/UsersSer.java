@@ -27,4 +27,7 @@ public interface UsersSer {
     int soLuongUser();
 
     int demLoginGG(String email);
+
+    Users findByHD(UUID id);
+    List<Users> findAllKhachHang();
 }

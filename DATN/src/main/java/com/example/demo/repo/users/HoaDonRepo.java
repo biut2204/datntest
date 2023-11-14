@@ -32,7 +32,7 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, UUID> {
     @Query("select hd from HoaDon hd where hd.ma = ?1")
     HoaDon findByMa(String ma);
 
-    @Query("SELECT distinct cast(hd.ngayHoanThanh as date)  FROM HoaDon hd WHERE cast(hd.ngayHoanThanh as date) IS NOT NULL")
+    @Query("SELECT distinct cast(hd.ngayHoanThanh as date)  FROM HoaDon hd WHERE cast(hd.ngayHoanThanh as date) IS NOT NULL ORDER BY CAST(hd.ngayHoanThanh AS date) desc ")
     List<Object[]> listNgayThanhToanHoanThanh();
 
     @Query("select count(hd.ma) from HoaDon hd where CAST(hd.ngayChoXacNhan AS DATE) = ?1 and hd.trangThai = ?2")
@@ -109,4 +109,7 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, UUID> {
     @Query(value = "SELECT DISTINCT YEAR(NgayTao) AS Nam\n" +
             "FROM HoaDon;",nativeQuery = true)
     List<String> listYearByHoaDon();
+
+    @Query("select hd from HoaDon hd where hd.trangThai = ?1")
+    List<HoaDon> listHoaDonFindByTrangThaiCho( int trangThai);
 }

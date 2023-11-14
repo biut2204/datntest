@@ -69,4 +69,6 @@ public interface HoaDonSer {
     Double doanhThuThangHienTai(LocalDate date1, LocalDate date2);
 
     List<BieuDoDTO> listBieuDo();
+
+    List<HoaDon> listHoaDonFindByTrangThaiCho( int trangThai);
 }

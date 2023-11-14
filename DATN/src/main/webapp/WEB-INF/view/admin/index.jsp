@@ -90,6 +90,14 @@
         #addForm1 button[type="submit"]:hover, #addForm2 button[type="submit"]:hover, #addForm3 button[type="submit"]:hover, #addForm4 button[type="submit"]:hover {
             background-color: #0056b3; /* Màu nền khi di chuột vào */
         }
+        .listDonHang {
+            color: black;
+            text-decoration: none; /* Loại bỏ gạch chân mặc định của liên kết */
+            transition: color 0.3s; /* Hiệu ứng chuyển đổi màu sắc trong 0.3 giây */
+        }
+        .listDonHang:hover{
+            color: red;
+        }
     </style>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -306,10 +314,10 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="../widgets.html" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
+                        <a href="/admin/ban-quay/trang-chu" class="nav-link">
+                            <i class="nav-icon fas fa-store"></i>
                             <p>
-                                Widgets
+                                Bán Quầy
                                 <span class="right badge badge-danger">New</span>
                             </p>
                         </a>
@@ -568,8 +576,9 @@
                 <div class="container">
                     <form method="post" id="addForm1">
                         <h3 style="text-align: center">Đơn mới chờ xác nhận</h3>
-                        <div class="data-item">
-                            <c:forEach items="${listHoaDonChoXacNhanDTOS}" var="list" varStatus="vTri">
+
+                        <c:forEach items="${listHoaDonChoXacNhanDTOS}" var="list" varStatus="vTri">
+                            <div class="data-item1">
                                 <div class="d-flex justify-content-between ">
                                     <p><img style="width: 50px"
                                             src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
@@ -578,8 +587,9 @@
                                     <p>${list.hoaDonChiTiet.soLuong}</p>
                                 </div>
                                 <div class="divider"></div>
-                            </c:forEach>
-                        </div>
+                            </div>
+                        </c:forEach>
+
                         <button id="prevPageButton">Pre</button>
                         <button id="nextPageButton">Next</button>
                     </form>
@@ -592,8 +602,9 @@
                 <div class="container">
                     <form method="post" id="addForm2">
                         <h3 style="text-align: center">Đơn đang giao</h3>
-                        <div class="data-item">
-                            <c:forEach items="${listHoaDonDangGiaoDTOS}" var="list" varStatus="vTri">
+
+                        <c:forEach items="${listHoaDonDangGiaoDTOS}" var="list" varStatus="vTri">
+                            <div class="data-item2">
                                 <div class="d-flex justify-content-between ">
                                     <p><img style="width: 50px"
                                             src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
@@ -602,8 +613,9 @@
                                     <p>${list.hoaDonChiTiet.soLuong}</p>
                                 </div>
                                 <div class="divider"></div>
-                            </c:forEach>
-                        </div>
+                            </div>
+                        </c:forEach>
+
                         <button id="prevPageButton2">Pre</button>
                         <button id="nextPageButton2">Next</button>
                     </form>
@@ -615,8 +627,9 @@
                 <div class="container">
                     <form method="post" id="addForm3">
                         <h3 style="text-align: center">Đơn mới hoàn thành</h3>
-                        <div class="data-item">
-                            <c:forEach items="${listHoaDonHoanThanhDTOS}" var="list" varStatus="vTri">
+
+                        <c:forEach items="${listHoaDonHoanThanhDTOS}" var="list" varStatus="vTri">
+                            <div class="data-item3">
                                 <div class="d-flex justify-content-between ">
                                     <p><img style="width: 50px"
                                             src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
@@ -625,8 +638,9 @@
                                     <p>${list.hoaDonChiTiet.soLuong}</p>
                                 </div>
                                 <div class="divider"></div>
-                            </c:forEach>
-                        </div>
+                            </div>
+                        </c:forEach>
+
                         <button id="prevPageButton3">Pre</button>
                         <button id="nextPageButton3">Next</button>
                     </form>
@@ -638,8 +652,9 @@
                 <div class="container">
                     <form method="post" id="addForm4">
                         <h3 style="text-align: center">Đơn mới hủy</h3>
-                        <div class="data-item">
-                            <c:forEach items="${listHoaDonHuyDTOS}" var="list" varStatus="vTri">
+
+                        <c:forEach items="${listHoaDonHuyDTOS}" var="list" varStatus="vTri">
+                            <div class="data-item4">
                                 <div class="d-flex justify-content-between ">
                                     <p><img style="width: 50px"
                                             src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
@@ -648,8 +663,9 @@
                                     <p>${list.hoaDonChiTiet.soLuong}</p>
                                 </div>
                                 <div class="divider"></div>
-                            </c:forEach>
-                        </div>
+                            </div>
+                        </c:forEach>
+
                         <button id="prevPageButton4">Pre</button>
                         <button id="nextPageButton4">Next</button>
                     </form>
@@ -669,10 +685,10 @@
                         <div class="card-tools">
                             <ul class="nav nav-pills ml-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Day</a>
+                                    <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Theo ngày</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#sales-chart" data-toggle="tab">Month</a>
+                                    <a class="nav-link" href="#sales-chart" data-toggle="tab">Theo tháng</a>
                                 </li>
                             </ul>
                         </div>
@@ -718,11 +734,12 @@
                     <div class="card-body" style="background: white; color: #0a0e14">
                         <c:forEach items="${page.content}" var="list">
                             <div style="margin-bottom: 10px">
-                                <a href="/admin/quan_li_don_hang/${list.ma}" style="color: black">
+                                <a href="/admin/quan_li_don_hang/${list.ma}" class="listDonHang">
                                     <div style="display: inline-block;width: 100px">${list.ma}</div>
                                     <div style="display: inline-block;width: 150px">${list.khachHang.ten}</div>
                                     <div style="display: inline-block;width: 100px">
-                                        <fmt:formatNumber value="${list.tongTien}" type="currency" currencySymbol="VNĐ"/>
+                                        <fmt:formatNumber value="${list.tongTien}" type="currency"
+                                                          currencySymbol="VNĐ"/>
                                     </div>
                                     <c:choose>
                                         <c:when test="${list.trangThai == 1}">
@@ -861,9 +878,7 @@
     var weeklyData = [
         // Dữ liệu cho mỗi tuần
         <c:forEach items="${listThongKeDTOS}" var="thongKeDTO">
-        [${thongKeDTO.soLuong}
-            // Thêm số lượng sản phẩm cho các ngày khác vào đây
-        ],
+        ${thongKeDTO.soLuong},
         </c:forEach>
     ];
 
@@ -874,12 +889,16 @@
         </c:forEach>
     ];
 
+    // Sắp xếp ngày thanh toán theo thứ tự tăng dần
+    ngayThanhToan.sort(function(a, b) {
+        return new Date(a) - new Date(b);
+    });
+
     var ctx = document.getElementById('myChart').getContext('2d');
     var currentWeek = 0;
     var weeksData = [];
 
-    // Tạo mảng dữ liệu cho từng tuần
-    for (var i = 0; i < ngayThanhToan.length; i += 7) {
+    for (var i = 0; i < weeklyData.length; i += 7) {
         var weekData = weeklyData.slice(i, i + 7);
         weeksData.push(weekData);
     }
@@ -887,9 +906,9 @@
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ngayThanhToan.slice(currentWeek * 7, (currentWeek + 1) * 7), // Sử dụng dữ liệu ngày
+            labels: ngayThanhToan.slice(currentWeek * 7, (currentWeek + 1) * 7),
             datasets: [{
-                label: 'Số lượng sản phẩm bán được',
+                label: 'Số hóa đơn hoàn thành',
                 data: weeksData[currentWeek],
                 backgroundColor: 'rgba(75, 192, 192, 0.2)', // Màu nền cột
                 borderColor: 'rgba(75, 192, 192, 1)', // Màu viền cột
@@ -1026,20 +1045,20 @@
 </script>
 <script>
     var dataContainer1 = document.getElementById("addFormContainer1");
-    var dataItems = dataContainer1.getElementsByClassName("data-item");
+    var dataItems1 = dataContainer1.getElementsByClassName("data-item1");
     var itemsPerPage = 4; // Số lượng dữ liệu trên mỗi trang
     var currentPage = 1; // Trang hiện tại
 
     function showDataOnPage(page) {
-        for (var i = 0; i < dataItems.length; i++) {
-            dataItems[i].style.display = "none"; // Ẩn tất cả các dữ liệu
+        for (var i = 0; i < dataItems1.length; i++) {
+            dataItems1[i].style.display = "none"; // Ẩn tất cả các dữ liệu
         }
 
         var startIndex = (page - 1) * itemsPerPage;
         var endIndex = startIndex + itemsPerPage;
 
-        for (var i = startIndex; i < endIndex && i < dataItems.length; i++) {
-            dataItems[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
+        for (var i = startIndex; i < endIndex && i < dataItems1.length; i++) {
+            dataItems1[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
         }
     }
 
@@ -1057,7 +1076,7 @@
 
     // Xử lý nút "Trang tiếp theo"
     document.getElementById("nextPageButton").addEventListener("click", function () {
-        var maxPage = Math.ceil(dataItems.length / itemsPerPage);
+        var maxPage = Math.ceil(dataItems1.length / itemsPerPage);
         if (currentPage < maxPage) {
             currentPage++;
             showDataOnPage(currentPage);
@@ -1068,20 +1087,20 @@
 </script>
 <script>
     var dataContainer2 = document.getElementById("addFormContainer2");
-    var dataItems = dataContainer2.getElementsByClassName("data-item");
+    var dataItems2 = dataContainer2.getElementsByClassName("data-item2");
     var itemsPerPage = 4; // Số lượng dữ liệu trên mỗi trang
     var currentPage = 1; // Trang hiện tại
 
     function showDataOnPage(page) {
-        for (var i = 0; i < dataItems.length; i++) {
-            dataItems[i].style.display = "none"; // Ẩn tất cả các dữ liệu
+        for (var i = 0; i < dataItems2.length; i++) {
+            dataItems2[i].style.display = "none"; // Ẩn tất cả các dữ liệu
         }
 
         var startIndex = (page - 1) * itemsPerPage;
         var endIndex = startIndex + itemsPerPage;
 
-        for (var i = startIndex; i < endIndex && i < dataItems.length; i++) {
-            dataItems[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
+        for (var i = startIndex; i < endIndex && i < dataItems2.length; i++) {
+            dataItems2[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
         }
     }
 
@@ -1099,7 +1118,7 @@
 
     // Xử lý nút "Trang tiếp theo"
     document.getElementById("nextPageButton2").addEventListener("click", function () {
-        var maxPage = Math.ceil(dataItems.length / itemsPerPage);
+        var maxPage = Math.ceil(dataItems2.length / itemsPerPage);
         if (currentPage < maxPage) {
             currentPage++;
             showDataOnPage(currentPage);
@@ -1110,20 +1129,20 @@
 </script>
 <script>
     var dataContainer3 = document.getElementById("addFormContainer3");
-    var dataItems = dataContainer3.getElementsByClassName("data-item");
+    var dataItems3 = dataContainer3.getElementsByClassName("data-item3");
     var itemsPerPage = 4; // Số lượng dữ liệu trên mỗi trang
     var currentPage = 1; // Trang hiện tại
 
     function showDataOnPage(page) {
-        for (var i = 0; i < dataItems.length; i++) {
-            dataItems[i].style.display = "none"; // Ẩn tất cả các dữ liệu
+        for (var i = 0; i < dataItems3.length; i++) {
+            dataItems3[i].style.display = "none"; // Ẩn tất cả các dữ liệu
         }
 
         var startIndex = (page - 1) * itemsPerPage;
         var endIndex = startIndex + itemsPerPage;
 
-        for (var i = startIndex; i < endIndex && i < dataItems.length; i++) {
-            dataItems[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
+        for (var i = startIndex; i < endIndex && i < dataItems3.length; i++) {
+            dataItems3[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
         }
     }
 
@@ -1141,7 +1160,7 @@
 
     // Xử lý nút "Trang tiếp theo"
     document.getElementById("nextPageButton3").addEventListener("click", function () {
-        var maxPage = Math.ceil(dataItems.length / itemsPerPage);
+        var maxPage = Math.ceil(dataItems3.length / itemsPerPage);
         if (currentPage < maxPage) {
             currentPage++;
             showDataOnPage(currentPage);
@@ -1152,20 +1171,20 @@
 </script>
 <script>
     var dataContainer4 = document.getElementById("addFormContainer4");
-    var dataItems = dataContainer4.getElementsByClassName("data-item");
+    var dataItems4 = dataContainer4.getElementsByClassName("data-item4");
     var itemsPerPage = 4; // Số lượng dữ liệu trên mỗi trang
     var currentPage = 1; // Trang hiện tại
 
     function showDataOnPage(page) {
-        for (var i = 0; i < dataItems.length; i++) {
-            dataItems[i].style.display = "none"; // Ẩn tất cả các dữ liệu
+        for (var i = 0; i < dataItems4.length; i++) {
+            dataItems4[i].style.display = "none"; // Ẩn tất cả các dữ liệu
         }
 
         var startIndex = (page - 1) * itemsPerPage;
         var endIndex = startIndex + itemsPerPage;
 
-        for (var i = startIndex; i < endIndex && i < dataItems.length; i++) {
-            dataItems[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
+        for (var i = startIndex; i < endIndex && i < dataItems4.length; i++) {
+            dataItems4[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
         }
     }
 
@@ -1183,7 +1202,7 @@
 
     // Xử lý nút "Trang tiếp theo"
     document.getElementById("nextPageButton4").addEventListener("click", function () {
-        var maxPage = Math.ceil(dataItems.length / itemsPerPage);
+        var maxPage = Math.ceil(dataItems4.length / itemsPerPage);
         if (currentPage < maxPage) {
             currentPage++;
             showDataOnPage(currentPage);
@@ -1210,7 +1229,7 @@
 
     var ctx = document.getElementById('myChart1').getContext('2d');
 
-    var myChart = new Chart(ctx, {
+    var myChart1 = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,

@@ -66,6 +66,7 @@ public class HoaDonSerImpl implements HoaDonSer {
             hoaDon.setMoTa(updateHoaDon.getMoTa());
             hoaDon.setGhiChu(updateHoaDon.getGhiChu());
             hoaDon.setTongTien(updateHoaDon.getTongTien());
+            hoaDon.setHinhThuc(updateHoaDon.getHinhThuc());
             hoaDon.setTrangThai(updateHoaDon.getTrangThai());
 
             hoaDonRepo.save(hoaDon);
@@ -290,4 +291,8 @@ public class HoaDonSerImpl implements HoaDonSer {
         return listBieuDoDTOS;
     }
 
+    @Override
+    public List<HoaDon> listHoaDonFindByTrangThaiCho(int trangThai) {
+        return hoaDonRepo.listHoaDonFindByTrangThaiCho(trangThai);
+    }
 }

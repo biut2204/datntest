@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -25,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -137,69 +139,117 @@ public class PaymentController {
 	}
 
     @GetMapping("/thanh_cong/*")
-    public String thanhCong(HttpSession session, Model model){
+    public String thanhCong(HttpSession session, Model model,HttpServletRequest request,
+                            @RequestParam("vnp_Amount") String vnpAmount,
+                            @RequestParam("vnp_BankCode") String vnpBankCode,
+                            @RequestParam(name = "vnp_BankTranNo", required = false) String vnpBankTranNo){
+
         String maHoaDon = (String) session.getAttribute("maHoaDon");
-
-
         HoaDon hoaDon = hoaDonSer.findByMa(maHoaDon);
-        HoaDon hd = new HoaDon();
 
-        hd.setMa(hoaDon.getMa());
-        hd.setTongTien(hoaDon.getTongTien());
-        hd.setNgayTao(hoaDon.getNgayTao());
-        hd.setNgayChoXacNhan(hoaDon.getNgayChoXacNhan());
-        hd.setNgayThanhToan(LocalDateTime.now());
-        hd.setKhachHang(hoaDon.getKhachHang());
-        hd.setTrangThai(1);
-        hd.setMoTa(hoaDon.getMoTa());
-        hoaDonSer.update(hoaDon.getId(),hd);
-        model.addAttribute("idKh",hoaDon.getKhachHang().getMa());
+        if (vnpBankCode.equals("VNPAY")) {
 
-        List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
+            HoaDon hd = new HoaDon();
 
-        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
+            hd.setMa(hoaDon.getMa());
+            hd.setTongTien(hoaDon.getTongTien());
+            hd.setNgayTao(hoaDon.getNgayTao());
+            hd.setNgayChoXacNhan(null);
+            hd.setNgayThanhToan(null);
+            hd.setKhachHang(hoaDon.getKhachHang());
+            hd.setTrangThai(0);
+            hd.setMoTa("");
 
-            Ao ao = hoaDonChiTiet.getAoChiTiet().getAo();
+            hoaDonSer.update(hoaDon.getId(),hd);
+            model.addAttribute("idKh",hoaDon.getKhachHang().getMa());
 
-            GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietSer.findByIdAoAndTrangThai(ao.getId());
+            session.removeAttribute("maHoaDon");
+            return "/user/erorr";
 
-            int gia;
+        } else if(vnpBankCode.equals("NCB")){
+            if(vnpBankTranNo!= null){
+                HoaDon hd = new HoaDon();
 
-            if (giamGiaSanPhamChiTiet != null) {
-                gia = ao.getGiaBan().toBigInteger().intValue() * (100 - giamGiaSanPhamChiTiet.getGiamGiaSanPham().getPhanTramGiam()) / 100;
-            } else {
-                gia = ao.getGiaBan().toBigInteger().intValue();
+                hd.setMa(hoaDon.getMa());
+                hd.setTongTien(hoaDon.getTongTien());
+                hd.setNgayTao(hoaDon.getNgayTao());
+                hd.setNgayChoXacNhan(hoaDon.getNgayChoXacNhan());
+                hd.setNgayThanhToan(LocalDateTime.now());
+                hd.setKhachHang(hoaDon.getKhachHang());
+                hd.setHinhThuc(2);
+                hd.setTrangThai(1);
+                hd.setMoTa(hoaDon.getMoTa());
+                hoaDonSer.update(hoaDon.getId(),hd);
+                model.addAttribute("idKh",hoaDon.getKhachHang().getMa());
+
+                List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
+
+                for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
+
+                    Ao ao = hoaDonChiTiet.getAoChiTiet().getAo();
+
+                    GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietSer.findByIdAoAndTrangThai(ao.getId());
+
+                    int gia;
+
+                    if (giamGiaSanPhamChiTiet != null) {
+                        gia = ao.getGiaBan().toBigInteger().intValue() * (100 - giamGiaSanPhamChiTiet.getGiamGiaSanPham().getPhanTramGiam()) / 100;
+                    } else {
+                        gia = ao.getGiaBan().toBigInteger().intValue();
+                    }
+
+                    int donGia = gia * hoaDonChiTiet.getSoLuong();
+                    BigDecimal bigDecimalDonGia = new BigDecimal(donGia);
+
+                    HoaDonChiTiet hdct = new HoaDonChiTiet();
+                    hdct.setHoaDon(hoaDonChiTiet.getHoaDon());
+                    hdct.setAoChiTiet(hoaDonChiTiet.getAoChiTiet());
+                    hdct.setSoLuong(hoaDonChiTiet.getSoLuong());
+                    hdct.setDonGia(bigDecimalDonGia);
+
+                    hoaDonChiTietSer.update(hoaDonChiTiet.getId(), hdct);
+
+                    AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
+
+                    AoChiTiet aoChiTiet = new AoChiTiet();
+
+                    int slTon = act.getSlton() - hoaDonChiTiet.getSoLuong();
+                    int slBan = act.getSlban() + hoaDonChiTiet.getSoLuong();
+
+                    aoChiTiet.setMau_sac(act.getMau_sac());
+                    aoChiTiet.setSize(act.getSize());
+                    aoChiTiet.setAo(act.getAo());
+                    aoChiTiet.setSlton(slTon);
+                    aoChiTiet.setSlban(slBan);
+                    aoChiTiet.setTrangthai(act.getTrangthai());
+
+                    aoChiTietSer.update(act.getId(), aoChiTiet);
+                }
+
+                session.removeAttribute("maHoaDon");
+                return "/user/thanh_cong";
+            }else {
+
+                LocalTime now = LocalTime.now();
+
+                HoaDon hd = new HoaDon();
+
+                hd.setMa("Ma" + now.getHour() + now.getMinute() + now.getSecond());
+                hd.setTongTien(hoaDon.getTongTien());
+                hd.setNgayTao(hoaDon.getNgayTao());
+                hd.setNgayChoXacNhan(null);
+                hd.setNgayThanhToan(null);
+                hd.setKhachHang(hoaDon.getKhachHang());
+                hd.setTrangThai(0);
+                hd.setMoTa("");
+
+                hoaDonSer.update(hoaDon.getId(),hd);
+                model.addAttribute("idKh",hoaDon.getKhachHang().getMa());
+
+                session.removeAttribute("maHoaDon");
+                return "/user/erorr";
             }
-
-            int donGia = gia * hoaDonChiTiet.getSoLuong();
-            BigDecimal bigDecimalDonGia = new BigDecimal(donGia);
-
-            HoaDonChiTiet hdct = new HoaDonChiTiet();
-            hdct.setHoaDon(hoaDonChiTiet.getHoaDon());
-            hdct.setAoChiTiet(hoaDonChiTiet.getAoChiTiet());
-            hdct.setSoLuong(hoaDonChiTiet.getSoLuong());
-            hdct.setDonGia(bigDecimalDonGia);
-
-            hoaDonChiTietSer.update(hoaDonChiTiet.getId(), hdct);
-
-            AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
-
-            AoChiTiet aoChiTiet = new AoChiTiet();
-
-            int slTon = act.getSlton() - hoaDonChiTiet.getSoLuong();
-            int slBan = act.getSlban() + hoaDonChiTiet.getSoLuong();
-
-            aoChiTiet.setMau_sac(act.getMau_sac());
-            aoChiTiet.setSize(act.getSize());
-            aoChiTiet.setAo(act.getAo());
-            aoChiTiet.setSlton(slTon);
-            aoChiTiet.setSlban(slBan);
-            aoChiTiet.setTrangthai(act.getTrangthai());
-
-            aoChiTietSer.update(act.getId(), aoChiTiet);
         }
-
-        session.removeAttribute("maHoaDon");
         return "/user/thanh_cong";
     }
 }

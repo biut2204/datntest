@@ -1,8 +1,10 @@
 package com.example.demo.controller.admin.quanli;
 
+import com.example.demo.entity.dto.AoDTO;
 import com.example.demo.entity.dto.BieuDoDTO;
 import com.example.demo.entity.dto.HoaDonChiTietDTO;
 import com.example.demo.entity.dto.ThongKeDTO;
+import com.example.demo.entity.dto.ThongKeSoLuongAoDTO;
 import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.repo.chat.DemChatRepository;
 import com.example.demo.repo.users.HoaDonRepo;
@@ -51,6 +53,12 @@ public class IndexController {
 
     @Autowired
     HoaDonRepo hoaDonRepo;
+
+    @Autowired
+    AoChiTietSer aoChiTietSer;
+
+    @Autowired
+    LoaiAoSer loaiAoSer;
 
     @GetMapping("/admin/index/*")
     public String index(Model model, @RequestParam(name = "pageNo", required = false, defaultValue = "0") Integer pageNo) {
@@ -105,173 +113,180 @@ public class IndexController {
         LocalDate firstDayOfMonth = yearMonth.atDay(1);
 
 
-        Integer soDonNgayHienTai = hoaDonSer.soLuongHoaDonHoanThanhTheoNgay(ngayHienTai);
-        Integer soDonNgayHomTruoc = hoaDonSer.soLuongHoaDonHoanThanhTheoNgay(ngayHomTruoc);
+//        Integer soDonNgayHienTai = hoaDonSer.soLuongHoaDonHoanThanhTheoNgay(ngayHienTai);
+//        Integer soDonNgayHomTruoc = hoaDonSer.soLuongHoaDonHoanThanhTheoNgay(ngayHomTruoc);
+//
+//        if (soDonNgayHienTai == null) {
+//            soDonNgayHienTai = 0;
+//        }
+//        if (soDonNgayHomTruoc == null) {
+//            soDonNgayHomTruoc = 0;
+//        }
+//
+//        Integer soLuongBanNgayHienTai = hoaDonChiTietSer.soLuongBanTheoNgay(ngayHienTai);
+//        Integer soLuongBanNgayTruoc = hoaDonChiTietSer.soLuongBanTheoNgay(ngayHomTruoc);
+//
+//        if (soLuongBanNgayHienTai == null) {
+//            soLuongBanNgayHienTai = 0;
+//        }
+//        if (soLuongBanNgayTruoc == null) {
+//            soLuongBanNgayTruoc = 0;
+//        }
+//
+//        Double doanhThuNgayHienTai = hoaDonSer.doanhThuTheoNgay(ngayHienTai);
+//        Double doanhThuNgayTruocStr = hoaDonSer.doanhThuTheoNgay(ngayHomTruoc);
+//
+//
+//        if (doanhThuNgayHienTai == null) {
+//            doanhThuNgayHienTai = 0.0;
+//        }
+//        if (doanhThuNgayTruocStr == null) {
+//            doanhThuNgayTruocStr = 0.0;
+//        }
+//
+//        Integer soLuongKhachMuaNgayHienTai = hoaDonSer.soLuongKhachMuaTheoNgay(ngayHienTai);
+//        Integer soLuongKhachMuaNgayTruocStr = hoaDonSer.soLuongKhachMuaTheoNgay(ngayHomTruoc);
+//
+//
+//        if (soLuongKhachMuaNgayHienTai == null) {
+//            soLuongKhachMuaNgayHienTai = 0;
+//        }
+//        if (soLuongKhachMuaNgayTruocStr == null) {
+//            soLuongKhachMuaNgayTruocStr = 0;
+//        }
+//
+//        DecimalFormat df = new DecimalFormat("0.00");
+//
+//        double soSanhHoaDon;
+//
+//        if (soDonNgayHomTruoc == 0){
+//            soSanhHoaDon = soDonNgayHienTai;
+//        }else {
+//            soSanhHoaDon = ((soDonNgayHienTai - soDonNgayHomTruoc) / soDonNgayHomTruoc) * 100;
+//        }
+//        String formatSoSanhHoaDon = df.format(soSanhHoaDon);
+//
+//        if (soSanhHoaDon < 0) {
+//            model.addAttribute("soSanhHoaDon", formatSoSanhHoaDon);
+//            model.addAttribute("mauHD", "danger");
+//        } else {
+//            model.addAttribute("soSanhHoaDon", "+" + formatSoSanhHoaDon);
+//            model.addAttribute("mauHD", "success");
+//        }
+//
+//        double soSanhSoLuongBan;
+//
+//        if (soLuongBanNgayTruoc == 0) {
+//            soSanhSoLuongBan = soLuongBanNgayHienTai;
+//        } else {
+//            soSanhSoLuongBan = ((soLuongBanNgayHienTai - soLuongBanNgayTruoc) / soLuongBanNgayTruoc) * 100;
+//        }
+//
+//        String formatSoSanhSoLuong = df.format(soSanhSoLuongBan);
+//        if (soSanhSoLuongBan < 0) {
+//            model.addAttribute("soSanhSoLuong", formatSoSanhSoLuong);
+//            model.addAttribute("mauSL", "danger");
+//        } else {
+//            model.addAttribute("soSanhSoLuong", "+" + formatSoSanhSoLuong);
+//            model.addAttribute("mauSL", "success");
+//        }
+//
+//        double soSanhDoanhThu ;
+//
+//        if (doanhThuNgayTruocStr == 0.0){
+//            soSanhDoanhThu = doanhThuNgayHienTai;
+//        }else {
+//            soSanhDoanhThu = ((doanhThuNgayHienTai - doanhThuNgayTruocStr) / doanhThuNgayTruocStr) * 100;
+//        }
+//        String formatSoSanhDoanhThu = df.format(soSanhDoanhThu);
+//
+//        if (soSanhDoanhThu < 0) {
+//            model.addAttribute("soSanhDoanhThu", formatSoSanhDoanhThu);
+//            model.addAttribute("mauDT", "danger");
+//        } else {
+//            model.addAttribute("soSanhDoanhThu", "+" + formatSoSanhDoanhThu);
+//            model.addAttribute("mauDT", "success");
+//        }
+//
+//        double soSanhSoLuongKhach;
+//
+//        if (soLuongKhachMuaNgayTruocStr == 0){
+//            soSanhSoLuongKhach = soLuongKhachMuaNgayHienTai;
+//        }else {
+//            soSanhSoLuongKhach = ((soLuongKhachMuaNgayHienTai - soLuongKhachMuaNgayTruocStr) / soLuongKhachMuaNgayTruocStr) * 100;
+//        }
+//
+//        String formatSoSanhSoLuongKhach = df.format(soSanhSoLuongKhach);
+//
+//        if (soSanhSoLuongKhach < 0) {
+//            model.addAttribute("soSanhSoLuongKhach", formatSoSanhSoLuongKhach);
+//            model.addAttribute("mauSLK", "danger");
+//        } else {
+//            model.addAttribute("soSanhSoLuongKhach", "+" + formatSoSanhSoLuongKhach);
+//            model.addAttribute("mauSLK", "success");
+//        }
+//
+//
+//        List<Double> doanhThuTheoThang = hoaDonSer.doanhThuTheoThang(ngayStart, ngayHienTai);
+//        List<Integer> soLuongBanTheoThang = hoaDonChiTietSer.soLuongBanTheoThang(ngayStart, ngayHienTai);
+//
+//        List<Integer> getThang = hoaDonSer.getDataThang(ngayStart,ngayHienTai);
+//        List<Integer> monthsInPeriod = new ArrayList<>();
+//        LocalDate currentDate = ngayStart;
+//        while (!currentDate.isAfter(ngayHienTai)) {
+//            monthsInPeriod.add(currentDate.getMonthValue());
+//            currentDate = currentDate.plusMonths(1);
+//        }
+//
+//        List<Double> finalResult = new ArrayList<>();
+//        List<Integer> finalResult1 = new ArrayList<>();
+//        for (Integer month : monthsInPeriod) {
+//            boolean found = false,found1=false;
+//            for (int i = 0; i < doanhThuTheoThang.size(); i++) {
+//                if (month == getThang.get(i)) {
+//                    finalResult.add(doanhThuTheoThang.get(i));
+//                    found = true;
+//                    break;
+//                }
+//            }
+//            if (!found) {
+//                finalResult.add(0.0);
+//            }
+//            for (int i = 0; i < soLuongBanTheoThang.size(); i++) {
+//                if (month == getThang.get(i)) {
+//                    finalResult1.add(soLuongBanTheoThang.get(i));
+//                    found1 = true;
+//                    break;
+//                }
+//            }
+//            if (!found1) {
+//                finalResult1.add(0);
+//            }
+//        }
+//        for (int i = 0; i < finalResult.size(); i++) {
+//            System.out.println(finalResult);
+//        }
+//
+//        Double doanhThuThangHienTai = hoaDonSer.doanhThuThangHienTai(firstDayOfMonth,ngayHienTai);
+//        Integer soLuongBanThangHienTai = hoaDonChiTietSer.soLuongBanThangHienTai(firstDayOfMonth,ngayHienTai);
 
-        if (soDonNgayHienTai == null) {
-            soDonNgayHienTai = 0;
-        }
-        if (soDonNgayHomTruoc == null) {
-            soDonNgayHomTruoc = 0;
-        }
+//
+//        model.addAttribute("doanhThuThangHienTai",doanhThuThangHienTai);
+//        model.addAttribute("soLuongBanThangHienTai",soLuongBanThangHienTai);
+//        model.addAttribute("soHoaDonHomNay", soDonNgayHienTai);
+//        model.addAttribute("soLuongHomNay", soLuongBanNgayHienTai);
+//        model.addAttribute("doanhThuHomNay", doanhThuNgayHienTai);
+//        model.addAttribute("soLuongKhachMua", soLuongKhachMuaNgayHienTai);
+//        model.addAttribute("listDoanhThu", finalResult);
+//        model.addAttribute("listSoLuong", finalResult1);
+        List<ThongKeSoLuongAoDTO> listThongKeSoLuongAoDTOS = aoChiTietSer.thongKeSoLuongAoDTO();
+        model.addAttribute("listThongKeSoLuongAoDTOS", listThongKeSoLuongAoDTOS);
 
-        Integer soLuongBanNgayHienTai = hoaDonChiTietSer.soLuongBanTheoNgay(ngayHienTai);
-        Integer soLuongBanNgayTruoc = hoaDonChiTietSer.soLuongBanTheoNgay(ngayHomTruoc);
+        model.addAttribute("listLoaiAo", loaiAoSer.findAllByTrangThai(1));
 
-        if (soLuongBanNgayHienTai == null) {
-            soLuongBanNgayHienTai = 0;
-        }
-        if (soLuongBanNgayTruoc == null) {
-            soLuongBanNgayTruoc = 0;
-        }
-
-        Double doanhThuNgayHienTai = hoaDonSer.doanhThuTheoNgay(ngayHienTai);
-        Double doanhThuNgayTruocStr = hoaDonSer.doanhThuTheoNgay(ngayHomTruoc);
-
-
-        if (doanhThuNgayHienTai == null) {
-            doanhThuNgayHienTai = 0.0;
-        }
-        if (doanhThuNgayTruocStr == null) {
-            doanhThuNgayTruocStr = 0.0;
-        }
-
-        Integer soLuongKhachMuaNgayHienTai = hoaDonSer.soLuongKhachMuaTheoNgay(ngayHienTai);
-        Integer soLuongKhachMuaNgayTruocStr = hoaDonSer.soLuongKhachMuaTheoNgay(ngayHomTruoc);
-
-
-        if (soLuongKhachMuaNgayHienTai == null) {
-            soLuongKhachMuaNgayHienTai = 0;
-        }
-        if (soLuongKhachMuaNgayTruocStr == null) {
-            soLuongKhachMuaNgayTruocStr = 0;
-        }
-
-        DecimalFormat df = new DecimalFormat("0.00");
-
-        double soSanhHoaDon;
-
-        if (soDonNgayHomTruoc == 0){
-            soSanhHoaDon = soDonNgayHienTai;
-        }else {
-            soSanhHoaDon = ((soDonNgayHienTai - soDonNgayHomTruoc) / soDonNgayHomTruoc) * 100;
-        }
-        String formatSoSanhHoaDon = df.format(soSanhHoaDon);
-
-        if (soSanhHoaDon < 0) {
-            model.addAttribute("soSanhHoaDon", formatSoSanhHoaDon);
-            model.addAttribute("mauHD", "danger");
-        } else {
-            model.addAttribute("soSanhHoaDon", "+" + formatSoSanhHoaDon);
-            model.addAttribute("mauHD", "success");
-        }
-
-        double soSanhSoLuongBan;
-
-        if (soLuongBanNgayTruoc == 0) {
-            soSanhSoLuongBan = soLuongBanNgayHienTai;
-        } else {
-            soSanhSoLuongBan = ((soLuongBanNgayHienTai - soLuongBanNgayTruoc) / soLuongBanNgayTruoc) * 100;
-        }
-
-        String formatSoSanhSoLuong = df.format(soSanhSoLuongBan);
-        if (soSanhSoLuongBan < 0) {
-            model.addAttribute("soSanhSoLuong", formatSoSanhSoLuong);
-            model.addAttribute("mauSL", "danger");
-        } else {
-            model.addAttribute("soSanhSoLuong", "+" + formatSoSanhSoLuong);
-            model.addAttribute("mauSL", "success");
-        }
-
-        double soSanhDoanhThu ;
-
-        if (doanhThuNgayTruocStr == 0.0){
-            soSanhDoanhThu = doanhThuNgayHienTai;
-        }else {
-            soSanhDoanhThu = ((doanhThuNgayHienTai - doanhThuNgayTruocStr) / doanhThuNgayTruocStr) * 100;
-        }
-        String formatSoSanhDoanhThu = df.format(soSanhDoanhThu);
-
-        if (soSanhDoanhThu < 0) {
-            model.addAttribute("soSanhDoanhThu", formatSoSanhDoanhThu);
-            model.addAttribute("mauDT", "danger");
-        } else {
-            model.addAttribute("soSanhDoanhThu", "+" + formatSoSanhDoanhThu);
-            model.addAttribute("mauDT", "success");
-        }
-
-        double soSanhSoLuongKhach;
-
-        if (soLuongKhachMuaNgayTruocStr == 0){
-            soSanhSoLuongKhach = soLuongKhachMuaNgayHienTai;
-        }else {
-            soSanhSoLuongKhach = ((soLuongKhachMuaNgayHienTai - soLuongKhachMuaNgayTruocStr) / soLuongKhachMuaNgayTruocStr) * 100;
-        }
-
-        String formatSoSanhSoLuongKhach = df.format(soSanhSoLuongKhach);
-
-        if (soSanhSoLuongKhach < 0) {
-            model.addAttribute("soSanhSoLuongKhach", formatSoSanhSoLuongKhach);
-            model.addAttribute("mauSLK", "danger");
-        } else {
-            model.addAttribute("soSanhSoLuongKhach", "+" + formatSoSanhSoLuongKhach);
-            model.addAttribute("mauSLK", "success");
-        }
-
-
-        List<Double> doanhThuTheoThang = hoaDonSer.doanhThuTheoThang(ngayStart, ngayHienTai);
-        List<Integer> soLuongBanTheoThang = hoaDonChiTietSer.soLuongBanTheoThang(ngayStart, ngayHienTai);
-
-        List<Integer> getThang = hoaDonSer.getDataThang(ngayStart,ngayHienTai);
-        List<Integer> monthsInPeriod = new ArrayList<>();
-        LocalDate currentDate = ngayStart;
-        while (!currentDate.isAfter(ngayHienTai)) {
-            monthsInPeriod.add(currentDate.getMonthValue());
-            currentDate = currentDate.plusMonths(1);
-        }
-
-        List<Double> finalResult = new ArrayList<>();
-        List<Integer> finalResult1 = new ArrayList<>();
-        for (Integer month : monthsInPeriod) {
-            boolean found = false,found1=false;
-            for (int i = 0; i < doanhThuTheoThang.size(); i++) {
-                if (month == getThang.get(i)) {
-                    finalResult.add(doanhThuTheoThang.get(i));
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                finalResult.add(0.0);
-            }
-            for (int i = 0; i < soLuongBanTheoThang.size(); i++) {
-                if (month == getThang.get(i)) {
-                    finalResult1.add(soLuongBanTheoThang.get(i));
-                    found1 = true;
-                    break;
-                }
-            }
-            if (!found1) {
-                finalResult1.add(0);
-            }
-        }
-        for (int i = 0; i < finalResult.size(); i++) {
-            System.out.println(finalResult);
-        }
-
-        Double doanhThuThangHienTai = hoaDonSer.doanhThuThangHienTai(firstDayOfMonth,ngayHienTai);
-        Integer soLuongBanThangHienTai = hoaDonChiTietSer.soLuongBanThangHienTai(firstDayOfMonth,ngayHienTai);
-        model.addAttribute("doanhThuThangHienTai",doanhThuThangHienTai);
-        model.addAttribute("soLuongBanThangHienTai",soLuongBanThangHienTai);
-        model.addAttribute("soHoaDonHomNay", soDonNgayHienTai);
-        model.addAttribute("soLuongHomNay", soLuongBanNgayHienTai);
-        model.addAttribute("doanhThuHomNay", doanhThuNgayHienTai);
-        model.addAttribute("soLuongKhachMua", soLuongKhachMuaNgayHienTai);
-        model.addAttribute("listDoanhThu", finalResult);
-        model.addAttribute("listSoLuong", finalResult1);
 
         model.addAttribute("ngayHienTai", ngayHienTai);
-        System.out.println(soLuongBanNgayHienTai+" aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+ soLuongBanNgayTruoc+ formatSoSanhSoLuong);
+//        System.out.println(soLuongBanNgayHienTai + " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + soLuongBanNgayTruoc + formatSoSanhSoLuong);
         return "/admin/thongke";
     }
 }

@@ -509,10 +509,10 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="../widgets.html" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                    <a href="/admin/ban-quay/trang-chu" class="nav-link">
+                        <i class="nav-icon fas fa-store"></i>
                         <p>
-                            Widgets
+                            Bán Quầy
                             <span class="right badge badge-danger">New</span>
                         </p>
                     </a>
@@ -646,6 +646,8 @@
                         <i class="nav-icon fas fa-envelope"></i>
                         <p>
                             Chat hỗ trợ
+                            <span style="${allChat==0?"display: none;":""}"
+                                  class="right badge badge-danger">${allChat}</span>
                         </p>
                     </a>
                 </li>

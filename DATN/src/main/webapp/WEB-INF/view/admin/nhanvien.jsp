@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="../../../resources/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <style>
         #addFormContainer {
             display: none;
@@ -268,10 +269,10 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="../widgets.html" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
+                        <a href="/admin/ban-quay/trang-chu" class="nav-link">
+                            <i class="nav-icon fas fa-store"></i>
                             <p>
-                                Widgets
+                                Bán Quầy
                                 <span class="right badge badge-danger">New</span>
                             </p>
                         </a>

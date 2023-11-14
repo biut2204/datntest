@@ -1,6 +1,7 @@
 package com.example.demo.controller.admin.sanpham;
 
 import com.example.demo.entity.sanpham.Form;
+import com.example.demo.repo.sanpham.FormRepo;
 import com.example.demo.ser.sanpham.FormSer;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class FormController {
 
     @Autowired
     FormSer formSer;
+
+    @Autowired
+    FormRepo formRepo;
 
     @GetMapping("/admin/form/view/*")
     public String view(Model model, HttpServletRequest request) {
@@ -41,13 +45,13 @@ public class FormController {
     @PostMapping("/admin/form/add")
     public String add(Model model, HttpServletRequest request) {
 
-        String ma = request.getParameter("ma");
+        int slF = formRepo.soF() + 1;
         String ten = request.getParameter("ten");
         String trangthai = request.getParameter("trangthai");
 
         Form form = new Form();
 
-        form.setMa(ma);
+        form.setMa("AO-"+slF);
         form.setTen(ten);
         form.setTrangthai(Integer.parseInt(trangthai));
 
@@ -59,13 +63,15 @@ public class FormController {
     public String update(Model model, HttpServletRequest request) {
 
         String id = request.getParameter("id");
-        String ma = request.getParameter("ma");
+
         String ten = request.getParameter("ten");
         String trangthai = request.getParameter("trangthai");
 
+        Form f = formSer.findById(UUID.fromString(id));
+
         Form form = new Form();
 
-        form.setMa(ma);
+        form.setMa(f.getMa());
         form.setTen(ten);
         form.setTrangthai(Integer.parseInt(trangthai));
 

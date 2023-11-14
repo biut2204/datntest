@@ -41,4 +41,7 @@ public interface UsersRepo extends JpaRepository<Users, UUID> {
 
     @Query("select u from Users u where u.role='STAFF'")
     List<Users> findAllNhanVien();
+
+    @Query(" select hd.khachHang from HoaDon hd where hd.id= ?1")
+    Users findByHD(UUID id);
 }
