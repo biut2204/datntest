@@ -1,6 +1,7 @@
 package com.example.demo.controller.admin.banquay;
 
 
+import com.example.demo.entity.auth.RoleEnum;
 import com.example.demo.entity.dto.HoaDonDTO;
 import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
 import com.example.demo.entity.khachhang.HoaDon;
@@ -97,17 +98,26 @@ public class BanQuayController {
     ChatSer chatSer;
 
     @GetMapping("/trang-chu")
-    public String view(Model model, HttpServletRequest request ) {
+    public String view(Model model, HttpServletRequest request) {
 
 //        String url = request.getRequestURI();
 //        String[] parts = url.split("/admin/ban-quay/");
 //        String ma = parts[1];
 
-        ArrayList<HoaDon> listHD= (ArrayList<HoaDon>) hoaDonSer.listHoaDonFindByTrangThaiCho(5);
-        model.addAttribute("listHD",listHD);
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+        if (user.getRole() == RoleEnum.STAFF){
+            model.addAttribute("adminOrStaff", "1");
+        }else if (user.getRole() == RoleEnum.ADMIN){
+            model.addAttribute("adminOrStaff", "2");
+        }
+        model.addAttribute("nameUser", user.getTen());
 
-        ArrayList<Users> listKH= (ArrayList<Users>) usersSer.getAll();
-        model.addAttribute("listKH",listKH);
+        ArrayList<HoaDon> listHD = (ArrayList<HoaDon>) hoaDonSer.listHoaDonFindByTrangThaiCho(5);
+        model.addAttribute("listHD", listHD);
+
+        ArrayList<Users> listKH = (ArrayList<Users>) usersSer.getAll();
+        model.addAttribute("listKH", listKH);
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
 
 //        int tongSoLuong= hoaDonChiTietSer.soLuongSanPham(5,);
@@ -126,37 +136,17 @@ public class BanQuayController {
         return "/ban_quay/trang_chu";
     }
 
-    @PostMapping("/addHD")
-    public String addHD(Model model, HttpServletRequest request) {
-
-//        String url = request.getRequestURI();
-//        String[] parts = url.split("/admin/ban-quay/addHD/");
-//        String ma = parts[1];
-//
-//        Users users = usersSer.findByMa(ma);
-//        model.addAttribute("idKh", users.getMa());
-
-        LocalTime now = LocalTime.now();
+    @GetMapping("/view-cart/{id}")
+    public String viewHD(Model model, @PathVariable("id") UUID id, HttpSession session, HttpServletRequest request) {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
-
-        HoaDon hoaDon = new HoaDon();
-        hoaDon.setMa("Ma" + now.getHour() + now.getMinute() + now.getSecond());
-        hoaDon.setKhachHang(null);
-        hoaDon.setNhanVien(user);
-        hoaDon.setHinhThuc(1);
-        hoaDon.setNgayTao(LocalDateTime.now());
-        hoaDon.setTrangThai(5);
-
-        hoaDonSer.add(hoaDon);
-
-        return "redirect:/admin/ban-quay/view-cart/"+hoaDon.getId();
-    }
-
-
-    @GetMapping("/view-cart/{id}")
-    public String viewHD( Model model, @PathVariable("id") UUID id , HttpSession session) {
+        if (user.getRole() == RoleEnum.STAFF){
+            model.addAttribute("adminOrStaff", "1");
+        }else if (user.getRole() == RoleEnum.ADMIN){
+            model.addAttribute("adminOrStaff", "2");
+        }
+        model.addAttribute("nameUser", user.getTen());
 
         List<Users> listKhachHang = usersSer.findAllKhachHang();
         model.addAttribute("listKhachHang", listKhachHang);
@@ -169,6 +159,8 @@ public class BanQuayController {
         List<MauSac> listMauSacs = mauSacSer.findAllByTrangThai(1);
         List<Size> listSizes = sizeSer.findAllByTrangThai(1);
 
+        int slHDCTByHoaDon = hoaDonChiTietSer.soLuongHoaDonCHiTietByHoaDon(id);
+
         model.addAttribute("listChatVais", listChatVais);
         model.addAttribute("listLoaiAos", listLoaiAos);
         model.addAttribute("listForms", listForms);
@@ -178,14 +170,15 @@ public class BanQuayController {
         model.addAttribute("listHangs", listHangs);
         model.addAttribute("idHoaDon", id);
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
+        model.addAttribute("slHDCTByHoaDon", slHDCTByHoaDon);
 //Detail
         String aoDetail = (String) session.getAttribute("aoDetail");
 
 
-        if(aoDetail == null){
-            model.addAttribute("noneOrBlock","none");
-        }else {
-            model.addAttribute("noneOrBlock","block");
+        if (aoDetail == null) {
+            model.addAttribute("noneOrBlock", "none");
+        } else {
+            model.addAttribute("noneOrBlock", "block");
             Ao aoDetail1 = aoSer.findByMa(aoDetail);
             model.addAttribute("ao", aoSer.findById(aoDetail1.getId()));
             model.addAttribute("slAoDaBan", aoSer.soLuongBanByUUID(aoDetail1.getId()));
@@ -205,16 +198,13 @@ public class BanQuayController {
         }
         session.removeAttribute("aoDetail");
 
-        HoaDon hoaDon= hoaDonSer.findId(id);
+        HoaDon hoaDon = hoaDonSer.findId(id);
 
-        Users users=usersSer.findByHD(hoaDon.getId());
+        Users users = usersSer.findByHD(hoaDon.getId());
         model.addAttribute("khachHang", users);
 
-//        ArrayList<Users> listKH= (ArrayList<Users>) usersSer.getAll();
-//        model.addAttribute("listKH",listKH);
 
-
-        List<HoaDonChiTiet> listHDCT= hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
+        List<HoaDonChiTiet> listHDCT = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
 
         List<HoaDonDTO> listHoaDonChiTiets = new ArrayList<>();
         int tongTien = 0;
@@ -243,11 +233,62 @@ public class BanQuayController {
         return "/ban_quay/gio_hang";
     }
 
+    @GetMapping("/delete/{id}")
+    public String delete(Model model, @PathVariable("id") UUID id) {
+
+        hoaDonSer.delete(id);
+        return "redirect:/admin/ban-quay/trang-chu";
+    }
+
+    @GetMapping("/delete-san-pham/*/*")
+    public String deleteSP(HttpServletRequest request) {
+
+        String url = request.getRequestURI();
+        String[] parts = url.split("/admin/ban-quay/delete-san-pham/");
+        String pStr = parts[1];
+        String[] p = pStr.split("/");
+
+        String idHD = p[0];
+        String idHDCT = p[1];
+
+        hoaDonChiTietSer.delete(UUID.fromString(idHDCT));
+
+        return "redirect:/admin/ban-quay/view-cart/" + idHD;
+    }
+
+    @PostMapping("/addHD")
+    public String addHD(Model model, HttpServletRequest request) {
+
+//        String url = request.getRequestURI();
+//        String[] parts = url.split("/admin/ban-quay/addHD/");
+//        String ma = parts[1];
+//
+//        Users users = usersSer.findByMa(ma);
+//        model.addAttribute("idKh", users.getMa());
+
+        int ma = hoaDonSer.demHoaDon() + 1;
+
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+
+        HoaDon hoaDon = new HoaDon();
+        hoaDon.setMa("HD000" + ma);
+        hoaDon.setKhachHang(null);
+        hoaDon.setNhanVien(user);
+        hoaDon.setHinhThuc(1);
+        hoaDon.setNgayTao(LocalDateTime.now());
+        hoaDon.setTrangThai(5);
+
+        hoaDonSer.add(hoaDon);
+
+        return "redirect:/admin/ban-quay/view-cart/" + hoaDon.getId();
+    }
+
     @PostMapping("/add_gio_hang/{id}")
     public String addGioHang(HttpServletRequest request, @PathVariable("id") UUID id) {
 
 
-        HoaDon hoaDon= hoaDonSer.findId(id);
+        HoaDon hoaDon = hoaDonSer.findId(id);
 
         String idAo = request.getParameter("idAo");
         String mauSac = request.getParameter("mauSac");
@@ -257,7 +298,7 @@ public class BanQuayController {
         AoChiTiet aoChiTiet = aoChiTietSer.findIdByIdAoMsSize(UUID.fromString(idAo), UUID.fromString(mauSac), UUID.fromString(size));
 
         HoaDonChiTiet checkGHCT = hoaDonChiTietSer.findByHoaDonAndAoChiTiet(hoaDon.getId(), aoChiTiet.getId());
-        if(checkGHCT == null){
+        if (checkGHCT == null) {
 
             HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
 
@@ -266,7 +307,7 @@ public class BanQuayController {
             hoaDonChiTiet.setSoLuong(Integer.parseInt(sl));
 
             hoaDonChiTietSer.add(hoaDonChiTiet);
-        }else {
+        } else {
             HoaDonChiTiet hdct = new HoaDonChiTiet();
 
             int soLuong = checkGHCT.getSoLuong() + Integer.parseInt(sl);
@@ -279,90 +320,66 @@ public class BanQuayController {
 
             hoaDonChiTietSer.update(checkGHCT.getId(), hdct);
         }
-
-
         return "redirect:/admin/ban-quay/view-cart/" + hoaDon.getId();
     }
 
     @PostMapping("/update-khach-hang/{id}")
-    public String updateKH(HttpServletRequest request,@PathVariable("id") UUID id ) {
+    public String updateKH(HttpServletRequest request, @PathVariable("id") UUID id) {
 
         String idHoaDon = request.getParameter("idHoaDon");
 
-        Users users=usersSer.findById(id);
+        Users users = usersSer.findById(id);
 
-        for (HoaDon hoaDon: hoaDonSer.getAll()
-        ) {if(hoaDon.getId().equals(UUID.fromString(idHoaDon))){
-
-            hoaDon.setKhachHang(users);
-
-            hoaDonSer.update(UUID.fromString(idHoaDon),hoaDon);
+        for (HoaDon hoaDon : hoaDonSer.getAll()
+        ) {
+            if (hoaDon.getId().equals(UUID.fromString(idHoaDon))) {
+                hoaDon.setKhachHang(users);
+                hoaDonSer.update(UUID.fromString(idHoaDon), hoaDon);
+            }
         }
-
-
-        }
-
-
         return "redirect:/admin/ban-quay/view-cart/" + idHoaDon;
     }
 
     @PostMapping("/ao-detail")
-    public String detail(HttpServletRequest request, HttpSession session){
+    public String detail(HttpServletRequest request, HttpSession session) {
         String idSp = request.getParameter("idSp");
         String idHoaDon = request.getParameter("idHoaDon");
         Ao ao = aoSer.findById(UUID.fromString(idSp));
-        session.setAttribute("aoDetail",ao.getMa());
+        session.setAttribute("aoDetail", ao.getMa());
 
 
-        return "redirect:/admin/ban-quay/view-cart/"+idHoaDon;
-    }
-
-    @GetMapping("/delete/{id}")
-    public String delete(Model model, @PathVariable("id") UUID id){
-
-        hoaDonSer.delete(id);
-        return "redirect:/admin/ban-quay/trang-chu";
-    }
-    @GetMapping("/delete-san-pham/*/*")
-    public String deleteSP(HttpServletRequest request){
-
-        String url = request.getRequestURI();
-        String[] parts = url.split("/admin/ban-quay/delete-san-pham/");
-        String pStr = parts[1];
-        String[] p = pStr.split("/");
-
-        String idHD = p[0];
-        String idHDCT = p[1];
-
-        hoaDonChiTietSer.delete(UUID.fromString(idHDCT));
-
-        return "redirect:/admin/ban-quay/view-cart/"+idHD;
+        return "redirect:/admin/ban-quay/view-cart/" + idHoaDon;
     }
 
     @PostMapping("/thanh-toan/{id}")
     public String thanhToan(Model model, @PathVariable("id") UUID id,
                             @RequestParam("tongTien") BigDecimal tongTien,
                             @RequestParam("ghiChu") String ghiChu,
-                            @RequestParam("soLuong") Integer soLuong){
+                            @RequestParam(value = "chon", required = false) List<String> chon,
+                            @RequestParam(value = "idAoChiTiet", required = false) List<UUID> idAoChiTiet,
+                            @RequestParam(value = "soLuong", required = false) List<String> soLuong) {
 
-        HoaDon hoaDon1= hoaDonSer.findId(id);
+        HoaDon hd = hoaDonSer.findId(id);
+        HoaDon hoaDon = new HoaDon();
 
-        for (HoaDon hoaDon: hoaDonSer.getAll()
-        ) {if(hoaDon.getId().equals(id)){
+        hoaDon.setMa(hd.getMa());
+        hoaDon.setTongTien(tongTien);
+        hoaDon.setGhiChu(ghiChu);
+        hoaDon.setTrangThai(3);
+        hoaDon.setNgayTao(hd.getNgayTao());
+        hoaDon.setNgayHoanThanh(LocalDateTime.now());
+        hoaDon.setNgayThanhToan(LocalDateTime.now());
+        hoaDon.setNhanVien(hd.getNhanVien());
+        hoaDon.setHinhThuc(1);
 
-            hoaDon.setTongTien(tongTien);
-            hoaDon.setGhiChu(ghiChu);
-            hoaDon.setTrangThai(3);
-            hoaDon.setNgayThanhToan(LocalDateTime.now());
+        int tongDonGia = 0;
 
-            hoaDonSer.update(id,hoaDon);
-        }
+        for (String selectedValue : chon) {
 
-        }
-        List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon1.getId());
+            HoaDonChiTiet hdct = hoaDonChiTietSer.findByHoaDonAndAoChiTiet(id,idAoChiTiet.get(Integer.parseInt(selectedValue)));
 
-        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
-            Ao ao = hoaDonChiTiet.getAoChiTiet().getAo();
+            AoChiTiet act = aoChiTietSer.findById(idAoChiTiet.get(Integer.parseInt(selectedValue)));
+            Ao ao = act.getAo();
 
             GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietSer.findByIdAoAndTrangThai(ao.getId());
 
@@ -374,23 +391,24 @@ public class BanQuayController {
                 gia = ao.getGiaBan().toBigInteger().intValue();
             }
 
-            int donGia = gia * hoaDonChiTiet.getSoLuong();
+            int donGia = gia * Integer.parseInt(soLuong.get(Integer.parseInt(selectedValue)));
+
+            tongDonGia += donGia;
+
             BigDecimal bigDecimalDonGia = new BigDecimal(donGia);
 
-            HoaDonChiTiet hdct = new HoaDonChiTiet();
-            hdct.setHoaDon(hoaDonChiTiet.getHoaDon());
-            hdct.setAoChiTiet(hoaDonChiTiet.getAoChiTiet());
-            hdct.setSoLuong(hoaDonChiTiet.getSoLuong());
-            hdct.setDonGia(bigDecimalDonGia);
+            HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
 
-            hoaDonChiTietSer.update(hoaDonChiTiet.getId(), hdct);
-
-            AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
+            hoaDonChiTiet.setHoaDon(hoaDonSer.findId(id));
+            hoaDonChiTiet.setAoChiTiet(act);
+            hoaDonChiTiet.setSoLuong(Integer.parseInt(soLuong.get(Integer.parseInt(selectedValue))));
+            hoaDonChiTiet.setDonGia(bigDecimalDonGia);
+            hoaDonChiTietSer.update(hdct.getId(), hoaDonChiTiet);
 
             AoChiTiet aoChiTiet = new AoChiTiet();
 
-            int slTon = act.getSlton() - hoaDonChiTiet.getSoLuong();
-            int slBan = act.getSlban() + hoaDonChiTiet.getSoLuong();
+            int slTon = act.getSlton() - Integer.parseInt(soLuong.get(Integer.parseInt(selectedValue)));
+            int slBan = act.getSlban() + Integer.parseInt(soLuong.get(Integer.parseInt(selectedValue)));
 
             aoChiTiet.setMau_sac(act.getMau_sac());
             aoChiTiet.setSize(act.getSize());
@@ -401,24 +419,30 @@ public class BanQuayController {
 
             aoChiTietSer.update(act.getId(), aoChiTiet);
         }
+        BigDecimal bigDecimalTongDonGia = new BigDecimal(tongDonGia);
+        hoaDon.setTongTien(bigDecimalTongDonGia);
 
-        model.addAttribute("hoaDon", hoaDon1.getId());
+        hoaDonSer.update(id, hoaDon);
+
+        model.addAttribute("hoaDon", id);
 
         return "redirect:/admin/ban-quay/trang-chu";
     }
+
     @PostMapping("/luuHD/{id}")
     public String luuHD(Model model, @PathVariable("id") UUID id,
-                        @RequestParam("ghiChu") String ghiChu){
+                        @RequestParam("ghiChu") String ghiChu) {
 
-        HoaDon hoaDon1= hoaDonSer.findId(id);
+        HoaDon hoaDon1 = hoaDonSer.findId(id);
 
-        for (HoaDon hoaDon: hoaDonSer.getAll()
-        ) {if(hoaDon.getId().equals(id)){
+        for (HoaDon hoaDon : hoaDonSer.getAll()
+        ) {
+            if (hoaDon.getId().equals(id)) {
 
-            hoaDon.setGhiChu(ghiChu);
+                hoaDon.setGhiChu(ghiChu);
 
-            hoaDonSer.update(id,hoaDon);
-        }
+                hoaDonSer.update(id, hoaDon);
+            }
 
         }
 

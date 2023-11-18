@@ -6,6 +6,7 @@ import com.example.demo.entity.dto.DonHangDTO;
 import com.example.demo.entity.dto.HoaDonDTO;
 import com.example.demo.entity.dto.ThongKeDTO;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -71,4 +72,16 @@ public interface HoaDonSer {
     List<BieuDoDTO> listBieuDo();
 
     List<HoaDon> listHoaDonFindByTrangThaiCho( int trangThai);
+
+    Integer soHoaDonTrongThang(LocalDate date);
+
+    Double doanhThuThang(LocalDate date);
+
+    Integer soLuongKhachMuaTrongThang(LocalDate date);
+
+    Integer demHoaDon();
+
+    List<DonHangDTO> findAllByOptionalFilters(Integer trangThai, LocalDate startDate, LocalDate endDate);
+
+    List<DonHangDTO> findAllByStartDateAndEndDateOrBoth(LocalDate startDate, LocalDate endDate);
 }

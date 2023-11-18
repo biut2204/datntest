@@ -1,5 +1,6 @@
 package com.example.demo.repo.sanpham;
 
+import com.example.demo.entity.sanpham.Ao;
 import com.example.demo.entity.sanpham.AoChiTiet;
 import com.example.demo.entity.sanpham.MauSac;
 import com.example.demo.entity.sanpham.Size;
@@ -42,4 +43,10 @@ public interface AoChiTietRepo extends JpaRepository<AoChiTiet, UUID> {
 
     @Query("select sum(act.slton) from AoChiTiet act where act.ao.id = ?1")
     Integer soLuongAoTonByAo(UUID id);
+
+    @Query("select act from Ao a join LoaiAo la on a.loaiAo=la join AoChiTiet act on act.ao=a join Size s on act.size=s join MauSac m on m=act.mau_sac where la.ten=?1 and a.ten=?2 and m.ten=?3")
+    List<AoChiTiet> listSoLuongbyMauAo(String la,String ao,String mau);
+
+    @Query("select a from Ao a join LoaiAo la on a.loaiAo=la where la.ten=?1")
+    List<Ao> listAoByLoaiAo(String la);
 }

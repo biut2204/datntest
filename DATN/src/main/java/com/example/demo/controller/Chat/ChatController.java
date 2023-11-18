@@ -11,6 +11,7 @@ import com.example.demo.repo.chat.DemChatRepository;
 import com.example.demo.repo.chat.ThoiGianRepository;
 import com.example.demo.repo.users.UsersRepo;
 import com.example.demo.ser.chat.ChatSer;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -95,7 +96,17 @@ public class ChatController {
     }
 
     @GetMapping("admin/chat/{ma}")
-    public String chatPage1(@PathVariable String ma, Model model) {
+    public String chatPage1(@PathVariable String ma, Model model, HttpServletRequest request) {
+
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+        if (user.getRole() == RoleEnum.STAFF){
+            model.addAttribute("adminOrStaff", "1");
+        }else if (user.getRole() == RoleEnum.ADMIN){
+            model.addAttribute("adminOrStaff", "2");
+        }
+        model.addAttribute("nameUser", user.getTen());
+
         model.addAttribute("user",chatMessageRepository.Alluser());
         model.addAttribute("check", ma);
         Users u = userRepository.findByMa(ma);
@@ -144,7 +155,16 @@ public class ChatController {
         return "/admin/chat_app";
     }
     @GetMapping("admin/chat")
-    public String chatPage12(Model model) {
+    public String chatPage12(Model model, HttpServletRequest request) {
+
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+        if (user.getRole() == RoleEnum.STAFF){
+            model.addAttribute("adminOrStaff", "1");
+        }else if (user.getRole() == RoleEnum.ADMIN){
+            model.addAttribute("adminOrStaff", "2");
+        }
+        model.addAttribute("nameUser", user.getTen());
 
         List<Users> listUsers = chatMessageRepository.Alluser();
 

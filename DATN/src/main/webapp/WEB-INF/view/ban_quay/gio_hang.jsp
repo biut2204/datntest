@@ -224,6 +224,21 @@
             clip-path: polygon(100% 0, 0 0, 100% 100%);
         }
     </style>
+    <style>
+        .image {
+            width: 80px;
+            height: 80px;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+
+        .image img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -235,10 +250,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="../../../index3.html" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
+                <a href="/admin/index/1" class="nav-link">Trang chủ</a>
             </li>
         </ul>
 
@@ -246,123 +258,8 @@
         <ul class="navbar-nav ml-auto">
             <!-- Navbar Search -->
             <li class="nav-item">
-                <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                    <i class="fas fa-search"></i>
-                </a>
-                <div class="navbar-search-block">
-                    <form class="form-inline">
-                        <div class="input-group input-group-sm">
-                            <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                                   aria-label="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-navbar" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </li>
-
-            <!-- Messages Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-comments"></i>
-                    <span class="badge badge-danger navbar-badge">3</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="../../../dist/img/user1-128x128.jpg" alt="User Avatar"
-                                 class="img-size-50 mr-3 img-circle">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    Brad Diesel
-                                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">Call me whenever you can...</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="../../../dist/img/user8-128x128.jpg" alt="User Avatar"
-                                 class="img-size-50 img-circle mr-3">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    John Pierce
-                                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">I got your message bro</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="../../../dist/img/user3-128x128.jpg" alt="User Avatar"
-                                 class="img-size-50 img-circle mr-3">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    Nora Silvester
-                                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">The subject goes here</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                </div>
-            </li>
-            <!-- Notifications Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-item dropdown-header">15 Notifications</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                        <span class="float-right text-muted text-sm">3 mins</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-users mr-2"></i> 8 friend requests
-                        <span class="float-right text-muted text-sm">12 hours</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 3 new reports
-                        <span class="float-right text-muted text-sm">2 days</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                </div>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                    <i class="fas fa-th-large"></i>
                 </a>
             </li>
         </ul>
@@ -372,21 +269,25 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="../../../index3.html" class="brand-link">
-            <img src="../../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                 style="opacity: .8">
-            <span class="brand-text font-weight-light">AdminLTE 3</span>
-        </a>
-
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="../../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                </div>
+                <c:choose>
+                    <c:when test="${adminOrStaff == 1}">
+                        <div class="image">
+                            <img src="/images/test.jpg" >
+                        </div>
+
+                    </c:when>
+                    <c:when test="${adminOrStaff == 2}">
+                        <div class="image">
+                            <img src="/images/test1.jpg" >
+                        </div>
+                    </c:when>
+                </c:choose>
                 <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                    <a href="#" class="d-block">${nameUser}</a>
                 </div>
             </div>
 
@@ -413,7 +314,7 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
-                                Dashboard
+                                Bảng điều khiển
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -421,19 +322,13 @@
                             <li class="nav-item">
                                 <a href="/admin/index/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v1</p>
+                                    <p>Trang chủ</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../../../index2.html" class="nav-link">
+                                <a href="/admin/thong_ke/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v2</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../../../index3.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v3</p>
+                                    <p>Thống kê</p>
                                 </a>
                             </li>
                         </ul>
@@ -452,7 +347,7 @@
                         <a href="#" class="nav-link ">
                             <i class="nav-icon fas fa-table"></i>
                             <p>
-                                Tables
+                                Bảng
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -542,7 +437,7 @@
                             <li class="nav-item">
                                 <a href="/admin/chuong_trinh_giam_gia/add_view/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Add chương trình</p>
+                                    <p>Thêm chương trình</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -617,12 +512,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>DataTables</h1>
+                        <h1>Giỏ hàng</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">DataTables</li>
+                            <li class="breadcrumb-item"><a href="/admin/index/1">Trang chủ</a></li>
+                            <li class="breadcrumb-item active">Giỏ hàng</li>
                         </ol>
                     </div>
                 </div>
@@ -632,13 +527,15 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <form>
+                <form method="post">
+                    <div class="row">
+                        <div class="col-12">
+
                             <div class="card">
                                 <div class="card-header">
                                     <button class="btn btn-success" id="addButton" onclick="clickThem()"><i
-                                            class="fas fa-plus"></i> Thêm sản phẩm</button>
+                                            class="fas fa-plus"></i> Thêm sản phẩm
+                                    </button>
 
                                 </div>
                                 <div class="row px-xl-5 mt-4">
@@ -668,9 +565,11 @@
                                                                     alt=""
                                                                     style="width: 50px;">
                                                             </td>
+                                                            <input type="hidden" name="chon" value="${vTri.index}">
                                                             <input type="hidden" name="idAoChiTiet"
                                                                    value="${list.aoChiTiet.id}">
-                                                            <input type="hidden" id="slTon${vTri.index + 1}" value="${list.aoChiTiet.slton}">
+                                                            <input type="hidden" id="slTon${vTri.index + 1}"
+                                                                   value="${list.aoChiTiet.slton}">
                                                             <td class="align-middle"
                                                                 style="text-align: left"> ${list.aoChiTiet.ao.ten}</td>
                                                             <td class="align-middle">${list.aoChiTiet.mau_sac.ten}, ${list.aoChiTiet.size.ten}</td>
@@ -712,133 +611,18 @@
                                                     <!-- Hiển thị hình ảnh giỏ hàng trống khi không có sản phẩm -->
                                                     <img src="/images/empty-cart.webp" alt="Giỏ hàng trống"
                                                          style="width: 70%; height: 250px;">
-                                                        <%--                                <p style="text-align: center">Giỏ hàng của bạn hiện đang trống</p>--%>
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <%--                        <form >--%>
-                        <div class="card">
-                            <div class="container-fluid">
-                                <%--                                <h5 class="section-title position-relative text-uppercase mb-3 mt-3">--%>
-                                <%--                                    <span class="bg-dark pr-3">Khách hàng</span>--%>
-                                <%--                                </h5>--%>
-                                <%--                                <div class="border-bottom">--%>
-                                <%--                                    <div class="card-header d-flex justify-content-between align-items-center">--%>
-                                <%--                                        <div class="row px-xl-5 mt-3">--%>
-                                <%--                                            &lt;%&ndash;                                                            <input type="hidden" value="${khachHang.id}" name="idKhachHang">&ndash;%&gt;--%>
-                                <%--                                            <label id="khachHangLabel">Tên khách hàng: <span>${khachHang.ten}</span></label>--%>
-                                <%--                                        </div>--%>
-                                <%--                                        <button class="btn btn-success ml-auto" id="addButton2"><i--%>
-                                <%--                                                class="fas fa-plus"></i>--%>
-                                <%--                                        </button>--%>
-                                <%--                                    </div>--%>
-                                <%--                                </div>--%>
-                                <form method="post">
+
+                            <div class="card">
+                                <div class="container-fluid">
+
                                     <div class="row px-xl-5">
 
-                                        <%--                                        <div class="col-lg-6">--%>
-
-                                        <%--                                            <h5 class="section-title position-relative text-uppercase mb-3 mt-3">--%>
-                                        <%--                                                <span class="bg-dark pr-3">Địa chỉ nhận hàng</span>--%>
-                                        <%--                                            </h5>--%>
-                                        <%--                                            <input type="checkbox" name="diaChiChon" value="diaChiCu" id="checkbox1"--%>
-                                        <%--                                                   onchange="kiemTraDiaChiCu()">Địa chỉ ban đầu--%>
-                                        <%--                                            <div id="view_dia_chi_cu" style="display:block">--%>
-                                        <%--                                                <div class="bg-light p-30 mb-2">--%>
-                                        <%--                                                    <div class="row">--%>
-                                        <%--                                                        <div class="col-md-6 form-group">--%>
-                                        <%--                                                            <label>Họ tên</label>--%>
-                                        <%--                                                            <input class="form-control" type="text" name="ten"--%>
-                                        <%--                                                                   value="${khachHang.ten}"--%>
-                                        <%--                                                                   placeholder="${khachHang.ten}"--%>
-                                        <%--                                                                   readonly>--%>
-                                        <%--                                                        </div>--%>
-                                        <%--                                                        <div class="col-md-6 form-group">--%>
-                                        <%--                                                            <label>Email</label>--%>
-                                        <%--                                                            <input class="form-control" type="text" name="email"--%>
-                                        <%--                                                                   value="${khachHang.email}"--%>
-                                        <%--                                                                   placeholder="${khachHang.email}"--%>
-                                        <%--                                                                   readonly>--%>
-                                        <%--                                                        </div>--%>
-                                        <%--                                                        <div class="col-md-6 form-group">--%>
-                                        <%--                                                            <label>Số điện thoại</label>--%>
-                                        <%--                                                            <input class="form-control" type="text" name="sdt"--%>
-                                        <%--                                                                   value="${khachHang.sdt}"--%>
-                                        <%--                                                                   placeholder="${khachHang.sdt}"--%>
-                                        <%--                                                                   readonly>--%>
-                                        <%--                                                        </div>--%>
-                                        <%--                                                        <div class="col-md-6 form-group">--%>
-                                        <%--                                                            <label>Quốc gia</label>--%>
-                                        <%--                                                            <input class="form-control" type="text" name="quocGia"--%>
-                                        <%--                                                                   placeholder="${khachHang.quoc_gia}"--%>
-                                        <%--                                                                   value="${khachHang.quoc_gia}" readonly>--%>
-                                        <%--                                                        </div>--%>
-                                        <%--                                                        <div class="col-md-6 form-group">--%>
-                                        <%--                                                            <label>Thành phố</label>--%>
-                                        <%--                                                            <input class="form-control" type="text" name="thanhPho"--%>
-                                        <%--                                                                   placeholder="${khachHang.thanh_pho}"--%>
-                                        <%--                                                                   value="${khachHang.thanh_pho}" id="diaChiCu"--%>
-                                        <%--                                                                   readonly>--%>
-                                        <%--                                                        </div>--%>
-                                        <%--                                                        <div class="col-md-6 form-group">--%>
-                                        <%--                                                            <label>Địa chỉ</label>--%>
-                                        <%--                                                            <input class="form-control" type="text" name="diaChi"--%>
-                                        <%--                                                                   value="${khachHang.dia_chi}"--%>
-                                        <%--                                                                   placeholder="${khachHang.dia_chi}"--%>
-                                        <%--                                                                   readonly>--%>
-                                        <%--                                                        </div>--%>
-                                        <%--                                                    </div>--%>
-                                        <%--                                                </div>--%>
-                                        <%--                                            </div>--%>
-                                        <%--                                            <input type="checkbox" name="diaChiChon" value="diaChiMoi"--%>
-                                        <%--                                                   id="checkbox2" onclick="toggleView('view_dia_chi_moi')">Địa chỉ--%>
-                                        <%--                                            mới--%>
-
-                                        <%--                                            <div id="view_dia_chi_moi" style="display:none">--%>
-                                        <%--                                                <div class="bg-light p-30 mb-5">--%>
-                                        <%--                                                    <div class="bg-light p-30 mb-5">--%>
-                                        <%--                                                        <div class="row">--%>
-                                        <%--                                                            <div class="col-md-6 form-group">--%>
-                                        <%--                                                                <label>Họ tên</label>--%>
-                                        <%--                                                                <input class="form-control" name="ten1" type="text"--%>
-                                        <%--                                                                       placeholder="Họ tên">--%>
-                                        <%--                                                            </div>--%>
-                                        <%--                                                            <div class="col-md-6 form-group">--%>
-                                        <%--                                                                <label>Email</label>--%>
-                                        <%--                                                                <input class="form-control" name="email1"--%>
-                                        <%--                                                                       type="text" placeholder="Email">--%>
-                                        <%--                                                            </div>--%>
-                                        <%--                                                            <div class="col-md-6 form-group">--%>
-                                        <%--                                                                <label>Số điện thoại</label>--%>
-                                        <%--                                                                <input class="form-control" name="sdt1" type="text"--%>
-                                        <%--                                                                       placeholder="Số điện thoại">--%>
-                                        <%--                                                            </div>--%>
-                                        <%--                                                            <div class="col-md-6 form-group">--%>
-                                        <%--                                                                <label>Quốc gia</label>--%>
-                                        <%--                                                                <input class="form-control" name="quocGia1"--%>
-                                        <%--                                                                       type="text" placeholder="Quôc gia">--%>
-                                        <%--                                                            </div>--%>
-                                        <%--                                                            <div class="col-md-6 form-group">--%>
-                                        <%--                                                                <label>Thành phố</label>--%>
-                                        <%--                                                                <input class="form-control" name="thanhPho1"--%>
-                                        <%--                                                                       id="diaChiMoi"--%>
-                                        <%--                                                                       oninput="kiemTraDiaChiMoi()" type="text"--%>
-                                        <%--                                                                       placeholder="Thành phố">--%>
-                                        <%--                                                            </div>--%>
-                                        <%--                                                            <div class="col-md-6 form-group">--%>
-                                        <%--                                                                <label>Địa chỉ</label>--%>
-                                        <%--                                                                <input class="form-control" name="diaChi1"--%>
-                                        <%--                                                                       type="text" placeholder="Địa chỉ">--%>
-                                        <%--                                                            </div>--%>
-                                        <%--                                                        </div>--%>
-                                        <%--                                                    </div>--%>
-                                        <%--                                                </div>--%>
-                                        <%--                                            </div>--%>
-                                        <%--                                        </div>--%>
                                         <div class="col-lg-6">
                                             <h5 class="section-title position-relative text-uppercase mb-3 mt-3 "><span
                                                     class="bg-dark pr-3">Thông tin thanh Toán</span></h5>
@@ -855,7 +639,7 @@
 
                                                     <div class="d-flex justify-content-between mt-2 border-bottom">
                                                         <h6 class="font-weight-bold">Tiền khách đưa</h6>
-                                                        <input type="number" min="0"  step="1"
+                                                        <input type="number" min="0" step="1"
                                                                id="amountPaid" oninput="calculateChange()"
                                                                style="width: 200px; ">
                                                     </div>
@@ -863,62 +647,6 @@
                                                         <h6 class="font-weight-bold">Tiền thừa trả khách</h6>
                                                         <label id="changeLabel">0 VNĐ</label>
                                                     </div>
-                                                    <%--                                                    </div>--%>
-
-                                                    <%--                                                    <div class="form-group">--%>
-                                                    <%--                                                        <div class="payment-methods">--%>
-                                                    <%--                                                            <label>--%>
-                                                    <%--                                                                <p style="padding-top: 5px"--%>
-                                                    <%--                                                                   onclick="toggleView('view_anh2')">Chương trình--%>
-                                                    <%--                                                                    giảm giá--%>
-                                                    <%--                                                                    <i class="fas fa-angle-down"></i></p>--%>
-                                                    <%--                                                            </label>--%>
-                                                    <%--                                                        </div>--%>
-                                                    <%--                                                        <div id="view_anh2" style="display:none">--%>
-                                                    <%--                                                            <div class="voucher-list">--%>
-                                                    <%--                                                                <c:forEach items="${CTGG}" var="list">--%>
-                                                    <%--                                                                    <div class="voucher-details">--%>
-                                                    <%--                                                                        <input name="options" type="radio"--%>
-                                                    <%--                                                                               value="${list.phanTramGiam}"--%>
-                                                    <%--                                                                               onclick="updatePrice(this)"--%>
-                                                    <%--                                                                               <c:if test="${list.soLuongSanPham > slDK && list.soTienHoaDon > tongTienDK}">disabled</c:if>>--%>
-                                                    <%--                                                                        <label for="${list.ma}"--%>
-                                                    <%--                                                                               class="radio-label"></label>--%>
-                                                    <%--                                                                        <span class="voucher-name">${list.ten}</span>--%>
-                                                    <%--                                                                        <span class="voucher-condition"><a href="#"--%>
-                                                    <%--                                                                                                           onclick="showCondition('Số sản phẩm trên ${list.soLuongSanPham} và tổng tiền hóa đơn trên ${list.soTienHoaDon}')">Xem điều kiện</a></span>--%>
-                                                    <%--                                                                    </div>--%>
-                                                    <%--                                                                </c:forEach>--%>
-                                                    <%--                                                            </div>--%>
-                                                    <%--                                                        </div>--%>
-
-                                                    <%--                                                        <div id="condition-popup" style="display: none;">--%>
-                                                    <%--                                                            <div class="condition-content">--%>
-                                                    <%--                                                                <span class="close-btn" onclick="closeCondition()">Đóng</span>--%>
-                                                    <%--                                                                <div id="condition-text"></div>--%>
-                                                    <%--                                                            </div>--%>
-                                                    <%--                                                        </div>--%>
-                                                    <%--                                                    </div>--%>
-                                                    <%--                                                    <h5 class="section-title position-relative text-uppercase mb-3 mt-3"><span--%>
-                                                    <%--                                                            class="bg-dark pr-3">Hình thức </span></h5>--%>
-                                                    <%--                                                    <div class="form-group mb-4">--%>
-                                                    <%--                                                        <div class="custom-control custom-radio">--%>
-                                                    <%--                                                            <input type="radio" class="custom-control-input"--%>
-                                                    <%--                                                                   value="bank" name="payment"--%>
-                                                    <%--                                                                   id="banktransfer">--%>
-                                                    <%--                                                            <label class="custom-control-label" for="banktransfer">--%>
-                                                    <%--                                                                Đặt hàng--%>
-                                                    <%--                                                            </label>--%>
-                                                    <%--                                                        </div>--%>
-                                                    <%--                                                    </div>--%>
-                                                    <%--                                                    <div class="d-flex justify-content-between">--%>
-                                                    <%--                                                        <h6 class="font-weight-medium font-weight-bold" >Ship</h6>--%>
-                                                    <%--                                                        <h6 class="font-weight-medium font-weight-bold">--%>
-                                                    <%--                                                            <input type="text" id="ship" readonly--%>
-                                                    <%--                                                                   style="border: none; background: none; text-align: left;padding-left: 50%">--%>
-                                                    <%--                                                        </h6>--%>
-                                                    <%--                                                    </div>--%>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -926,10 +654,11 @@
 
                                             <div class="mb-5">
                                                 <div>
-                                                    <label>Ghi chú</label> <button class="btn btn-success " style="width: 150px; height: 30px"
-                                                                                   formaction="/admin/ban-quay/luuHD/${hoaDon}">
-                                                    Lưu ghi chú
-                                                </button>
+                                                    <label>Ghi chú</label>
+                                                    <button class="btn btn-success " style="width: 150px; height: 30px"
+                                                            formaction="/admin/ban-quay/luuHD/${hoaDon}">
+                                                        Lưu ghi chú
+                                                    </button>
                                                     <textarea name="ghiChu"
                                                               style="width: 100%; height: 150px"></textarea>
                                                 </div>
@@ -937,7 +666,8 @@
 
                                                     <button class="btn btn-block btn-warning font-weight-bold py-3 "
 
-                                                            formaction="/admin/ban-quay/thanh-toan/${hoaDon}" onclick="kiemTra()">
+                                                            formaction="/admin/ban-quay/thanh-toan/${hoaDon}"
+                                                            onclick="kiemTra()">
                                                         Thanh toán
                                                     </button>
                                                 </div>
@@ -946,28 +676,28 @@
                                         </div>
 
                                     </div>
-                                </form>
+                                </div>
                             </div>
+                            <%--                        </form>--%>
                         </div>
-                        <%--                        </form>--%>
                     </div>
-                </div>
+                </form>
             </div>
             <!-- /.container-fluid -->
         </section>
 
         <section class="content">
-            <div id="addFormContainer" style="display: ${noneOrBlock};" >
+            <div id="addFormContainer" style="display: ${noneOrBlock};">
                 <div class="container-fluid mt-3" style="width: 1200px; max-height: 700px; ">
                     <div class="row">
                         <div class="col-12">
                             <form id="addForm" method="post" class="mt-3" style="max-height: 700px; overflow-y: auto;">
-                                <div class="card" >
+                                <div class="card">
                                     <div class="card-header">
                                         <h3 style="text-align: center"> Danh sách sản phẩm</h3>
                                         <input type="hidden" value="${idHoaDon}" name="idHoaDon">
                                     </div>
-                                    <div class="card-body" >
+                                    <div class="card-body">
                                         <table id="example1" class="table table-bordered table-striped">
                                             <div class="col-12">
                                                 <div class="row">
@@ -1020,7 +750,8 @@
 
                                                     <td>
                                                         <button class="btn btn-warning" type="submit"
-                                                                id="addButton1" formaction="/admin/ban-quay/ao-detail" name="idSp" value="${list.id}">Chọn
+                                                                id="addButton1" formaction="/admin/ban-quay/ao-detail"
+                                                                name="idSp" value="${list.id}">Chọn
                                                         </button>
                                                     </td>
 
@@ -1132,12 +863,15 @@
                                     <div class="d-flex align-items-center mb-4 pt-2 ml-2">
                                         <div class="input-group quantity mr-3" style="width: 130px;" id="mauSacAndSize">
                                             <div class="input-group-append">
-                                                <button class="btn btn-warning btn-minus" type="button" onclick="decreaseQuantity()">
+                                                <button class="btn btn-warning btn-minus" type="button"
+                                                        onclick="decreaseQuantity()">
                                                     <i class="fa fa-minus"></i>
                                                 </button>
-                                                <input type="text" class="form-control bg-light border-0 text-center" value="1"
+                                                <input type="text" class="form-control bg-light border-0 text-center"
+                                                       value="1"
                                                        name="sl" id="quantityInput">
-                                                <button class="btn btn-warning btn-plus" type="button" onclick="increaseQuantity()">
+                                                <button class="btn btn-warning btn-plus" type="button"
+                                                        onclick="increaseQuantity()">
                                                     <i class="fa fa-plus"></i>
                                                 </button>
                                             </div>
@@ -1145,7 +879,8 @@
                                         <input type="hidden" value="${idHoaDon}" name="idHoaDon">
                                         <button class="btn btn-warning px-3 ml-2"
                                                 formaction="/admin/ban-quay/add_gio_hang/${idHoaDon}"
-                                                onclick="addProduct()"><i class="fa fa-shopping-cart mr-1"></i> Thêm vào giỏ hàng
+                                                onclick="addProduct()"><i class="fa fa-shopping-cart mr-1"></i> Thêm vào
+                                            giỏ hàng
                                         </button>
                                     </div>
                                 </form>
@@ -1156,74 +891,6 @@
             </div>
         </div>
 
-        <%--        <div id="addFormContainer2" style="display: none;border: 2px">--%>
-        <%--            <div class="container-fluid" style="margin-top: 100px">--%>
-        <%--                <div class="container">--%>
-        <%--                    <form method="post">--%>
-
-        <%--                        <div class="card">--%>
-
-        <%--                            <h3 style="text-align: center; padding-top: 4px"> Danh sách khách hàng</h3>--%>
-        <%--                            <!-- /.card-header -->--%>
-        <%--                            <div class="card-body">--%>
-        <%--                                <table id="example2"  class="table table-bordered table-striped">--%>
-
-        <%--                                    <thead>--%>
-        <%--                                    <tr>--%>
-        <%--                                        <th>Tên</th>--%>
-        <%--                                        <th>Ngày Sinh</th>--%>
-        <%--                                        <th>Giới Tính</th>--%>
-        <%--                                        <th>Địa chỉ</th>--%>
-        <%--                                        <th>SDT</th>--%>
-        <%--                                        <th>Email</th>--%>
-        <%--                                        <th>Trạng thái</th>--%>
-        <%--                                        <th>Action</th>--%>
-        <%--                                    </tr>--%>
-        <%--                                    </thead>--%>
-        <%--                                    <tbody>--%>
-        <%--                                    <c:forEach items="${listKhachHang}" var="list">--%>
-        <%--                                        <tr>--%>
-
-        <%--                                            <td>${list.ten}</td>--%>
-        <%--                                            <td> ${list.ngay_sinh}</td>--%>
-        <%--                                                &lt;%&ndash;                                            <td> ${list.ngay_sinh.format(DateTimeFormatter.ofPattern('dd/MM/yyyy HH:mm:ss'))}</td>&ndash;%&gt;--%>
-        <%--                                            <td>${list.gioiTinh==1?"Nam":"Nữ"}</td>--%>
-        <%--                                            <td>${list.dia_chi}, ${list.thanh_pho}, ${list.quoc_gia}</td>--%>
-        <%--                                            <td>${list.sdt}</td>--%>
-        <%--                                            <td>${list.email}</td>--%>
-        <%--                                            <td>${list.trangThai==1?'Hoạt Động':'Ngừng Hoạt Động'}</td>--%>
-        <%--                                            <td>--%>
-        <%--                                                <input type="hidden" value="${idHoaDon}" name="idHoaDon">--%>
-        <%--                                                <button class="btn btn-primary px-3"--%>
-
-        <%--                                                        formaction="/admin/ban-quay/update-khach-hang/${list.id}">--%>
-        <%--                                                    Chọn--%>
-        <%--                                                </button>--%>
-        <%--                                            </td>--%>
-        <%--                                        </tr>--%>
-        <%--                                    </c:forEach>--%>
-        <%--                                    </tbody>--%>
-        <%--                                    <tfoot>--%>
-        <%--                                    <tr>--%>
-        <%--                                        <th>Tên</th>--%>
-        <%--                                        <th>Ngày Sinh</th>--%>
-        <%--                                        <th>Giới Tính</th>--%>
-        <%--                                        <th>Địa chỉ</th>--%>
-        <%--                                        <th>SDT</th>--%>
-        <%--                                        <th>Email</th>--%>
-        <%--                                        <th>Trạng thái</th>--%>
-        <%--                                        <th>Action</th>--%>
-        <%--                                    </tr>--%>
-        <%--                                    </tfoot>--%>
-        <%--                                </table>--%>
-        <%--                            </div>--%>
-        <%--                            <!-- /.card-body -->--%>
-        <%--                        </div>--%>
-        <%--                    </form>--%>
-        <%--                </div>--%>
-        <%--            </div>--%>
-        <%--        </div>--%>
-        <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 
@@ -1404,26 +1071,24 @@
 <script>
     function kiemTra() {
 
-        var listHoaDonChiTiet = ${listHoaDonChiTiets}; // Use the appropriate way to get the list from your server-side code
+        var slHDCHT = ${slHDCTByHoaDon};
+
         var hasError = false;
+
+        if (slHDCHT == 0) {
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Không có sản phẩm nào thanh toán</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                allowOutsideClick: true,
+            });
+            setTimeout(() => {
+                Swal.close();
+            }, 1000);
+            event.preventDefault();
+        }
         for (var i = 0; i < 99; i++) {
             var slTon = parseFloat(document.getElementById("slTon" + (i + 1)).value); // Sửa lỗi ở đây
             var sl = parseFloat(document.getElementById("sl" + (i + 1)).value); // Sửa lỗi ở đây
-
-            console.log(sl);
-            console.log(slTon);
-
-            if (listHoaDonChiTiet.length === 0) {
-                Swal.fire({
-                    icon: 'info',
-                    html: '<div class="swal-text">Giỏ hàng của bạn hiện đang trống. Vui lòng thêm sản phẩm vào giỏ hàng.</div>',
-                    allowOutsideClick: true,
-                });
-                setTimeout(() => {
-                    Swal.close();
-                }, 1000);
-                hasError = true;
-            }
 
             if (sl > slTon) {
                 Swal.fire({
@@ -1440,8 +1105,6 @@
                 event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
             }
         }
-
-
     }
 </script>
 
@@ -1502,7 +1165,6 @@
         input.addEventListener("change", updateProductAvailability);
     });
 </script>
-
 
 
 <script>
@@ -1646,27 +1308,6 @@
     tongTienInput.value = totalLabel;
 </script>
 
-<%--<script>--%>
-
-<%--    // Get the current URL--%>
-<%--    var currentURL = window.location.href;--%>
-
-<%--    // Define the dynamic parameter value--%>
-<%--    var dynamicParam = "${hoaDon.id}";--%>
-
-<%--    // Build the dynamic URL by appending the parameter--%>
-<%--    var dynamicURL = "http://localhost:8080/admin/form/view/" + dynamicParam;--%>
-
-<%--    if (window.location.href === dynamicURL) {--%>
-<%--        // If the URL matches, show the form container--%>
-<%--        addFormContainer.style.display = "none";--%>
-<%--    } else {--%>
-<%--        addFormContainer.style.display = "block";--%>
-<%--    }--%>
-<%--    function clickThem() {--%>
-<%--        event.preventDefault(); // Ngăn chặn submit form nếu có lỗi--%>
-<%--    }--%>
-<%--</script>--%>
 <script>
     // Get references to the button and form container
     var addButton = document.getElementById("addButton");
@@ -1696,35 +1337,6 @@
     }
 
 </script>
-<%--<script>--%>
-<%--    // Get references to the button and form container--%>
-<%--    var addButton3 = document.getElementById("addButton3");--%>
-<%--    var addFormContainer3 = document.getElementById("addFormContainer3");--%>
-
-<%--    // Add an event listener to the button--%>
-<%--    addButton3.addEventListener("click", function () {--%>
-<%--        // Toggle the visibility of the form container--%>
-<%--        if (addFormContainer3.style.display === "none" || addFormContainer3.style.display === "") {--%>
-<%--            addFormContainer3.style.display = "block";--%>
-<%--        } else {--%>
-<%--            addFormContainer3.style.display = "none";--%>
-<%--        }--%>
-<%--    });--%>
-
-<%--    // Add an event listener to the background overlay--%>
-<%--    addFormContainer3.addEventListener("click", function (event) {--%>
-<%--        // Check if the click occurred outside the form--%>
-<%--        if (event.target === addFormContainer3) {--%>
-<%--            // Hide the form--%>
-<%--            addFormContainer3.style.display = "none";--%>
-<%--        }--%>
-<%--    });--%>
-
-<%--    function clickTrangChu() {--%>
-<%--        event.preventDefault(); // Ngăn chặn submit form nếu có lỗi--%>
-<%--    }--%>
-
-<%--</script>--%>
 
 <script>
 
@@ -1837,109 +1449,6 @@
         document.getElementById("condition-popup").style.display = "none";
     }
 </script>
-<%--<script>--%>
-<%--    //Khách hàng--%>
-<%--    const spanElement = document.querySelector('#khachHangLabel span');--%>
-
-<%--    var khachHanglb = "${khachHang.ten}";--%>
-<%--    var khachHangTen = "Khách lẻ";--%>
-
-<%--    console.log(khachHanglb);--%>
-<%--    console.log(khachHangTen);--%>
-<%--    // Kiểm tra nếu giá trị của khachHang.ten là null hoặc không được định nghĩa--%>
-<%--    if (!khachHanglb || khachHanglb.trim() === "") {--%>
-<%--        spanElement.textContent = khachHangTen;--%>
-<%--    } else {--%>
-<%--        spanElement.textContent = khachHanglb;--%>
-<%--    }--%>
-<%--</script>--%>
-
-<%--<script>--%>
-
-<%--    var checkbox1 = document.getElementById("checkbox1");--%>
-<%--    var checkbox2 = document.getElementById("checkbox2");--%>
-
-<%--    // Thêm sự kiện cho checkbox1 để kiểm tra trạng thái của checkbox2--%>
-<%--    checkbox1.addEventListener("change", function () {--%>
-<%--        if (checkbox1.checked) {--%>
-<%--            checkbox2.checked = false;--%>
-<%--        }--%>
-<%--    });--%>
-
-<%--    // Thêm sự kiện cho checkbox2 để kiểm tra trạng thái của checkbox1--%>
-<%--    checkbox2.addEventListener("change", function () {--%>
-<%--        if (checkbox2.checked) {--%>
-<%--            checkbox1.checked = false;--%>
-<%--        }--%>
-<%--    });--%>
-
-<%--    // JavaScript code để kiểm tra địa chỉ cũ--%>
-<%--    function kiemTraDiaChiCu() {--%>
-<%--        var diaChiCu = document.getElementById("diaChiCu").value;--%>
-<%--        var priceInput = document.getElementById("price");--%>
-<%--        var priceInput1 = document.getElementById("price1");--%>
-<%--        var currentPrice = parseFloat(${tongTien});--%>
-<%--        if (diaChiCu.includes("Hà Nội")) {--%>
-<%--            var ship = 20000;--%>
-<%--        } else if (diaChiCu.includes("Bắc Ninh")) {--%>
-<%--            var ship = 25000;--%>
-<%--        } else if (diaChiCu.includes("Hồ Chí Minh")) {--%>
-<%--            var ship = 80000;--%>
-<%--        } else if (diaChiCu.includes("Hải Dương")) {--%>
-<%--            var ship = 25000;--%>
-<%--        } else if (diaChiCu.includes("Quảng Ninh")) {--%>
-<%--            var ship = 40000;--%>
-<%--        }--%>
-<%--        var tongSoTien = currentPrice + ship;--%>
-<%--        priceInput1.value = tongSoTien;--%>
-
-<%--        var gia1Formatted3 = ship.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});--%>
-
-<%--        var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";--%>
-
-<%--        document.getElementById("ship").value = gia1WithCurrency3;--%>
-
-<%--        var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});--%>
-
-<%--        var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";--%>
-
-<%--        priceInput.value = gia1WithCurrency2;--%>
-<%--    }--%>
-
-<%--    // JavaScript code để kiểm tra địa chỉ mới sau khi nhập xong và rời khỏi ô văn bản--%>
-<%--    function kiemTraDiaChiMoi() {--%>
-<%--        var diaChiMoi = document.getElementById("diaChiMoi").value;--%>
-<%--        var priceInput = document.getElementById("price");--%>
-<%--        var priceInput1 = document.getElementById("price1");--%>
-<%--        var currentPrice = parseFloat(${tongTien});--%>
-<%--        if (diaChiMoi.includes("Hà Nội")) {--%>
-<%--            var ship = 20000;--%>
-<%--        } else if (diaChiMoi.includes("Bắc Ninh")) {--%>
-<%--            var ship = 25000;--%>
-<%--        } else if (diaChiMoi.includes("Hồ Chí Minh")) {--%>
-<%--            var ship = 80000;--%>
-<%--        } else if (diaChiMoi.includes("Hải Dương")) {--%>
-<%--            var ship = 25000;--%>
-<%--        } else if (diaChiMoi.includes("Quảng Ninh")) {--%>
-<%--            var ship = 40000;--%>
-<%--        }--%>
-
-<%--        var tongSoTien = currentPrice + ship;--%>
-<%--        priceInput1.value = tongSoTien;--%>
-
-<%--        var gia1Formatted3 = ship.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});--%>
-
-<%--        var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";--%>
-
-<%--        document.getElementById("ship").value = gia1WithCurrency3;--%>
-
-<%--        var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});--%>
-
-<%--        var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";--%>
-
-<%--        priceInput.value = gia1WithCurrency2;--%>
-<%--    }--%>
-<%--</script>--%>
 
 <script>
     $(document).ready(function () {

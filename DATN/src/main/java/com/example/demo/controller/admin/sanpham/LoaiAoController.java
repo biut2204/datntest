@@ -1,5 +1,7 @@
 package com.example.demo.controller.admin.sanpham;
 
+import com.example.demo.entity.auth.RoleEnum;
+import com.example.demo.entity.khachhang.Users;
 import com.example.demo.entity.sanpham.LoaiAo;
 import com.example.demo.repo.sanpham.LoaiAoRepo;
 import com.example.demo.ser.chat.ChatSer;
@@ -37,6 +39,15 @@ public class LoaiAoController {
     @GetMapping("/admin/loai_ao/view/*")
     public String view(Model model, HttpServletRequest request) {
 
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+        if (user.getRole() == RoleEnum.STAFF){
+            model.addAttribute("adminOrStaff", "1");
+        }else if (user.getRole() == RoleEnum.ADMIN){
+            model.addAttribute("adminOrStaff", "2");
+        }
+        model.addAttribute("nameUser", user.getTen());
+
         List<LoaiAo> listLoaiAos = loaiAoSer.getAll();
         model.addAttribute("listLoaiAos", listLoaiAos);
 
@@ -47,9 +58,7 @@ public class LoaiAoController {
         try {
             LoaiAo loaiAo = loaiAoSer.findById(UUID.fromString(id));
             model.addAttribute("item", loaiAo);
-            model.addAttribute("checkAnh", "1");
         } catch (Exception e) {
-            model.addAttribute("checkAnh", "2");
         }
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/loai_ao";

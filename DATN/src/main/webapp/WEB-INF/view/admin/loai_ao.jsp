@@ -10,7 +10,8 @@
     <title>AdminLTE 3 | DataTables</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../../../resources/plugins/fontawesome-free/css/all.min.css">
     <!-- DataTables -->
@@ -20,6 +21,21 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="../../../resources/css/add_form.css">
+    <style>
+        .image {
+            width: 80px;
+            height: 80px;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+
+        .image img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -31,10 +47,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="/admin/index/1" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
+                <a href="/admin/index/1" class="nav-link">Trang chủ</a>
             </li>
         </ul>
 
@@ -42,119 +55,8 @@
         <ul class="navbar-nav ml-auto">
             <!-- Navbar Search -->
             <li class="nav-item">
-                <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                    <i class="fas fa-search"></i>
-                </a>
-                <div class="navbar-search-block">
-                    <form class="form-inline">
-                        <div class="input-group input-group-sm">
-                            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-navbar" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </li>
-
-            <!-- Messages Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-comments"></i>
-                    <span class="badge badge-danger navbar-badge">3</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="../../../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    Brad Diesel
-                                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">Call me whenever you can...</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="../../../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    John Pierce
-                                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">I got your message bro</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="../../../dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    Nora Silvester
-                                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">The subject goes here</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                </div>
-            </li>
-            <!-- Notifications Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-item dropdown-header">15 Notifications</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                        <span class="float-right text-muted text-sm">3 mins</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-users mr-2"></i> 8 friend requests
-                        <span class="float-right text-muted text-sm">12 hours</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 3 new reports
-                        <span class="float-right text-muted text-sm">2 days</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                </div>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                    <i class="fas fa-th-large"></i>
                 </a>
             </li>
         </ul>
@@ -164,27 +66,33 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="../../../index3.html" class="brand-link">
-            <img src="../../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">AdminLTE 3</span>
-        </a>
-
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="../../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                </div>
+                <c:choose>
+                    <c:when test="${adminOrStaff == 1}">
+                        <div class="image">
+                            <img src="/images/test.jpg">
+                        </div>
+
+                    </c:when>
+                    <c:when test="${adminOrStaff == 2}">
+                        <div class="image">
+                            <img src="/images/test1.jpg">
+                        </div>
+                    </c:when>
+                </c:choose>
                 <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                    <a href="#" class="d-block">${nameUser}</a>
                 </div>
             </div>
 
             <!-- SidebarSearch Form -->
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
-                    <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                           aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -195,14 +103,15 @@
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
-                                Dashboard
+                                Bảng điều khiển
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -210,19 +119,13 @@
                             <li class="nav-item">
                                 <a href="/admin/index/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v1</p>
+                                    <p>Trang chủ</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../../../index2.html" class="nav-link">
+                                <a href="/admin/thong_ke/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v2</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../../../index3.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v3</p>
+                                    <p>Thống kê</p>
                                 </a>
                             </li>
                         </ul>
@@ -241,7 +144,7 @@
                         <a href="#" class="nav-link active">
                             <i class="nav-icon fas fa-table"></i>
                             <p>
-                                Tables
+                                Bảng
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -331,7 +234,7 @@
                             <li class="nav-item">
                                 <a href="/admin/chuong_trinh_giam_gia/add_view/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Add chương trình</p>
+                                    <p>Thêm chương trình</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -408,12 +311,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>DataTables</h1>
+                        <h1>Loại áo</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">DataTables</li>
+                            <li class="breadcrumb-item"><a href="/admin/index/1">Trang chủ</a></li>
+                            <li class="breadcrumb-item active">Loại áo</li>
                         </ol>
                     </div>
                 </div>
@@ -428,7 +331,8 @@
                         <form method="post">
                             <div class="card">
                                 <div class="card-header">
-                                    <button class="btn btn-primary" id="addButton" onclick="clickThem()">Thêm</button>
+                                    <button class="btn btn-primary" id="addButton" onclick="clickThem()"><i class="fas fa-plus nav-icon"></i>
+                                        Thêm</button>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -495,14 +399,13 @@
                         </div>
                         <div class="form-group">
                             <label for="formGroupExampleInput2">Tên</label>
-                            <input type="file" name="tenURL">
+                            <input type="file" name="tenURL" id="imageInput" accept="image/*" onchange="displayImage()">
+                            <span id="errorAnh" class="text-danger"></span>
+                            <div id="imagePreview" style="padding-bottom: 10px;padding-left: 10px"></div>
                             <div class="form-group col-md-3" style="position: relative;">
-                                <c:choose>
-                                    <c:when test="${checkAnh == 2}"></c:when>
-                                    <c:when test="${checkAnh != 2}">
-                                        <img src="/images/${item.tenURL}" alt="" style="width: 75%;height: 200px">
-                                    </c:when>
-                                </c:choose>
+                                <div id="checkAnh">
+                                    <img src="/images/${item.tenURL}" alt="" style="width: 75%;height: 200px">
+                                </div>
                             </div>
                         </div>
                         <fieldset class="form-group">
@@ -527,13 +430,10 @@
                             </div>
                         </fieldset>
                         <button class="btn btn-primary" formaction="/admin/loai_ao/add" type="submit"
-                                onclick="addProduct()">Thêm Mới
+                                onclick="addProduct()" id="idThem">Thêm Mới
                         </button>
                         <button class="btn btn-primary" formaction="/admin/loai_ao/update" type="submit"
-                                onclick="addProduct()">Cập nhật
-                        </button>
-                        <button class="btn btn-primary" formaction="/admin/loai_ao/clear" type="submit">
-                            Clear
+                                onclick="addProduct1()" id="idUpdate">Cập nhật
                         </button>
                     </form>
                 </div>
@@ -614,16 +514,59 @@
     if (window.location.href === "http://localhost:8080/admin/loai_ao/view/1") {
         addFormContainer.style.display = "none";
     } else {
+        document.getElementById("idThem").style.display = "none";
+        document.getElementById("checkAnh").style.display = "block";
         addFormContainer.style.display = "block";
     }
+
     function clickThem() {
+
+        document.getElementById("idThem").style.display = "block";
+        document.getElementById("idUpdate").style.display = "none";
+        document.getElementById("checkAnh").style.display = "none";
+
+        document.getElementsByName("ten")[0].value = "";
+        // Đặt giá trị cho radio buttons
+        document.getElementById("gridRadios1").checked = true;
+
         event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
     }
 </script>
 <script>
+
+    var selectedImageName = "";
+
+    function displayImage() {
+        var input = document.getElementById('imageInput');
+        var preview = document.getElementById('imagePreview');
+
+        while (preview.firstChild) {
+            preview.removeChild(preview.firstChild);
+        }
+
+        var file = input.files[0];
+
+        if (file) {
+            selectedImageName = file.name;
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxWidth = '100px';
+                img.style.maxHeight = '100px';
+                preview.appendChild(img);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+
     function addProduct() {
         var ten = document.getElementsByName('ten')[0].value;
         var errorTen = document.getElementById('errorTen');
+        var errorAnh = document.getElementById('errorAnh');
         var hasError = false;
 
 
@@ -634,12 +577,45 @@
             errorTen.innerText = '';
         }
 
+        if (!selectedImageName) {
+            errorAnh.innerText = 'Vui lòng chọn ảnh.';
+            hasError = true;
+        } else {
+            errorAnh.innerText = '';
+        }
+
         <c:forEach var="list" items="${listLoaiAos}">
         if ("${list.ten}".trim() === ten.trim()) {
             errorTen.innerText = 'Tên loại áo đã tồn tại.';
             hasError = true;
         }
         </c:forEach>
+
+        if (hasError) {
+            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
+        }
+    }
+
+    function addProduct1() {
+        var ten = document.getElementsByName('ten')[0].value;
+        var errorTen = document.getElementById('errorTen');
+        var errorAnh = document.getElementById('errorAnh');
+        var hasError = false;
+
+
+        if (ten.trim() === '') {
+            errorTen.innerText = 'Vui lòng nhập tên.';
+            hasError = true;
+        } else {
+            errorTen.innerText = '';
+        }
+
+        if (!selectedImageName) {
+            errorAnh.innerText = 'Vui lòng chọn ảnh.';
+            hasError = true;
+        } else {
+            errorAnh.innerText = '';
+        }
 
         if (hasError) {
             event.preventDefault(); // Ngăn chặn submit form nếu có lỗi

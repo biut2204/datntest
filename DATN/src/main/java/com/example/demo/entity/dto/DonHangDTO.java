@@ -15,4 +15,6 @@ public class DonHangDTO {
     HoaDon hoaDon;
 
     int soLuong;
+
+    String ten;
 }

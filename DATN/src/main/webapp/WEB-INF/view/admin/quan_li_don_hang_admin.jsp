@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../../../resources/css/add_form.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
 
     <style>
         #addFormContainer {
@@ -61,12 +62,13 @@
             background: #3fc3ee;
             border-radius: 15px;
             height: 100%;
+            width: 100%;
             display: flex;
             align-items: center;
-            padding-left: 27%;
+            padding-left: 30%;
         }
 
-        #locTheoThoiGian:hover{
+        #locTheoThoiGian:hover {
             transition: box-shadow 0.3s ease-in-out;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
@@ -92,21 +94,24 @@
             transition: background-color 0.3s;
         }
 
-        .status-1{
-            backgroundColor : #ff8b33;
+        .status-1 {
+            backgroundColor: #ff8b33;
             background: #ff8b33;
         }
-        .status-2{
-            backgroundColor : wheat;
-            background : wheat;
+
+        .status-2 {
+            backgroundColor: wheat;
+            background: wheat;
         }
-        .status-3{
-            backgroundColor : springgreen;
-            background : springgreen;
+
+        .status-3 {
+            backgroundColor: springgreen;
+            background: springgreen;
         }
-        .status-4{
-            backgroundColor : red;
-            background : red;
+
+        .status-4 {
+            backgroundColor: red;
+            background: red;
         }
 
         .arrow1,
@@ -214,6 +219,80 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
         }
     </style>
+    <style>
+        .image {
+            width: 80px;
+            height: 80px;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+
+        .image img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
+    <style>
+        .active {
+            color: blue;
+            font-weight: bold;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .pagination button {
+            margin: 0 5px;
+        }
+
+        .btn-table {
+            margin-top: 18px;
+            padding-top: 5px;
+            text-align: center;
+            color: white;
+            width: 80px;
+            height: 40px;
+            background: #0c84ff;
+            border-radius: 5px;
+        }
+
+        .btn-table:hover {
+            background: #0d6efd;
+        }
+
+        .form-group.col-2 {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-group.col-2 a {
+            text-decoration: none;
+            color: black;
+            background-color: #3fc3ee;
+            padding: 0px 25px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .form-group.col-2 a:hover {
+            background-color: #ddd;
+            color: #000;
+        }
+
+        .icon-x {
+            font-size: 26px;
+            color: red;
+        }
+        .icon-x:hover {
+            color: #ddd;
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -225,10 +304,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="/admin/index/1" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
+                <a href="/admin/index/1" class="nav-link">Trang chủ</a>
             </li>
         </ul>
 
@@ -236,123 +312,8 @@
         <ul class="navbar-nav ml-auto">
             <!-- Navbar Search -->
             <li class="nav-item">
-                <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                    <i class="fas fa-search"></i>
-                </a>
-                <div class="navbar-search-block">
-                    <form class="form-inline">
-                        <div class="input-group input-group-sm">
-                            <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                                   aria-label="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-navbar" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </li>
-
-            <!-- Messages Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-comments"></i>
-                    <span class="badge badge-danger navbar-badge">3</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="../../../dist/img/user1-128x128.jpg" alt="User Avatar"
-                                 class="img-size-50 mr-3 img-circle">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    Brad Diesel
-                                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">Call me whenever you can...</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="../../../dist/img/user8-128x128.jpg" alt="User Avatar"
-                                 class="img-size-50 img-circle mr-3">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    John Pierce
-                                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">I got your message bro</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="../../../dist/img/user3-128x128.jpg" alt="User Avatar"
-                                 class="img-size-50 img-circle mr-3">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    Nora Silvester
-                                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">The subject goes here</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                </div>
-            </li>
-            <!-- Notifications Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-item dropdown-header">15 Notifications</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                        <span class="float-right text-muted text-sm">3 mins</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-users mr-2"></i> 8 friend requests
-                        <span class="float-right text-muted text-sm">12 hours</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 3 new reports
-                        <span class="float-right text-muted text-sm">2 days</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                </div>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                    <i class="fas fa-th-large"></i>
                 </a>
             </li>
         </ul>
@@ -362,21 +323,26 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="../../../index3.html" class="brand-link">
-            <img src="../../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                 style="opacity: .8">
-            <span class="brand-text font-weight-light">AdminLTE 3</span>
-        </a>
 
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="../../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                </div>
+                <c:choose>
+                    <c:when test="${adminOrStaff == 1}">
+                        <div class="image">
+                            <img src="/images/test.jpg">
+                        </div>
+
+                    </c:when>
+                    <c:when test="${adminOrStaff == 2}">
+                        <div class="image">
+                            <img src="/images/test1.jpg">
+                        </div>
+                    </c:when>
+                </c:choose>
                 <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                    <a href="#" class="d-block">${nameUser}</a>
                 </div>
             </div>
 
@@ -403,7 +369,7 @@
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
-                                Dashboard
+                                Bảng điều khiển
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -411,19 +377,13 @@
                             <li class="nav-item">
                                 <a href="/admin/index/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v1</p>
+                                    <p>Trang chủ</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../../../index2.html" class="nav-link">
+                                <a href="/admin/thong_ke/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v2</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../../../index3.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v3</p>
+                                    <p>Thống kê</p>
                                 </a>
                             </li>
                         </ul>
@@ -441,7 +401,7 @@
                         <a href="#" class="nav-link ">
                             <i class="nav-icon fas fa-table"></i>
                             <p>
-                                Tables
+                                Bảng
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -531,7 +491,7 @@
                             <li class="nav-item">
                                 <a href="/admin/chuong_trinh_giam_gia/add_view/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Add chương trình</p>
+                                    <p>Thêm chương trình</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -608,22 +568,23 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>DataTables</h1>
+                        <h1>Quản lí hóa đơn</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">DataTables</li>
+                            <li class="breadcrumb-item"><a href="/admin/index/1">Trang chủ</a></li>
+                            <li class="breadcrumb-item active">Quản lí hóa đơn</li>
                         </ol>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
         </section>
-        <div id="no_1">
+        <div id="no_1" style="display: none">
             <section class="content">
                 <div class="container-fluid">
                     <div class="status-container">
-                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i> Đang
+                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i>
+                            Đang
                             chờ xác nhận
                         </div>
                     </div>
@@ -636,11 +597,14 @@
             <section class="content">
                 <div class="container-fluid">
                     <div class="status-container">
-                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i> Đang
+                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i>
+                            Đang
                             chờ xác nhận
                         </div>
                         <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
-                        <div class="status status-2" onclick="showStatus('2')"style="margin-right: 50%"><i class="fas fa-truck"></i> Đang giao</div>
+                        <div class="status status-2" onclick="showStatus('2')" style="margin-right: 50%"><i
+                                class="fas fa-truck"></i> Đang giao
+                        </div>
                     </div>
                     <!-- /.row -->
                 </div>
@@ -651,13 +615,16 @@
             <section class="content">
                 <div class="container-fluid">
                     <div class="status-container">
-                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i> Đang
+                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i>
+                            Đang
                             chờ xác nhận
                         </div>
                         <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
-                        <div class="status status-2" onclick="showStatus('2')"><i class="fas fa-truck"></i> Đang giao</div>
+                        <div class="status status-2" onclick="showStatus('2')"><i class="fas fa-truck"></i> Đang giao
+                        </div>
                         <div class="arrow arrow2"><i class="fas fa-arrow-right"></i></div>
-                        <div class="status status-3" onclick="showStatus('3')"style="margin-right: 25%"><i class="fas fa-check-circle"></i> Hoàn
+                        <div class="status status-3" onclick="showStatus('3')" style="margin-right: 25%"><i
+                                class="fas fa-check-circle"></i> Hoàn
                             thành
                         </div>
                     </div>
@@ -670,11 +637,31 @@
             <section class="content">
                 <div class="container-fluid">
                     <div class="status-container">
-                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i> Đang
+                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i>
+                            Đang
                             chờ xác nhận
                         </div>
                         <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
-                        <div class="status status-4" onclick="showStatus('4')" style="margin-right: 50%"><i class="fas fa-times-circle"></i> Hủy</div>
+                        <div class="status status-4" onclick="showStatus('4')" style="margin-right: 50%"><i
+                                class="fas fa-times-circle"></i> Hủy
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+        </div>
+        <div id="no_5" style="display: none">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="status-container">
+                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i>
+                            Quầy
+                        </div>
+                        <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
+                        <div class="status status-3" onclick="showStatus('3')" style="margin-right: 50%"><i
+                                class="fas fa-times-circle"></i> Hoàn thành
+                        </div>
                     </div>
                     <!-- /.row -->
                 </div>
@@ -688,14 +675,20 @@
                     <c:when test="${trangThai == 1}">
                         <button class="button btn-button-xn" formaction="/admin/don_hang/xac_nhan">Xác nhận</button>
                         <button class="button btn-button-huy" id="addButton1" onclick="clickHuy()">Hủy đơn</button>
-                        <button class="button btn-button-ct" style="margin-left: 71%;" id="addButton" onclick="clickThem()">Chi tiết</button>
+                        <button class="button btn-button-ct" style="margin-left: 71%;" id="addButton"
+                                onclick="clickThem()">Chi tiết
+                        </button>
                     </c:when>
                     <c:when test="${trangThai == 2}">
                         <button class="button btn-button-xn" formaction="/admin/don_hang/hoan_thanh">Hoàn thành</button>
-                        <button class="button btn-button-ct" style="margin-left: 79%;" id="addButton" onclick="clickThem()">Chi tiết</button>
+                        <button class="button btn-button-ct" style="margin-left: 79%;" id="addButton"
+                                onclick="clickThem()">Chi tiết
+                        </button>
                     </c:when>
-                    <c:when test="${trangThai == 3 || trangThai == 4}">
-                        <button class="button btn-button-ct" style="margin-left: 91%;" id="addButton" onclick="clickThem()">Chi tiết</button>
+                    <c:when test="${trangThai == 3 || trangThai == 4|| trangThai == 5}">
+                        <button class="button btn-button-ct" style="margin-left: 91%;" id="addButton"
+                                onclick="clickThem()">Chi tiết
+                        </button>
                     </c:when>
                 </c:choose>
             </form>
@@ -704,46 +697,62 @@
 
         <c:choose>
             <c:when test="${trangThai != 0}">
-                <section class="content" style="background: white; margin: 15px;border-radius: 5px;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2)">
+                <section class="content"
+                         style="background: white; margin: 15px;border-radius: 5px;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2)">
                     <div class="container-fluid">
                         <div class="container">
                             <h3 style="text-align: left; padding-top: 10px; margin-bottom: 30px">THÔNG TIN ĐƠN HÀNG
                             </h3>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label>Mã: <span style="margin-left: 102px;background: gainsboro;padding: 10px;border-radius: 15px">${hoaDon.ma}</span></label>
+                                    <label>Mã: <span
+                                            style="margin-left: 102px;background: gainsboro;padding: 10px;border-radius: 15px">${hoaDon.ma}</span></label>
                                 </div>
+
                                 <div class="form-group col-md-6">
-                                    <label >Khách hàng: <span style="margin-left: 102px;background: #7adeee;padding: 10px;border-radius: 15px">${hoaDon.khachHang.ten}</span></label>
+                                    <label>Khách hàng: <span
+                                            style="margin-left: 102px;background: #7adeee;padding: 10px;border-radius: 15px;display:
+                                            <c:if test="${hoaDon.khachHang == null}">none</c:if>">${hoaDon.khachHang.ten}</span></label>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <c:choose>
                                         <c:when test="${trangThai == 1}">
-                                            <label>Trạng thái: <span style="margin-left: 50px;background: #ff8b33;padding: 10px;border-radius: 15px">Chờ xác nhận</span></label>
+                                            <label>Trạng thái: <span
+                                                    style="margin-left: 50px;background: #ff8b33;padding: 10px;border-radius: 15px">Chờ xác nhận</span></label>
                                         </c:when>
                                         <c:when test="${trangThai == 2}">
-                                            <label>Trạng thái: <span style="margin-left: 50px;background: wheat;padding: 10px;border-radius: 15px">Đang giao</span></label>
+                                            <label>Trạng thái: <span
+                                                    style="margin-left: 50px;background: wheat;padding: 10px;border-radius: 15px">Đang giao</span></label>
                                         </c:when>
                                         <c:when test="${trangThai == 3}">
-                                            <label>Trạng thái: <span style="margin-left: 50px;background: springgreen;padding: 10px;border-radius: 15px">Hoàn thành</span></label>
+                                            <label>Trạng thái: <span
+                                                    style="margin-left: 50px;background: springgreen;padding: 10px;border-radius: 15px">Hoàn thành</span></label>
                                         </c:when>
                                         <c:when test="${trangThai == 4}">
-                                            <label>Trạng thái: <span style="margin-left: 50px;background: red;padding: 10px;border-radius: 15px">Hủy</span></label>
+                                            <label>Trạng thái: <span
+                                                    style="margin-left: 50px;background: red;padding: 10px;border-radius: 15px">Hủy</span></label>
+                                        </c:when>
+                                        <c:when test="${trangThai == 5}">
+                                            <label>Trạng thái: <span
+                                                    style="margin-left: 50px;background: springgreen;padding: 10px;border-radius: 15px">Hoàn thành</span></label>
                                         </c:when>
                                     </c:choose>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <c:choose>
                                         <c:when test="${hoaDon.hinhThuc == 1 }">
-                                            <label>Thanh toán: <span style="margin-left: 105px;background: #C594C5;padding: 10px;border-radius: 15px">Tại quầy</span></label>
+                                            <label>Thanh toán: <span
+                                                    style="margin-left: 105px;background: #C594C5;padding: 10px;border-radius: 15px">Tại quầy</span></label>
                                         </c:when>
                                         <c:when test="${hoaDon.hinhThuc == 2 }">
-                                            <label>Thanh toán: <span style="margin-left: 105px;background: #abdec7;padding: 10px;border-radius: 15px">Thanh toán Vnpay</span></label>
+                                            <label>Thanh toán: <span
+                                                    style="margin-left: 105px;background: #abdec7;padding: 10px;border-radius: 15px">Thanh toán Vnpay</span></label>
                                         </c:when>
                                         <c:when test="${hoaDon.hinhThuc == 3 }">
-                                            <label>Thanh toán: <span style="margin-left: 105px;background: #fff3c6;padding: 10px;border-radius: 15px">Thanh toán khi nhận hàng</span></label>
+                                            <label>Thanh toán: <span
+                                                    style="margin-left: 105px;background: #fff3c6;padding: 10px;border-radius: 15px">Thanh toán khi nhận hàng</span></label>
                                         </c:when>
                                     </c:choose>
                                 </div>
@@ -755,39 +764,59 @@
             </c:when>
         </c:choose>
 
-
-        <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
                         <form method="post">
                             <div class="card">
-                                <div class="card-body">
-                                    <table id="example1" class="table table-bordered table-striped">
-                                        <div class="col-12">
-                                            <div class="row">
-                                                <div class="form-group col-3">
-                                                    <select class="form-control" name="loai_ao_id" id="searchText2">
-                                                        <option value="Chờ xác nhận">Chờ xác nhận</option>
-                                                        <option value="Đang giao">Đang giao</option>
-                                                        <option value="Hoàn thành">Hoàn thành</option>
-                                                        <option value="Hủy">Hủy</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group col-3">
+                                <div class="card-header">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="form-group col-3">
+                                                <select class="form-control" name="trangThai">
+                                                    <option value="0" ${trangThaiSession == '0'?'selected':''}>Tất cả
+                                                    </option>
+                                                    <option value="1" ${trangThaiSession == '1'?'selected':''}>Chờ xác
+                                                        nhận
+                                                    </option>
+                                                    <option value="2" ${trangThaiSession == '2'?'selected':''}>Đang
+                                                        giao
+                                                    </option>
+                                                    <option value="3" ${trangThaiSession == '3'?'selected':''}>Hoàn
+                                                        thành
+                                                    </option>
+                                                    <option value="4" ${trangThaiSession == '4'?'selected':''}>Hủy
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-3">
+                                                <div style="margin-top: 10px">
                                                     <label for="fromDate">Từ ngày:</label>
-                                                    <input type="date" id="fromDate">
-                                                </div>
-                                                <div class="form-group col-3">
-                                                    <label for="toDate">Đến ngày:</label>
-                                                    <input type="date" id="toDate">
-                                                </div>
-                                                <div class="form-group col-3" onclick="filterTable()" >
-                                                    <div id="locTheoThoiGian" >Lọc theo thời gian</div>
+                                                    <input type="date" id="fromDate" name="fromDate">
                                                 </div>
                                             </div>
+                                            <div class="form-group col-3">
+                                                <div style="margin-top: 10px">
+                                                    <label for="toDate">Đến ngày:</label>
+                                                    <input type="date" id="toDate" name="toDate">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-1">
+                                                <button id="locTheoThoiGian" formaction="/admin/quan_li_don_hang/loc">
+                                                    Lọc
+                                                </button>
+                                            </div>
+                                            <div class="form-group col-2">
+                                                <a href="/export-excel">Xuất excel</a>
+                                                <a href="/export-pdf">Xuất pdf</a>
+                                            </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
                                             <th>Mã hóa đơn</th>
@@ -795,6 +824,7 @@
                                             <th>Tổng tiền</th>
                                             <th>Khách hàng</th>
                                             <th>Ngày tạo</th>
+                                            <th>Hình thức</th>
                                             <th>Trạng thái đơn</th>
                                             <th>Action</th>
                                         </tr>
@@ -806,12 +836,27 @@
                                                 <td>${list.soLuong}</td>
                                                 <td><fmt:formatNumber value="${list.hoaDon.tongTien}" type="currency"
                                                                       currencySymbol="VNĐ"/></td>
-                                                <td>${list.hoaDon.khachHang.ten}</td>
+                                                <td>${list.ten}</td>
                                                 <td>
-                                                    <c:set var="dateTimeString" value="${list.hoaDon.ngayTao}" />
-                                                    <fmt:parseDate value="${dateTimeString}" var="parsedDate" pattern="yyyy-MM-dd'T'HH:mm:ss.SSS" />
-                                                    <fmt:formatDate value="${parsedDate}" var="formattedDate" pattern="yyyy-MM-dd HH:mm:ss" />
+                                                    <c:set var="dateTimeString" value="${list.hoaDon.ngayTao}"/>
+                                                    <fmt:parseDate value="${dateTimeString}" var="parsedDate"
+                                                                   pattern="yyyy-MM-dd'T'HH:mm:ss.SSS"/>
+                                                    <fmt:formatDate value="${parsedDate}" var="formattedDate"
+                                                                    pattern="yyyy-MM-dd HH:mm:ss"/>
                                                         ${formattedDate}
+                                                </td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${list.hoaDon.hinhThuc ==1}"><p
+                                                                style="background: #C594C5;border-radius: 15px;text-align: center">
+                                                            Tại quầy</p></c:when>
+                                                        <c:when test="${list.hoaDon.hinhThuc ==2}"><p
+                                                                style="background: #abdec7;border-radius: 15px;text-align: center">
+                                                            VnPay</p></c:when>
+                                                        <c:when test="${list.hoaDon.hinhThuc ==3}"><p
+                                                                style="background: #fff3c6;border-radius: 15px;text-align: center">
+                                                            Khi nhận hàng</p></c:when>
+                                                    </c:choose>
                                                 </td>
                                                 <td>
                                                     <c:choose>
@@ -845,18 +890,17 @@
                                             <th>Tổng tiền</th>
                                             <th>Khách hàng</th>
                                             <th>Ngày tạo</th>
+                                            <th>Hình thức</th>
                                             <th>Trạng thái đơn</th>
                                             <th>Action</th>
                                         </tr>
                                         </tfoot>
                                     </table>
-                                    <ul class="pagination">
-                                        <li class="page-item"><a class="page-link" href="#" id="prevPage"
-                                                                 style="width: 100px;text-align: center">Previous</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#" id="nextPage"
-                                                                 style="width: 100px;text-align: center">Next</a></li>
-                                    </ul>
+                                    <div class="pagination mt-3">
+                                        <div class="btn-table" id="prev">Previous</div>
+                                        <div id="pageButtons" class="pagination mt-3"></div>
+                                        <div class="btn-table" id="next">Next</div>
+                                    </div>
                                 </div>
                                 <!-- /.card-body -->
                             </div>
@@ -869,6 +913,7 @@
             </div>
             <!-- /.container-fluid -->
         </section>
+        <!-- Main content -->
 
         <!-- /.content -->
     </div>
@@ -885,7 +930,14 @@
     <div class="container-fluid">
         <div class="container">
             <form method="post" id="addForm">
-                <h3 style="text-align: center">Hóa đơn:  <strong style="font-size: 35px">${hoaDon.ma}</strong></h3>
+                <div class="row">
+                    <div class="col-11">
+                        <h3 style="text-align: center">Hóa đơn: <strong style="font-size: 35px">${hoaDon.ma}</strong></h3>
+                    </div>
+                    <div class="col-1 icon-x" onclick="dongIcon()">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
                 <div class="d-flex justify-content-between ">
                     <p style="width: 50px">Ảnh</p>
                     <p style="width: 200px">Tên sản phẩm</p>
@@ -895,7 +947,7 @@
 
                 <c:forEach items="${hoaDonChiTiets}" var="list">
                     <div class="d-flex justify-content-between ">
-                        <p><img style="width: 50px; height: 70px; border: 1px solid #6e7881"
+                        <p><img style="width: 50px; height: 50px; border: 1px solid #6e7881"
                                 src="/images/${list.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
                         <p style="width: 200px">${list.aoChiTiet.ao.ten}</p>
                         <p style="width: 100px">${list.soLuong}</p>
@@ -903,9 +955,26 @@
                                                                   currencySymbol="VNĐ"/></p>
                     </div>
                 </c:forEach>
-                <h5>Tên khách hàng : ${hoaDon.khachHang.ten}</h5>
-                <h5>Sđt khách hàng : ${hoaDon.khachHang.sdt}</h5>
-
+                <h5>Ngày tạo hóa đơn: <c:set var="dateTimeString" value="${hoaDon.ngayTao}"/>
+                    <fmt:parseDate value="${dateTimeString}" var="parsedDate"
+                                   pattern="yyyy-MM-dd'T'HH:mm:ss.SSS"/>
+                    <fmt:formatDate value="${parsedDate}" var="formattedDate"
+                                    pattern="dd-MM-yyyy HH:mm:ss"/>
+                    ${formattedDate}</h5>
+                <h5 style="padding-bottom: 10px; padding-top: 10px;display: <c:if
+                        test="${hoaDon.ngayHoanThanh == null}">none</c:if>">
+                    Ngày hoàn thành: <c:set var="dateTimeString" value="${hoaDon.ngayHoanThanh}"/>
+                    <fmt:parseDate value="${dateTimeString}" var="parsedDate"
+                                   pattern="yyyy-MM-dd'T'HH:mm:ss.SSS"/>
+                    <fmt:formatDate value="${parsedDate}" var="formattedDate"
+                                    pattern="dd-MM-yyyy HH:mm:ss"/>
+                    ${formattedDate}
+                </h5>
+                <div style="display: <c:if test="${hoaDon.khachHang == null}">none</c:if>">
+                    <h5 style="padding-bottom: 10px">Tên khách hàng : ${hoaDon.khachHang.ten}</h5>
+                    <h5 style="padding-bottom: 10px">Sđt khách hàng : ${hoaDon.khachHang.sdt}</h5>
+                    <h5 style="display: <c:if test="${hoaDon.moTa == null}">none</c:if>">Địa chỉ : ${hoaDon.moTa}</h5>
+                </div>
             </form>
         </div>
     </div>
@@ -968,79 +1037,7 @@
 <script src="../../../resources/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../../resources/dist/js/demo.js"></script>
-<!-- Page specific script -->
-<script>
-    $(document).ready(function () {
-
-        // Sự kiện thay đổi combobox
-        $('#searchText2').on('change', function () {
-            var selectedValue = $(this).val().toLowerCase();
-
-            // Hiển thị tất cả dòng trong bảng trước
-            $('#example1 tbody tr').show();
-
-            // Kiểm tra giá trị của từng dòng và ẩn dòng không khớp
-            $('#example1 tbody tr').each(function () {
-                var rowText = $(this).text().toLowerCase();
-                if (!rowText.includes(selectedValue)) {
-                    $(this).hide();
-                }
-            });
-        });
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var table = document.getElementById("example1");
-        var rows = table.tBodies[0].rows;
-        var rowsPerPage = 10; // Số hàng trên mỗi trang
-        var currentPage = 0; // Trang hiện tại (0 là trang đầu tiên)
-
-        function showPage(page) {
-            // Ẩn tất cả các hàng
-            for (var i = 0; i < rows.length; i++) {
-                rows[i].style.display = "none";
-            }
-
-            // Hiển thị các hàng trong khoảng từ (page * rowsPerPage) đến ((page + 1) * rowsPerPage)
-            for (var i = page * rowsPerPage; i < (page + 1) * rowsPerPage && i < rows.length; i++) {
-                rows[i].style.display = "";
-            }
-        }
-
-        function updatePagination() {
-            // Cập nhật trạng thái nút Previous
-            document.getElementById("prevPage").disabled = currentPage === 0;
-
-            // Cập nhật trạng thái nút Next
-            document.getElementById("nextPage").disabled = currentPage === Math.ceil(rows.length / rowsPerPage) - 1;
-        }
-
-        // Hiển thị trang đầu tiên khi trang được tải
-        showPage(currentPage);
-
-        // Cập nhật phân trang và hiển thị trang đầu tiên
-        updatePagination();
-
-        // Xử lý sự kiện nút Previous
-        document.getElementById("prevPage").addEventListener("click", function () {
-            if (currentPage > 0) {
-                currentPage--;
-                showPage(currentPage);
-                updatePagination();
-            }
-        });
-
-        // Xử lý sự kiện nút Next
-        document.getElementById("nextPage").addEventListener("click", function () {
-            if (currentPage < Math.ceil(rows.length / rowsPerPage) - 1) {
-                currentPage++;
-                showPage(currentPage);
-                updatePagination();
-            }
-        });
-    });
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 
     window.onload = function () {
@@ -1055,18 +1052,21 @@
         var no_2 = document.getElementById("no_2");
         var no_3 = document.getElementById("no_3");
         var no_4 = document.getElementById("no_4");
+        var no_5 = document.getElementById("no_5");
 
         if (status == 1) {
             no_1.style.display = "block";
             no_2.style.display = "none";
             no_3.style.display = "none";
             no_4.style.display = "none";
+            no_5.style.display = "none";
         }
         if (status == 2) {
             no_2.style.display = "block";
             no_1.style.display = "none";
             no_3.style.display = "none";
             no_4.style.display = "none";
+            no_5.style.display = "none";
         }
 
         if (status == 3) {
@@ -1074,6 +1074,7 @@
             no_2.style.display = "none";
             no_1.style.display = "none";
             no_4.style.display = "none";
+            no_5.style.display = "none";
         }
 
         if (status == 4) {
@@ -1081,6 +1082,14 @@
             no_2.style.display = "none";
             no_3.style.display = "none";
             no_1.style.display = "none";
+            no_5.style.display = "none";
+        }
+        if (status == 5) {
+            no_5.style.display = "block";
+            no_2.style.display = "none";
+            no_3.style.display = "none";
+            no_1.style.display = "none";
+            no_4.style.display = "none";
         }
     }
 </script>
@@ -1106,6 +1115,11 @@
             addFormContainer.style.display = "none";
         }
     });
+
+    function dongIcon() {
+        addFormContainer.style.display = "none";
+    }
+
     function clickThem() {
         event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
     }
@@ -1132,47 +1146,69 @@
             addFormContainer1.style.display = "none";
         }
     });
+
     function clickHuy() {
         event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
     }
 </script>
 <script>
-    function filterTable() {
-        var fromDate = new Date(document.getElementById("fromDate").value);
-        var toDate = new Date(document.getElementById("toDate").value);
+    $(document).ready(function () {
+        var rowsPerPage = 20; // Số dòng trên mỗi trang
+        var totalRows = $('#example1 tbody tr').length;
+        var numPages = Math.ceil(totalRows / rowsPerPage);
+        var currentPage = 1;
 
-        var table = document.getElementById("example1");
-        var rows = table.getElementsByTagName("tr");
+        // Ẩn tất cả các dòng ngoại trừ các dòng đầu tiên
+        $('#example1 tbody tr').hide();
+        $('#example1 tbody tr').slice(0, rowsPerPage).show();
 
-        for (var i = 1; i < rows.length; i++) {
-            var cell = rows[i].getElementsByTagName("td")[4];
-            var birthdayStr = cell.textContent.split('T')[0];
-
-            var birthday = new Date(birthdayStr);
-
-            if (!isNaN(fromDate) && !isNaN(toDate)) {
-                if (birthday >= fromDate && birthday <= toDate) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            } else if (!isNaN(fromDate)) {
-                if (birthday >= fromDate) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            } else if (!isNaN(toDate)) {
-                if (birthday <= toDate) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            } else {
-                rows[i].style.display = "";
+        // Hiển thị số trang và màu xanh cho trang hiện tại
+        function showPagination() {
+            $('#pageButtons').empty();
+            for (var i = 1; i <= numPages; i++) {
+                $('#pageButtons').append('<button class="page-link">' + i + '</button>');
             }
+
+            $('.page-link').removeClass('active');
+            $('.page-link').eq(currentPage - 1).addClass('active');
         }
-    }
+
+        showPagination();
+
+        // Xử lý khi click vào trang
+        $('#pageButtons').on('click', '.page-link', function () {
+            currentPage = parseInt($(this).text());
+            var start = (currentPage - 1) * rowsPerPage;
+            var end = start + rowsPerPage;
+
+            $('#example1 tbody tr').hide().slice(start, end).show();
+            showPagination();
+        });
+
+        // Xử lý nút "Previous"
+        $('.pagination').on('click', '#prev', function () {
+            if (currentPage > 1) {
+                currentPage--;
+                var start = (currentPage - 1) * rowsPerPage;
+                var end = start + rowsPerPage;
+
+                $('#example1 tbody tr').hide().slice(start, end).show();
+                showPagination();
+            }
+        });
+
+        // Xử lý nút "Next"
+        $('.pagination').on('click', '#next', function () {
+            if (currentPage < numPages) {
+                currentPage++;
+                var start = (currentPage - 1) * rowsPerPage;
+                var end = start + rowsPerPage;
+
+                $('#example1 tbody tr').hide().slice(start, end).show();
+                showPagination();
+            }
+        });
+    });
 </script>
 </body>
 </html>

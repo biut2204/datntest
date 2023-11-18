@@ -3,6 +3,7 @@ package com.example.demo.repo.users;
 import com.example.demo.entity.khachhang.HoaDonChiTiet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -41,4 +42,9 @@ public interface HoaDonChiTietRepo extends JpaRepository<HoaDonChiTiet, UUID> {
 
     @Query("select hdct from HoaDonChiTiet hdct where hdct.hoaDon.id = ?1 and hdct.aoChiTiet.id = ?2")
     HoaDonChiTiet findByHoaDonAndAoChiTiet(UUID idHoaDon, UUID idACT);
+
+    @Query("SELECT sum (hdct.soLuong) FROM HoaDonChiTiet hdct " +
+            "WHERE MONTH(hdct.hoaDon.ngayThanhToan) = MONTH(:currentDate) " +
+            "AND YEAR(hdct.hoaDon.ngayThanhToan) = YEAR(:currentDate)")
+    Integer soLuongBanTrongThang(@Param("currentDate") LocalDate currentDate);
 }

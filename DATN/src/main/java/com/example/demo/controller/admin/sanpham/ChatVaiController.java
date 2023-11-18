@@ -1,5 +1,7 @@
 package com.example.demo.controller.admin.sanpham;
 
+import com.example.demo.entity.auth.RoleEnum;
+import com.example.demo.entity.khachhang.Users;
 import com.example.demo.entity.sanpham.ChatVai;
 import com.example.demo.entity.sanpham.HuongDanBaoQuan;
 import com.example.demo.repo.sanpham.ChatVaiRepo;
@@ -33,6 +35,15 @@ public class ChatVaiController {
 
     @GetMapping("/admin/chat_vai/view/*")
     public String view(Model model, HttpServletRequest request) {
+
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+        if (user.getRole() == RoleEnum.STAFF){
+            model.addAttribute("adminOrStaff", "1");
+        }else if (user.getRole() == RoleEnum.ADMIN){
+            model.addAttribute("adminOrStaff", "2");
+        }
+        model.addAttribute("nameUser", user.getTen());
 
         List<ChatVai> listChatVais = chatVaiSer.getAll();
         model.addAttribute("listChatVais", listChatVais);

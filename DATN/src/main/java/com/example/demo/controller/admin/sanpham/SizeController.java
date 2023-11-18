@@ -1,5 +1,7 @@
 package com.example.demo.controller.admin.sanpham;
 
+import com.example.demo.entity.auth.RoleEnum;
+import com.example.demo.entity.khachhang.Users;
 import com.example.demo.entity.sanpham.Size;
 import com.example.demo.repo.sanpham.SizeRepo;
 import com.example.demo.ser.chat.ChatSer;
@@ -28,6 +30,15 @@ public class SizeController {
 
     @GetMapping("/admin/size/view/*")
     public String view(Model model, HttpServletRequest request) {
+
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+        if (user.getRole() == RoleEnum.STAFF){
+            model.addAttribute("adminOrStaff", "1");
+        }else if (user.getRole() == RoleEnum.ADMIN){
+            model.addAttribute("adminOrStaff", "2");
+        }
+        model.addAttribute("nameUser", user.getTen());
 
         List<Size> listSizes = sizeSer.getAll();
         model.addAttribute("listSizes", listSizes);

@@ -1,5 +1,6 @@
 package com.example.demo.controller.admin.quanli;
 
+import com.example.demo.entity.auth.RoleEnum;
 import com.example.demo.entity.khachhang.GioHangChiTiet;
 import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.entity.khachhang.HoaDonChiTiet;
@@ -14,6 +15,7 @@ import com.example.demo.ser.users.GioHangChiTietSer;
 import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -51,11 +54,22 @@ public class QuanLiDonHang {
     ChatSer chatSer;
 
     @GetMapping("/admin/quan_li_don_hang/*")
-    public String viewQuanLiDonHang(HttpServletRequest request, Model model){
+    public String viewQuanLiDonHang(HttpServletRequest request, Model model, HttpSession session) {
+
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+        if (user.getRole() == RoleEnum.STAFF) {
+            model.addAttribute("adminOrStaff", "1");
+        } else if (user.getRole() == RoleEnum.ADMIN) {
+            model.addAttribute("adminOrStaff", "2");
+        }
+        model.addAttribute("nameUser", user.getTen());
 
         String url = request.getRequestURI();
         String[] parts = url.split("/admin/quan_li_don_hang/");
         String ma = parts[1];
+
+        model.addAttribute("maHdLoc", ma);
 
         try {
             HoaDon hoaDon = hoaDonSer.findByMa(ma);
@@ -63,27 +77,93 @@ public class QuanLiDonHang {
 
             model.addAttribute("hoaDon", hoaDon);
             model.addAttribute("hoaDonChiTiets", hoaDonChiTiets);
-            model.addAttribute("trangThai", hoaDon.getTrangThai());
-        }catch (Exception e){
+            if (hoaDon.getHinhThuc() == 1) {
+                model.addAttribute("trangThai", "5");
+            } else {
+                model.addAttribute("trangThai", hoaDon.getTrangThai());
+            }
+        } catch (Exception e) {
             model.addAttribute("trangThai", "0");
         }
 
         List<DonHangDTO> listDonHangDTOS = hoaDonSer.findAllByOrderByNgayTaoDesc();
+        List<DonHangDTO> donHangDTOList = (List<DonHangDTO>) session.getAttribute("listDonHangDTOS");
 
-        model.addAttribute("listDonHangDTOS", listDonHangDTOS);
+        LocalDate fromDateSession = (LocalDate) session.getAttribute("fromDate");
+        LocalDate toDateSession = (LocalDate) session.getAttribute("toDate");
+        String trangThaiLoc = (String)  session.getAttribute("trangThaiLoc");
+        List<DonHangDTO> listDonHangXuatExxcel = new ArrayList<>();
+        if (donHangDTOList != null) {
+            model.addAttribute("listDonHangDTOS", donHangDTOList);
+            listDonHangXuatExxcel = donHangDTOList;
+        } else {
+            model.addAttribute("listDonHangDTOS", listDonHangDTOS);
+            listDonHangXuatExxcel = listDonHangDTOS;
+        }
+
+        model.addAttribute("fromDateSession", fromDateSession);
+        model.addAttribute("toDateSession", toDateSession);
+        model.addAttribute("trangThaiSession", trangThaiLoc);
+
+        session.setAttribute("listDonHangXuatExxcel", listDonHangXuatExxcel);
+
+        session.removeAttribute("listDonHangDTOS");
+        session.removeAttribute("fromDate");
+        session.removeAttribute("toDate");
+        session.removeAttribute("trangThaiLoc");
+
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
 
         return "/admin/quan_li_don_hang_admin";
     }
 
+    @PostMapping("/admin/quan_li_don_hang/loc")
+    public String loc(HttpServletRequest request, HttpSession session) {
+
+        String trangThai = request.getParameter("trangThai");
+        String fromDateStr = request.getParameter("fromDate");
+        String toDateStr = request.getParameter("toDate");
+
+        LocalDate fromDate = null;
+        LocalDate toDate = null;
+
+
+        if (fromDateStr != null && !fromDateStr.isEmpty()) {
+            fromDate = LocalDate.parse(fromDateStr);
+        }
+
+        if (toDateStr != null && !toDateStr.isEmpty()) {
+            toDate = LocalDate.parse(toDateStr);
+        }
+
+        List<DonHangDTO> listDonHangDTOS = new ArrayList<>();
+        if (trangThai.equals("0")) {
+            listDonHangDTOS = hoaDonSer.findAllByStartDateAndEndDateOrBoth(fromDate, toDate);
+        }
+        if(!trangThai.equals("0")){
+            listDonHangDTOS = hoaDonSer.findAllByOptionalFilters(Integer.parseInt(trangThai), fromDate, toDate);
+        }
+
+        System.out.println("Trạng thái tìm:"+trangThai);
+        System.out.println(fromDate);
+        System.out.println(toDate);
+
+        session.setAttribute("trangThaiLoc",trangThai);
+        session.setAttribute("fromDate",fromDate);
+        session.setAttribute("toDate",toDate);
+        session.setAttribute("listDonHangDTOS", listDonHangDTOS);
+
+        return "redirect:/admin/quan_li_don_hang/1";
+    }
+
     @PostMapping("/admin/quan_li_don_hang/detail")
-    public String detail(HttpServletRequest request){
+    public String detail(HttpServletRequest request) {
         String maHd = request.getParameter("detail");
-        return "redirect:/admin/quan_li_don_hang/"+maHd;
+        return "redirect:/admin/quan_li_don_hang/" + maHd;
     }
 
     @PostMapping("/admin/don_hang/xac_nhan")
-    public String xanNhanDonHang(HttpServletRequest request){
+    public String xanNhanDonHang(HttpServletRequest request) {
         LocalDate currentDate = LocalDate.now();
 
         Object object = request.getSession().getAttribute("userLogged");
@@ -111,7 +191,7 @@ public class QuanLiDonHang {
     }
 
     @PostMapping("/admin/don_hang/huy")
-    public String huyDonHang(HttpServletRequest request){
+    public String huyDonHang(HttpServletRequest request) {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
@@ -138,7 +218,7 @@ public class QuanLiDonHang {
 
         List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
 
-        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
+        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets) {
 
             AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
 
@@ -168,7 +248,7 @@ public class QuanLiDonHang {
     }
 
     @PostMapping("/admin/don_hang/hoan_thanh")
-    public String hoanThanhDonHang(HttpServletRequest request){
+    public String hoanThanhDonHang(HttpServletRequest request) {
         LocalDate currentDate = LocalDate.now();
 
         Object object = request.getSession().getAttribute("userLogged");
@@ -179,9 +259,9 @@ public class QuanLiDonHang {
         HoaDon hoaDon = hoaDonSer.findByMa(maDonHang);
         HoaDon hd = new HoaDon();
 
-        if(hoaDon.getNgayThanhToan() == null){
+        if (hoaDon.getNgayThanhToan() == null) {
             hd.setNgayThanhToan(LocalDateTime.now());
-        }else {
+        } else {
             hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
         }
 
@@ -197,9 +277,9 @@ public class QuanLiDonHang {
         hd.setTrangThai(3);
         hd.setMoTa(hoaDon.getMoTa());
 
-        if(hoaDon.getNgayThanhToan() == null){
+        if (hoaDon.getNgayThanhToan() == null) {
             hd.setNgayThanhToan(LocalDateTime.now());
-        }else {
+        } else {
             hd.setNgayThanhToan(hoaDon.getNgayThanhToan());
         }
 
@@ -207,11 +287,11 @@ public class QuanLiDonHang {
 
         List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
 
-        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
+        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets) {
             AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
 
             GioHangChiTiet gioHangChiTiet = gioHangChiTietSer.findByKhachHangAndAoChiTiet(hoaDon.getKhachHang().getId(), act.getId());
-            if(gioHangChiTiet != null){
+            if (gioHangChiTiet != null) {
                 gioHangChiTietSer.delete(gioHangChiTiet.getId());
             }
         }

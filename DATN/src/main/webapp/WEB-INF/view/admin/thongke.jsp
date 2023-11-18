@@ -26,20 +26,63 @@
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <!--     Fonts and icons     -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700"/>
     <!-- Nucleo Icons -->
-    <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+    <link href="../assets/css/nucleo-icons.css" rel="stylesheet"/>
+    <link href="../assets/css/nucleo-svg.css" rel="stylesheet"/>
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <!-- CSS Files -->
-    <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.1.0" rel="stylesheet" />
+    <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.1.0" rel="stylesheet"/>
     <!-- Nepcha Analytics (nepcha.com) -->
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
     <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
     <link rel="stylesheet" href="../../../resources/css/thongke.css">
+    <style>
+        button#filter-button2 {
+            padding: 2px 5px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            max-width: 30px;
+            max-height: 40px;
+            margin-top: 30px;
+            margin-bottom: 0px;
+        }
+        button#filter-button2:hover {
+            background-color: #0056b3;
+        }
+        #error-message2 {
+            display: none; /* Mặc định ẩn thông báo */
+            background-color: #ff6666; /* Màu nền đỏ */
+            color: white; /* Màu văn bản trắng */
+            padding: 10px; /* Khoảng cách bên trong thông báo */
+            margin-top: 10px; /* Khoảng cách từ trên xuống */
+            border-radius: 5px; /* Góc bo tròn */
+            text-align: center; /* Căn giữa văn bản */
+        }
+    </style>
+    <style>
+        .image {
+            width: 80px;
+            height: 80px;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+
+        .image img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -51,10 +94,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="../../../index3.html" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
+                <a href="/admin/index/1" class="nav-link">Trang chủ</a>
             </li>
         </ul>
 
@@ -62,123 +102,8 @@
         <ul class="navbar-nav ml-auto">
             <!-- Navbar Search -->
             <li class="nav-item">
-                <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                    <i class="fas fa-search"></i>
-                </a>
-                <div class="navbar-search-block">
-                    <form class="form-inline">
-                        <div class="input-group input-group-sm">
-                            <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                                   aria-label="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-navbar" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </li>
-
-            <!-- Messages Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-comments"></i>
-                    <span class="badge badge-danger navbar-badge">3</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="../../../dist/img/user1-128x128.jpg" alt="User Avatar"
-                                 class="img-size-50 mr-3 img-circle">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    Brad Diesel
-                                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">Call me whenever you can...</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="../../../dist/img/user8-128x128.jpg" alt="User Avatar"
-                                 class="img-size-50 img-circle mr-3">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    John Pierce
-                                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">I got your message bro</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="../../../dist/img/user3-128x128.jpg" alt="User Avatar"
-                                 class="img-size-50 img-circle mr-3">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    Nora Silvester
-                                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">The subject goes here</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                </div>
-            </li>
-            <!-- Notifications Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-item dropdown-header">15 Notifications</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                        <span class="float-right text-muted text-sm">3 mins</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-users mr-2"></i> 8 friend requests
-                        <span class="float-right text-muted text-sm">12 hours</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 3 new reports
-                        <span class="float-right text-muted text-sm">2 days</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                </div>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                    <i class="fas fa-th-large"></i>
                 </a>
             </li>
         </ul>
@@ -188,21 +113,26 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="../../../index3.html" class="brand-link">
-            <img src="../../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                 style="opacity: .8">
-            <span class="brand-text font-weight-light">AdminLTE 3</span>
-        </a>
 
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="../../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                </div>
+                <c:choose>
+                    <c:when test="${adminOrStaff == 1}">
+                        <div class="image">
+                            <img src="/images/test.jpg" >
+                        </div>
+
+                    </c:when>
+                    <c:when test="${adminOrStaff == 2}">
+                        <div class="image">
+                            <img src="/images/test1.jpg" >
+                        </div>
+                    </c:when>
+                </c:choose>
                 <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                    <a href="#" class="d-block">${nameUser}</a>
                 </div>
             </div>
 
@@ -229,27 +159,21 @@
                         <a href="#" class="nav-link active">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
-                                Dashboard
+                                Bảng điều khiển
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="/admin/index/1" class="nav-link active">
+                                <a href="/admin/index/1" class="nav-link ">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v1</p>
+                                    <p>Trang chủ</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../../../index2.html" class="nav-link">
+                                <a href="/admin/thong_ke/1" class="nav-link active">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v2</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../../../index3.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v3</p>
+                                    <p>Thống kê</p>
                                 </a>
                             </li>
                         </ul>
@@ -267,7 +191,7 @@
                         <a href="#" class="nav-link ">
                             <i class="nav-icon fas fa-table"></i>
                             <p>
-                                Tables
+                                Bảng
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -357,7 +281,7 @@
                             <li class="nav-item">
                                 <a href="/admin/chuong_trinh_giam_gia/add_view/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Add chương trình</p>
+                                    <p>Thêm chương trình</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -443,6 +367,11 @@
         </section>
 
         <section class="content">
+            <select name="thongkeOption" id="thongkeOption">
+                <option value="ngay">Theo Ngày</option>
+                <option value="thang">Theo Tháng</option>
+            </select>
+            <br> <br>
             <div class="row">
                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                     <div class="card">
@@ -451,13 +380,13 @@
                                 <i class="material-icons opacity-10">Hóa Đơn</i>
                             </div>
                             <div class="text-end pt-1">
-                                <p class="text-sm mb-0 text-capitalize">Số lượng hôm nay</p>
-                                <h4 class="mb-0" style="color: hotpink">${soHoaDonHomNay}</h4>
+                                <p class="text-sm mb-0 text-capitalize">Số lượng đơn hoàn thành</p>
+                                <h4 id="SHD" class="mb-0" style="color: hotpink">${soHoaDonHomNay} (hóa đơn)</h4>
                             </div>
                         </div>
                         <hr class="dark horizontal my-0">
                         <div class="card-footer p-3">
-                            <p class="mb-0"><span class="text-${mauHD} text-sm font-weight-bolder">${soSanhHoaDon}% </span>so với hôm qua</p>
+                            <span id="SSHD" class=" text-sm font-weight-bolder">${soSanhHoaDon}% </span><p class="mb-0" id="tbslhd">so với hôm trước</p>
                         </div>
                     </div>
                 </div>
@@ -468,13 +397,13 @@
                                 <i class="material-icons opacity-10">Sản phẩm đã bán</i>
                             </div>
                             <div class="text-end pt-1">
-                                <p class="text-sm mb-0 text-capitalize">Số lượng hôm nay</p>
-                                <h4 class="mb-0" style="color: #0d6efd">${soLuongHomNay}</h4>
+                                <p class="text-sm mb-0 text-capitalize">Số lượng bán</p>
+                                <h4 id="SL" class="mb-0" style="color: #0d6efd">${soLuongHomNay} (cái)</h4>
                             </div>
                         </div>
                         <hr class="dark horizontal my-0">
                         <div class="card-footer p-3">
-                            <p class="mb-0"><span class="text-${mauSL} text-sm font-weight-bolder">${soSanhSoLuong}% </span>so với hôm qua</p>
+                            <span id="SSSL" class=" text-sm font-weight-bolder">${soSanhSoLuong}% </span><p class="mb-0" id="tbslb">so với hôm trước</p>
                         </div>
                     </div>
                 </div>
@@ -485,13 +414,13 @@
                                 <i class="material-icons opacity-10">Doanh thu</i>
                             </div>
                             <div class="text-end pt-1">
-                                <p class="text-sm mb-0 text-capitalize">Doanh thu hôm nay</p>
-                                <h4 class="mb-0" style="color: #00bb00">${doanhThuHomNay} VNĐ</h4>
+                                <p class="text-sm mb-0 text-capitalize">Doanh thu </p>
+                                <h4 id="DT" class="mb-0" style="color: #00bb00">${doanhThuHomNay} (VNĐ)</h4>
                             </div>
                         </div>
                         <hr class="dark horizontal my-0">
                         <div class="card-footer p-3">
-                            <p class="mb-0"><span class="text-${mauDT} text-sm font-weight-bolder">${soSanhDoanhThu}%</span> so với hôm qua</p>
+                            <span id="SSDT" class="text-sm font-weight-bolder change-color">${soSanhDoanhThu}%</span> <p class="mb-0" id="tbdt">so với hôm qua</p>
                         </div>
                     </div>
                 </div>
@@ -499,16 +428,16 @@
                     <div class="card">
                         <div class="card-header p-3 pt-2">
                             <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
-                                <i class="bi bi-people-fill">Số khách đã mua</i>
+                                <i class="bi bi-people-fill">Lượt khách</i>
                             </div>
                             <div class="text-end pt-1">
-                                <p class="text-sm mb-0 text-capitalize">Trong ngày hôm nay</p>
-                                <h4 class="mb-0" style="color: #17a2b8">${soLuongKhachMua}</h4>
+                                <p class="text-sm mb-0 text-capitalize">Số lượng khách đã mua</p>
+                                <h4 id="SLKM" class="mb-0" style="color: #17a2b8">${soLuongKhachMua} (khách)</h4>
                             </div>
                         </div>
                         <hr class="dark horizontal my-0">
                         <div class="card-footer p-3">
-                            <p class="mb-0"><span class="text-${mauSLK} text-sm font-weight-bolder">${soSanhSoLuongKhach}% </span>than yesterday</p>
+                            <span id="SSSLK" class=" text-sm font-weight-bolder">${soSanhSoLuongKhach}% </span><p class="mb-0" id="tbslk">so với hôm trước</p>
                         </div>
                     </div>
                 </div>
@@ -524,12 +453,38 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <h6 class="mb-0 ">Website Views</h6>
-                            <p class="text-sm ">Last Campaign Performance</p>
+                            <h6 class="mb-0 ">Số lượng tồn</h6>
                             <hr class="dark horizontal">
-                            <div class="d-flex ">
-                                <i class="material-icons text-sm my-auto me-1">schedule</i>
-                                <p class="mb-0 text-sm"> campaign sent 2 days ago </p>
+                            <div id="error-message2" class="hidden" style="display: none">Ngày không hợp lệ. Vui lòng
+                                kiểm tra lại.
+                            </div>
+                            <div class="filter-container">
+                                <div class="filter-item">
+                                    <label for="end-date">Loại áo:</label>
+                                    <select id="loaiAo" onchange="LoaiAoChange()">
+                                        <option value="ko">Chọn loại áo</option>
+                                        <c:forEach items="${loaiAo}" var="l">
+                                            <option value="${l.ten}">${l.ten}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="filter-item">
+                                    <label for="end-date">Tên áo:</label>
+                                    <select id="tenAo">
+                                        <c:forEach items="${tenAo}" var="l">
+                                            <option value="${l.ten}">${l.ten}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="filter-item">
+                                    <label for="end-date">Màu sắc:</label>
+                                    <select id="mauSac">
+                                        <c:forEach items="${mauSac}" var="l">
+                                            <option value="${l.ten}">${l.ten}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <button id="filter-button2"><i class="fas fa-filter"></i></button>
                             </div>
                         </div>
                     </div>
@@ -547,7 +502,9 @@
                             <h6 class="mb-0 "> Doanh Thu (Tháng hiện tại) </h6>
                             <p class="text-sm " style="color: orangered"> ${doanhThuThangHienTai} VNĐ </p>
                             <hr class="dark horizontal">
-                            <div id="error-message" class="hidden" style="display: none">Ngày không hợp lệ. Vui lòng kiểm tra lại.</div>
+                            <div id="error-message" class="hidden" style="display: none">Ngày không hợp lệ. Vui lòng
+                                kiểm tra lại.
+                            </div>
                             <div class="filter-container">
                                 <div class="filter-item">
                                     <label for="start-date">Từ ngày:</label>
@@ -576,7 +533,9 @@
                             <h6 class="mb-0 ">Số Lượng Áo Đã Bán (Tháng hiện tại)</h6>
                             <p class="text-sm " style="color: orangered"> ${soLuongBanThangHienTai} cái </p>
                             <hr class="dark horizontal">
-                            <div id="error-message1" class="hidden" style="display: none">Ngày không hợp lệ. Vui lòng kiểm tra lại.</div>
+                            <div id="error-message1" class="hidden" style="display: none">Ngày không hợp lệ. Vui lòng
+                                kiểm tra lại.
+                            </div>
 
                             <div class="filter-container">
                                 <div class="filter-item">
@@ -598,22 +557,33 @@
                 </div>
             </div>
         </section>
-        <canvas id="myChart1" width="400" height="200"></canvas>
-        <select id="loaiAo">
-            <c:forEach items="${listLoaiAo}" var="list">
-                <option value="${list.ma}">${list.ten}</option>
-            </c:forEach>
-        </select>
-        <canvas id="myChart2" width="400" height="200"></canvas>
-    </div>
-
-    <!-- /.content-wrapper -->
-    <footer class="main-footer">
-        <div class="float-right d-none d-sm-block">
-            <b>Version</b> 3.2.0
+        <div class="row" style="padding-bottom: 4%">
+            <div class="col-6">
+                <h3 style="text-align: center">Thống kê tất cả loại áo</h3>
+                <canvas id="myChart1" width="400" height="250"></canvas>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-2">
+                    </div>
+                    <div class="col-6">
+                        <h3>Thống kê áo theo loại áo</h3>
+                    </div>
+                    <div class="col-3">
+                        <select id="loaiAo1" style="margin-top: 5%">
+                            <c:forEach items="${listLoaiAo}" var="list">
+                                <option value="${list.ma}">${list.ten}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+                <canvas id="myChart2" width="400" height="250"></canvas>
+            </div>
         </div>
-        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-    </footer>
+
+
+    </div>
+    <!-- /.content-wrapper -->
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -644,6 +614,36 @@
 <script src="../../../resources/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../../resources/dist/js/demo.js"></script>
+<script>
+    function LoaiAoChange() {
+        var selectedLoaiAo = document.getElementById("loaiAo").value;
+        // Sử dụng AJAX để gửi yêu cầu đến /api/listAo và cập nhật danh sách tenAo
+        $.ajax({
+            type: "GET",
+            url: "/api/listAo",
+            data: { loaiAo: selectedLoaiAo },
+            success: function (data) {
+                updateTenAoDropdown(data);
+            },
+            error: function (error) {
+                console.log("Error: " + error);
+            }
+        });
+    }
+
+    function updateTenAoDropdown(data) {
+        // Xóa tất cả các option hiện tại trong dropdown
+        $("#tenAo").empty();
+
+        // Thêm các option mới từ dữ liệu nhận được
+        $.each(data, function (index, item) {
+            $("#tenAo").append($('<option>', {
+                value: item,
+                text: item
+            }));
+        });
+    }
+</script>
 <!-- Page specific script -->
 <script>
     $(function () {
@@ -772,21 +772,20 @@
 </script>
 <script>
     var ctx1 = document.getElementById("chart-bars").getContext("2d");
-
-    new Chart(ctx1, {
+    var chart = new Chart(ctx1, {
         type: "bar",
         data: {
-            labels: ["M", "T", "W", "T", "F", "S", "S"],
+            labels: ["L", "XXL", "S", "M", "3XL", "XL"],
             datasets: [{
-                label: "Sales",
+                label: "Cái",
                 tension: 0.4,
                 borderWidth: 0,
                 borderRadius: 4,
                 borderSkipped: false,
                 backgroundColor: "rgba(255, 255, 255, .8)",
-                data: [50, 20, 10, 22, 90, 10, 40],
+                data: [0,0,0,0,0,0],
                 maxBarThickness: 6
-            }, ],
+            },],
         },
         options: {
             responsive: true,
@@ -861,7 +860,7 @@
     const currentDate = new Date();
 
     // Tạo một mảng chứa nhãn (tên tháng) cho 5 tháng gần nhất
-    const labels1 =[];
+    const labels1 = [];
     for (let i = 4; i >= 0; i--) {
         const date = new Date(currentDate);
 
@@ -876,7 +875,7 @@
             date.setDate(0); // Đặt ngày cuối cùng của tháng
         }
 
-        const monthName = date.toLocaleString('default', { month: 'short' });
+        const monthName = date.toLocaleString('default', {month: 'short'});
         labels1.push(monthName);
     }
     console.log(labels1); // In mảng các tên tháng
@@ -886,7 +885,7 @@
 
     var ctx2 = document.getElementById("chart-line").getContext("2d");
 
-    var chart2=new Chart(ctx2, {
+    var chart2 = new Chart(ctx2, {
         type: "line",
         data: {
             labels: labels1,
@@ -968,14 +967,14 @@
     });
     var errorMessage = document.getElementById("error-message");
     var filterButton = document.getElementById('filter-button');
-    filterButton.addEventListener('click', function() {
+    filterButton.addEventListener('click', function () {
         var startDate = document.getElementById('start-date').value;
         var endDate = document.getElementById('end-date').value;
 
         if (!startDate || !endDate) {
             errorMessage.textContent = "Vui lòng nhập cả ngày bắt đầu và ngày kết thúc.";
             errorMessage.style.display = "block";
-            setTimeout(function() {
+            setTimeout(function () {
                 errorMessage.style.display = "none";
             }, 3000); // 3 giây
             return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không được nhập
@@ -992,7 +991,7 @@
         if (endDateInput > currentDate) {
             errorMessage.textContent = "Ngày kết thúc không thể sau ngày hiện tại.";
             errorMessage.style.display = "block";
-            setTimeout(function() {
+            setTimeout(function () {
                 errorMessage.style.display = "none";
             }, 3000); // 3 giây
             return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
@@ -1000,7 +999,7 @@
         if (startDateInput > endDateInput) {
             errorMessage.textContent = "Ngày bắt đầu không thể sau ngày kết thúc.";
             errorMessage.style.display = "block";
-            setTimeout(function() {
+            setTimeout(function () {
                 errorMessage.style.display = "none";
             }, 3000); // 3 giây
             return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
@@ -1009,7 +1008,7 @@
         if (startDateInput < twelveMonthsAgo) {
             errorMessage.textContent = "Ngày bắt đầu không thể trước 12 tháng trước.";
             errorMessage.style.display = "block";
-            setTimeout(function() {
+            setTimeout(function () {
                 errorMessage.style.display = "none";
             }, 3000); // 3 giây
             return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
@@ -1029,10 +1028,72 @@
             })
             .catch(error => console.error(error));
     });
+    document.getElementById("thongkeOption").addEventListener("change", function () {
+        var selectedOption = this.value;
+
+        fetch('/api/thongketheoOption?thongKeOption=' + selectedOption, {
+            method: 'GET',
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("SHD").textContent = data.soLuongHoaDon +" (hoá đơn)";
+                document.getElementById("SL").textContent = data.soluongBan+" (cái)";
+                document.getElementById("DT").textContent = data.doanhThu+" (VNĐ)";
+                document.getElementById("SLKM").textContent = data.soLuongKhachMua+" (khách)";
+                document.getElementById("SSHD").textContent = data.soSanhSoHoaDon + "% ";
+                document.getElementById("SSSL").textContent = data.soSanhSoLuongBan+ "% ";
+                document.getElementById("SSDT").textContent = data.soSanhDoanhThu+ "% ";
+                document.getElementById("SSSLK").textContent = data.soSanhSoLuongKhachMua+ "% ";
+                if(selectedOption==='thang'){
+                    document.getElementById("tbdt").textContent = "so với tháng trước ";
+                    document.getElementById("tbslhd").textContent = "so với tháng trước ";
+                    document.getElementById("tbslb").textContent = "so với tháng trước ";
+                    document.getElementById("tbslk").textContent = "so với tháng trước ";
+                }
+                else{
+                    document.getElementById("tbdt").textContent = "so với hôm trước ";
+                    document.getElementById("tbslhd").textContent = "so với hôm trước ";
+                    document.getElementById("tbslk").textContent = "so với hôm trước ";
+                    document.getElementById("tbslb").textContent = "so với hôm trước ";
+                }
+
+
+            })
+            .catch(error => {
+                console.error('Lỗi: ' + error);
+            });
+    });
+    var filterButton2 = document.getElementById('filter-button2');
+    filterButton2.addEventListener('click', function () {
+        var loaiAo = document.getElementById('loaiAo').value;
+        var tenAo = document.getElementById('tenAo').value;
+        var mauSac = document.getElementById('mauSac').value;
+        var errorMessage1 = document.getElementById("error-message2");
+        if (loaiAo==="ko"){
+            errorMessage1.textContent = "Bạn cần chọn loại áo";
+            errorMessage1.style.display = "block";
+            setTimeout(function () {
+                errorMessage1.style.display = "none";
+            }, 3000); // 3 giây
+            return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
+        }
+
+        // Sử dụng Fetch API để gửi yêu cầu đến máy chủ hoặc API
+        fetch('/api/listTon?loaiAo=' + loaiAo + '&tenAo=' + tenAo+ '&mauSac=' + mauSac)
+            .then(response => response.json())
+            .then(data => {
+                // Cập nhật dữ liệu của biểu đồ với dữ liệu mới
+                chart.data.datasets[0].data = data;
+                chart.update();
+                console.log(data);
+            })
+            .catch(error => console.error(error));
+    });
 
     var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
-    var dataSoLuong = ${listSoLuong}
-    var chart3= new Chart(ctx3, {
+    var dataSoLuong =
+    ${listSoLuong}
+    var chart3 = new Chart(ctx3, {
         type: "line",
         data: {
             labels: labels1,
@@ -1113,14 +1174,14 @@
     });
     var errorMessage1 = document.getElementById("error-message1");
     var filterButton1 = document.getElementById('filter-button1');
-    filterButton1.addEventListener('click', function() {
+    filterButton1.addEventListener('click', function () {
         var startDate1 = document.getElementById('start-date1').value;
         var endDate1 = document.getElementById('end-date1').value;
 
         if (!startDate1 || !endDate1) {
             errorMessage1.textContent = "Vui lòng nhập cả ngày bắt đầu và ngày kết thúc.";
             errorMessage1.style.display = "block";
-            setTimeout(function() {
+            setTimeout(function () {
                 errorMessage1.style.display = "none";
             }, 3000); // 3 giây
             return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không được nhập
@@ -1137,7 +1198,7 @@
         if (endDateInput1 > currentDate) {
             errorMessage1.textContent = "Ngày kết thúc không thể sau ngày hiện tại.";
             errorMessage1.style.display = "block";
-            setTimeout(function() {
+            setTimeout(function () {
                 errorMessage1.style.display = "none";
             }, 3000); // 3 giây
             return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
@@ -1145,7 +1206,7 @@
         if (startDateInput1 > endDateInput1) {
             errorMessage1.textContent = "Ngày bắt đầu không thể sau ngày kết thúc.";
             errorMessage1.style.display = "block";
-            setTimeout(function() {
+            setTimeout(function () {
                 errorMessage1.style.display = "none";
             }, 3000); // 3 giây
             return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
@@ -1154,7 +1215,7 @@
         if (startDateInput1 < twelveMonthsAgo) {
             errorMessage1.textContent = "Ngày bắt đầu không thể trước 12 tháng trước.";
             errorMessage1.style.display = "block";
-            setTimeout(function() {
+            setTimeout(function () {
                 errorMessage1.style.display = "none";
             }, 3000); // 3 giây
             return false; // Ngăn chặn việc gửi dữ liệu nếu ngày không hợp lệ
@@ -1290,13 +1351,13 @@
             xhttp.send();
         }
 
-        document.getElementById("loaiAo").addEventListener("change", function () {
+        document.getElementById("loaiAo1").addEventListener("change", function () {
             var selectedValue = this.value;
             drawChart(selectedValue);
         });
 
         // Vẽ biểu đồ mặc định khi trang tải lên
-        drawChart(document.getElementById("loaiAo").value);
+        drawChart(document.getElementById("loaiAo1").value);
     });
 
 </script>

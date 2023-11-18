@@ -28,6 +28,11 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../resources/css/style.css" rel="stylesheet">
+    <style>
+        .hidden_Form, .hidden_Hang, .hidden_LoaiAo, .hidden_ChatVai, .hidden_MauSac {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -36,8 +41,8 @@
     <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
         <div class="col-lg-4">
             <a href="/user/trang_chu/${idKh}" class="text-decoration-none">
-                <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
+                <span class="h1 text-uppercase text-primary bg-dark px-2">SD</span>
+                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">99</span>
             </a>
         </div>
         <div class="col-lg-4 col-6 text-left">
@@ -140,8 +145,9 @@
             <!-- Price Start -->
             <form method="post">
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Giá </p><i style="display: inline-block" class="fas fa-angle-down"
-                                                         onclick="toggleView('view_anh2')"></i></span>
+                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Giá </p><i
+                        style="display: inline-block" class="fas fa-angle-down"
+                        onclick="toggleView('view_anh2')"></i></span>
                 </h5>
                 <div id="view_anh2" style="display:block">
                     <div class="bg-light p-4 mb-30">
@@ -169,83 +175,111 @@
 
                 <!-- Color Start -->
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Form </p><i style="display: inline-block" class="fas fa-angle-down"
-                                                          onclick="toggleView('view_anh3')"></i></span>
+                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Form </p><i
+                        style="display: inline-block" class="fas fa-angle-down"
+                        onclick="toggleView('view_anh3')"></i></span>
                 </h5>
                 <div id="view_anh3" style="display:block">
                     <div class="bg-light p-4 mb-30">
                         <c:forEach items="${listForm}" var="list" varStatus="status">
-                            <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
-                                <input type="radio" class="control-input" id="form-${status.index == 0 ? '0' : ''}"
+                            <div class="custom-radio d-flex align-items-center justify-content-between">
+                                <input type="radio"
+                                       class="control-input <c:if test="${status.index >1}">hidden_Form</c:if>"
+                                       id="form-${status.index}"
                                        name="idForm" value="${list.id}">
-                                <label for="form-${status.index == 0 ? '0' : ''}"
+                                <label class="<c:if test="${status.index >1}">hidden_Form</c:if>"
+                                       for="form-${status.index}"
                                        style="width: 200px; padding-top: 8px">${list.ten}</label>
                             </div>
                         </c:forEach>
+                        <div style="padding-left: 30%">
+                            <p onclick="showMore1()" id="showMore1">Xem Thêm <i class="fas fa-angle-down"></i></p>
+                            <p onclick="showLess1()" id="showLess1" style="display: none">Rút gọn <i class="fas fa-angle-up"></i></p>
+                        </div>
                     </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Hãng </p><i style="display: inline-block" class="fas fa-angle-down"
-                                                          onclick="toggleView('view_anh4')"></i></span>
+                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Hãng </p><i
+                        style="display: inline-block" class="fas fa-angle-down"
+                        onclick="toggleView('view_anh4')"></i></span>
                 </h5>
                 <div id="view_anh4" style="display:block">
                     <div class="bg-light p-4 mb-30">
                         <c:forEach items="${listHang}" var="list" varStatus="status">
-                            <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
-                                <input type="radio" class="control-input" id="hang-${status.index == 0 ? '0' : ''}"
+                            <div class="custom-radio d-flex align-items-center justify-content-between">
+                                <input type="radio" class="control-input <c:if test="${status.index >1}">hidden_Hang</c:if>" id="hang-${status.index}"
                                        name="idHang" value="${list.id}">
-                                <label style="width: 200px; padding-top: 8px"
-                                       for="hang-${status.index == 0 ? '0' : ''}">${list.ten}</label>
+                                <label class="<c:if test="${status.index >1}">hidden_Hang</c:if>" style="width: 200px; padding-top: 8px"
+                                       for="hang-${status.index}">${list.ten}</label>
                             </div>
                         </c:forEach>
+                        <div style="padding-left: 30%">
+                            <p onclick="showMore2()" id="showMore2">Xem Thêm <i class="fas fa-angle-down"></i></p>
+                            <p onclick="showLess2()" id="showLess2" style="display: none">Rút gọn <i class="fas fa-angle-up"></i></p>
+                        </div>
                     </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Loại áo </p><i style="display: inline-block" class="fas fa-angle-down"
-                                                             onclick="toggleView('view_anh5')"></i></span>
+                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Loại áo </p><i
+                        style="display: inline-block" class="fas fa-angle-down"
+                        onclick="toggleView('view_anh5')"></i></span>
                 </h5>
                 <div id="view_anh5" style="display:block">
                     <div class="bg-light p-4 mb-30">
                         <c:forEach items="${listLoaiAo}" var="list" varStatus="status">
-                            <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
-                                <input type="radio" class="control-input" id="loaiAo-${status.index == 0 ? '0' : ''}"
+                            <div class="custom-radio d-flex align-items-center justify-content-between">
+                                <input type="radio" class="control-input <c:if test="${status.index >1}">hidden_LoaiAo</c:if>" id="loaiAo-${status.index}"
                                        name="idLoaiAo" value="${list.id}" ${list.id == loaiAo.id ?'checked':''}>
-                                <label style="width: 200px; padding-top: 8px"
-                                       for="loaiAo-${status.index == 0 ? '0' : ''}">${list.ten}</label>
+                                <label class="<c:if test="${status.index >1}">hidden_LoaiAo</c:if>" style="width: 200px; padding-top: 8px"
+                                       for="loaiAo-${status.index}">${list.ten}</label>
                             </div>
                         </c:forEach>
+                        <div style="padding-left: 30%">
+                            <p onclick="showMore3()" id="showMore3">Xem Thêm <i class="fas fa-angle-down"></i></p>
+                            <p onclick="showLess3()" id="showLess3" style="display: none">Rút gọn <i class="fas fa-angle-up"></i></p>
+                        </div>
                     </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Chất vải </p><i style="display: inline-block" class="fas fa-angle-down"
-                                                              onclick="toggleView('view_anh6')"></i></span>
+                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Chất vải </p><i
+                        style="display: inline-block" class="fas fa-angle-down"
+                        onclick="toggleView('view_anh6')"></i></span>
                 </h5>
                 <div id="view_anh6" style="display:block">
                     <div class="bg-light p-4 mb-30">
                         <c:forEach items="${listChatVai}" var="list" varStatus="status">
-                            <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
-                                <input type="radio" class="control-input" id="cv-${status.index == 0 ? '0' : ''}"
+                            <div class="custom-radio d-flex align-items-center justify-content-between">
+                                <input type="radio" class="control-input <c:if test="${status.index >1}">hidden_ChatVai</c:if>" id="cv-${status.index}"
                                        name="idChatVai" value="${list.id}">
-                                <label style="width: 200px; padding-top: 8px"
-                                       for="cv-${status.index == 0 ? '0' : ''}">${list.ten}</label>
+                                <label class="<c:if test="${status.index >1}">hidden_ChatVai</c:if>" style="width: 200px; padding-top: 8px"
+                                       for="cv-${status.index}">${list.ten}</label>
                             </div>
                         </c:forEach>
+                        <div style="padding-left: 30%">
+                            <p onclick="showMore4()" id="showMore4">Xem Thêm <i class="fas fa-angle-down"></i></p>
+                            <p onclick="showLess4()" id="showLess4" style="display: none">Rút gọn <i class="fas fa-angle-up"></i></p>
+                        </div>
                     </div>
                 </div>
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
-                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Màu sắc </p><i style="display: inline-block" class="fas fa-angle-down"
-                                                             onclick="toggleView('view_anh7')"></i></span>
+                        class="bg-secondary pr-3"><p style="display: inline-block;width: 100px">Màu sắc </p><i
+                        style="display: inline-block" class="fas fa-angle-down"
+                        onclick="toggleView('view_anh7')"></i></span>
                 </h5>
                 <div id="view_anh7" style="display:block">
                     <div class="bg-light p-4 mb-30">
                         <c:forEach items="${listMauSac}" var="list" varStatus="status">
-                            <div class="custom-control custom-radio d-flex align-items-center justify-content-between">
-                                <input type="checkbox" class="control-input" id="cv-${status.index == 0 ? '0' : ''}"
+                            <div class="custom-radio d-flex align-items-center justify-content-between">
+                                <input type="checkbox" class="control-input <c:if test="${status.index >1}">hidden_MauSac</c:if>" id="ms-${status.index}"
                                        name="mauSacIds" value="${list.id}">
-                                <label style="width: 200px; padding-top: 8px"
-                                       for="cv-${status.index == 0 ? '0' : ''}">${list.ten}</label>
+                                <label class="<c:if test="${status.index >1}">hidden_MauSac</c:if>" style="width: 200px; padding-top: 8px"
+                                       for="ms-${status.index}">${list.ten}</label>
                             </div>
                         </c:forEach>
+                        <div style="padding-left: 30%">
+                            <p onclick="showMore5()" id="showMore5">Xem Thêm <i class="fas fa-angle-down"></i></p>
+                            <p onclick="showLess5()" id="showLess5" style="display: none">Rút gọn <i class="fas fa-angle-up"></i></p>
+                        </div>
                     </div>
                 </div>
                 <button class="btn btn-block btn-primary font-weight-bold my-3 py-3"
@@ -287,7 +321,8 @@
                                 <c:choose>
                                     <c:when test="${list.giaBan == list.ao.giaBan}">
                                         <div class="d-flex align-items-center justify-content-center mt-2">
-                                            <h5 style="color: red;"><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
+                                            <h5 style="color: red;"><fmt:formatNumber value="${list.ao.giaBan}"
+                                                                                      type="currency"
                                                                                       currencySymbol="VNĐ"/></h5>
                                         </div>
                                         <p>Sản phẩm đã bán ${list.slBan}</p>
@@ -432,7 +467,7 @@
     const currentPageSpan = document.getElementById("currentPage");
 
     // Số sản phẩm trên mỗi trang
-    const itemsPerPage = 6;
+    const itemsPerPage = 9;
 
     // Danh sách sản phẩm đầy đủ
     const allProducts = productList.querySelectorAll(".col-lg-4");
@@ -485,6 +520,108 @@
     function toggleView(elementId) {
         var element = document.getElementById(elementId);
         element.style.display = (element.style.display === "block") ? "none" : "block";
+    }
+</script>
+
+<script>
+    function showMore1() {
+        // Hiển thị các dòng ẩn
+        var hiddenRows = document.querySelectorAll('.hidden_Form');
+        for (var i = 0; i < hiddenRows.length; i++) {
+            hiddenRows[i].style.display = 'flex';
+        }
+        document.getElementById("showMore1").style.display = "none";
+        document.getElementById("showLess1").style.display = "block";
+    }
+
+    function showLess1() {
+        // Ẩn các dòng từ dòng thứ 4 trở đi
+        var hiddenRows = document.querySelectorAll('.hidden_Form');
+        for (var i = 0; i < hiddenRows.length; i++) {
+            hiddenRows[i].style.display = 'none';
+        }
+        document.getElementById("showMore1").style.display = "block";
+        document.getElementById("showLess1").style.display = "none";
+    }
+
+    function showMore2() {
+        // Hiển thị các dòng ẩn
+        var hiddenRows = document.querySelectorAll('.hidden_Hang');
+        for (var i = 0; i < hiddenRows.length; i++) {
+            hiddenRows[i].style.display = 'flex';
+        }
+        document.getElementById("showMore2").style.display = "none";
+        document.getElementById("showLess2").style.display = "block";
+    }
+
+    function showLess2() {
+        // Ẩn các dòng từ dòng thứ 4 trở đi
+        var hiddenRows = document.querySelectorAll('.hidden_Hang');
+        for (var i = 0; i < hiddenRows.length; i++) {
+            hiddenRows[i].style.display = 'none';
+        }
+        document.getElementById("showMore2").style.display = "block";
+        document.getElementById("showLess2").style.display = "none";
+    }
+
+    function showMore3() {
+        // Hiển thị các dòng ẩn
+        var hiddenRows = document.querySelectorAll('.hidden_LoaiAo');
+        for (var i = 0; i < hiddenRows.length; i++) {
+            hiddenRows[i].style.display = 'flex';
+        }
+        document.getElementById("showMore3").style.display = "none";
+        document.getElementById("showLess3").style.display = "block";
+    }
+
+    function showLess3() {
+        // Ẩn các dòng từ dòng thứ 4 trở đi
+        var hiddenRows = document.querySelectorAll('.hidden_LoaiAo');
+        for (var i = 0; i < hiddenRows.length; i++) {
+            hiddenRows[i].style.display = 'none';
+        }
+        document.getElementById("showMore3").style.display = "block";
+        document.getElementById("showLess3").style.display = "none";
+    }
+
+    function showMore4() {
+        // Hiển thị các dòng ẩn
+        var hiddenRows = document.querySelectorAll('.hidden_ChatVai');
+        for (var i = 0; i < hiddenRows.length; i++) {
+            hiddenRows[i].style.display = 'flex';
+        }
+        document.getElementById("showMore4").style.display = "none";
+        document.getElementById("showLess4").style.display = "block";
+    }
+
+    function showLess4() {
+        // Ẩn các dòng từ dòng thứ 4 trở đi
+        var hiddenRows = document.querySelectorAll('.hidden_ChatVai');
+        for (var i = 0; i < hiddenRows.length; i++) {
+            hiddenRows[i].style.display = 'none';
+        }
+        document.getElementById("showMore4").style.display = "block";
+        document.getElementById("showLess4").style.display = "none";
+    }
+
+    function showMore5() {
+        // Hiển thị các dòng ẩn
+        var hiddenRows = document.querySelectorAll('.hidden_MauSac');
+        for (var i = 0; i < hiddenRows.length; i++) {
+            hiddenRows[i].style.display = 'flex';
+        }
+        document.getElementById("showMore5").style.display = "none";
+        document.getElementById("showLess5").style.display = "block";
+    }
+
+    function showLess5() {
+        // Ẩn các dòng từ dòng thứ 4 trở đi
+        var hiddenRows = document.querySelectorAll('.hidden_MauSac');
+        for (var i = 0; i < hiddenRows.length; i++) {
+            hiddenRows[i].style.display = 'none';
+        }
+        document.getElementById("showMore5").style.display = "block";
+        document.getElementById("showLess5").style.display = "none";
     }
 </script>
 

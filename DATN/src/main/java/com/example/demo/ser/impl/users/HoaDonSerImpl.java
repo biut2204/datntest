@@ -183,6 +183,12 @@ public class HoaDonSerImpl implements HoaDonSer {
 
             int sl = Math.toIntExact(hoaDonRepo.tongSl(hoaDon.getId()));
 
+            if(hoaDon.getKhachHang() == null){
+                donHangDTO.setTen("");
+            }else {
+                donHangDTO.setTen(hoaDon.getKhachHang().getTen());
+            }
+
             donHangDTO.setHoaDon(hoaDon);
             donHangDTO.setSoLuong(sl);
 
@@ -294,5 +300,84 @@ public class HoaDonSerImpl implements HoaDonSer {
     @Override
     public List<HoaDon> listHoaDonFindByTrangThaiCho(int trangThai) {
         return hoaDonRepo.listHoaDonFindByTrangThaiCho(trangThai);
+    }
+
+    @Override
+    public Integer soHoaDonTrongThang(LocalDate date) {
+        return hoaDonRepo.soHoaDonTrongThang(date);
+    }
+
+    @Override
+    public Double doanhThuThang(LocalDate date) {
+        return hoaDonRepo.doanhThuThang(date);
+    }
+
+    @Override
+    public Integer soLuongKhachMuaTrongThang(LocalDate date) {
+        return hoaDonRepo.soLuongKhachMuaTrongThang(date);
+    }
+
+    @Override
+    public Integer demHoaDon() {
+        return hoaDonRepo.demHoaDon();
+    }
+
+    @Override
+    public List<DonHangDTO> findAllByOptionalFilters(Integer trangThai, LocalDate startDate, LocalDate endDate) {
+        List<DonHangDTO> listDonHangDTOS = new ArrayList<>();
+        List<HoaDon> listHoaDons = hoaDonRepo.findAllByOptionalFilters(trangThai, startDate, endDate);
+        for (HoaDon hoaDon : listHoaDons) {
+            DonHangDTO donHangDTO = new DonHangDTO();
+
+            int sl = Math.toIntExact(hoaDonRepo.tongSl(hoaDon.getId()));
+
+            if(hoaDon.getKhachHang() == null){
+                donHangDTO.setTen("");
+            }else {
+                donHangDTO.setTen(hoaDon.getKhachHang().getTen());
+            }
+
+            donHangDTO.setHoaDon(hoaDon);
+            donHangDTO.setSoLuong(sl);
+
+            listDonHangDTOS.add(donHangDTO);
+        }
+
+        return listDonHangDTOS;
+    }
+
+    @Override
+    public List<DonHangDTO> findAllByStartDateAndEndDateOrBoth(LocalDate startDate, LocalDate endDate) {
+        List<DonHangDTO> listDonHangDTOS = new ArrayList<>();
+        List<HoaDon> listHoaDons = new ArrayList<>();
+
+        if (startDate != null && endDate == null){
+            listHoaDons = hoaDonRepo.findHoaDonByFilterStartNgayTao(startDate);
+        }else if (startDate == null && endDate != null){
+            listHoaDons = hoaDonRepo.findHoaDonByFilterEndNgayTao(endDate);
+        }else if(startDate != null && endDate != null){
+            listHoaDons = hoaDonRepo.findAllByStartDateAndEndDateOrBoth(startDate, endDate);
+        }else if(startDate == null && endDate == null){
+            listHoaDons = hoaDonRepo.findAllByOrderByNgayTaoDesc();
+        }
+
+        for (HoaDon hoaDon : listHoaDons) {
+            DonHangDTO donHangDTO = new DonHangDTO();
+
+            int sl = Math.toIntExact(hoaDonRepo.tongSl(hoaDon.getId()));
+
+            if(hoaDon.getKhachHang() == null){
+                donHangDTO.setTen("");
+            }else {
+                donHangDTO.setTen(hoaDon.getKhachHang().getTen());
+            }
+
+            donHangDTO.setHoaDon(hoaDon);
+            donHangDTO.setSoLuong(sl);
+
+            listDonHangDTOS.add(donHangDTO);
+        }
+
+        return listDonHangDTOS;
     }
 }

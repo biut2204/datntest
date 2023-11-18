@@ -29,6 +29,15 @@ public class TaiKhoanController {
     @GetMapping("/admin/khachhang/*")
     public String view(Model model, HttpServletRequest request) {
 
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+        if (user.getRole() == RoleEnum.STAFF){
+            model.addAttribute("adminOrStaff", "1");
+        }else if (user.getRole() == RoleEnum.ADMIN){
+            model.addAttribute("adminOrStaff", "2");
+        }
+        model.addAttribute("nameUser", user.getTen());
+
         List<Users> listKhachHang = usersRepo.findAllKhachHang();
         model.addAttribute("listKhachHang", listKhachHang);
         String url = request.getRequestURI();
@@ -113,6 +122,15 @@ public class TaiKhoanController {
 
     @GetMapping("/admin/nhanvien/*")
     public String view1(Model model, HttpServletRequest request) {
+
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+        if (user.getRole() == RoleEnum.STAFF){
+            model.addAttribute("adminOrStaff", "1");
+        }else if (user.getRole() == RoleEnum.ADMIN){
+            model.addAttribute("adminOrStaff", "2");
+        }
+        model.addAttribute("nameUser", user.getTen());
 
         List<Users> listNhanVien = usersRepo.findAllNhanVien();
         model.addAttribute("listNhanVien", listNhanVien);

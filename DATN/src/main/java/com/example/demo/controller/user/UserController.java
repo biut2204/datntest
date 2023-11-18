@@ -237,7 +237,9 @@ public class UserController {
     @GetMapping("/user/hoa_don/mua_lai/*")
     public String muaLaiHoaDon(HttpServletRequest request) {
 
-        LocalTime now = LocalTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        int maHd = hoaDonSer.demHoaDon() +1;
+
         String url = request.getRequestURI();
         String[] parts = url.split("/user/hoa_don/mua_lai/");
         String id = parts[1];
@@ -247,7 +249,7 @@ public class UserController {
         Users khachHang = hd.getKhachHang();
 
         HoaDon hoaDon = new HoaDon();
-        hoaDon.setMa("Ma" + now.getHour() + now.getMinute() + now.getSecond());
+        hoaDon.setMa("HD" + now.getMonthValue() +now.getDayOfMonth()+ now.getHour()+ now.getMinute()+ now.getSecond());
         hoaDon.setKhachHang(khachHang);
         hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setTrangThai(0);
@@ -402,7 +404,7 @@ public class UserController {
                             @RequestParam(value = "idAoChiTiet", required = false) List<UUID> idAoChiTiet,
                             @RequestParam(value = "soLuong", required = false) List<String> soLuong) {
 
-        LocalTime now = LocalTime.now();
+        LocalDateTime now = LocalDateTime.now();
         String url = request.getRequestURI();
         String[] parts = url.split("/user/hoa_don/add/");
         String ma = parts[1];
@@ -410,7 +412,7 @@ public class UserController {
         Users khachHang = usersSer.findByMa(ma);
 
         HoaDon hoaDon = new HoaDon();
-        hoaDon.setMa("Ma" + now.getHour() + now.getMinute() + now.getSecond());
+        hoaDon.setMa("HD" + now.getMonthValue() +now.getDayOfMonth()+ now.getHour()+ now.getMinute()+ now.getSecond());
         hoaDon.setKhachHang(khachHang);
         hoaDon.setNgayTao(LocalDateTime.now());
         hoaDon.setHinhThuc(0);

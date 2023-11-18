@@ -32,4 +32,6 @@ public interface HoaDonChiTietSer {
     List<HoaDonChiTietDTO> listHoaDonTheoNgay(List<HoaDon> listHoaDons);
 
     Integer soLuongBanThangHienTai(LocalDate date1, LocalDate date2);
+
+    Integer soLuongBanTrongThang(LocalDate date);
 }

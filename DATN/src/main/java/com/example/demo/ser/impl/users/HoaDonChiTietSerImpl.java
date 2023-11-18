@@ -112,4 +112,9 @@ public class HoaDonChiTietSerImpl implements HoaDonChiTietSer {
         return hoaDonChiTietRepo.soLuongBanThangHienTai(date1,date2);
     }
 
+    @Override
+    public Integer soLuongBanTrongThang(LocalDate date) {
+        return hoaDonChiTietRepo.soLuongBanTrongThang(date);
+    }
+
 }

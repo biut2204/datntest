@@ -157,6 +157,7 @@ public class PaymentController {
             hd.setNgayChoXacNhan(null);
             hd.setNgayThanhToan(null);
             hd.setKhachHang(hoaDon.getKhachHang());
+            hd.setHinhThuc(0);
             hd.setTrangThai(0);
             hd.setMoTa("");
 
@@ -230,16 +231,17 @@ public class PaymentController {
                 return "/user/thanh_cong";
             }else {
 
-                LocalTime now = LocalTime.now();
+                LocalDateTime now = LocalDateTime.now();
 
                 HoaDon hd = new HoaDon();
 
-                hd.setMa("Ma" + now.getHour() + now.getMinute() + now.getSecond());
+                hd.setMa("HD" + now.getMonthValue() +now.getDayOfMonth()+ now.getHour()+ now.getMinute()+ now.getSecond());
                 hd.setTongTien(hoaDon.getTongTien());
                 hd.setNgayTao(hoaDon.getNgayTao());
                 hd.setNgayChoXacNhan(null);
                 hd.setNgayThanhToan(null);
                 hd.setKhachHang(hoaDon.getKhachHang());
+                hd.setHinhThuc(0);
                 hd.setTrangThai(0);
                 hd.setMoTa("");
 

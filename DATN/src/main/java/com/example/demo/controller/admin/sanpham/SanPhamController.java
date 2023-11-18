@@ -1,7 +1,9 @@
 package com.example.demo.controller.admin.sanpham;
 
+import com.example.demo.entity.auth.RoleEnum;
 import com.example.demo.entity.dto.HoaDonChiTietDTO;
 import com.example.demo.entity.khachhang.HoaDon;
+import com.example.demo.entity.khachhang.Users;
 import com.example.demo.entity.sanpham.Anh;
 import com.example.demo.entity.sanpham.Ao;
 import com.example.demo.entity.sanpham.AoChiTiet;
@@ -98,6 +100,15 @@ public class SanPhamController {
 
     @GetMapping("/admin/ao/view/*")
     public String view(Model model, HttpServletRequest request) {
+
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+        if (user.getRole() == RoleEnum.STAFF){
+            model.addAttribute("adminOrStaff", "1");
+        }else if (user.getRole() == RoleEnum.ADMIN){
+            model.addAttribute("adminOrStaff", "2");
+        }
+        model.addAttribute("nameUser", user.getTen());
 
         List<Ao> listAos = aoSer.findAllByTrangThai(2);
         List<Ao> listAoChuaHoanThiens = aoSer.findAllByTrangThai(1);
