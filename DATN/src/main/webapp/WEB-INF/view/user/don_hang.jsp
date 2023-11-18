@@ -208,6 +208,11 @@
                 width: 0%;
             }
         }
+
+        .navbar-light .navbar-nav .nav-link:hover {
+            background: #fff3c6;
+            color: red; /* Change this to the desired hover color */
+        }
     </style>
 </head>
 
@@ -324,7 +329,8 @@
                         class="bg-secondary pr-3">Tài khoản của tôi</span>
                 </h5>
                 <ul class="list-unstyled">
-                    <li><i class="fas fa-info-circle" style="width: 20px"></i><a href="/user/thong_tin/${idKh}" style="color: black;">Thông
+                    <li><i class="fas fa-info-circle" style="width: 20px"></i><a href="/user/thong_tin/${idKh}"
+                                                                                 style="color: black;">Thông
                         tin</a></li>
                     <li><i class="fas fa-key" style="width: 20px"></i><a href="/user/doi_mat_khau_view/${idKh}"
                                                                          style="color: black;">Đổi mật khẩu</a>
@@ -341,7 +347,7 @@
                 <h5 class="section-title position-relative text-uppercase mb-3"><span
                         class="bg-secondary pr-3">Đăng xuất</span>
                 </h5>
-                <ul class="list-unstyled" >
+                <ul class="list-unstyled">
                     <li><i class="fas fa-sign-out-alt" style="width: 20px"></i>
                         <a href="#" style="color: black;" onclick="confirmLogout();">Đăng xuất</a></li>
                 </ul>
@@ -382,7 +388,8 @@
                                             style="color: red"> <fmt:formatNumber value="${list.donGia}" type="currency"
                                                                                   currencySymbol="VNĐ"/></label></p>
                                     <p class="total-price">
-                                        <a href="/user/hoa_don/chinh_sua/${list.hoaDon.ma}" class="custom-button">Chỉnh sửa</a>
+                                        <a href="/user/hoa_don/chinh_sua/${list.hoaDon.ma}" class="custom-button">Chỉnh
+                                            sửa</a>
                                         <a href="/user/hoa_don/view_hoa_don/${list.hoaDon.id}" class="custom-button">Thanh
                                             toán</a>
                                     </p>
@@ -581,44 +588,46 @@
     <div class="container-fluid">
         <div class="container">
             <form method="post" id="addForm1">
-                <form method="post">
-                    <h1>Đánh giá sản phẩm</h1>
-                    <input type="hidden" name="idKh" value="${hoaDon.khachHang.ma}">
-                    <label>Sản phẩm :</label>
-                    <select class="form-control" name="aoChiTietId">
-                        <c:forEach items="${listHoaDonChiTiets}" var="list">
-                            <option value="${list.aoChiTiet.id}">${list.aoChiTiet.ao.ten}, ${list.aoChiTiet.mau_sac.ten}, ${list.aoChiTiet.size.ten}</option>
-                        </c:forEach>
-                    </select>
-                    <br>
-                    <label>Chất lượng :</label>
-                    <div class="rating-container">
-                        <label class="star" data-rating="1">
-                            ☆
-                            <input type="radio" name="rating" value="1">
-                        </label>
-                        <label class="star" data-rating="2">
-                            ☆
-                            <input type="radio" name="rating" value="2">
-                        </label>
-                        <label class="star" data-rating="3">
-                            ☆
-                            <input type="radio" name="rating" value="3">
-                        </label>
-                        <label class="star" data-rating="4">
-                            ☆
-                            <input type="radio" name="rating" value="4">
-                        </label>
-                        <label class="star" data-rating="5">
-                            ☆
-                            <input type="radio" name="rating" value="5">
-                        </label>
-                    </div>
-                    <br>
-                    <textarea id="comment" placeholder="Nhận xét của bạn" name="binhLuan"></textarea>
-                    <br>
-                    <button type="submit" formaction="/user/danh_gia" onclick="validateComment()">Gửi đánh giá</button>
-                </form>
+
+                <h1>Đánh giá sản phẩm</h1>
+                <input type="hidden" name="idKh" value="${hoaDon.khachHang.ma}">
+                <label>Sản phẩm :</label>
+                <select class="form-control" name="aoChiTietId">
+                    <c:forEach items="${listHoaDonChiTiets}" var="list">
+                        <option value="${list.aoChiTiet.id}">${list.aoChiTiet.ao.ten}, ${list.aoChiTiet.mau_sac.ten}, ${list.aoChiTiet.size.ten}</option>
+                    </c:forEach>
+                </select>
+                <br>
+                <label>Chất lượng :</label>
+                <div class="rating-container">
+                    <label class="star" data-rating="1">
+                        ☆
+                        <input type="radio" name="rating" value="1">
+                    </label>
+                    <label class="star" data-rating="2">
+                        ☆
+                        <input type="radio" name="rating" value="2">
+                    </label>
+                    <label class="star" data-rating="3">
+                        ☆
+                        <input type="radio" name="rating" value="3">
+                    </label>
+                    <label class="star" data-rating="4">
+                        ☆
+                        <input type="radio" name="rating" value="4">
+                    </label>
+                    <label class="star" data-rating="5">
+                        ☆
+                        <input type="radio" name="rating" value="5">
+                    </label>
+                </div>
+                <span id="errorRating" class="text-danger"></span>
+                <br>
+                <textarea id="comment" placeholder="Nhận xét của bạn" name="binhLuan"></textarea>
+                <span id="errorComment" class="text-danger"></span>
+                <br>
+                <button type="submit" formaction="/user/danh_gia" onclick="validateComment()">Gửi đánh giá</button>
+
             </form>
         </div>
     </div>
@@ -643,11 +652,28 @@
 <script>
     function validateComment() {
         var comment = document.getElementById("comment").value;
+        var rating = document.querySelector('input[name="rating"]:checked');
+        var errorComment = document.getElementById('errorComment');
+        var errorRating = document.getElementById('errorRating');
         var addFormContainer = document.getElementById("addFormContainer1");
-        var forbiddenWords = ["lol", "cc", "dm","vai","lon","du","me","concac","đéo","con cặc"];
+        var forbiddenWords = ["lol", "cc", "dm", "vai", "lon", "du", "me", "concac", "đéo", "con cặc"];
         var foundForbiddenWord = false;
 
-        forbiddenWords.forEach(function(word) {
+        if (!rating) {
+            errorRating.innerText = 'Vui lòng chọn số sao đánh giá.';
+            event.preventDefault();
+        } else {
+            errorRating.innerText = '';
+        }
+
+        if (comment.trim() === '') {
+            errorComment.innerText = 'Vui lòng nhập bình luận.';
+            event.preventDefault();
+        } else {
+            errorComment.innerText = '';
+        }
+
+        forbiddenWords.forEach(function (word) {
             if (comment.toLowerCase().includes(word)) {
                 foundForbiddenWord = true;
             }

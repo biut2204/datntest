@@ -353,7 +353,7 @@
                                                 <td>
                                                     <button formaction="/admin/chat_vai/detail" name="detail"
                                                             value="${list.id}"
-                                                            class="btn btn-primary me-2">Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
                                                     </button>
                                                 </td>
                                             </tr>
@@ -431,9 +431,9 @@
                             </div>
                         </fieldset>
                         <button class="btn btn-primary" formaction="/admin/chat_vai/add" type="submit"
-                                onclick="addProduct()" id="idThem">Thêm Mới</button>
+                                onclick="addProduct()" id="idThem"><i class="fas fa-plus"></i> Thêm Mới</button>
                         <button class="btn btn-primary" formaction="/admin/chat_vai/update" type="submit"
-                                onclick="addProduct1()" id="idUpdate">Cập nhật
+                                onclick="addProduct1()" id="idUpdate"><i class="fas fa-sync"></i> Cập nhật
                         </button>
                     </form>
                 </div>

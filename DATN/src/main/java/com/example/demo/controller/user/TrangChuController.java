@@ -355,18 +355,23 @@ public class TrangChuController {
         }
 
         List<AoDTO> listAoDTOS = (List<AoDTO>) session.getAttribute("items");
-        session.removeAttribute("items");
+
+        if(listAoDTOS != null){
+            model.addAttribute("items", listAoDTOS);
+        }else {
+            model.addAttribute("items", aoSer.findAllAoDTO());
+        }
 
         model.addAttribute("listChatVai", chatVaiSer.findAllByTrangThai(1));
         model.addAttribute("listForm", formSer.findAllByTrangThai(1));
         model.addAttribute("listHang", hangSer.findAllByTrangThai(1));
         model.addAttribute("listLoaiAo", loaiAoSer.findAllByTrangThai(1));
         model.addAttribute("listMauSac", mauSacSer.findAllByTrangThai(1));
-        model.addAttribute("items", listAoDTOS);
+
 
         List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
         model.addAttribute("listLoaiAos", listLoaiAos);
-
+        session.removeAttribute("items");
         return "/user/tim_kiem";
     }
 
@@ -472,6 +477,13 @@ public class TrangChuController {
         if (usersSer.findByMa(maOrEmail) != null) {
             model.addAttribute("kh", usersSer.findByMa(maOrEmail));
             model.addAttribute("idKh", usersSer.findByMa(maOrEmail).getMa());
+
+            Users users =  usersSer.findByMa(maOrEmail);
+            GioHang gioHang = gioHangSer.findByIdKH(users.getId());
+            Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
+
+            model.addAttribute("idKh", users.getMa());
+            model.addAttribute("soLuongSanPham", soLuongSanPham);
         } else if (usersSer.findByMa(maOrEmail) == null) {
 
             int test = usersSer.demLoginGG(maOrEmail);
@@ -480,6 +492,14 @@ public class TrangChuController {
             if (test > 0) {
                 model.addAttribute("kh", usersSer.findByEmail(maOrEmail));
                 model.addAttribute("idKh", usersSer.findByEmail(maOrEmail).getMa());
+
+                Users users = usersSer.findByEmail(maOrEmail);
+                GioHang gioHang = gioHangSer.findByIdKH(users.getId());
+                Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
+
+                model.addAttribute("idKh", users.getMa());
+                model.addAttribute("soLuongSanPham", soLuongSanPham);
+
             } else if (test == 0) {
                 Users users = new Users();
 
@@ -506,6 +526,12 @@ public class TrangChuController {
 
                 model.addAttribute("kh", users);
                 model.addAttribute("idKh", users.getMa());
+
+                GioHang gioHang = gioHangSer.findByIdKH(users.getId());
+                Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
+
+                model.addAttribute("idKh", users.getMa());
+                model.addAttribute("soLuongSanPham", soLuongSanPham);
             }
         }
 

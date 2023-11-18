@@ -121,6 +121,10 @@
             box-shadow: rgb(0 0 0 / 13%) 0px 10px 20px 0px, rgb(0 0 0 / 19%) 0px 3px 9px 0px;
             transition: all .3s liner;
         }
+        .navbar-light .navbar-nav .nav-link:hover {
+            background: #fff3c6;
+            color: red; /* Change this to the desired hover color */
+        }
     </style>
 </head>
 

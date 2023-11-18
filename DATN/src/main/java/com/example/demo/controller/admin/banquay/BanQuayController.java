@@ -272,7 +272,7 @@ public class BanQuayController {
         Users user = (Users) object;
 
         HoaDon hoaDon = new HoaDon();
-        hoaDon.setMa("HD000" + ma);
+        hoaDon.setMa("HD00" + ma);
         hoaDon.setKhachHang(null);
         hoaDon.setNhanVien(user);
         hoaDon.setHinhThuc(1);
@@ -334,6 +334,20 @@ public class BanQuayController {
         ) {
             if (hoaDon.getId().equals(UUID.fromString(idHoaDon))) {
                 hoaDon.setKhachHang(users);
+                hoaDonSer.update(UUID.fromString(idHoaDon), hoaDon);
+            }
+        }
+        return "redirect:/admin/ban-quay/view-cart/" + idHoaDon;
+    }
+    @PostMapping("/delete-khach-hang/{id}")
+    public String deleteKH(HttpServletRequest request) {
+
+        String idHoaDon = request.getParameter("idHoaDon");
+
+        for (HoaDon hoaDon : hoaDonSer.getAll()
+        ) {
+            if (hoaDon.getId().equals(UUID.fromString(idHoaDon))) {
+                hoaDon.setKhachHang(null);
                 hoaDonSer.update(UUID.fromString(idHoaDon), hoaDon);
             }
         }

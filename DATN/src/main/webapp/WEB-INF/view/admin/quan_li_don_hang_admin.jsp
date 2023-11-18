@@ -877,7 +877,7 @@
                                                 <td>
                                                     <button formaction="/admin/quan_li_don_hang/detail" name="detail"
                                                             value="${list.hoaDon.ma}"
-                                                            class="btn btn-primary me-2">Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
                                                     </button>
                                                 </td>
                                             </tr>

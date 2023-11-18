@@ -534,9 +534,12 @@
                                 <span id="errorPhanTramGiamHD" class="text-danger"></span>
                             </div>
 
-                            <input type="submit" formaction="/chuong-trinh-giam-gia/add" value="Thêm" onclick="addProduct()">
-                            <input type="submit" formaction="/chuong-trinh-giam-gia/update" value="Cập nhật" onclick="addProduct()">
-                            <input type="submit" formaction="/chuong-trinh-giam-gia/clear" value="Clear">
+                            <button class="btn btn-success" type="submit" formaction="/chuong-trinh-giam-gia/add" value="Thêm" onclick="addProduct()" >
+                                <i class="fas fa-plus"></i> Thêm
+                            </button>
+                            <button class="btn btn-primary" type="submit" formaction="/chuong-trinh-giam-gia/update" value="Cập nhật" onclick="addProduct()">
+                                Cập nhật
+                            </button>
                         </form>
                         <!-- /.card -->
                     </div>

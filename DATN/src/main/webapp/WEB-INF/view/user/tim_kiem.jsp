@@ -32,6 +32,10 @@
         .hidden_Form, .hidden_Hang, .hidden_LoaiAo, .hidden_ChatVai, .hidden_MauSac {
             display: none;
         }
+        .navbar-light .navbar-nav .nav-link:hover {
+            background: #fff3c6;
+            color: red; /* Change this to the desired hover color */
+        }
     </style>
 </head>
 
@@ -308,8 +312,6 @@
                                 <img class="img-fluid" style="width: 100%; height: 350px"
                                      src="/images/${list.ao.anhs.get(0).ten_url}" alt="">
                                 <div class="product-action">
-                                    <a class="btn btn-outline-dark btn-square" href=""><i
-                                            class="fa fa-shopping-cart"></i></a>
                                     <a class="btn btn-outline-dark btn-square"
                                        href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i
                                             class="fa fa-search"></i></a>
@@ -350,11 +352,11 @@
                         <ul class="pagination justify-content-center">
                             <div id="pagination">
                                 <button onclick="previousPage()"
-                                        style="width: 80px; background: #818182; border-radius: 15px;color: white">Pre
+                                        style="width: 80px; background: #0c84ff; border-radius: 5px;color: white">Pre
                                 </button>
                                 <span id="currentPage">1</span>
                                 <button onclick="nextPage()"
-                                        style="width: 80px; background: #818182; border-radius: 15px;color: white">Next
+                                        style="width: 80px; background: #0c84ff; border-radius: 5px;color: white">Next
                                 </button>
                             </div>
                         </ul>

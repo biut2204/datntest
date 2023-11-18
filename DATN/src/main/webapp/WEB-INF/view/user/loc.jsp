@@ -86,6 +86,10 @@
             border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
         }
+        .navbar-light .navbar-nav .nav-link:hover {
+            background: #fff3c6;
+            color: red; /* Change this to the desired hover color */
+        }
     </style>
 </head>
 

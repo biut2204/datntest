@@ -396,8 +396,7 @@
                         <form method="post">
                             <div class="card">
                                 <div class="card-header">
-                                    <button class="btn btn-primary" id="addButton" onclick="clickThem()"><i class="fas fa-plus nav-icon"></i>
-                                        Thêm</button>
+                                    <button class="btn btn-primary" id="addButton" onclick="clickThem()"><i class="fas fa-plus"></i> Thêm</button>
                                 </div>
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
@@ -450,7 +449,7 @@
                                                 <td>
                                                     <button formaction="/admin/ao/detail" name="detail"
                                                             value="${list.id}"
-                                                            class="btn btn-primary me-2">Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
                                                     </button>
                                                 </td>
                                             </tr>
@@ -517,7 +516,7 @@
                                                 <td>
                                                     <button formaction="/admin/ao/detail" name="detail"
                                                             value="${list.id}"
-                                                            class="btn btn-primary me-2">Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
                                                     </button>
                                                 </td>
                                             </tr>
@@ -663,7 +662,7 @@
                             </div>
 
                             <button class="btn btn-primary" formaction="/admin/ao/update/${item.id}" type="submit">
-                                Cập nhật
+                                <i class="fas fa-sync"></i>Cập nhật
                             </button>
                         </form>
                     </div>
@@ -705,13 +704,13 @@
                                                    value="${aoChiTiet.slton}">
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary" formaction="/admin/ao_chi_tiet/add" type="submit">
-                                        Thêm
+                                    <button class="btn btn-success" formaction="/admin/ao_chi_tiet/add" type="submit">
+                                        <i class="fas fa-plus"></i> Thêm
                                     </button>
                                     <button class="btn btn-primary"
                                             formaction="/admin/ao_chi_tiet/update/${aoChiTiet.id}"
                                             type="submit">
-                                        Update
+                                        <i class="fas fa-sync"></i>Cập nhật
                                     </button>
                                 </form>
                                 <div class="card shadow mb-4"
@@ -755,7 +754,7 @@
                                                                 <button formaction="/admin/ao_chi_tiet/detail"
                                                                         name="detail"
                                                                         value="${list.id}"
-                                                                        class="btn btn-primary me-2">Detail
+                                                                        class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -784,7 +783,7 @@
                                 <form enctype="multipart/form-data" method="post">
                                     <input type="hidden" name="ao_id" value="${item.id}">
                                     <input type="file" name="ten_url1">
-                                    <button formaction="/admin/anh/add" type="submit" class="btn btn-primary">Thêm Anh
+                                    <button formaction="/admin/anh/add" type="submit" class="btn btn-success"><i class="fas fa-plus"></i> Thêm Anh
                                     </button>
                                 </form>
                                 <div class="form-row">
@@ -920,9 +919,9 @@
                                 <span id="errorMoTa" class="text-danger"></span>
                             </div>
 
-                            <button class="btn btn-primary" formaction="/admin/ao/add" type="submit"
+                            <button class="btn btn-success" formaction="/admin/ao/add" type="submit"
                                     onclick="addProduct()">
-                                Thêm Mới
+                                <i class="fas fa-plus"></i> Thêm Mới
                             </button>
                         </form>
                     </div>

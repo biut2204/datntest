@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Console;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -294,8 +295,12 @@ public class IndexController {
         }
 
         Double doanhThuThangHienTai = hoaDonSer.doanhThuThangHienTai(firstDayOfMonth,ngayHienTai);
+
+        NumberFormat numberFormat = new DecimalFormat("#,###");
+        String doanhThuFormatted = numberFormat.format(doanhThuThangHienTai);
+
         Integer soLuongBanThangHienTai = hoaDonChiTietSer.soLuongBanThangHienTai(firstDayOfMonth,ngayHienTai);
-        model.addAttribute("doanhThuThangHienTai",doanhThuThangHienTai);
+        model.addAttribute("doanhThuThangHienTai",doanhThuFormatted);
         model.addAttribute("soLuongBanThangHienTai",soLuongBanThangHienTai);
         model.addAttribute("soHoaDonHomNay", soDonNgayHienTai);
         model.addAttribute("soLuongHomNay", soLuongBanNgayHienTai);

@@ -246,6 +246,15 @@
                 width: 0%;
             }
         }
+
+        .navbar-light .navbar-nav .nav-link:hover {
+            background: #fff3c6;
+            color: red; /* Change this to the desired hover color */
+        }
+        #searchResults2 {
+            max-height: 200px; /* Đặt chiều cao tối đa của khu vực hiển thị */
+            overflow-y: auto; /* Cho phép cuộn dọc nếu nội dung vượt quá chiều cao tối đa */
+        }
     </style>
 </head>
 

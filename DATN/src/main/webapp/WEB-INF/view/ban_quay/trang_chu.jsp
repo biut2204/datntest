@@ -334,7 +334,7 @@
                                     <div id="errorDiv" class="alert alert-danger" style="display: none;">
                                         Chỉ được tạo tối đa 5 hóa đơn.
                                     </div>
-                                    <button type="submit" class="btn btn-success ml-auto" id="createHoaDonButton" onclick="createHoaDon()">Tạo Đơn Hàng</button>
+                                    <button type="submit" class="btn btn-primary ml-auto" id="createHoaDonButton" onclick="createHoaDon()"><i class="fas fa-plus"></i> Tạo Đơn Hàng</button>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">

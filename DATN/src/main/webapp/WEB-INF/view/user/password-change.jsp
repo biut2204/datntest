@@ -16,6 +16,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap" rel="stylesheet">
     <!-- Latform styles -->
     <link rel="stylesheet" href="../../../resources/dist/css/latform-style-1.min.css" type="text/css">
+    <style>
+        .navbar-light .navbar-nav .nav-link:hover {
+            background: #fff3c6;
+            color: red; /* Change this to the desired hover color */
+        }
+    </style>
 </head>
 <body>
 <div class="form-wrapper">

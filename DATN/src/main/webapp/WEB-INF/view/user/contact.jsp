@@ -29,6 +29,12 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../resources/css/style.css" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .navbar-light .navbar-nav .nav-link:hover {
+            background: #fff3c6;
+            color: red; /* Change this to the desired hover color */
+        }
+    </style>
 </head>
 
 <body>

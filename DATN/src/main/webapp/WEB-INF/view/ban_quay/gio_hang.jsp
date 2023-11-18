@@ -533,7 +533,7 @@
 
                             <div class="card">
                                 <div class="card-header">
-                                    <button class="btn btn-success" id="addButton" onclick="clickThem()"><i
+                                    <button class="btn btn-primary" id="addButton" onclick="clickThem()"><i
                                             class="fas fa-plus"></i> Thêm sản phẩm
                                     </button>
 
@@ -620,7 +620,31 @@
 
                             <div class="card">
                                 <div class="container-fluid">
-
+                                    <h5 class="section-title position-relative text-uppercase mb-3 mt-3">
+                                        <span class="bg-dark pr-3">Khách hàng</span>
+                                    </h5>
+                                    <div class="border-bottom">
+                                        <div class=" d-flex justify-content-between align-items-center">
+                                            <div class="row px-xl-5 mt-3">
+                                                <input type="hidden" value="${idHoaDon}" name="idHoaDon">
+                                                <label id="khachHangLabel">Tên khách hàng: <span>${khachHang.ten}</span>
+                                                </label>
+                                                <button style="width: 25px; height: 25px" formaction="/admin/ban-quay/delete-khach-hang/${idHoaDon}"
+                                                        class="btn btn-sm btn-danger ml-2 me-2" id="btnKH"><i
+                                                        class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <button class="btn btn-primary ml-auto" id="addButton2" onclick="clickThem()">
+                                                <i class="fas fa-plus"></i> Thêm khách hàng
+                                            </button>
+                                        </div>
+                                        <div class="row px-xl-5 " id="rowSdt">
+                                            <label >Số điện thoại: <span>${khachHang.sdt}</span></label>
+                                        </div>
+                                        <div class="row px-xl-5 " id="rowEmail">
+                                            <label >Email: <span>${khachHang.email}</span></label>
+                                        </div>
+                                    </div>
                                     <div class="row px-xl-5">
 
                                         <div class="col-lg-6">
@@ -655,7 +679,7 @@
                                             <div class="mb-5">
                                                 <div>
                                                     <label>Ghi chú</label>
-                                                    <button class="btn btn-success " style="width: 150px; height: 30px"
+                                                    <button class="btn btn-primary " style="width: 150px; height: 30px"
                                                             formaction="/admin/ban-quay/luuHD/${hoaDon}">
                                                         Lưu ghi chú
                                                     </button>
@@ -890,7 +914,79 @@
                 </div>
             </div>
         </div>
+        <div id="addFormContainer2" style="display: none;border: 2px">
+            <div class="container-fluid" style="margin-top: 100px">
+                <div class="container">
+                    <form method="post">
 
+                        <div class="card">
+
+                            <h3 style="text-align: center; padding-top: 4px"> Danh sách khách hàng</h3>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example2"  class="table table-bordered table-striped">
+
+                                    <thead>
+                                    <tr>
+                                        <th>Tên</th>
+                                        <th>Ngày Sinh</th>
+                                        <th>Giới Tính</th>
+                                        <th>Xã</th>
+                                        <th>Huyện</th>
+                                        <th>Tỉnh</th>
+                                        <th>SDT</th>
+                                        <th>Email</th>
+                                        <th>Trạng thái</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach items="${listKhachHang}" var="list">
+                                        <tr>
+
+                                            <td>${list.ten}</td>
+                                            <td> ${list.ngay_sinh}</td>
+                                                <%--                                            <td> ${list.ngay_sinh.format(DateTimeFormatter.ofPattern('dd/MM/yyyy HH:mm:ss'))}</td>--%>
+                                            <td>${list.gioiTinh==0?"Nam":"Nữ"}</td>
+                                            <td>${list.dia_chi}</td>
+                                            <td>${list.thanh_pho}</td>
+                                            <td>${list.quoc_gia}</td>
+                                            <td>${list.sdt}</td>
+                                            <td>${list.email}</td>
+                                            <td>${list.trangThai==1?'Hoạt Động':'Ngừng Hoạt Động'}</td>
+                                            <td>
+                                                <input type="hidden" value="${idHoaDon}" name="idHoaDon">
+                                                <button class="btn btn-primary px-3"
+
+                                                        formaction="/admin/ban-quay/update-khach-hang/${list.id}">
+                                                    Chọn
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Tên</th>
+                                        <th>Ngày Sinh</th>
+                                        <th>Giới Tính</th>
+                                        <th>Xã</th>
+                                        <th>Huyện</th>
+                                        <th>Tỉnh</th>
+                                        <th>SDT</th>
+                                        <th>Email</th>
+                                        <th>Trạng thái</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.content-wrapper -->
 
@@ -1084,6 +1180,7 @@
             setTimeout(() => {
                 Swal.close();
             }, 1000);
+            hasError = true;
             event.preventDefault();
         }
         for (var i = 0; i < 99; i++) {
@@ -1395,6 +1492,32 @@
             addFormContainer2.style.display = "none";
         }
     });
+
+</script>
+
+<script>
+    //Khách hàng
+    const spanElement = document.querySelector('#khachHangLabel span');
+    const rowSdt = document.getElementById('rowSdt');
+    const rowEmail = document.getElementById('rowEmail');
+    const btnKH = document.getElementById('btnKH');
+
+
+    var khachHanglb = "${khachHang.ten}";
+    var khachHangTen = "Khách lẻ";
+
+    console.log(khachHanglb);
+    console.log(khachHangTen);
+    // Kiểm tra nếu giá trị của khachHang.ten là null hoặc không được định nghĩa
+    if (!khachHanglb || khachHanglb.trim() === "") {
+        spanElement.textContent = khachHangTen;
+        rowSdt.style.display = 'none';
+        rowEmail.style.display = 'none';
+        btnKH.style.display = 'none';
+    } else {
+        spanElement.textContent = khachHanglb;
+    }
+
 
 </script>
 

@@ -356,7 +356,7 @@
                                                 <td>
                                                     <button formaction="/admin/loai_ao/detail" name="detail"
                                                             value="${list.id}"
-                                                            class="btn btn-primary me-2">Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
                                                     </button>
                                                 </td>
                                             </tr>
@@ -430,10 +430,10 @@
                             </div>
                         </fieldset>
                         <button class="btn btn-primary" formaction="/admin/loai_ao/add" type="submit"
-                                onclick="addProduct()" id="idThem">Thêm Mới
+                                onclick="addProduct()" id="idThem"><i class="fas fa-plus"></i> Thêm Mới
                         </button>
                         <button class="btn btn-primary" formaction="/admin/loai_ao/update" type="submit"
-                                onclick="addProduct1()" id="idUpdate">Cập nhật
+                                onclick="addProduct1()" id="idUpdate"><i class="fas fa-sync"></i> Cập nhật
                         </button>
                     </form>
                 </div>

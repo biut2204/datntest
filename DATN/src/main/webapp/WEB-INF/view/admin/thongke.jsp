@@ -454,6 +454,7 @@
                         </div>
                         <div class="card-body">
                             <h6 class="mb-0 ">Số lượng tồn</h6>
+                            <h5  style="color: orangered"> Sản phẩm</h5>
                             <hr class="dark horizontal">
                             <div id="error-message2" class="hidden" style="display: none">Ngày không hợp lệ. Vui lòng
                                 kiểm tra lại.
@@ -500,7 +501,7 @@
                         </div>
                         <div class="card-body">
                             <h6 class="mb-0 "> Doanh Thu (Tháng hiện tại) </h6>
-                            <p class="text-sm " style="color: orangered"> ${doanhThuThangHienTai} VNĐ </p>
+                            <h5  style="color: orangered"> ${doanhThuThangHienTai} VNĐ </h5>
                             <hr class="dark horizontal">
                             <div id="error-message" class="hidden" style="display: none">Ngày không hợp lệ. Vui lòng
                                 kiểm tra lại.
@@ -531,7 +532,7 @@
                         </div>
                         <div class="card-body">
                             <h6 class="mb-0 ">Số Lượng Áo Đã Bán (Tháng hiện tại)</h6>
-                            <p class="text-sm " style="color: orangered"> ${soLuongBanThangHienTai} cái </p>
+                            <h5  style="color: orangered"> ${soLuongBanThangHienTai} cái </h5>
                             <hr class="dark horizontal">
                             <div id="error-message1" class="hidden" style="display: none">Ngày không hợp lệ. Vui lòng
                                 kiểm tra lại.
@@ -1309,8 +1310,8 @@
                     {
                         label: 'Số lượng tồn',
                         data: [],
-                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                        borderColor: 'rgba(255, 159, 64, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)', // Màu của cột
+                        borderColor: 'rgba(255, 99, 132, 1)', // Màu viền của cột
                         borderWidth: 1
                     }]
             },

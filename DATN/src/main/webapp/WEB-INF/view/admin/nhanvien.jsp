@@ -364,7 +364,7 @@
                         <form method="post">
                             <div class="card">
                                 <div class="card-header">
-                                    <button class="btn btn-primary" id="addButton" onclick="clickThem()">Thêm</button>
+                                    <button class="btn btn-success" id="addButton" onclick="clickThem()"><i class="fas fa-plus"></i> Thêm</button>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -402,7 +402,7 @@
                                                 <td>
                                                     <button formaction="/admin/nhanvien/detail" name="detail"
                                                             value="${list.id}"
-                                                            class="btn btn-primary me-2">Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i>Detail
                                                     </button>
                                                 </td>
                                             </tr>
@@ -564,11 +564,11 @@
                                 </div>
                             </div>
                         </fieldset>
-                        <button  hidden id="bt1" class="btn btn-primary" formaction="/admin/nhanvien/add" type="submit"
-                                 onclick="addProduct()">Thêm Mới
+                        <button  hidden id="bt1" class="btn btn-success" formaction="/admin/nhanvien/add" type="submit"
+                                 onclick="addProduct()"><i class="fas fa-plus"></i> Thêm Mới
                         </button>
                         <button  id="bt3" class="btn btn-primary" formaction="/admin/nhanvien/update" type="submit"
-                                 onclick="addProduct()">Cập nhật
+                                 onclick="addProduct()"><i class="fas fa-sync"></i> Cập nhật
                         </button>
                         <button hidden id="bt2" class="btn btn-primary" formaction="/admin/nhanvien/clear" type="submit">Clear</button>
                     </form>
