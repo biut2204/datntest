@@ -4,6 +4,7 @@ import com.example.demo.entity.auth.RoleEnum;
 import com.example.demo.entity.khachhang.GioHangChiTiet;
 import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.entity.khachhang.HoaDonChiTiet;
+import com.example.demo.entity.khachhang.HoaDonTraHang;
 import com.example.demo.entity.khachhang.Users;
 import com.example.demo.entity.dto.DonHangDTO;
 import com.example.demo.entity.sanpham.AoChiTiet;
@@ -14,6 +15,7 @@ import com.example.demo.ser.sanpham.AoChiTietSer;
 import com.example.demo.ser.users.GioHangChiTietSer;
 import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
+import com.example.demo.ser.users.HoaDonTraHangSer;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +26,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class QuanLiDonHang {
@@ -52,6 +56,9 @@ public class QuanLiDonHang {
 
     @Autowired
     ChatSer chatSer;
+
+    @Autowired
+    HoaDonTraHangSer hoaDonTraHangSer;
 
     @GetMapping("/admin/quan_li_don_hang/*")
     public String viewQuanLiDonHang(HttpServletRequest request, Model model, HttpSession session) {
@@ -91,7 +98,7 @@ public class QuanLiDonHang {
 
         LocalDate fromDateSession = (LocalDate) session.getAttribute("fromDate");
         LocalDate toDateSession = (LocalDate) session.getAttribute("toDate");
-        String trangThaiLoc = (String)  session.getAttribute("trangThaiLoc");
+        String trangThaiLoc = (String) session.getAttribute("trangThaiLoc");
         List<DonHangDTO> listDonHangXuatExxcel = new ArrayList<>();
         if (donHangDTOList != null) {
             model.addAttribute("listDonHangDTOS", donHangDTOList);
@@ -117,6 +124,153 @@ public class QuanLiDonHang {
         return "/admin/quan_li_don_hang_admin";
     }
 
+    @GetMapping("/admin/san_pham_tra/*")
+    public String viewTraHang(Model model, HttpServletRequest request) {
+
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+        if (user.getRole() == RoleEnum.STAFF) {
+            model.addAttribute("adminOrStaff", "1");
+        } else if (user.getRole() == RoleEnum.ADMIN) {
+            model.addAttribute("adminOrStaff", "2");
+        }
+        model.addAttribute("nameUser", user.getTen());
+
+        List<HoaDonTraHang> listHoaDonTraHangs = hoaDonTraHangSer.getAll();
+        model.addAttribute("listHoaDonTraHangs", listHoaDonTraHangs);
+
+        String url = request.getRequestURI();
+        String[] parts = url.split("/admin/san_pham_tra/");
+        String id = parts[1];
+
+        try {
+            HoaDonTraHang hoaDonTraHang = hoaDonTraHangSer.findById(UUID.fromString(id));
+            model.addAttribute("item", hoaDonTraHang);
+            model.addAttribute("trangThai", hoaDonTraHang.getTrangThai());
+        } catch (Exception e) {
+
+        }
+
+        return "/admin/tra_hang";
+    }
+
+    @PostMapping("/admin/tra_hang/detail")
+    public String detailTraHang(HttpServletRequest request) {
+        String detail = request.getParameter("detail");
+        return "redirect:/admin/san_pham_tra/" + detail;
+    }
+
+    @PostMapping("/admin/tra_hang/delete")
+    public String deleteTraHang(HttpServletRequest request) {
+        String delete = request.getParameter("delete");
+
+        HoaDonTraHang hoaDonTraHang = hoaDonTraHangSer.findById(UUID.fromString(delete));
+
+        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietSer.findByHoaDonAndAoChiTiet(hoaDonTraHang.getHoaDon().getId(), hoaDonTraHang.getAoChiTiet().getId());
+        HoaDonChiTiet hdct = new HoaDonChiTiet();
+        hdct.setHoaDon(hoaDonChiTiet.getHoaDon());
+        hdct.setAoChiTiet(hoaDonChiTiet.getAoChiTiet());
+        hdct.setSoLuong(hoaDonChiTiet.getSoLuong());
+        hdct.setDonGia(hoaDonChiTiet.getDonGia());
+        hdct.setSoLuongYeuCauTraHang(0);
+
+        hoaDonChiTietSer.update(hoaDonChiTiet.getId(), hdct);
+
+        hoaDonTraHangSer.delete(UUID.fromString(delete));
+        return "redirect:/admin/san_pham_tra/1";
+    }
+
+    @PostMapping("/admin/tra_hang_admin/xac_nhan")
+    public String adminXacNhanTraHang(HttpServletRequest request) {
+
+        Object object = request.getSession().getAttribute("userLogged");
+        Users user = (Users) object;
+
+        String idDonHangHoanTra = request.getParameter("idDonHangHoanTra");
+        String ghiChu = request.getParameter("ghiChu");
+
+
+        HoaDonTraHang hoaDonTraHang = hoaDonTraHangSer.findById(UUID.fromString(idDonHangHoanTra));
+
+        HoaDon hoaDon = hoaDonTraHang.getHoaDon();
+
+        AoChiTiet act = hoaDonTraHang.getAoChiTiet();
+
+        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietSer.findByHoaDonAndAoChiTiet(hoaDon.getId(), act.getId());
+
+        int TongTienGiam = hoaDonTraHang.getSoLuongTra() * hoaDonTraHang.getDonGia().intValue();
+        int soTienConHDCT = hoaDonChiTiet.getDonGia().intValue() - TongTienGiam;
+        int SoTienConHd = hoaDon.getTongTien().intValue() - TongTienGiam;
+        BigDecimal newTongTienHDCT = new BigDecimal(soTienConHDCT);
+        BigDecimal newTongTienHD = new BigDecimal(SoTienConHd);
+
+        HoaDon hd1 = new HoaDon();
+
+        hd1.setMa(hoaDon.getMa());
+        hd1.setTongTien(hoaDon.getTongTien());
+        hd1.setNgayTao(hoaDon.getNgayTao());
+        hd1.setNgayChoXacNhan(hoaDon.getNgayChoXacNhan());
+        hd1.setNgayXacNhan(hoaDon.getNgayXacNhan());
+        hd1.setNgayHoanThanh(hoaDon.getNgayHoanThanh());
+        hd1.setNgayThanhToan(hoaDon.getNgayThanhToan());
+        hd1.setNhanVien(hoaDon.getNhanVien());
+        hd1.setKhachHang(hoaDon.getKhachHang());
+        hd1.setMoTa(hoaDon.getMoTa());
+        hd1.setTongTien(newTongTienHD);
+        hd1.setTrangThai(hoaDon.getTrangThai());
+        hd1.setHinhThuc(hoaDon.getHinhThuc());
+
+        hoaDonSer.update(hoaDon.getId(), hd1);
+
+        HoaDonChiTiet hdct = new HoaDonChiTiet();
+        hdct.setHoaDon(hoaDonChiTiet.getHoaDon());
+        hdct.setAoChiTiet(hoaDonChiTiet.getAoChiTiet());
+        hdct.setSoLuong(hoaDonChiTiet.getSoLuong() - hoaDonTraHang.getSoLuongTra());
+        hdct.setDonGia(newTongTienHDCT);
+        hdct.setSoLuongYeuCauTraHang(0);
+
+        hoaDonChiTietSer.update(hoaDonChiTiet.getId(), hdct);
+
+        HoaDonTraHang hoaDonTraHang1 = new HoaDonTraHang();
+
+        hoaDonTraHang1.setHoaDon(hoaDon);
+        hoaDonTraHang1.setAoChiTiet(hoaDonTraHang.getAoChiTiet());
+        hoaDonTraHang1.setNhanVien(user);
+        hoaDonTraHang1.setNgayYeuCau(hoaDonTraHang.getNgayYeuCau());
+        hoaDonTraHang1.setNgayXacNhan(LocalDateTime.now());
+        hoaDonTraHang1.setSoLuongTra(hoaDonTraHang.getSoLuongTra());
+        hoaDonTraHang1.setGhiChu(hoaDonTraHang.getGhiChu());
+        hoaDonTraHang1.setDonGia(hoaDonTraHang.getDonGia());
+        hoaDonTraHang1.setNote(ghiChu);
+        hoaDonTraHang1.setTrangThai(2);
+
+        hoaDonTraHangSer.update(hoaDonTraHang.getId(), hoaDonTraHang1);
+
+        AoChiTiet aoChiTiet = new AoChiTiet();
+
+        int slBan = act.getSlban() - hoaDonTraHang.getSoLuongTra();
+
+        int slTra;
+        if (act.getSlTra() == null){
+            slTra = 0;
+        }else {
+            slTra = act.getSlTra();
+        }
+        int updateSlTra = slTra + hoaDonTraHang.getSoLuongTra();
+
+        aoChiTiet.setMau_sac(act.getMau_sac());
+        aoChiTiet.setSize(act.getSize());
+        aoChiTiet.setAo(act.getAo());
+        aoChiTiet.setSlton(act.getSlton());
+        aoChiTiet.setSlban(slBan);
+        aoChiTiet.setSlTra(updateSlTra);
+        aoChiTiet.setTrangthai(act.getTrangthai());
+
+        aoChiTietSer.update(act.getId(), aoChiTiet);
+
+        return "redirect:/admin/san_pham_tra/" + hoaDonTraHang.getId();
+    }
+
     @PostMapping("/admin/quan_li_don_hang/loc")
     public String loc(HttpServletRequest request, HttpSession session) {
 
@@ -140,17 +294,17 @@ public class QuanLiDonHang {
         if (trangThai.equals("0")) {
             listDonHangDTOS = hoaDonSer.findAllByStartDateAndEndDateOrBoth(fromDate, toDate);
         }
-        if(!trangThai.equals("0")){
+        if (!trangThai.equals("0")) {
             listDonHangDTOS = hoaDonSer.findAllByOptionalFilters(Integer.parseInt(trangThai), fromDate, toDate);
         }
 
-        System.out.println("Trạng thái tìm:"+trangThai);
+        System.out.println("Trạng thái tìm:" + trangThai);
         System.out.println(fromDate);
         System.out.println(toDate);
 
-        session.setAttribute("trangThaiLoc",trangThai);
-        session.setAttribute("fromDate",fromDate);
-        session.setAttribute("toDate",toDate);
+        session.setAttribute("trangThaiLoc", trangThai);
+        session.setAttribute("fromDate", fromDate);
+        session.setAttribute("toDate", toDate);
         session.setAttribute("listDonHangDTOS", listDonHangDTOS);
 
         return "redirect:/admin/quan_li_don_hang/1";

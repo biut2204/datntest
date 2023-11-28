@@ -337,7 +337,9 @@
                                         <thead>
                                         <tr>
                                             <th>Mã</th>
-                                            <th>Tên</th>
+                                            <th>Tên Hãng</th>
+                                            <th>Tên người đại diện</th>
+                                            <th>Số điện thoại</th>
                                             <th>Địa chỉ</th>
                                             <th>Trạng thái</th>
                                             <th>Action</th>
@@ -348,12 +350,14 @@
                                             <tr>
                                                 <td>${list.ma}</td>
                                                 <td>${list.ten}</td>
+                                                <td>${list.tenNDD}</td>
+                                                <td>${list.sdt}</td>
                                                 <td>${list.diaChi}</td>
                                                 <td>${list.trangthai==1?'Hoạt Động':'Ngừng Hoạt Động'}</td>
                                                 <td>
                                                     <button formaction="/admin/hang/detail" name="detail"
                                                             value="${list.id}"
-                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Chi Tiết
                                                     </button>
                                                 </td>
                                             </tr>
@@ -362,7 +366,9 @@
                                         <tfoot>
                                         <tr>
                                             <th>Mã</th>
-                                            <th>Tên</th>
+                                            <th>Tên Hãng</th>
+                                            <th>Tên người đại diện</th>
+                                            <th>Số điện thoại</th>
                                             <th>Địa chỉ</th>
                                             <th>Trạng thái</th>
                                             <th>Action</th>
@@ -387,15 +393,30 @@
                     <form method="post" id="addForm">
                         <h3 style="text-align: center">HÃNG</h3>
                         <input type="hidden" name="id" value="${item.id}">
-                        <div class="form-group">
-                            <label for="formGroupExampleInput2">Tên <span class="text-danger">(*)</span> :</label>
-                            <input type="text" name="ten" value="${item.ten}" class="form-control"
-                                   id="formGroupExampleInput2" placeholder="Tên ">
-                            <span id="errorTen" class="text-danger"></span>
+                        <div class="form-row ">
+                            <div class="form-group col-md-4">
+                                <label for="ten">Tên Hãng <span class="text-danger">(*)</span> :</label>
+                                <input type="text" name="ten" value="${item.ten}" class="form-control"
+                                       id="ten" placeholder="Tên ">
+                                <span id="errorTen" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="tenNDD">Tên Người Đại Diện <span class="text-danger">(*)</span> :</label>
+                                <input type="text" name="tenNDD" value="${item.tenNDD}" class="form-control"
+                                       id="tenNDD" placeholder="Tên Người Đại Diện ">
+                                <span id="errorTenNDD" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="sdt">Số Điện Thoai <span class="text-danger">(*)</span> :</label>
+                                <input type="text" name="sdt" value="${item.sdt}" class="form-control"
+                                       id="sdt" placeholder="Số Điện Thoại ">
+                                <span id="errorSDT" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Địa chỉ <span class="text-danger">(*)</span> :</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                            <textarea class="form-control" id="diaChi" rows="3"
                                       name="diaChi">${item.diaChi}</textarea>
                             <span id="errorDiaChi" class="text-danger"></span>
                         </div>
@@ -515,6 +536,8 @@
         document.getElementById("idUpdate").style.display = "none";
 
         document.getElementsByName("ten")[0].value = "";
+        document.getElementsByName("tenNDD")[0].value = "";
+        document.getElementsByName("sdt")[0].value = "";
         document.getElementsByName("diaChi")[0].value = "";
         // Đặt giá trị cho radio buttons
         document.getElementById("gridRadios1").checked = true;
@@ -526,29 +549,60 @@
     function addProduct() {
         var ten = document.getElementsByName('ten')[0].value;
         var diaChi = document.getElementsByName('diaChi')[0].value;
+        var tenNDD = document.getElementsByName('tenNDD')[0].value;
+        var sdt = document.getElementsByName('sdt')[0].value;
         var errorTen = document.getElementById('errorTen');
         var errorDiaChi = document.getElementById('errorDiaChi');
+        var errorTenNDD = document.getElementById('errorTenNDD');
+        var errorSDT = document.getElementById('errorSDT');
         var hasError = false;
 
         if (ten.trim() === '') {
-            errorTen.innerText = 'Vui lòng nhập tên.';
+            errorTen.innerText = 'Vui lòng nhập tên hãng.';
+            document.getElementById('ten').style.borderColor = 'red';
             hasError = true;
         } else {
+            document.getElementById('ten').style.borderColor = 'gray';
             errorTen.innerText = '';
+        }
+        if (tenNDD.trim() === '') {
+            errorTenNDD.innerText = 'Vui lòng nhập tên người đại diện.';
+            document.getElementById('tenNDD').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('tenNDD').style.borderColor = 'gray';
+            errorTenNDD.innerText = '';
+        }
+        if (sdt.trim() === '') {
+            errorSDT.innerText = 'Vui lòng nhập số điện thoại.';
+            document.getElementById('sdt').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            if(!/^(0\d{9})$/.test(sdt)){
+                errorSDT.innerText = 'Số điện thoại không hợp lệ.';
+                document.getElementById('sdt').style.borderColor = 'red';
+                hasError = true;
+            }else{
+                document.getElementById('sdt').style.borderColor = 'gray';
+                errorSDT.innerText = '';
+            }
         }
 
         <c:forEach var="list" items="${listHangs}">
         if ("${list.ten}".trim() === ten.trim()) {
             errorTen.innerText = 'Tên hãng đã tồn tại.';
+            document.getElementById('ten').style.borderColor = 'red';
             hasError = true;
         }
         </c:forEach>
 
         if (diaChi.trim() === '') {
+            document.getElementById('diaChi').style.borderColor = 'red';
             errorDiaChi.innerText = 'Vui lòng nhập địa chỉ.';
             hasError = true;
         } else {
-            errorTen.innerText = '';
+            document.getElementById('diaChi').style.borderColor = 'gray';
+            errorDiaChi.innerText = '';
         }
 
         if (hasError) {
@@ -558,22 +612,54 @@
     function addProduct1() {
         var ten = document.getElementsByName('ten')[0].value;
         var diaChi = document.getElementsByName('diaChi')[0].value;
+        var tenNDD = document.getElementsByName('tenNDD')[0].value;
+        var sdt = document.getElementsByName('sdt')[0].value;
         var errorTen = document.getElementById('errorTen');
         var errorDiaChi = document.getElementById('errorDiaChi');
+        var errorTenNDD = document.getElementById('errorTenNDD');
+        var errorSDT = document.getElementById('errorSDT');
         var hasError = false;
 
         if (ten.trim() === '') {
             errorTen.innerText = 'Vui lòng nhập tên.';
+            document.getElementById('ten').style.borderColor = 'red';
             hasError = true;
         } else {
+            document.getElementById('ten').style.borderColor = 'gray';
             errorTen.innerText = '';
+        }
+        if (tenNDD.trim() === '') {
+            errorTenNDD.innerText = 'Vui lòng nhập tên người đại diện.';
+            document.getElementById('tenNDD').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('tenNDD').style.borderColor = 'gray';
+            errorTenNDD.innerText = '';
+        }
+        if (sdt.trim() === '') {
+            errorSDT.innerText = 'Vui lòng nhập số điện thoại.';
+            document.getElementById('sdt').style.borderColor = 'red';
+            hasError = true;
+        } else {
+
+            if(!/^(0\d{9})$/.test(sdt)){
+                errorSDT.innerText = 'Số điện thoại không hợp lệ.';
+                document.getElementById('sdt').style.borderColor = 'red';
+                hasError = true;
+            }else{
+                document.getElementById('sdt').style.borderColor = 'gray';
+                errorSDT.innerText = '';
+            }
+
         }
 
         if (diaChi.trim() === '') {
             errorDiaChi.innerText = 'Vui lòng nhập địa chỉ.';
+            document.getElementById('diaChi').style.borderColor = 'red';
             hasError = true;
         } else {
-            errorTen.innerText = '';
+            document.getElementById('diaChi').style.borderColor = 'gray';
+            errorDiaChi.innerText = '';
         }
 
         if (hasError) {

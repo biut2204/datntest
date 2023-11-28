@@ -29,12 +29,62 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../../../resources/css/style.css" rel="stylesheet">
     <style>
-        .hidden_Form, .hidden_Hang, .hidden_LoaiAo, .hidden_ChatVai, .hidden_MauSac {
-            display: none;
+        .label1 {
+            position: absolute;
+            top: -10px;
+            right: -8px;
+            color: red;
+            padding: 5px;
+            padding-left: 278px;
+            transform: rotate(0deg);
+            transform-origin: top right;
+            animation: blink 1s infinite alternate;
+            white-space: nowrap;
         }
+
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
         .navbar-light .navbar-nav .nav-link:hover {
             background: #fff3c6;
             color: red; /* Change this to the desired hover color */
+        }
+    </style>
+    <style>
+        #showMore1, #showLess1, #showMore2, #showLess2, #showMore3, #showLess3, #showMore4, #showLess4, #showMore5, #showLess5, .class-radio-b {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        #showMore1:hover,
+        #showLess1:hover,
+        #showMore2:hover,
+        #showLess2:hover,
+        #showMore3:hover,
+        #showLess3:hover,
+        #showMore4:hover,
+        #showLess4:hover,
+        #showMore5:hover,
+        #showLess5:hover{
+            transform: translateY(-5px);
+        }
+        .class-radio-b:hover{
+            color: red;
+        }
+        .button-loc-b{
+            position: fixed;
+            width: 21.6%;
+            margin-left: 4%;
+            top: 88%;
+            left: 0;
         }
     </style>
 </head>
@@ -104,7 +154,7 @@
                                 <a href="/user/don_hang/${idKh}" class="btn px-0">
                                     <i class="fa fa-user"></i>
                                     <span class="badge text-secondary border border-secondary rounded-circle"
-                                          style="padding-bottom: 2px;">${idKh}</span>
+                                          style="padding-bottom: 2px;">${khachHangNow.ten}</span>
                                 </a>
                                 <a href="/user/gio_hang/view/${idKh}" class="btn px-0 ml-3">
                                     <i class="fas fa-shopping-cart text-primary"></i>
@@ -114,7 +164,7 @@
                             </c:when>
                             <c:when test="${idKh == 2}">
                                 <a href="/login" class="btn px-0 ml-3">
-                                    <i class="fas fa-user text-primary"></i>
+                                    <i class="fas fa-user text-primary"></i><span style="color: white">Đăng nhập</span>
                                 </a>
                             </c:when>
                         </c:choose>
@@ -158,18 +208,20 @@
                         <div class="custom-control custom-combobox d-flex align-items-center justify-content-between mb-3">
                             <select class="custom-select mr-2" id="minPrice" name="minPrice">
                                 <option value="">Min</option>
-                                <option value="100">10000</option>
-                                <option value="200">20000</option>
-                                <option value="300">30000</option>
+                                <option value="10000" ${minPriceInt == "10000"?'selected':''}>10.000</option>
+                                <option value="30000" ${minPriceInt == "30000"?'selected':''}>30.000</option>
+                                <option value="50000" ${minPriceInt == "50000"?'selected':''}>50.000</option>
+                                <option value="70000" ${minPriceInt == "70000"?'selected':''}>70.000</option>
                                 <!-- Thêm các tùy chọn giá khác tùy theo nhu cầu của bạn -->
                             </select>
 
                             <!-- Combobox Max Giá -->
                             <select class="custom-select ml-2" id="maxPrice" name="maxPrice">
                                 <option value="">Max</option>
-                                <option value="500000">500000</option>
-                                <option value="1000000">1000000</option>
-                                <option value="1500000">1500000</option>
+                                <option value="150000" ${maxPriceInt == "150000"?'selected':''}>150.000</option>
+                                <option value="200000" ${maxPriceInt == "200000"?'selected':''}>200.000</option>
+                                <option value="250000" ${maxPriceInt == "250000"?'selected':''}>250.000</option>
+                                <option value="300000" ${maxPriceInt == "300000"?'selected':''}>300.000</option>
                                 <!-- Thêm các tùy chọn giá khác tùy theo nhu cầu của bạn -->
                             </select>
                         </div>
@@ -188,17 +240,18 @@
                         <c:forEach items="${listForm}" var="list" varStatus="status">
                             <div class="custom-radio d-flex align-items-center justify-content-between">
                                 <input type="radio"
-                                       class="control-input <c:if test="${status.index >1}">hidden_Form</c:if>"
+                                       class="control-input <c:if test="${status.index >1}">hidden_Form</c:if> "
                                        id="form-${status.index}"
-                                       name="idForm" value="${list.id}">
-                                <label class="<c:if test="${status.index >1}">hidden_Form</c:if>"
+                                       name="idForm" value="${list.id}" ${idFormS == list.id?'checked':''}>
+                                <label class="<c:if test="${status.index >1}">hidden_Form</c:if> "
                                        for="form-${status.index}"
-                                       style="width: 200px; padding-top: 8px">${list.ten}</label>
+                                       style="width: 200px; padding-top: 8px"><span class="class-radio-b">${list.ten}</span> </label>
                             </div>
                         </c:forEach>
-                        <div style="padding-left: 30%">
+                        <div style="margin-left: 30%; width: 40%">
                             <p onclick="showMore1()" id="showMore1">Xem Thêm <i class="fas fa-angle-down"></i></p>
-                            <p onclick="showLess1()" id="showLess1" style="display: none">Rút gọn <i class="fas fa-angle-up"></i></p>
+                            <p onclick="showLess1()" id="showLess1" style="display: none">Rút gọn <i
+                                    class="fas fa-angle-up"></i></p>
                         </div>
                     </div>
                 </div>
@@ -211,15 +264,19 @@
                     <div class="bg-light p-4 mb-30">
                         <c:forEach items="${listHang}" var="list" varStatus="status">
                             <div class="custom-radio d-flex align-items-center justify-content-between">
-                                <input type="radio" class="control-input <c:if test="${status.index >1}">hidden_Hang</c:if>" id="hang-${status.index}"
-                                       name="idHang" value="${list.id}">
-                                <label class="<c:if test="${status.index >1}">hidden_Hang</c:if>" style="width: 200px; padding-top: 8px"
-                                       for="hang-${status.index}">${list.ten}</label>
+                                <input type="radio"
+                                       class="control-input <c:if test="${status.index >1}">hidden_Hang</c:if> "
+                                       id="hang-${status.index}"
+                                       name="idHang" value="${list.id}" ${idHangS == list.id?'checked':''}>
+                                <label class="<c:if test="${status.index >1}">hidden_Hang</c:if> "
+                                       style="width: 200px; padding-top: 8px"
+                                       for="hang-${status.index}"><span class="class-radio-b">${list.ten}</span></label>
                             </div>
                         </c:forEach>
-                        <div style="padding-left: 30%">
+                        <div style="margin-left: 30%; width: 40%">
                             <p onclick="showMore2()" id="showMore2">Xem Thêm <i class="fas fa-angle-down"></i></p>
-                            <p onclick="showLess2()" id="showLess2" style="display: none">Rút gọn <i class="fas fa-angle-up"></i></p>
+                            <p onclick="showLess2()" id="showLess2" style="display: none">Rút gọn <i
+                                    class="fas fa-angle-up"></i></p>
                         </div>
                     </div>
                 </div>
@@ -232,15 +289,19 @@
                     <div class="bg-light p-4 mb-30">
                         <c:forEach items="${listLoaiAo}" var="list" varStatus="status">
                             <div class="custom-radio d-flex align-items-center justify-content-between">
-                                <input type="radio" class="control-input <c:if test="${status.index >1}">hidden_LoaiAo</c:if>" id="loaiAo-${status.index}"
-                                       name="idLoaiAo" value="${list.id}" ${list.id == loaiAo.id ?'checked':''}>
-                                <label class="<c:if test="${status.index >1}">hidden_LoaiAo</c:if>" style="width: 200px; padding-top: 8px"
-                                       for="loaiAo-${status.index}">${list.ten}</label>
+                                <input type="radio"
+                                       class="control-input <c:if test="${status.index >1}">hidden_LoaiAo</c:if> "
+                                       id="loaiAo-${status.index}"
+                                       name="idLoaiAo" value="${list.id}" ${idLoaiAoS == list.id?'checked':''}>
+                                <label class="<c:if test="${status.index >1}">hidden_LoaiAo</c:if> "
+                                       style="width: 200px; padding-top: 8px"
+                                       for="loaiAo-${status.index}"><span class="class-radio-b">${list.ten}</span></label>
                             </div>
                         </c:forEach>
-                        <div style="padding-left: 30%">
+                        <div style="margin-left: 30%; width: 40%">
                             <p onclick="showMore3()" id="showMore3">Xem Thêm <i class="fas fa-angle-down"></i></p>
-                            <p onclick="showLess3()" id="showLess3" style="display: none">Rút gọn <i class="fas fa-angle-up"></i></p>
+                            <p onclick="showLess3()" id="showLess3" style="display: none">Rút gọn <i
+                                    class="fas fa-angle-up"></i></p>
                         </div>
                     </div>
                 </div>
@@ -253,15 +314,19 @@
                     <div class="bg-light p-4 mb-30">
                         <c:forEach items="${listChatVai}" var="list" varStatus="status">
                             <div class="custom-radio d-flex align-items-center justify-content-between">
-                                <input type="radio" class="control-input <c:if test="${status.index >1}">hidden_ChatVai</c:if>" id="cv-${status.index}"
-                                       name="idChatVai" value="${list.id}">
-                                <label class="<c:if test="${status.index >1}">hidden_ChatVai</c:if>" style="width: 200px; padding-top: 8px"
-                                       for="cv-${status.index}">${list.ten}</label>
+                                <input type="radio"
+                                       class="control-input <c:if test="${status.index >1}">hidden_ChatVai</c:if> "
+                                       id="cv-${status.index}"
+                                       name="idChatVai" value="${list.id}" ${idChatVaiS == list.id?'checked':''}>
+                                <label class="<c:if test="${status.index >1}">hidden_ChatVai</c:if> "
+                                       style="width: 200px; padding-top: 8px"
+                                       for="cv-${status.index}"><span class="class-radio-b">${list.ten}</span></label>
                             </div>
                         </c:forEach>
-                        <div style="padding-left: 30%">
+                        <div style="margin-left: 30%; width: 40%">
                             <p onclick="showMore4()" id="showMore4">Xem Thêm <i class="fas fa-angle-down"></i></p>
-                            <p onclick="showLess4()" id="showLess4" style="display: none">Rút gọn <i class="fas fa-angle-up"></i></p>
+                            <p onclick="showLess4()" id="showLess4" style="display: none">Rút gọn <i
+                                    class="fas fa-angle-up"></i></p>
                         </div>
                     </div>
                 </div>
@@ -274,19 +339,23 @@
                     <div class="bg-light p-4 mb-30">
                         <c:forEach items="${listMauSac}" var="list" varStatus="status">
                             <div class="custom-radio d-flex align-items-center justify-content-between">
-                                <input type="checkbox" class="control-input <c:if test="${status.index >1}">hidden_MauSac</c:if>" id="ms-${status.index}"
-                                       name="mauSacIds" value="${list.id}">
-                                <label class="<c:if test="${status.index >1}">hidden_MauSac</c:if>" style="width: 200px; padding-top: 8px"
-                                       for="ms-${status.index}">${list.ten}</label>
+                                <input type="checkbox"
+                                       class="control-input <c:if test="${status.index >1}">hidden_MauSac</c:if> "
+                                       id="ms-${status.index}"
+                                       name="mauSacIds" value="${list.id}" ${mauSacIdsS.contains(list.id)?'checked':''}>
+                                <label class="<c:if test="${status.index >1}">hidden_MauSac</c:if>"
+                                       style="width: 200px; padding-top: 8px"
+                                       for="ms-${status.index}"> <span class="class-radio-b">${list.ten}</span></label>
                             </div>
                         </c:forEach>
-                        <div style="padding-left: 30%">
+                        <div style="margin-left: 30%; width: 40%">
                             <p onclick="showMore5()" id="showMore5">Xem Thêm <i class="fas fa-angle-down"></i></p>
-                            <p onclick="showLess5()" id="showLess5" style="display: none">Rút gọn <i class="fas fa-angle-up"></i></p>
+                            <p onclick="showLess5()" id="showLess5" style="display: none">Rút gọn <i
+                                    class="fas fa-angle-up"></i></p>
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-block btn-primary font-weight-bold my-3 py-3"
+                <button class="btn btn-block btn-primary font-weight-bold my-3 py-3 button-loc-b"
                         formaction="/user/tim_kiem_nang_cao/${idKh}">Lọc
                 </button>
 
@@ -302,6 +371,7 @@
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <div>
+                            Số sản phẩm tìm kiếm ra : ${soLuongTimKiemRa}
                         </div>
                     </div>
                 </div>
@@ -317,6 +387,14 @@
                                             class="fa fa-search"></i></a>
                                 </div>
                             </div>
+                            <c:choose>
+                                <c:when test="${icon == 1}">
+                                    <div class="label1"><img src="/images/best_seller.png" style="width: 100%"></div>
+                                </c:when>
+                                <c:when test="${icon == 2}">
+                                    <div class="label1"><img src="/images/new_no_phong.png" style="width: 80%"></div>
+                                </c:when>
+                            </c:choose>
                             <div class="text-center py-4">
                                 <a class="h6 text-decoration-none text-truncate"
                                    href="/user/san_pham_detail/${idKh}/${list.ao.id}">${list.ao.ten}</a>
@@ -347,19 +425,34 @@
                     </div>
                 </c:forEach>
 
-                <div class="col-12">
+                <div class="col-12" style="display: <c:if test="${soLuongTimKiemRa == 0}">none</c:if>">
                     <nav>
-                        <ul class="pagination justify-content-center">
-                            <div id="pagination">
+                        <div class="row">
+                            <div class="col-3">
+
+                            </div>
+                            <div class="col-1">
                                 <button onclick="previousPage()"
-                                        style="width: 80px; background: #0c84ff; border-radius: 5px;color: white">Pre
-                                </button>
-                                <span id="currentPage">1</span>
-                                <button onclick="nextPage()"
-                                        style="width: 80px; background: #0c84ff; border-radius: 5px;color: white">Next
+                                        style="width: 80px; background: #0c84ff; border-radius: 5px;color: white">Trước
                                 </button>
                             </div>
-                        </ul>
+                            <div class="col-4 d-flex justify-content-center">
+                                <ul id="pagination" class="pagination justify-content-center">
+                                    <li class="page-item">
+                                <span id="currentPage" onclick="previousPage()" class="page-link"
+                                      style="background: #0c84ff; color: white;">1</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-1">
+                                <button onclick="nextPage()"
+                                        style="width: 80px; background: #0c84ff; border-radius: 5px;color: white">Sau
+                                </button>
+                            </div>
+                            <div class="col-3">
+
+                            </div>
+                        </div>
                     </nav>
                 </div>
             </div>
@@ -374,69 +467,37 @@
 <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
     <div class="row px-xl-5 pt-5">
         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-            <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-            <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum
-                tempor no vero est magna amet no</p>
-            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-            <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+            <h5 class="text-secondary text-uppercase mb-4">LIÊN LẠC</h5>
+            <p class="mb-4">Số 19, Ngõ 204, Lê Thanh Nghị, Hai Bà Trưng, Hà Nội</p>
+            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Nhóm SD-99</p>
+            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>bang0392887284@gmail.com</p>
+            <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+084 987 654 321</p>
         </div>
         <div class="col-lg-8 col-md-12">
             <div class="row">
-                <div class="col-md-4 mb-5">
-                    <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
+                <div class="col-md-6 mb-5">
+                    <h5 class="text-secondary text-uppercase mb-4">Cửa hàng nhanh chóng</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        <a class="text-secondary mb-2" href="/user/trang_chu/${idKh}"><i
+                                class="fa fa-angle-right mr-2"></i>Trang chủ</a>
+                        <a class="text-secondary mb-2" href="/user/view_tim_kiem/${idKh}"><i
+                                class="fa fa-angle-right mr-2"></i>Cửa Hàng</a>
+                        <a class="text-secondary mb-2" href="/user/contact/${idKh}"><i
+                                class="fa fa-angle-right mr-2"></i>Thông tin cửa hàng</a>
+                        <a class="text-secondary mb-2" href="/user/blog/${idKh}"><i class="fa fa-angle-right mr-2"></i>Bài
+                            viết</a>
                     </div>
                 </div>
-                <div class="col-md-4 mb-5">
-                    <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
-                    <div class="d-flex flex-column justify-content-start">
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-5">
-                    <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
-                    <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
-                    <form action="">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Your Email Address">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary">Sign Up</button>
-                            </div>
-                        </div>
-                    </form>
-                    <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
-                    <div class="d-flex">
-                        <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
+                <div class="col-md-6">
+                    <h5 class="text-secondary text-uppercase mb-4">Vị trí cửa hàng</h5>
+                    <p>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.75784392943!2d105.84125167479552!3d21.002341888686352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac70d567c7d1%3A0x5b99cce1def5a9a9!2zMTkgTmcuIDIwNCBQLiBMw6ogVGhhbmggTmdo4buLLCDEkOG7k25nIFTDom0sIEhhaSBCw6AgVHLGsG5nLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1700558341011!5m2!1svi!2s"
+                                width="400" height="200" style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </p>
+
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
-        <div class="col-md-6 px-xl-0">
-            <p class="mb-md-0 text-center text-md-left text-secondary">
-                &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
-                by
-                <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
-            </p>
-        </div>
-        <div class="col-md-6 px-xl-0 text-center text-md-right">
-            <img class="img-fluid" src="img/payments.png" alt="">
         </div>
     </div>
 </div>
@@ -462,61 +523,118 @@
 <script>
     // Danh sách sản phẩm
     const productList = document.getElementById("product-list");
-
-    // Các nút phân trang
-    const previousButton = document.querySelector("#pagination button:nth-child(1)");
-    const nextButton = document.querySelector("#pagination button:nth-child(3)");
-    const currentPageSpan = document.getElementById("currentPage");
-
-    // Số sản phẩm trên mỗi trang
+    const pagination = document.getElementById("pagination");
+    const previousPageButton = document.getElementById("currentPage");
     const itemsPerPage = 9;
-
-    // Danh sách sản phẩm đầy đủ
     const allProducts = productList.querySelectorAll(".col-lg-4");
-
-    // Trang hiện tại
     let currentPage = 1;
 
-    // Hàm hiển thị sản phẩm cho trang hiện tại
     function displayCurrentPage() {
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
 
-        // Ẩn tất cả sản phẩm
         allProducts.forEach((product) => {
             product.style.display = "none";
         });
 
-        // Hiển thị sản phẩm trên trang hiện tại
         for (let i = startIndex; i < endIndex; i++) {
             if (allProducts[i]) {
                 allProducts[i].style.display = "block";
             }
         }
-
-        // Cập nhật số trang hiện tại
-        currentPageSpan.textContent = currentPage;
     }
 
-    // Hàm chuyển đến trang trước
     function previousPage() {
         if (currentPage > 1) {
             currentPage--;
             displayCurrentPage();
+            updatePagination();
         }
     }
 
-    // Hàm chuyển đến trang kế tiếp
     function nextPage() {
         const totalPages = Math.ceil(allProducts.length / itemsPerPage);
         if (currentPage < totalPages) {
             currentPage++;
             displayCurrentPage();
+            updatePagination();
         }
     }
 
-    // Hiển thị trang đầu tiên khi tải trang
+    function goToPage(page) {
+        currentPage = page;
+        displayCurrentPage();
+        updatePagination();
+    }
+
+    const MAX_VISIBLE_PAGES = 3; // Số lượng trang được hiển thị trung tâm
+    const ELLIPSIS = '...'; // Ký hiệu để hiển thị khi có nhiều trang
+
+    function updatePagination() {
+        pagination.innerHTML = '';
+
+        const totalPages = Math.ceil(allProducts.length / itemsPerPage);
+        let startPage = 1;
+        let endPage = totalPages;
+
+        if (totalPages > MAX_VISIBLE_PAGES) {
+            const half = Math.floor(MAX_VISIBLE_PAGES / 2);
+            const leftOffset = currentPage - half;
+            const rightOffset = currentPage + half;
+
+            if (leftOffset > 1) {
+                pagination.appendChild(createPageButton(1));
+                if (leftOffset > 2) {
+                    pagination.appendChild(createEllipsis());
+                }
+                startPage = leftOffset;
+            }
+
+            if (rightOffset < totalPages) {
+                if (currentPage === 1) {
+                    endPage = 2;
+                } else if (currentPage === 2) {
+                    endPage = 3;
+                } else {
+                    endPage = rightOffset;
+                    if (rightOffset < totalPages - 1) {
+                        pagination.appendChild(createEllipsis());
+                    }
+                }
+            }
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pagination.appendChild(createPageButton(i));
+        }
+
+        displayCurrentPage();
+    }
+
+
+    function createPageButton(page) {
+        const li = document.createElement("li");
+        const button = document.createElement("button");
+        button.classList.add("page-link");
+        button.textContent = page;
+        button.style.background = currentPage === page ? "#0c84ff" : "";
+        button.style.color = currentPage === page ? "white" : "";
+        button.onclick = () => goToPage(page);
+
+        li.appendChild(button);
+        return li;
+    }
+
+    function createEllipsis() {
+        const li = document.createElement("li");
+        li.textContent = ELLIPSIS;
+        return li;
+    }
+
+
+    updatePagination();
     displayCurrentPage();
+
 </script>
 <script>
     function toggleView(elementId) {
@@ -526,11 +644,28 @@
 </script>
 
 <script>
+
+    var fLayout = "${fLayout}";
+    var hiddenRowsF = document.querySelectorAll('.hidden_Form');
+
+    if (fLayout == "none") {
+        for (var i = 0; i < hiddenRowsF.length; i++) {
+            hiddenRowsF[i].style.display = "none";
+        }
+        document.getElementById("showMore1").style.display = "block";
+        document.getElementById("showLess1").style.display = "none";
+    } else {
+        for (var i = 0; i < hiddenRowsF.length; i++) {
+            hiddenRowsF[i].style.display = "block";
+        }
+        document.getElementById("showMore1").style.display = "none";
+        document.getElementById("showLess1").style.display = "block";
+    }
+
     function showMore1() {
         // Hiển thị các dòng ẩn
-        var hiddenRows = document.querySelectorAll('.hidden_Form');
-        for (var i = 0; i < hiddenRows.length; i++) {
-            hiddenRows[i].style.display = 'flex';
+        for (var i = 0; i < hiddenRowsF.length; i++) {
+            hiddenRowsF[i].style.display = 'flex';
         }
         document.getElementById("showMore1").style.display = "none";
         document.getElementById("showLess1").style.display = "block";
@@ -538,19 +673,36 @@
 
     function showLess1() {
         // Ẩn các dòng từ dòng thứ 4 trở đi
-        var hiddenRows = document.querySelectorAll('.hidden_Form');
-        for (var i = 0; i < hiddenRows.length; i++) {
-            hiddenRows[i].style.display = 'none';
+        for (var i = 0; i < hiddenRowsF.length; i++) {
+            hiddenRowsF[i].style.display = 'none';
         }
         document.getElementById("showMore1").style.display = "block";
         document.getElementById("showLess1").style.display = "none";
     }
 
+    /*-------------------------------------------------------*/
+
+    var hLayout = "${hLayout}";
+    var hiddenRowsH = document.querySelectorAll('.hidden_Hang');
+
+    if (hLayout == "none") {
+        for (var i = 0; i < hiddenRowsH.length; i++) {
+            hiddenRowsH[i].style.display = "none";
+        }
+        document.getElementById("showMore2").style.display = "block";
+        document.getElementById("showLess2").style.display = "none";
+    } else {
+        for (var i = 0; i < hiddenRowsH.length; i++) {
+            hiddenRowsH[i].style.display = "block";
+        }
+        document.getElementById("showMore2").style.display = "none";
+        document.getElementById("showLess2").style.display = "block";
+    }
+
     function showMore2() {
         // Hiển thị các dòng ẩn
-        var hiddenRows = document.querySelectorAll('.hidden_Hang');
-        for (var i = 0; i < hiddenRows.length; i++) {
-            hiddenRows[i].style.display = 'flex';
+        for (var i = 0; i < hiddenRowsH.length; i++) {
+            hiddenRowsH[i].style.display = 'flex';
         }
         document.getElementById("showMore2").style.display = "none";
         document.getElementById("showLess2").style.display = "block";
@@ -558,19 +710,37 @@
 
     function showLess2() {
         // Ẩn các dòng từ dòng thứ 4 trở đi
-        var hiddenRows = document.querySelectorAll('.hidden_Hang');
-        for (var i = 0; i < hiddenRows.length; i++) {
-            hiddenRows[i].style.display = 'none';
+        for (var i = 0; i < hiddenRowsH.length; i++) {
+            hiddenRowsH[i].style.display = 'none';
         }
         document.getElementById("showMore2").style.display = "block";
         document.getElementById("showLess2").style.display = "none";
     }
 
+    /*-------------------------------------------------------*/
+
+    var laLayout = "${laLayout}";
+    var hiddenRowsLA = document.querySelectorAll('.hidden_LoaiAo');
+
+    if (laLayout == "none") {
+        for (var i = 0; i < hiddenRowsLA.length; i++) {
+            hiddenRowsLA[i].style.display = "none";
+        }
+        document.getElementById("showMore3").style.display = "block";
+        document.getElementById("showLess3").style.display = "none";
+    } else {
+        for (var i = 0; i < hiddenRowsLA.length; i++) {
+            hiddenRowsLA[i].style.display = "block";
+        }
+        document.getElementById("showMore3").style.display = "none";
+        document.getElementById("showLess3").style.display = "block";
+    }
+
     function showMore3() {
         // Hiển thị các dòng ẩn
-        var hiddenRows = document.querySelectorAll('.hidden_LoaiAo');
-        for (var i = 0; i < hiddenRows.length; i++) {
-            hiddenRows[i].style.display = 'flex';
+
+        for (var i = 0; i < hiddenRowsLA.length; i++) {
+            hiddenRowsLA[i].style.display = 'flex';
         }
         document.getElementById("showMore3").style.display = "none";
         document.getElementById("showLess3").style.display = "block";
@@ -578,19 +748,37 @@
 
     function showLess3() {
         // Ẩn các dòng từ dòng thứ 4 trở đi
-        var hiddenRows = document.querySelectorAll('.hidden_LoaiAo');
-        for (var i = 0; i < hiddenRows.length; i++) {
-            hiddenRows[i].style.display = 'none';
+        for (var i = 0; i < hiddenRowsLA.length; i++) {
+            hiddenRowsLA[i].style.display = 'none';
         }
         document.getElementById("showMore3").style.display = "block";
         document.getElementById("showLess3").style.display = "none";
     }
 
+    /*-------------------------------------------------------*/
+
+    var cvLayout = "${cvLayout}";
+    var hiddenRowsCV = document.querySelectorAll('.hidden_ChatVai');
+
+    if (cvLayout == "none") {
+        for (var i = 0; i < hiddenRowsCV.length; i++) {
+            hiddenRowsCV[i].style.display = "none";
+        }
+        document.getElementById("showMore4").style.display = "block";
+        document.getElementById("showLess4").style.display = "none";
+    } else {
+        for (var i = 0; i < hiddenRowsCV.length; i++) {
+            hiddenRowsCV[i].style.display = "block";
+        }
+        document.getElementById("showMore4").style.display = "none";
+        document.getElementById("showLess4").style.display = "block";
+    }
+
     function showMore4() {
         // Hiển thị các dòng ẩn
-        var hiddenRows = document.querySelectorAll('.hidden_ChatVai');
-        for (var i = 0; i < hiddenRows.length; i++) {
-            hiddenRows[i].style.display = 'flex';
+
+        for (var i = 0; i < hiddenRowsCV.length; i++) {
+            hiddenRowsCV[i].style.display = 'flex';
         }
         document.getElementById("showMore4").style.display = "none";
         document.getElementById("showLess4").style.display = "block";
@@ -598,19 +786,37 @@
 
     function showLess4() {
         // Ẩn các dòng từ dòng thứ 4 trở đi
-        var hiddenRows = document.querySelectorAll('.hidden_ChatVai');
-        for (var i = 0; i < hiddenRows.length; i++) {
-            hiddenRows[i].style.display = 'none';
+        for (var i = 0; i < hiddenRowsCV.length; i++) {
+            hiddenRowsCV[i].style.display = 'none';
         }
         document.getElementById("showMore4").style.display = "block";
         document.getElementById("showLess4").style.display = "none";
     }
 
+    /*-------------------------------------------------------*/
+
+    var msLayout = "${msLayout}";
+    var hiddenRowsMS = document.querySelectorAll('.hidden_MauSac');
+
+    if (msLayout == "none") {
+        for (var i = 0; i < hiddenRowsMS.length; i++) {
+            hiddenRowsMS[i].style.display = "none";
+        }
+        document.getElementById("showMore5").style.display = "block";
+        document.getElementById("showLess5").style.display = "none";
+    } else {
+        for (var i = 0; i < hiddenRowsMS.length; i++) {
+            hiddenRowsMS[i].style.display = "block";
+        }
+        document.getElementById("showMore5").style.display = "none";
+        document.getElementById("showLess5").style.display = "block";
+    }
+
     function showMore5() {
         // Hiển thị các dòng ẩn
-        var hiddenRows = document.querySelectorAll('.hidden_MauSac');
-        for (var i = 0; i < hiddenRows.length; i++) {
-            hiddenRows[i].style.display = 'flex';
+
+        for (var i = 0; i < hiddenRowsMS.length; i++) {
+            hiddenRowsMS[i].style.display = 'flex';
         }
         document.getElementById("showMore5").style.display = "none";
         document.getElementById("showLess5").style.display = "block";
@@ -618,9 +824,8 @@
 
     function showLess5() {
         // Ẩn các dòng từ dòng thứ 4 trở đi
-        var hiddenRows = document.querySelectorAll('.hidden_MauSac');
-        for (var i = 0; i < hiddenRows.length; i++) {
-            hiddenRows[i].style.display = 'none';
+        for (var i = 0; i < hiddenRowsMS.length; i++) {
+            hiddenRowsMS[i].style.display = 'none';
         }
         document.getElementById("showMore5").style.display = "block";
         document.getElementById("showLess5").style.display = "none";

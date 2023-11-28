@@ -28,6 +28,7 @@ import com.example.demo.ser.sanpham.SizeSer;
 import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -99,13 +100,13 @@ public class SanPhamController {
 
 
     @GetMapping("/admin/ao/view/*")
-    public String view(Model model, HttpServletRequest request) {
+    public String view(Model model, HttpServletRequest request, HttpSession session) {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
-        if (user.getRole() == RoleEnum.STAFF){
+        if (user.getRole() == RoleEnum.STAFF) {
             model.addAttribute("adminOrStaff", "1");
-        }else if (user.getRole() == RoleEnum.ADMIN){
+        } else if (user.getRole() == RoleEnum.ADMIN) {
             model.addAttribute("adminOrStaff", "2");
         }
         model.addAttribute("nameUser", user.getTen());
@@ -158,6 +159,12 @@ public class SanPhamController {
 
         }
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
+
+        String loiAoChiTiet = (String) session.getAttribute("loiAoChiTiet");
+        if(loiAoChiTiet != null){
+            model.addAttribute("loiAoChiTietStr", "2");
+        }
+        session.removeAttribute("loiAoChiTiet");
         return "/admin/ao";
     }
 
@@ -260,8 +267,11 @@ public class SanPhamController {
         String soLuong = request.getParameter("soLuong");
         String ao_id = request.getParameter("ao_id");
 
-        if (size_id != null) {
-            for (int i = 0; i < size_id.size(); i++) {
+        for (int i = 0; i < size_id.size(); i++) {
+
+            AoChiTiet act = aoChiTietSer.findIdByIdAoMsSize(UUID.fromString(ao_id), UUID.fromString(mau_sac_id), size_id.get(i));
+
+            if (act == null) {
                 AoChiTiet aoChiTiet = new AoChiTiet();
                 aoChiTiet.setAo(aoSer.findById(UUID.fromString(ao_id)));
                 aoChiTiet.setMau_sac(mauSacSer.findById(UUID.fromString(mau_sac_id)));
@@ -270,6 +280,19 @@ public class SanPhamController {
                 aoChiTiet.setSlban(0);
                 aoChiTiet.setTrangthai(1);
                 aoChiTietSer.add(aoChiTiet);
+            } else {
+
+                int slTon = act.getSlton() + Integer.parseInt(soLuong);
+
+                AoChiTiet aoChiTiet = new AoChiTiet();
+                aoChiTiet.setAo(act.getAo());
+                aoChiTiet.setMau_sac(act.getMau_sac());
+                aoChiTiet.setSize(act.getSize());
+                aoChiTiet.setSlton(slTon);
+                aoChiTiet.setSlban(act.getSlban());
+                aoChiTiet.setTrangthai(act.getTrangthai());
+
+                aoChiTietSer.update(act.getId(), aoChiTiet);
             }
         }
 
@@ -296,27 +319,30 @@ public class SanPhamController {
         return "redirect:/admin/ao/view/" + ao_id;
     }
 
-    @PostMapping("/admin/ao_chi_tiet/update/*")
-    public String updateAoChiTiet(HttpServletRequest request, @RequestParam(value = "size_id", required = false) List<UUID> size_id) {
-
-        String url = request.getRequestURI();
-        String[] parts = url.split("/admin/ao_chi_tiet/update/");
-        String id = parts[1];
-
+    @PostMapping("/admin/ao_chi_tiet/update")
+    public String updateAoChiTiet(HttpServletRequest request, @RequestParam(value = "size_id", required = false) List<UUID> size_id, HttpSession session) {
         String mau_sac_id = request.getParameter("mau_sac_id");
         String soLuong = request.getParameter("soLuong");
         String ao_id = request.getParameter("ao_id");
 
-        if (size_id != null) {
-            for (int i = 0; i < size_id.size(); i++) {
+        for (int i = 0; i < size_id.size(); i++) {
+            AoChiTiet act = aoChiTietSer.findIdByIdAoMsSize(UUID.fromString(ao_id), UUID.fromString(mau_sac_id), size_id.get(i));
+
+            if (act != null){
+                int slTon =Integer.parseInt(soLuong);
+
                 AoChiTiet aoChiTiet = new AoChiTiet();
-                aoChiTiet.setAo(aoSer.findById(UUID.fromString(ao_id)));
-                aoChiTiet.setMau_sac(mauSacSer.findById(UUID.fromString(mau_sac_id)));
-                aoChiTiet.setSize(sizeSer.findById(size_id.get(i)));
-                aoChiTiet.setSlton(Integer.parseInt(soLuong));
-                aoChiTiet.setSlban(0);
-                aoChiTiet.setTrangthai(1);
-                aoChiTietSer.update(UUID.fromString(id), aoChiTiet);
+                aoChiTiet.setAo(act.getAo());
+                aoChiTiet.setMau_sac(act.getMau_sac());
+                aoChiTiet.setSize(act.getSize());
+                aoChiTiet.setSlton(slTon);
+                aoChiTiet.setSlban(act.getSlban());
+                aoChiTiet.setTrangthai(act.getTrangthai());
+
+                aoChiTietSer.update(act.getId(), aoChiTiet);
+            }else {
+                session.setAttribute("loiAoChiTiet","2");
+                return "redirect:/admin/ao/view/" + ao_id;
             }
         }
 

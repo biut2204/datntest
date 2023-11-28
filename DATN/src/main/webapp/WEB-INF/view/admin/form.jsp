@@ -352,7 +352,7 @@
 
                                                     <button formaction="/admin/form/detail" name="detail"
                                                             value="${list.id}"
-                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Chi Tiết
                                                     </button>
                                                 </td>
                                             </tr>
@@ -387,9 +387,9 @@
                         <h3 style="text-align: center">FORM ÁO</h3>
                         <input type="hidden" name="id" value="${item.id}">
                         <div class="form-group">
-                            <label for="formGroupExampleInput2">Tên <span class="text-danger">(*)</span> :</label>
+                            <label for="ten">Tên <span class="text-danger">(*)</span> :</label>
                             <input type="text" name="ten" value="${item.ten}" class="form-control"
-                                   id="formGroupExampleInput2" placeholder="Tên ">
+                                   id="ten" placeholder="Tên ">
                             <span id="errorTen" class="text-danger"></span>
                         </div>
                         <fieldset class="form-group">
@@ -522,14 +522,17 @@
 
         if (ten.trim() === '') {
             errorTen.innerText = 'Vui lòng nhập tên.';
+            document.getElementById('ten').style.borderColor = 'red';
             hasError = true;
         } else {
+            document.getElementById('ten').style.borderColor = 'gray';
             errorTen.innerText = '';
         }
 
         <c:forEach var="list" items="${listForms}">
         if ("${list.ten}".trim() === ten.trim()) {
             errorTen.innerText = 'Tên form đã tồn tại.';
+            document.getElementById('ten').style.borderColor = 'red';
             hasError = true;
         }
         </c:forEach>
@@ -545,8 +548,10 @@
 
         if (ten.trim() === '') {
             errorTen.innerText = 'Vui lòng nhập tên.';
+            document.getElementById('ten').style.borderColor = 'red';
             hasError = true;
         } else {
+            document.getElementById('ten').style.borderColor = 'gray';
             errorTen.innerText = '';
         }
 

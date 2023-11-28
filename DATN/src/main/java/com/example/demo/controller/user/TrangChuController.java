@@ -7,6 +7,8 @@ import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
 import com.example.demo.entity.khachhang.DanhGia;
 import com.example.demo.entity.khachhang.GioHang;
 import com.example.demo.entity.khachhang.HoaDon;
+import com.example.demo.entity.khachhang.HoaDonChiTiet;
+import com.example.demo.entity.khachhang.HoaDonTraHang;
 import com.example.demo.entity.khachhang.Users;
 import com.example.demo.entity.sanpham.Ao;
 import com.example.demo.entity.dto.AoDTO;
@@ -25,7 +27,9 @@ import com.example.demo.ser.sanpham.MauSacSer;
 import com.example.demo.ser.users.DanhGiaSer;
 import com.example.demo.ser.users.GioHangChiTietSer;
 import com.example.demo.ser.users.GioHangSer;
+import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
+import com.example.demo.ser.users.HoaDonTraHangSer;
 import com.example.demo.ser.users.UsersSer;
 import com.example.demo.ser.sanpham.AnhSer;
 import com.example.demo.ser.sanpham.AoChiTietSer;
@@ -113,6 +117,12 @@ public class TrangChuController {
     @Autowired
     HoaDonSer hoaDonSer;
 
+    @Autowired
+    HoaDonTraHangSer hoaDonTraHangSer;
+
+    @Autowired
+    HoaDonChiTietSer hoaDonChiTietSer;
+
     @GetMapping("/user/trang_chu/*")
     public String trangChu(Model model, HttpServletRequest request, HttpSession session) {
 
@@ -136,12 +146,24 @@ public class TrangChuController {
         String[] parts = url.split("/user/trang_chu/");
         String ma = parts[1];
 
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
+
         try {
             Users users = usersSer.findByMa(ma);
             GioHang gioHang = gioHangSer.findByIdKH(users.getId());
             Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
 
+            if (checkLogin == null) {
+                return "redirect:/login";
+            } else {
+                if (!checkLogin.getMa().equals(ma)) {
+                    return "redirect:/login";
+                }
+            }
+
             model.addAttribute("idKh", users.getMa());
+            model.addAttribute("khachHangNow", users);
             model.addAttribute("soLuongSanPham", soLuongSanPham);
 
             model.addAttribute("check", ma);
@@ -180,17 +202,29 @@ public class TrangChuController {
     }
 
     @GetMapping("/user/contact/*")
-    public String contact( HttpServletRequest request, Model model){
+    public String contact(HttpServletRequest request, Model model) {
         String url = request.getRequestURI();
         String[] parts = url.split("/user/contact/");
         String ma = parts[1];
+
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
 
         try {
             Users users = usersSer.findByMa(ma);
             GioHang gioHang = gioHangSer.findByIdKH(users.getId());
             Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
 
+            if (checkLogin == null) {
+                return "redirect:/login";
+            } else {
+                if (!checkLogin.getMa().equals(ma)) {
+                    return "redirect:/login";
+                }
+            }
+
             model.addAttribute("idKh", users.getMa());
+            model.addAttribute("khachHangNow", users);
             model.addAttribute("soLuongSanPham", soLuongSanPham);
 
             model.addAttribute("check", ma);
@@ -205,17 +239,29 @@ public class TrangChuController {
     }
 
     @GetMapping("/user/blog/*")
-    public String blog( HttpServletRequest request, Model model){
+    public String blog(HttpServletRequest request, Model model) {
         String url = request.getRequestURI();
         String[] parts = url.split("/user/blog/");
         String ma = parts[1];
+
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
 
         try {
             Users users = usersSer.findByMa(ma);
             GioHang gioHang = gioHangSer.findByIdKH(users.getId());
             Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
 
+            if (checkLogin == null) {
+                return "redirect:/login";
+            } else {
+                if (!checkLogin.getMa().equals(ma)) {
+                    return "redirect:/login";
+                }
+            }
+
             model.addAttribute("idKh", users.getMa());
+            model.addAttribute("khachHangNow", users);
             model.addAttribute("soLuongSanPham", soLuongSanPham);
 
             model.addAttribute("check", ma);
@@ -237,12 +283,25 @@ public class TrangChuController {
         String idStr = p[1];
         String[] idSt = idStr.split("/");
         String id = idSt[1];
+
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
+
         try {
             Users users = usersSer.findByMa(idSt[0]);
             GioHang gioHang = gioHangSer.findByIdKH(users.getId());
             Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
 
+            if (checkLogin == null) {
+                return "redirect:/login";
+            } else {
+                if (!checkLogin.getMa().equals(idSt[0])) {
+                    return "redirect:/login";
+                }
+            }
+
             model.addAttribute("idKh", users.getMa());
+            model.addAttribute("khachHangNow", users);
             model.addAttribute("soLuongSanPham", soLuongSanPham);
         } catch (Exception e) {
             model.addAttribute("idKh", "2");
@@ -250,12 +309,12 @@ public class TrangChuController {
 
         Integer tongDanhGiaSao = danhGiaSer.tongDanhGiaSao(UUID.fromString(id));
         int tongNguoiDanhGia = danhGiaSer.tongNguoiDanhGia(UUID.fromString(id));
-        int danhGiaSao ;
-        int danhGiaDu ;
-        if(tongNguoiDanhGia == 0){
+        int danhGiaSao;
+        int danhGiaDu;
+        if (tongNguoiDanhGia == 0) {
             danhGiaSao = 5;
             danhGiaDu = 0;
-        }else {
+        } else {
             float danhGiaSaoFloat = (float) tongDanhGiaSao / tongNguoiDanhGia;
             danhGiaSao = (int) danhGiaSaoFloat;
             danhGiaDu = Math.round((danhGiaSaoFloat - danhGiaSao) * 10);
@@ -263,7 +322,7 @@ public class TrangChuController {
 
         List<Ao> listAos = aoSer.findAllByTrangThai(2);
 
-        model.addAttribute("listAos", listAos);
+        model.addAttribute("listAos", aoSer.findByAo(listAos));
         model.addAttribute("ao", aoSer.findById(UUID.fromString(id)));
         model.addAttribute("listDanhGias", danhGiaSer.findAllByAo(UUID.fromString(id)));
         model.addAttribute("slAoDaBan", aoSer.soLuongBanByUUID(UUID.fromString(id)));
@@ -272,6 +331,9 @@ public class TrangChuController {
         model.addAttribute("sizes", aoChiTietSer.findSizeByIdAo(UUID.fromString(id)));
         model.addAttribute("danhGiaSao", danhGiaSao);
         model.addAttribute("danhGiaDu", danhGiaDu);
+
+        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
+        model.addAttribute("listLoaiAos", listLoaiAos);
 
 
         try {
@@ -292,13 +354,14 @@ public class TrangChuController {
         String pStr = parts[1];
         String[] p = pStr.split("/");
         String maKh = p[0];
+
         String idAo = p[1];
         session.setAttribute("idAo", idAo);
         return "redirect:/user/trang_chu/" + maKh;
     }
 
     @GetMapping("/user/loc_theo_loai_ao/*/*")
-    public String locTheoLoaiAo(HttpServletRequest request, Model model) {
+    public String locTheoLoaiAo(HttpServletRequest request, Model model, HttpSession session) {
 
         String url = request.getRequestURI();
         String[] parts = url.split("/user/loc_theo_loai_ao/");
@@ -307,33 +370,15 @@ public class TrangChuController {
         String maKh = p[0];
         String maLoaiAo = p[1];
 
-        try {
-            Users users = usersSer.findByMa(maKh);
-            GioHang gioHang = gioHangSer.findByIdKH(users.getId());
-            Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
-
-            model.addAttribute("idKh", users.getMa());
-            model.addAttribute("soLuongSanPham", soLuongSanPham);
-        } catch (Exception e) {
-            model.addAttribute("idKh", "2");
-        }
 
         LoaiAo loaiAo = loaiAoSer.findByMa(maLoaiAo);
         List<Ao> listAos = aoSer.listAoFindByLoaiAo(maLoaiAo);
-        List<AoDTO> listAoDTOS = aoSer.findByAo(listAos);
+        List<AoDTO> listAoDTOLAS = aoSer.findByAo(listAos);
 
-        model.addAttribute("listChatVai", chatVaiSer.findAllByTrangThai(1));
-        model.addAttribute("listForm", formSer.findAllByTrangThai(1));
-        model.addAttribute("listHang", hangSer.findAllByTrangThai(1));
-        model.addAttribute("listLoaiAo", loaiAoSer.findAllByTrangThai(1));
-        model.addAttribute("listMauSac", mauSacSer.findAllByTrangThai(1));
-        model.addAttribute("items", listAoDTOS);
-        model.addAttribute("loaiAo", loaiAo);
+        session.setAttribute("listAoDTOLAS", listAoDTOLAS);
+        session.setAttribute("loaiAo", loaiAo);
 
-        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
-        model.addAttribute("listLoaiAos", listLoaiAos);
-
-        return "/user/tim_kiem";
+        return "redirect:/user/view_tim_kiem/" + maKh;
     }
 
     @GetMapping("/user/view_tim_kiem/*")
@@ -343,23 +388,59 @@ public class TrangChuController {
         String[] p = url.split("/user/view_tim_kiem/");
         String maKh = p[1];
 
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
+
         try {
             Users users = usersSer.findByMa(maKh);
             GioHang gioHang = gioHangSer.findByIdKH(users.getId());
             Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
 
+            if (checkLogin == null) {
+                return "redirect:/login";
+            } else {
+                if (!checkLogin.getMa().equals(maKh)) {
+                    return "redirect:/login";
+                }
+            }
+
             model.addAttribute("idKh", users.getMa());
+            model.addAttribute("khachHangNow", users);
             model.addAttribute("soLuongSanPham", soLuongSanPham);
         } catch (Exception e) {
             model.addAttribute("idKh", "2");
         }
 
         List<AoDTO> listAoDTOS = (List<AoDTO>) session.getAttribute("items");
+        List<AoDTO> listTop8BanChay = (List<AoDTO>) session.getAttribute("listTop8BanChay");
+        List<AoDTO> listSPNew = (List<AoDTO>) session.getAttribute("listSPNew");
+        UUID idChatVaiSession = (UUID) session.getAttribute("idChatVaiStr");
+        UUID idLoaiAoSession = (UUID) session.getAttribute("idLoaiAoStr");
+        UUID idFormSession = (UUID) session.getAttribute("idFormStr");
+        UUID idHangSession = (UUID) session.getAttribute("idHangStr");
+        BigDecimal minPriceSession = (BigDecimal) session.getAttribute("minPriceStr");
+        BigDecimal maxPriceSession = (BigDecimal) session.getAttribute("maxPriceStr");
+        List<UUID> mauSacIdsSession = (List<UUID>) session.getAttribute("mauSacIdsStr");
+        List<AoDTO> listAoDTOLAS = (List<AoDTO>) session.getAttribute("listAoDTOLAS");
+        LoaiAo loaiAo = (LoaiAo) session.getAttribute("loaiAo");
 
-        if(listAoDTOS != null){
+        if (listAoDTOS != null) {
             model.addAttribute("items", listAoDTOS);
-        }else {
+            model.addAttribute("soLuongTimKiemRa", listAoDTOS.size());
+        } else if (listAoDTOLAS != null) {
+            model.addAttribute("items", listAoDTOLAS);
+            model.addAttribute("soLuongTimKiemRa", listAoDTOLAS.size());
+        } else if (listTop8BanChay != null) {
+            model.addAttribute("items", listTop8BanChay);
+            model.addAttribute("icon", "1");
+            model.addAttribute("soLuongTimKiemRa", listTop8BanChay.size());
+        } else if (listSPNew != null) {
+            model.addAttribute("items", listSPNew);
+            model.addAttribute("icon", "2");
+            model.addAttribute("soLuongTimKiemRa", listSPNew.size());
+        } else {
             model.addAttribute("items", aoSer.findAllAoDTO());
+            model.addAttribute("soLuongTimKiemRa", aoSer.findAllAoDTO().size());
         }
 
         model.addAttribute("listChatVai", chatVaiSer.findAllByTrangThai(1));
@@ -368,58 +449,194 @@ public class TrangChuController {
         model.addAttribute("listLoaiAo", loaiAoSer.findAllByTrangThai(1));
         model.addAttribute("listMauSac", mauSacSer.findAllByTrangThai(1));
 
+        if (idChatVaiSession == null) {
+            model.addAttribute("cvLayout", "none");
+        } else {
+            model.addAttribute("cvLayout", "block");
+        }
+
+        if (loaiAo == null && idLoaiAoSession == null) {
+            model.addAttribute("laLayout", "none");
+        } else {
+            model.addAttribute("laLayout", "block");
+        }
+
+        if (idFormSession == null) {
+            model.addAttribute("fLayout", "none");
+        } else {
+            model.addAttribute("fLayout", "block");
+        }
+
+        if (idHangSession == null) {
+            model.addAttribute("hLayout", "none");
+        } else {
+            model.addAttribute("hLayout", "block");
+        }
+
+        if (mauSacIdsSession == null) {
+            model.addAttribute("msLayout", "none");
+        } else {
+            model.addAttribute("msLayout", "block");
+        }
+
+        int minPriceInt = (minPriceSession != null) ? minPriceSession.intValue() : 0;
+        int maxPriceInt = (maxPriceSession != null) ? maxPriceSession.intValue() : 0;
+
+        if (loaiAo != null && idLoaiAoSession == null) {
+            model.addAttribute("idLoaiAoS", loaiAo.getId());
+        } else if (loaiAo == null && idLoaiAoSession != null) {
+            model.addAttribute("idLoaiAoS", idLoaiAoSession);
+        }
+
+        model.addAttribute("minPriceInt", minPriceInt);
+        model.addAttribute("maxPriceInt", maxPriceInt);
+        model.addAttribute("idChatVaiS", idChatVaiSession);
+        model.addAttribute("idFormS", idFormSession);
+        model.addAttribute("idHangS", idHangSession);
+        model.addAttribute("mauSacIdsS", mauSacIdsSession);
+
 
         List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
         model.addAttribute("listLoaiAos", listLoaiAos);
+
+        session.removeAttribute("idChatVaiStr");
+        session.removeAttribute("idLoaiAoStr");
+        session.removeAttribute("idFormStr");
+        session.removeAttribute("idHangStr");
+        session.removeAttribute("minPriceStr");
+        session.removeAttribute("maxPriceStr");
+        session.removeAttribute("mauSacIdsStr");
         session.removeAttribute("items");
+        session.removeAttribute("listAoDTOLAS");
+        session.removeAttribute("loaiAo");
+        session.removeAttribute("listTop8BanChay");
+        session.removeAttribute("listSPNew");
         return "/user/tim_kiem";
     }
 
     @GetMapping("/user/shop/*")
-    public String userShop(HttpServletRequest request, Model model) {
+    public String userShop(HttpServletRequest request, Model model, HttpSession session) {
         String url = request.getRequestURI();
         String[] parts = url.split("/user/shop/");
         String ma = parts[1];
 
-        model.addAttribute("listChatVai", chatVaiSer.findAllByTrangThai(1));
-        model.addAttribute("listForm", formSer.findAllByTrangThai(1));
-        model.addAttribute("listHang", hangSer.findAllByTrangThai(1));
-        model.addAttribute("listLoaiAo", loaiAoSer.findAllByTrangThai(1));
-        model.addAttribute("listMauSac", mauSacSer.findAllByTrangThai(1));
-        model.addAttribute("items", aoSer.findAllAoDTO());
-
-        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
-        model.addAttribute("listLoaiAos", listLoaiAos);
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
 
         try {
             Users users = usersSer.findByMa(ma);
             GioHang gioHang = gioHangSer.findByIdKH(users.getId());
-            Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
 
-            model.addAttribute("idKh", users.getMa());
-            model.addAttribute("soLuongSanPham", soLuongSanPham);
+            if (checkLogin == null) {
+                return "redirect:/login";
+            } else {
+                if (!checkLogin.getMa().equals(ma)) {
+                    return "redirect:/login";
+                }
+            }
+
         } catch (Exception e) {
-            model.addAttribute("idKh", "2");
         }
-        return "/user/tim_kiem";
+
+        return "redirect:/user/view_tim_kiem/" + ma;
+    }
+
+    @GetMapping("/user/thong_tin/*")
+    public String thongTin(Model model, HttpServletRequest request, HttpSession session) {
+
+        String url = request.getRequestURI();
+        String[] parts = url.split("/user/thong_tin/");
+        String ma = parts[1];
+
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
+
+        if (checkLogin == null) {
+            return "redirect:/login";
+        } else {
+            if (!checkLogin.getMa().equals(ma)) {
+                return "redirect:/login";
+            }
+        }
+
+        Users users = usersSer.findByMa(ma);
+        GioHang gioHang = gioHangSer.findByIdKH(users.getId());
+        Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
+
+        model.addAttribute("kh", usersSer.findByMa(ma));
+        model.addAttribute("idKh", users.getMa());
+        model.addAttribute("khachHangNow", users);
+        model.addAttribute("soLuongSanPham", soLuongSanPham);
+
+
+        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
+        model.addAttribute("listLoaiAos", listLoaiAos);
+
+        return "/user/thong_tin";
+    }
+
+    @GetMapping("/user/repass/{ma}")
+    public String repass(Model model, @PathVariable String ma) {
+        Users users = usersSer.findByMa(ma);
+        model.addAttribute("kh", users);
+        return "/user/password-change";
     }
 
     @GetMapping("/user/danh_gia_view/*")
-    public String danhGiaView(HttpServletRequest request, HttpSession session){
+    public String danhGiaView(HttpServletRequest request, HttpSession session) {
 
         String url = request.getRequestURI();
         String[] parts = url.split("/user/danh_gia_view/");
         String id = parts[1];
 
         HoaDon hoaDon = hoaDonSer.findId(UUID.fromString(id));
-        session.setAttribute("hoaDonDanhGia",hoaDon);
+        session.setAttribute("hoaDonDanhGia", hoaDon);
 
-        return "redirect:/user/don_hang/"+hoaDon.getKhachHang().getMa();
+        return "redirect:/user/don_hang/" + hoaDon.getKhachHang().getMa();
+    }
+
+    @GetMapping("/user/tra_hang_view/*")
+    public String traHangView(HttpServletRequest request, HttpSession session) {
+
+        String url = request.getRequestURI();
+        String[] parts = url.split("/user/tra_hang_view/");
+        String id = parts[1];
+
+        HoaDon hoaDon = hoaDonSer.findId(UUID.fromString(id));
+        session.setAttribute("hoaDonTraHang", hoaDon);
+
+        return "redirect:/user/don_hang/" + hoaDon.getKhachHang().getMa();
+    }
+
+    @GetMapping("/user/view_tim_kiem_hot/*")
+    public String viewTimKiemHot(HttpServletRequest request, HttpSession session) {
+        String url = request.getRequestURI();
+        String[] parts = url.split("/user/view_tim_kiem_hot/");
+        String ma = parts[1];
+
+        List<AoDTO> listTop8BanChay = aoSer.findTop8AoBanChay();
+
+        session.setAttribute("listTop8BanChay", listTop8BanChay);
+        return "redirect:/user/view_tim_kiem/" + ma;
+    }
+
+    @GetMapping("/user/view_tim_kiem_new/*")
+    public String viewTimKiemNew(HttpServletRequest request, HttpSession session) {
+        String url = request.getRequestURI();
+        String[] parts = url.split("/user/view_tim_kiem_new/");
+        String ma = parts[1];
+
+        List<Ao> listAoMoiTrongThang = aoSer.findAoNhapTrongThangHienTai();
+        List<AoDTO> listAoDTOMoi = aoSer.findByAo(listAoMoiTrongThang);
+
+        session.setAttribute("listSPNew", listAoDTOMoi);
+        return "redirect:/user/view_tim_kiem/" + ma;
     }
 
     @GetMapping("/logout")
-    public String logOut(HttpSession session){
+    public String logOut(HttpSession session) {
         session.removeAttribute("userLogged1");
+        session.removeAttribute("lohin_google_thanh_cong");
         return "redirect:/login";
     }
 
@@ -436,7 +653,7 @@ public class TrangChuController {
         } else {
             session.setAttribute("items", aoSer.findAllByTen(timKiem));
         }
-        return "redirect:/user/view_tim_kiem/"+ma;
+        return "redirect:/user/view_tim_kiem/" + ma;
     }
 
     @PostMapping("/user/tim_kiem_nang_cao/*")
@@ -458,94 +675,16 @@ public class TrangChuController {
 
         List<AoDTO> list = aoSer.findByAo(ketQuaTimKiem);
 
+        session.setAttribute("idChatVaiStr", idChatVai);
+        session.setAttribute("idLoaiAoStr", idLoaiAo);
+        session.setAttribute("idFormStr", idForm);
+        session.setAttribute("idHangStr", idHang);
+        session.setAttribute("minPriceStr", minPrice);
+        session.setAttribute("maxPriceStr", maxPrice);
+        session.setAttribute("mauSacIdsStr", mauSacIds);
         session.setAttribute("items", list);
 
-        return "redirect:/user/view_tim_kiem/"+ma;
-    }
-
-    /* Minh Công code*/
-
-    @GetMapping("/user/thong_tin/*")
-    public String thongTin(Model model, HttpServletRequest request) {
-
-        String url = request.getRequestURI();
-        String[] parts = url.split("/user/thong_tin/");
-        String maOrEmail = parts[1];
-
-        System.out.println(maOrEmail);
-
-        if (usersSer.findByMa(maOrEmail) != null) {
-            model.addAttribute("kh", usersSer.findByMa(maOrEmail));
-            model.addAttribute("idKh", usersSer.findByMa(maOrEmail).getMa());
-
-            Users users =  usersSer.findByMa(maOrEmail);
-            GioHang gioHang = gioHangSer.findByIdKH(users.getId());
-            Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
-
-            model.addAttribute("idKh", users.getMa());
-            model.addAttribute("soLuongSanPham", soLuongSanPham);
-        } else if (usersSer.findByMa(maOrEmail) == null) {
-
-            int test = usersSer.demLoginGG(maOrEmail);
-            model.addAttribute("check", "0");
-
-            if (test > 0) {
-                model.addAttribute("kh", usersSer.findByEmail(maOrEmail));
-                model.addAttribute("idKh", usersSer.findByEmail(maOrEmail).getMa());
-
-                Users users = usersSer.findByEmail(maOrEmail);
-                GioHang gioHang = gioHangSer.findByIdKH(users.getId());
-                Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
-
-                model.addAttribute("idKh", users.getMa());
-                model.addAttribute("soLuongSanPham", soLuongSanPham);
-
-            } else if (test == 0) {
-                Users users = new Users();
-
-                int slKH = usersSer.soLuongUser() + 3;
-                String ma = "00" + slKH;
-
-                users.setMa(ma);
-                users.setEmail(maOrEmail);
-                users.setRole(RoleEnum.MENBER);
-                users.setTrangThai(1);
-
-                usersSer.add(users);
-
-                int slGH = gioHangSer.soLuongGioHang() + 1;
-
-                String gh = "GH00" + slGH;
-
-                GioHang g = new GioHang();
-                g.setMa(gh);
-                g.setKhachHang(users);
-                g.setNgayTao(new Date());
-                g.setTrangThai(1);
-                gioHangSer.add(g);
-
-                model.addAttribute("kh", users);
-                model.addAttribute("idKh", users.getMa());
-
-                GioHang gioHang = gioHangSer.findByIdKH(users.getId());
-                Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
-
-                model.addAttribute("idKh", users.getMa());
-                model.addAttribute("soLuongSanPham", soLuongSanPham);
-            }
-        }
-
-        List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
-        model.addAttribute("listLoaiAos", listLoaiAos);
-
-        return "/user/thong_tin";
-    }
-
-    @GetMapping("/user/repass/{ma}")
-    public String repass(Model model, @PathVariable String ma) {
-        Users users = usersSer.findByMa(ma);
-        model.addAttribute("kh", users);
-        return "/user/password-change";
+        return "redirect:/user/view_tim_kiem/" + ma;
     }
 
     @PostMapping("/user/repass-done/{ma}")
@@ -565,7 +704,7 @@ public class TrangChuController {
         if (usersSer.findByMa(maOrEmail) != null) {
             users = usersSer.findByMa(maOrEmail);
         }
-        if (usersSer.findByEmail(maOrEmail) != null){
+        if (usersSer.findByEmail(maOrEmail) != null) {
             users = usersSer.findByEmail(maOrEmail);
         }
 
@@ -592,7 +731,7 @@ public class TrangChuController {
     }
 
     @PostMapping("/user/danh_gia")
-    public String addDanhGia(HttpServletRequest request){
+    public String addDanhGia(HttpServletRequest request) {
 
         String idKh = request.getParameter("idKh");
         String aoChiTietId = request.getParameter("aoChiTietId");
@@ -611,6 +750,63 @@ public class TrangChuController {
 
         danhGiaSer.add(danhGia);
 
-        return "redirect:/user/don_hang/"+ idKh;
+        return "redirect:/user/don_hang/" + idKh;
+    }
+
+    @PostMapping("/user/tra_hang")
+    public String addTraHang(HttpServletRequest request, HttpSession session) {
+
+        LocalDateTime now = LocalDateTime.now();
+
+        String idHoaDonTraHang = request.getParameter("idHoaDonTraHang");
+        String aoChiTietId = request.getParameter("aoChiTietId");
+        String soLuongYeuCauTra = request.getParameter("soLuongYeuCauTra");
+        String liDoTraHang = request.getParameter("liDoTraHang");
+
+        AoChiTiet aoChiTiet = aoChiTietSer.findById(UUID.fromString(aoChiTietId));
+        HoaDon hoaDon = hoaDonSer.findId(UUID.fromString(idHoaDonTraHang));
+
+        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietSer.findByHoaDonAndAoChiTiet(hoaDon.getId(), aoChiTiet.getId());
+
+        int slTraHangHDCT;
+
+        if (hoaDonChiTiet.getSoLuongYeuCauTraHang() == null){
+            slTraHangHDCT = 0;
+        }else {
+            slTraHangHDCT = hoaDonChiTiet.getSoLuongYeuCauTraHang();
+        }
+
+        int slYcTraHDCT = slTraHangHDCT + Integer.parseInt(soLuongYeuCauTra);
+
+        if (slYcTraHDCT > hoaDonChiTiet.getSoLuong()){
+            session.setAttribute("loiTraHang",hoaDon);
+            return "redirect:/user/don_hang/" + hoaDon.getKhachHang().getMa();
+        }
+
+        HoaDonChiTiet hdct = new HoaDonChiTiet();
+        hdct.setHoaDon(hoaDonChiTiet.getHoaDon());
+        hdct.setAoChiTiet(hoaDonChiTiet.getAoChiTiet());
+        hdct.setSoLuong(hoaDonChiTiet.getSoLuong());
+        hdct.setDonGia(hoaDonChiTiet.getDonGia());
+        hdct.setSoLuongYeuCauTraHang(slYcTraHDCT);
+
+        hoaDonChiTietSer.update(hoaDonChiTiet.getId(), hdct);
+
+        HoaDonTraHang hoaDonTraHang = new HoaDonTraHang();
+
+        int donGiaTraHang = hoaDonChiTiet.getDonGia().intValue()/hoaDonChiTiet.getSoLuong();
+        BigDecimal doGiaTrHang = new BigDecimal(donGiaTraHang);
+
+        hoaDonTraHang.setHoaDon(hoaDon);
+        hoaDonTraHang.setAoChiTiet(aoChiTiet);
+        hoaDonTraHang.setNgayYeuCau(now);
+        hoaDonTraHang.setSoLuongTra(slYcTraHDCT);
+        hoaDonTraHang.setGhiChu(liDoTraHang);
+        hoaDonTraHang.setDonGia(doGiaTrHang);
+        hoaDonTraHang.setTrangThai(1);
+
+        hoaDonTraHangSer.add(hoaDonTraHang);
+
+        return "redirect:/user/don_hang/" + hoaDon.getKhachHang().getMa();
     }
 }

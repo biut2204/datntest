@@ -138,6 +138,86 @@ public class PaymentController {
 		return "redirect:"+ paymentUrl;
 	}
 
+    @GetMapping("/paywithmomo/*")
+    public String thanhCongMomo(HttpSession session, Model model,
+                                @RequestParam(value = "message", required = false) String message){
+
+        System.out.println("Message = "+ message);
+        if (message.equals("Successful.")){
+            String maHoaDonByMomo = (String) session.getAttribute("maHoaDonByMomo");
+            HoaDon hoaDon1 = hoaDonSer.findByMa(maHoaDonByMomo);
+
+            HoaDon hd1 = new HoaDon();
+
+            hd1.setMa(hoaDon1.getMa());
+            hd1.setTongTien(hoaDon1.getTongTien());
+            hd1.setNgayTao(hoaDon1.getNgayTao());
+            hd1.setNgayChoXacNhan(LocalDateTime.now());
+            hd1.setKhachHang(hoaDon1.getKhachHang());
+            hd1.setTrangThai(1);
+            hd1.setMoTa(hoaDon1.getMoTa());
+            hd1.setHinhThuc(4);
+
+            hoaDonSer.update(hoaDon1.getId(), hd1);
+
+            model.addAttribute("idKh",hoaDon1.getKhachHang().getMa());
+
+            List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon1.getId());
+
+            for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
+                Ao ao = hoaDonChiTiet.getAoChiTiet().getAo();
+
+                GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietSer.findByIdAoAndTrangThai(ao.getId());
+
+                int gia;
+
+                if (giamGiaSanPhamChiTiet != null) {
+                    gia = ao.getGiaBan().toBigInteger().intValue() * (100 - giamGiaSanPhamChiTiet.getGiamGiaSanPham().getPhanTramGiam()) / 100;
+                } else {
+                    gia = ao.getGiaBan().toBigInteger().intValue();
+                }
+
+                int donGia = gia * hoaDonChiTiet.getSoLuong();
+                BigDecimal bigDecimalDonGia = new BigDecimal(donGia);
+
+                HoaDonChiTiet hdct = new HoaDonChiTiet();
+                hdct.setHoaDon(hoaDonChiTiet.getHoaDon());
+                hdct.setAoChiTiet(hoaDonChiTiet.getAoChiTiet());
+                hdct.setSoLuong(hoaDonChiTiet.getSoLuong());
+                hdct.setDonGia(bigDecimalDonGia);
+
+                hoaDonChiTietSer.update(hoaDonChiTiet.getId(), hdct);
+
+                AoChiTiet act = hoaDonChiTiet.getAoChiTiet();
+
+                AoChiTiet aoChiTiet = new AoChiTiet();
+
+                int slTon = act.getSlton() - hoaDonChiTiet.getSoLuong();
+                int slBan = act.getSlban() + hoaDonChiTiet.getSoLuong();
+
+                aoChiTiet.setMau_sac(act.getMau_sac());
+                aoChiTiet.setSize(act.getSize());
+                aoChiTiet.setAo(act.getAo());
+                aoChiTiet.setSlton(slTon);
+                aoChiTiet.setSlban(slBan);
+                aoChiTiet.setSlTra(act.getSlTra());
+                aoChiTiet.setTrangthai(act.getTrangthai());
+
+                aoChiTietSer.update(act.getId(), aoChiTiet);
+            }
+            session.removeAttribute("maHoaDonByMomo");
+            return "/user/thanh_cong";
+        }else {
+
+            String maHoaDonByMomo = (String) session.getAttribute("maHoaDonByMomo");
+            HoaDon hoaDon1 = hoaDonSer.findByMa(maHoaDonByMomo);
+
+            model.addAttribute("idKh",hoaDon1.getKhachHang().getMa());
+            session.removeAttribute("maHoaDonByMomo");
+            return "/user/erorr";
+        }
+    }
+
     @GetMapping("/thanh_cong/*")
     public String thanhCong(HttpSession session, Model model,HttpServletRequest request,
                             @RequestParam("vnp_Amount") String vnpAmount,
@@ -185,8 +265,7 @@ public class PaymentController {
 
                 List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
 
-                for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
-
+                for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets) {
                     Ao ao = hoaDonChiTiet.getAoChiTiet().getAo();
 
                     GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietSer.findByIdAoAndTrangThai(ao.getId());
@@ -222,6 +301,7 @@ public class PaymentController {
                     aoChiTiet.setAo(act.getAo());
                     aoChiTiet.setSlton(slTon);
                     aoChiTiet.setSlban(slBan);
+                    aoChiTiet.setSlTra(act.getSlTra());
                     aoChiTiet.setTrangthai(act.getTrangthai());
 
                     aoChiTietSer.update(act.getId(), aoChiTiet);

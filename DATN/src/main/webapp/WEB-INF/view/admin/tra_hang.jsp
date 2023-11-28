@@ -10,7 +10,8 @@
     <title>AdminLTE 3 | DataTables</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../../../resources/plugins/fontawesome-free/css/all.min.css">
     <!-- DataTables -->
@@ -21,18 +22,171 @@
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="../../../resources/css/add_form.css">
     <style>
-        .image {
-            width: 80px;
-            height: 80px;
-            overflow: hidden;
-            border-radius: 50%;
+        .status-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
         }
 
-        .image img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 50%;
+        .status {
+            width: 20%;
+            height: 100px;
+            text-align: center;
+            line-height: 100px;
+            font-size: 22px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .status-1 {
+            backgroundColor: #ff8b33;
+            background: #ff8b33;
+        }
+
+        .status-2 {
+            backgroundColor: wheat;
+            background: wheat;
+        }
+
+        .arrow1 {
+            width: 30px;
+            height: 30px;
+            margin-top: 25px;
+            color: green;
+            font-size: 40px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        /**/
+
+        .button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        /* Nút Xác nhận */
+        .btn-button-xn {
+            margin-left: 20px;
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-button-xn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Nút Hủy đơn */
+        .btn-button-huy {
+            margin-left: 10px;
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-button-huy:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+
+        .btn-button-xnhuy {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-button-xnhuy:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+
+        /* Nút Chi tiết */
+        .btn-button-ct {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        .btn-button-ct:hover {
+            background-color: #999;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+    </style>
+    <style>
+        #addFormContainer {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Màu nền với độ trong suốt */
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #addForm {
+            background-color: white; /* Màu nền của biểu mẫu */
+            padding: 20px;
+            border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
+            margin-top: 10%;
+        }
+
+        #addForm button[type="submit"] {
+            background-color: #007BFF; /* Màu nền của nút */
+            color: white; /* Màu chữ trắng */
+            border: none;
+            cursor: pointer;
+        }
+
+        #addForm button[type="submit"]:hover {
+            background-color: #0056b3; /* Màu nền khi di chuột vào */
+        }
+    </style>
+    <style>
+        #addFormContainer1 {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Màu nền với độ trong suốt */
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #addForm1 {
+            padding-left: 10px;
+            margin-top: 10%;
+            width: 100%;
+            height: 100%;
+            background-color: white; /* Màu nền của biểu mẫu */
+            border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
         }
     </style>
 </head>
@@ -52,6 +206,7 @@
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
+            <!-- Navbar Search -->
             <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
@@ -72,13 +227,13 @@
                 <c:choose>
                     <c:when test="${adminOrStaff == 1}">
                         <div class="image">
-                            <img src="/images/test.jpg" >
+                            <img src="/images/test.jpg">
                         </div>
 
                     </c:when>
                     <c:when test="${adminOrStaff == 2}">
                         <div class="image">
-                            <img src="/images/test1.jpg" >
+                            <img src="/images/test1.jpg">
                         </div>
                     </c:when>
                 </c:choose>
@@ -90,7 +245,8 @@
             <!-- SidebarSearch Form -->
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
-                    <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                           aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -101,7 +257,8 @@
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-item">
@@ -158,13 +315,13 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/loai_ao/view/1" class="nav-link ">
+                                <a href="/admin/loai_ao/view/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Loại áo</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/chat_vai/view/1" class="nav-link">
+                                <a href="/admin/chat_vai/view/1" class="nav-link active">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Chất vải</p>
                                 </a>
@@ -176,7 +333,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/admin/huong_dan_bao_quan/view/1" class="nav-link active">
+                                <a href="/admin/huong_dan_bao_quan/view/1" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Hướng dẫn bảo quản</p>
                                 </a>
@@ -307,16 +464,72 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Hướng dẫn bảo quản</h1>
+                        <h1>Trả hàng</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/admin/index/1">Trang chủ</a></li>
-                            <li class="breadcrumb-item active">Hướng dẫn bảo quản</li>
+                            <li class="breadcrumb-item active">Trả hàng</li>
                         </ol>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
+        </section>
+
+        <div id="no_1" style="display: none">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="status-container">
+                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i>
+                            Yêu cầu trả hàng
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+        </div>
+        <div id="no_2" style="display: none">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="status-container">
+                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i>
+                            Yêu cầu trả hàng
+                        </div>
+                        <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
+                        <div class="status status-2" onclick="showStatus('2')" style="margin-right: 50%"><i
+                                class="fas fa-truck"></i> Đã trả hàng
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </section>
+        </div>
+        <section class="content" style="margin-bottom: 20px">
+            <form method="post">
+                <input type="hidden" name="maDonHang" value="${hoaDon.ma}">
+                <c:choose>
+                    <c:when test="${trangThai == 1}">
+                        <button class="button btn-button-xn"
+                                id="addButton1" onclick="clickHuy()">Xác nhận
+                        </button>
+                        <button formaction="/admin/tra_hang/delete" name="delete"
+                                value="${item.id}" class="button btn-button-huy"><i class="fas fa-trash"></i> Xóa
+                        </button>
+                        <button class="button btn-button-ct" style="margin-left: 71%;" id="addButton"
+                                onclick="clickThem()">Chi tiết
+                        </button>
+                    </c:when>
+                    <c:when test="${trangThai == 2}">
+                        <button class="button btn-button-xn" formaction="/admin/don_hang/hoan_thanh">Hoàn thành</button>
+                        <button class="button btn-button-ct" style="margin-left: 79%;" id="addButton"
+                                onclick="clickThem()">Chi tiết
+                        </button>
+                    </c:when>
+                </c:choose>
+            </form>
+            <!-- /.container-fluid -->
         </section>
 
         <!-- Main content -->
@@ -327,32 +540,50 @@
                         <form method="post">
                             <div class="card">
                                 <div class="card-header">
-                                    <button class="btn btn-primary" id="addButton" onclick="clickThem()"><i class="fas fa-plus nav-icon"></i>
-                                        Thêm</button>
+
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
-                                            <th>Mã</th>
-                                            <th>Tên</th>
-                                            <th>Chi tiết</th>
+                                            <th>Hóa đơn</th>
+                                            <th>Áo chi tiết</th>
+                                            <th>Ngày yêu cầu</th>
+                                            <th>Số lượng trả</th>
+                                            <th>Đơn giá</th>
+                                            <th>Lí do trả</th>
                                             <th>Trạng thái</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items="${listHuongDanBaoQuans}" var="list">
+                                        <c:forEach items="${listHoaDonTraHangs}" var="list">
                                             <tr>
-                                                <td>${list.ma}</td>
-                                                <td>${list.ten}</td>
-                                                <td>${list.chitiet}</td>
-                                                <td>${list.trangthai==1?'Hoạt Động':'Ngừng Hoạt Động'}</td>
+                                                <td>${list.hoaDon.ma}</td>
+                                                <td>${list.aoChiTiet.size.ten}, ${list.aoChiTiet.mau_sac.ten}</td>
                                                 <td>
-                                                    <button formaction="/admin/huong_dan_bao_quan/detail" name="detail"
+                                                    <c:set var="dateTimeString" value="${list.ngayYeuCau}"/>
+                                                    <fmt:parseDate value="${dateTimeString}" var="parsedDate"
+                                                                   pattern="yyyy-MM-dd'T'HH:mm:ss.SSS"/>
+                                                    <fmt:formatDate value="${parsedDate}" var="formattedDate"
+                                                                    pattern="dd-MM-yyyy HH:mm:ss"/>
+                                                        ${formattedDate}
+                                                </td>
+                                                <td>${list.soLuongTra}</td>
+                                                <td>${list.donGia}</td>
+                                                <td>${list.ghiChu}</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${list.trangThai == 1}">Yêu cầu trả hàng</c:when>
+                                                        <c:when test="${list.trangThai == 2}">Đã trả hàng</c:when>
+                                                    </c:choose>
+                                                </td>
+                                                <td>
+                                                    <button formaction="/admin/tra_hang/detail" name="detail"
                                                             value="${list.id}"
-                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Chi Tiết
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Chi
+                                                        Tiết
                                                     </button>
                                                 </td>
                                             </tr>
@@ -360,9 +591,12 @@
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <th>Mã</th>
-                                            <th>Tên</th>
-                                            <th>Chi tiết</th>
+                                            <th>Hóa đơn</th>
+                                            <th>Áo chi tiết</th>
+                                            <th>Ngày yêu cầu</th>
+                                            <th>Số lượng trả</th>
+                                            <th>Đơn giá</th>
+                                            <th>Lí do trả</th>
                                             <th>Trạng thái</th>
                                             <th>Action</th>
                                         </tr>
@@ -380,61 +614,111 @@
             </div>
             <!-- /.container-fluid -->
         </section>
-        <div id="addFormContainer" style="display: none;">
-            <div class="container-fluid">
-                <div class="container">
-                    <form method="post" id="addForm">
-                        <h3 style="text-align: center">HƯỚNG DẪN BẢO QUẢN</h3>
-                        <input type="hidden" name="id" value="${item.id}">
-                        <div class="form-group">
-                            <label for="formGroupExampleInput2">Tên <span class="text-danger">(*)</span> :</label>
-                            <input type="text" name="ten" value="${item.ten}" class="form-control"
-                                   id="formGroupExampleInput2" placeholder="Tên ">
-                            <span id="errorTen" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Chi Tiết <span class="text-danger">(*)</span> :</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
-                                      name="chitiet">${item.chitiet}</textarea>
-                            <span id="errorChiTiet" class="text-danger"></span>
-                        </div>
-                        <fieldset class="form-group">
-                            <div class="row">
-                                <legend class="col-form-label col-sm-2 pt-0">Trạng Thái :</legend>
-                                <div class="col-sm-10">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="trangthai" id="gridRadios1"
-                                               value="1" checked ${item.trangthai==1?'checked':''}>
-                                        <label class="form-check-label" for="gridRadios1">
-                                            Hoạt Động
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="trangthai" id="gridRadios2"
-                                               value="0" ${item.trangthai==0?'checked':''}>
-                                        <label class="form-check-label" for="gridRadios2">
-                                            Không Hoạt Động
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <button class="btn btn-primary" formaction="/admin/huong_dan_bao_quan/add" type="submit"
-                                onclick="addProduct()" id="idThem"><i class="fas fa-plus"></i>Thêm Mới
-                        </button>
-                        <button class="btn btn-primary" formaction="/admin/huong_dan_bao_quan/update" type="submit"
-                                onclick="addProduct1()" id="idUpdate"><i class="fas fa-sync"></i> Cập nhật
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
         <!-- /.content -->
     </div>
+    <!-- /.content-wrapper -->
+
+
+    <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
         <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
+</div>
+<div id="addFormContainer" style="display: none;">
+    <div class="container-fluid">
+        <div class="container">
+            <form method="post" id="addForm">
+                <div class="row">
+                    <div class="col-11">
+                        <h3 style="text-align: center">Hóa đơn: <strong style="font-size: 35px">${hoaDon.ma}</strong>
+                        </h3>
+                    </div>
+                    <div class="col-1 icon-x" onclick="dongIcon()">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+                <div id="chiTietDonHang">
+                    <div class="d-flex justify-content-between ">
+                        <b><p style="width: 100px">Ảnh</p></b>
+                        <b><p style="width: 200px">Tên sản phẩm</p></b>
+                        <b><p style="width: 100px">Số lượng</p></b>
+                        <b><p style="width: 100px">Tổng tiền</p></b>
+                    </div>
+                    <c:forEach items="${hoaDonChiTiets}" var="list">
+                        <div class="d-flex justify-content-between ">
+                            <p><img style="width: 100px; height: 100px; border: 1px solid #6e7881"
+                                    src="/images/${list.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                            <div style="width: 200px">
+                                <b>
+                                    <p>${list.aoChiTiet.ao.ten}</p>
+                                    <p>Thông tin: ${list.aoChiTiet.mau_sac.ten}, ${list.aoChiTiet.size.ten}</p>
+                                </b>
+                            </div>
+
+                            <b><p style="width: 100px">${list.soLuong}</p></b>
+                            <b><p style="width: 100px"><fmt:formatNumber value="${list.donGia}" type="currency"
+                                                                         currencySymbol="VNĐ"/></p></b>
+                        </div>
+                    </c:forEach>
+                </div>
+                <h5 style="padding-top: 10px">Ngày tạo hóa đơn: <c:set var="dateTimeString" value="${hoaDon.ngayTao}"/>
+                    <fmt:parseDate value="${dateTimeString}" var="parsedDate"
+                                   pattern="yyyy-MM-dd'T'HH:mm:ss.SSS"/>
+                    <fmt:formatDate value="${parsedDate}" var="formattedDate"
+                                    pattern="dd-MM-yyyy HH:mm:ss"/>
+                    ${formattedDate}</h5>
+                <h5 style="padding-bottom: 10px; padding-top: 10px;display: <c:if
+                        test="${hoaDon.ngayHoanThanh == null}">none</c:if>">
+                    Ngày hoàn thành: <c:set var="dateTimeString" value="${hoaDon.ngayHoanThanh}"/>
+                    <fmt:parseDate value="${dateTimeString}" var="parsedDate"
+                                   pattern="yyyy-MM-dd'T'HH:mm:ss.SSS"/>
+                    <fmt:formatDate value="${parsedDate}" var="formattedDate"
+                                    pattern="dd-MM-yyyy HH:mm:ss"/>
+                    ${formattedDate}
+                </h5>
+                <div style="display: <c:if test="${hoaDon.khachHang == null}">none</c:if>">
+                    <h5 style="padding-bottom: 10px">Tên khách hàng : ${hoaDon.khachHang.ten}</h5>
+                    <h5 style="padding-bottom: 10px">Sđt khách hàng : ${hoaDon.khachHang.sdt}</h5>
+                    <h5 style="display: <c:if test="${hoaDon.moTa == null}">none</c:if>">Địa chỉ : ${hoaDon.moTa}</h5>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="addFormContainer1" style="display: none;">
+    <div class="container-fluid">
+        <div class="container">
+            <form method="post" id="addForm1">
+                <h3 style="text-align: center"><strong style="font-size: 35px">Xác nhận trả hàng</strong></h3>
+                <div class="d-flex justify-content-between ">
+                    <p style="width: 50px">Ảnh</p>
+                    <p style="width: 200px">Tên sản phẩm</p>
+                    <p style="width: 100px">Số lượng</p>
+                    <p style="width: 100px">Đơn giá</p>
+                </div>
+
+                <div class="d-flex justify-content-between ">
+                    <p><img style="width: 50px; height: 70px; border: 1px solid #6e7881"
+                            src="/images/${item.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                    <p style="width: 200px">${item.aoChiTiet.ao.ten}</p>
+                    <p style="width: 100px">${item.soLuongTra}</p>
+                    <p style="width: 100px"><fmt:formatNumber value="${item.donGia}" type="currency"
+                                                              currencySymbol="VNĐ"/></p>
+                </div>
+                <h5>Tên khách hàng : ${item.hoaDon.khachHang.ten}</h5>
+                <h5>Sđt khách hàng : ${item.hoaDon.khachHang.sdt}</h5>
+                <div style="margin-top: 10px">
+                    <label style="font-size: 25px">Lí do cho trả hàng :</label>
+                    <br>
+                    <textarea style="width: 50%" name="ghiChu"></textarea>
+                    <br>
+                    <button class="button btn-button-xn" formaction="/admin/tra_hang_admin/xac_nhan"
+                            name="idDonHangHoanTra" value="${item.id}">Xác nhận</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <!-- ./wrapper -->
 
@@ -478,7 +762,29 @@
     });
 </script>
 <script>
-    // Get references to the button and form container
+    window.onload = function () {
+        showStatus('${trangThai}');
+    };
+
+
+    function showStatus(status) {
+        event.preventDefault();
+
+        var no_1 = document.getElementById("no_1");
+        var no_2 = document.getElementById("no_2");
+
+        if (status == 1) {
+            no_1.style.display = "block";
+            no_2.style.display = "none";
+        }
+        if (status == 2) {
+            no_2.style.display = "block";
+            no_1.style.display = "none";
+        }
+
+    }
+</script>
+<script>
     var addButton = document.getElementById("addButton");
     var addFormContainer = document.getElementById("addFormContainer");
 
@@ -501,82 +807,39 @@
         }
     });
 
-    if (window.location.href === "http://localhost:8080/admin/huong_dan_bao_quan/view/1") {
-        // If the URL matches, show the form container
+    function dongIcon() {
         addFormContainer.style.display = "none";
-    } else {
-        document.getElementById("idThem").style.display = "none";
-        addFormContainer.style.display = "block";
     }
+
     function clickThem() {
-        document.getElementById("idThem").style.display = "block";
-        document.getElementById("idUpdate").style.display = "none";
-
-        document.getElementsByName("ten")[0].value = "";
-        document.getElementsByName("chitiet")[0].value = "";
-        // Đặt giá trị cho radio buttons
-        document.getElementById("gridRadios1").checked = true;
-
         event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
     }
 </script>
 <script>
-    function addProduct() {
-        var ten = document.getElementsByName('ten')[0].value;
-        var chitiet = document.getElementsByName('chitiet')[0].value;
-        var errorTen = document.getElementById('errorTen');
-        var errorChiTiet = document.getElementById('errorChiTiet');
-        var hasError = false;
+    var addButton1 = document.getElementById("addButton1");
+    var addFormContainer1 = document.getElementById("addFormContainer1");
 
-        if (ten.trim() === '') {
-            errorTen.innerText = 'Vui lòng nhập tên.';
-            hasError = true;
+    // Add an event listener to the button
+    addButton1.addEventListener("click", function () {
+        // Toggle the visibility of the form container
+        if (addFormContainer1.style.display === "none" || addFormContainer1.style.display === "") {
+            addFormContainer1.style.display = "block";
         } else {
-            errorTen.innerText = '';
+            addFormContainer1.style.display = "none";
         }
+    });
 
-        <c:forEach var="list" items="${listHuongDanBaoQuans}">
-        if ("${list.ten}".trim() === ten.trim()) {
-            errorTen.innerText = 'Tên hướng dẫn bảo quản đã tồn tại.';
-            hasError = true;
+    // Add an event listener to the background overlay
+    addFormContainer1.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer1) {
+            // Hide the form
+            addFormContainer1.style.display = "none";
         }
-        </c:forEach>
+    });
 
-        if (chitiet.trim() === '') {
-            errorChiTiet.innerText = 'Vui lòng nhập chi tiết.';
-            hasError = true;
-        } else {
-            errorTen.innerText = '';
-        }
-
-        if (hasError) {
-            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
-        }
-    }
-    function addProduct1() {
-        var ten = document.getElementsByName('ten')[0].value;
-        var chitiet = document.getElementsByName('chitiet')[0].value;
-        var errorTen = document.getElementById('errorTen');
-        var errorChiTiet = document.getElementById('errorChiTiet');
-        var hasError = false;
-
-        if (ten.trim() === '') {
-            errorTen.innerText = 'Vui lòng nhập tên.';
-            hasError = true;
-        } else {
-            errorTen.innerText = '';
-        }
-
-        if (chitiet.trim() === '') {
-            errorChiTiet.innerText = 'Vui lòng nhập chi tiết.';
-            hasError = true;
-        } else {
-            errorChiTiet.innerText = '';
-        }
-
-        if (hasError) {
-            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
-        }
+    function clickHuy() {
+        event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
     }
 </script>
 </body>

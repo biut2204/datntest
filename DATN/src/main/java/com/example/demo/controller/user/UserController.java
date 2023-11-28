@@ -1,5 +1,9 @@
 package com.example.demo.controller.user;
 
+import com.example.demo.config.Constant;
+import com.example.demo.config.Decode;
+import com.example.demo.config.MomoModel;
+import com.example.demo.config.ResultMoMo;
 import com.example.demo.entity.dto.Province;
 import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
 import com.example.demo.entity.khachhang.GioHang;
@@ -22,6 +26,8 @@ import com.example.demo.ser.sanpham.AoChiTietSer;
 import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
 import com.example.demo.ser.users.UsersSer;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +41,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -83,12 +95,24 @@ public class UserController {
         String[] parts = url.split("/user/gio_hang/view/");
         String ma = parts[1];
 
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
+
+        if(checkLogin == null){
+            return "redirect:/login";
+        }else {
+            if (!checkLogin.getMa().equals(ma)){
+                return "redirect:/login";
+            }
+        }
+
         Users users = usersSer.findByMa(ma);
         GioHang gioHang = gioHangSer.findByIdKH(users.getId());
 
         Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
 
         model.addAttribute("idKh", users.getMa());
+        model.addAttribute("khachHangNow", users);
         model.addAttribute("soLuongSanPham", soLuongSanPham);
 
         List<GioHangChiTiet> list = gioHangChiTietSer.view(gioHang.getId());
@@ -133,7 +157,7 @@ public class UserController {
     }
 
     @GetMapping("/user/hoa_don/view_hoa_don/*")
-    public String viewHoaDon(HttpServletRequest request, Model model) {
+    public String viewHoaDon(HttpServletRequest request, Model model, HttpSession session) {
 
         String url = request.getRequestURI();
         String[] p = url.split("/user/hoa_don/view_hoa_don/");
@@ -147,7 +171,25 @@ public class UserController {
         Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
 
         model.addAttribute("idKh", hoaDon.getKhachHang().getMa());
+        model.addAttribute("khachHangNow", hoaDon.getKhachHang());
         model.addAttribute("soLuongSanPham", soLuongSanPham);
+
+        String loiHoaDonBySoLuong = (String) session.getAttribute("loiHoaDonBySoLuong");
+        if (loiHoaDonBySoLuong != null){
+            model.addAttribute("loiHoaDonBySL","2");
+        }
+        session.removeAttribute("loiHoaDonBySoLuong");
+
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
+
+        if(checkLogin == null){
+            return "redirect:/login";
+        }else {
+            if (!checkLogin.getMa().equals(hoaDon.getKhachHang().getMa())){
+                return "redirect:/login";
+            }
+        }
 
         List<HoaDonChiTietDTO> listHoaDonChiTietDTOS = new ArrayList<>();
 
@@ -174,6 +216,7 @@ public class UserController {
         model.addAttribute("slDK", sl);
         model.addAttribute("tongTienDK",tongTienBigDecimal);
         model.addAttribute("CTGG", giamGiaHoaDonSer.findByTrangThai(0));
+        model.addAttribute("soChuongTrinhGG", giamGiaHoaDonSer.findByTrangThai(0).size());
         model.addAttribute("hoaDon", hoaDonSer.findId(UUID.fromString(id)));
         model.addAttribute("listHoaDonChiTietDTOS", listHoaDonChiTietDTOS);
         model.addAttribute("idKh", hoaDon.getKhachHang().getMa());
@@ -194,6 +237,17 @@ public class UserController {
         String[] parts = url.split("/user/don_hang/");
         String ma = parts[1];
 
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
+
+        if(checkLogin == null){
+            return "redirect:/login";
+        }else {
+            if (!checkLogin.getMa().equals(ma)){
+                return "redirect:/login";
+            }
+        }
+
         Users users = usersSer.findByMa(ma);
         GioHang gioHang = gioHangSer.findByIdKH(users.getId());
         Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
@@ -211,6 +265,8 @@ public class UserController {
         List<HoaDonDTO> listHoaDonDTOHuy = hoaDonSer.findHoaDonDT0(listHoaDonHuy);
 
         HoaDon hoaDon = (HoaDon) session.getAttribute("hoaDonDanhGia");
+        HoaDon hoaDonTraHang = (HoaDon) session.getAttribute("hoaDonTraHang");
+        HoaDon loiTraHang = (HoaDon) session.getAttribute("loiTraHang");
 
         if (hoaDon != null) {
             List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
@@ -218,15 +274,34 @@ public class UserController {
             model.addAttribute("listHoaDonChiTiets", listHoaDonChiTiets);
             model.addAttribute("noneOrBlock", "block");
         }
+        if (hoaDonTraHang != null) {
+            List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDonTraHang.getId());
+            model.addAttribute("hoaDon", hoaDonTraHang);
+            model.addAttribute("listHoaDonChiTiets", listHoaDonChiTiets);
+            model.addAttribute("noneOrBlockTraHang", "block");
+        }
+        if (loiTraHang != null) {
+            System.out.println("oke có lỗi trả hàng");
+            List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(loiTraHang.getId());
+            model.addAttribute("hoaDon", loiTraHang);
+            model.addAttribute("listHoaDonChiTiets", listHoaDonChiTiets);
+            model.addAttribute("noneOrBlockLoiTraHang", "block");
+        }
+
         session.removeAttribute("hoaDonDanhGia");
+        session.removeAttribute("hoaDonTraHang");
+        session.removeAttribute("loiTraHang");
 
         model.addAttribute("idKh", users.getMa());
+        model.addAttribute("khachHangNow", users);
         model.addAttribute("soLuongSanPham", soLuongSanPham);
         model.addAttribute("listHoaDonDTOChuaThanhToan", listHoaDonDTOChuaThanhToan);
         model.addAttribute("listHoaDonDTOChoXacNhan", listHoaDonDTOChoXacNhan);
         model.addAttribute("listHoaDonDTODangGiao", listHoaDonDTODangGiao);
         model.addAttribute("listHoaDonDTOHoanThanh", listHoaDonDTOHoanThanh);
         model.addAttribute("listHoaDonDTOHuy", listHoaDonDTOHuy);
+        model.addAttribute("localDate",LocalDate.now());
+        System.out.println("Ngày hiện tại localDate" + LocalDate.now());
 
         List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
         model.addAttribute("listLoaiAos", listLoaiAos);
@@ -238,13 +313,23 @@ public class UserController {
     public String muaLaiHoaDon(HttpServletRequest request) {
 
         LocalDateTime now = LocalDateTime.now();
-        int maHd = hoaDonSer.demHoaDon() +1;
 
         String url = request.getRequestURI();
         String[] parts = url.split("/user/hoa_don/mua_lai/");
         String id = parts[1];
 
         HoaDon hd = hoaDonSer.findId(UUID.fromString(id));
+
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
+
+        if(checkLogin == null){
+            return "redirect:/login";
+        }else {
+            if (!checkLogin.getMa().equals(hd.getKhachHang().getMa())){
+                return "redirect:/login";
+            }
+        }
 
         Users khachHang = hd.getKhachHang();
 
@@ -274,11 +359,23 @@ public class UserController {
         String[] parts = url.split("/user/doi_mat_khau_view/");
         String ma = parts[1];
 
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
+
+        if(checkLogin == null){
+            return "redirect:/login";
+        }else {
+            if (!checkLogin.getMa().equals(ma)){
+                return "redirect:/login";
+            }
+        }
+
         Users users = usersSer.findByMa(ma);
         GioHang gioHang = gioHangSer.findByIdKH(users.getId());
         Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
 
         model.addAttribute("idKh", users.getMa());
+        model.addAttribute("khachHangNow", users);
         model.addAttribute("taiKhoan", users);
         model.addAttribute("soLuongSanPham", soLuongSanPham);
 
@@ -300,9 +397,21 @@ public class UserController {
         Users users = hoaDon.getKhachHang();
         GioHang gioHang = gioHangSer.findByIdKH(users.getId());
 
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
+
+        if(checkLogin == null){
+            return "redirect:/login";
+        }else {
+            if (!checkLogin.getMa().equals(users.getMa())){
+                return "redirect:/login";
+            }
+        }
+
         Long soLuongSanPham = gioHangChiTietSer.soLuongSanPhamGioHang(gioHang.getId());
 
         model.addAttribute("idKh", users.getMa());
+        model.addAttribute("khachHangNow", users);
         model.addAttribute("soLuongSanPham", soLuongSanPham);
 
         List<HoaDonChiTiet> list = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
@@ -346,6 +455,17 @@ public class UserController {
 
         String idKh = hoaDon.getKhachHang().getMa();
 
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
+
+        if(checkLogin == null){
+            return "redirect:/login";
+        }else {
+            if (!checkLogin.getMa().equals(idKh)){
+                return "redirect:/login";
+            }
+        }
+
         hoaDonChiTietSer.delete(UUID.fromString(idHoaDonChiTiet));
 
         int soHDCT = hoaDonChiTietSer.soLuongHoaDonCHiTietByHoaDon(hoaDon.getId());
@@ -365,6 +485,17 @@ public class UserController {
         String ma = parts[1];
 
         Users users = usersSer.findByMa(ma);
+
+        Object object = request.getSession().getAttribute("userLogged1");
+        Users checkLogin = (Users) object;
+
+        if(checkLogin == null){
+            return "redirect:/login";
+        }else {
+            if (!checkLogin.getMa().equals(ma)){
+                return "redirect:/login";
+            }
+        }
 
         String idAo = request.getParameter("idAo");
         String mauSac = request.getParameter("mauSac");
@@ -465,11 +596,30 @@ public class UserController {
     }
 
     @PostMapping("/user/hoa_don/dat_hang/*")
-    public String datHang(HttpServletRequest request, Model model, HttpSession session) {
+    public String datHang(HttpServletRequest request, Model model, HttpSession session,
+                          @RequestParam(value = "idAoCheck", required = false) List<UUID> idAoCheck,
+                          @RequestParam(value = "mauSacCheck", required = false) List<UUID> mauSacCheck,
+                          @RequestParam(value = "sizeCheck", required = false) List<UUID> sizeCheck,
+                          @RequestParam(value = "soLuongCheck", required = false) List<String> soLuongCheck) throws JsonProcessingException {
 
         String url = request.getRequestURI();
         String[] p = url.split("/user/hoa_don/dat_hang/");
         String id = p[1];
+
+        int checkSoLuongTon = 0;
+
+        for (int i = 0; i< idAoCheck.size(); i++){
+            AoChiTiet actStr = aoChiTietSer.findIdByIdAoMsSize(idAoCheck.get(i), mauSacCheck.get(i), sizeCheck.get(i));
+            Integer slCheck = Integer.parseInt(soLuongCheck.get(i));
+            if (slCheck >  actStr.getSlton()){
+                checkSoLuongTon += 1;
+            }
+        }
+
+        if (checkSoLuongTon > 0){
+            session.setAttribute("loiHoaDonBySoLuong", "2");
+            return "redirect:/user/hoa_don/view_hoa_don/"+ id;
+        }
 
         String hinhThuc = request.getParameter("payment");
         String tongTien = request.getParameter("tongTien");
@@ -516,8 +666,97 @@ public class UserController {
         String bodymail = "";
 
         if (hinhThuc.equals("bank")) {
+
+            LocalDateTime now = LocalDateTime.now();
+
+            HoaDon hoaDon1 = hoaDonSer.findId(UUID.fromString(id));
+
+            HoaDon hd1 = new HoaDon();
+
+            hd1.setMa("HD" + now.getMonthValue() +now.getDayOfMonth()+ now.getHour()+ now.getMinute()+ now.getSecond());
+            hd1.setTongTien(hoaDon1.getTongTien());
+            hd1.setNgayTao(hoaDon1.getNgayTao());
+            hd1.setNgayChoXacNhan(null);
+            hd1.setKhachHang(hoaDon1.getKhachHang());
+            hd1.setTrangThai(0);
+            hd1.setMoTa(hoaDon1.getMoTa());
+            hd1.setHinhThuc(3);
+
+            hoaDonSer.update(hoaDon1.getId(), hd1);
+
             session.setAttribute("maHoaDon", hoaDon.getMa());
             return "redirect:/pay/" + hoaDon.getMa() + "/" + tongTien;
+        } else if (hinhThuc.equals("bank1")) {
+            LocalDateTime now = LocalDateTime.now();
+
+            HoaDon hoaDon1 = hoaDonSer.findId(UUID.fromString(id));
+
+            HoaDon hd1 = new HoaDon();
+
+            hd1.setMa("HD" + now.getMonthValue() +now.getDayOfMonth()+ now.getHour()+ now.getMinute()+ now.getSecond());
+            hd1.setTongTien(hoaDon1.getTongTien());
+            hd1.setNgayTao(hoaDon1.getNgayTao());
+            hd1.setNgayChoXacNhan(null);
+            hd1.setKhachHang(hoaDon1.getKhachHang());
+            hd1.setTrangThai(0);
+            hd1.setMoTa(hoaDon1.getMoTa());
+            hd1.setHinhThuc(3);
+
+            hoaDonSer.update(hoaDon1.getId(), hd1);
+
+            session.setAttribute("maHoaDonByMomo", hoaDon1.getMa());
+
+            ObjectMapper mapper = new ObjectMapper();
+            String orderId = hoaDon.getMa();
+            MomoModel jsonRequest = new MomoModel();
+            jsonRequest.setPartnerCode(Constant.IDMOMO);
+            jsonRequest.setOrderId(orderId);
+            jsonRequest.setStoreId(orderId);
+            jsonRequest.setRedirectUrl(Constant.redirectUrl);
+            jsonRequest.setIpnUrl(Constant.ipnUrl);
+            jsonRequest.setAmount(tongTien);
+            jsonRequest.setOrderInfo("Thanh toán Male Fashion.");
+            jsonRequest.setRequestId(orderId);
+            jsonRequest.setOrderType(Constant.orderType);
+            jsonRequest.setRequestType(Constant.requestType);
+            jsonRequest.setTransId("1");
+            jsonRequest.setResultCode("200");
+            jsonRequest.setMessage("");
+            jsonRequest.setPayType(Constant.payType);
+            jsonRequest.setResponseTime("300000");
+            jsonRequest.setExtraData("");
+
+            String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
+                    + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
+                    + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
+                    + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
+                    + Constant.requestType;
+
+
+            String signature = Decode.encode(Constant.serectkey, decode);
+            jsonRequest.setSignature(signature);
+            String json = mapper.writeValueAsString(jsonRequest);
+            HttpClient client = HttpClient.newHttpClient();
+            ResultMoMo res = new ResultMoMo();
+
+            try {
+                HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
+                        .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
+                        .build();
+                HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
+                res = mapper.readValue(response.body(), ResultMoMo.class);
+            } catch (InterruptedException | URISyntaxException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if (res == null) {
+
+                session.setAttribute("error_momo", "Thanh toán thất bại");
+                return "redirect:/home";
+
+            } else {
+                return "redirect:" + res.payUrl;
+            }
         }
         model.addAttribute("idKh", hoaDon.getKhachHang().getMa());
 
@@ -559,6 +798,7 @@ public class UserController {
             aoChiTiet.setAo(act.getAo());
             aoChiTiet.setSlton(slTon);
             aoChiTiet.setSlban(slBan);
+            aoChiTiet.setSlTra(act.getSlTra());
             aoChiTiet.setTrangthai(act.getTrangthai());
 
             aoChiTietSer.update(act.getId(), aoChiTiet);
@@ -612,6 +852,7 @@ public class UserController {
             aoChiTiet.setAo(act.getAo());
             aoChiTiet.setSlton(slTon);
             aoChiTiet.setSlban(slBan);
+            aoChiTiet.setSlTra(act.getSlTra());
             aoChiTiet.setTrangthai(act.getTrangthai());
 
             aoChiTietSer.update(act.getId(), aoChiTiet);

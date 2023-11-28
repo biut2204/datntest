@@ -52,6 +52,7 @@ public class AoChiTietSerImpl implements AoChiTietSer {
         aoChiTiet.setSize(updateACT.getSize());
         aoChiTiet.setSlton(updateACT.getSlton());
         aoChiTiet.setSlban(updateACT.getSlban());
+        aoChiTiet.setSlTra(updateACT.getSlTra());
         aoChiTiet.setTrangthai(updateACT.getTrangthai());
         aoChiTietRepo.save(aoChiTiet);
     }

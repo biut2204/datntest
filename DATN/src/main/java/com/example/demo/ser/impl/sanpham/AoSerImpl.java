@@ -26,7 +26,7 @@ public class AoSerImpl implements AoSer {
 
     @Override
     public List<Ao> getAll() {
-        return aoRepo.findAll();
+        return aoRepo.findAllByTrangThai(2);
     }
 
     @Override
@@ -80,6 +80,16 @@ public class AoSerImpl implements AoSer {
             AoDTO aoDTO = new AoDTO();
             aoDTO.setAo(ao);
             aoDTO.setSlBan(slBan);
+
+            GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = giamGiaSanPhamChiTietRepo.findByIdAoAndTrangThai(ao.getId());
+            if (giamGiaSanPhamChiTiet != null){
+                int giaBan = ao.getGiaBan().toBigInteger().intValue() - (giamGiaSanPhamChiTiet.getSoTienDaGiam().toBigInteger().intValue()/100);
+                aoDTO.setGiaBan(giaBan);
+            }else {
+                int giaBan = ao.getGiaBan().toBigInteger().intValue();
+                aoDTO.setGiaBan(giaBan);
+            }
+
             top8Ao.add(aoDTO);
         }
         return top8Ao;

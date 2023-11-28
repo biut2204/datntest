@@ -362,7 +362,7 @@
                                                 <td>
                                                     <button formaction="/chuong-trinh-giam-gia/detail_sp"
                                                             name="detail_sp" value="${list.id}"
-                                                            class="btn btn-primary me-2">Detail
+                                                            class="btn btn-primary me-2">Chi Tiết
                                                     </button>
                                                 </td>
                                             </tr>

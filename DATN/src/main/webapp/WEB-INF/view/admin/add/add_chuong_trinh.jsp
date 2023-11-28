@@ -10,7 +10,8 @@
     <title>AdminLTE 3 | DataTables</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../../../../resources/plugins/fontawesome-free/css/all.min.css">
     <!-- DataTables -->
@@ -224,13 +225,13 @@
                 <c:choose>
                     <c:when test="${adminOrStaff == 1}">
                         <div class="image">
-                            <img src="/images/test.jpg" >
+                            <img src="/images/test.jpg">
                         </div>
 
                     </c:when>
                     <c:when test="${adminOrStaff == 2}">
                         <div class="image">
-                            <img src="/images/test1.jpg" >
+                            <img src="/images/test1.jpg">
                         </div>
                     </c:when>
                 </c:choose>
@@ -242,7 +243,8 @@
             <!-- SidebarSearch Form -->
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
-                    <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                           aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-sidebar">
                             <i class="fas fa-search fa-fw"></i>
@@ -253,7 +255,8 @@
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-item">
@@ -491,12 +494,14 @@
                             <div class="mb-3">
                                 <label>Loại chương trình:</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="giamgia_sp" name="loai" value="giamgia_sp"
+                                    <input class="form-check-input" type="radio" id="giamgia_sp" name="loai"
+                                           value="giamgia_sp"
                                            onclick="showGiamGiaSanPham()" ${loai == 'giamgia_sp'?'checked':''}>
                                     <label for="giamgia_sp">Giảm giá sản phẩm</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="giamgia_hd" name="loai" value="giamgia_hd"
+                                    <input class="form-check-input" type="radio" id="giamgia_hd" name="loai"
+                                           value="giamgia_hd"
                                            onclick="showGiamGiaHoaDon()" ${loai == 'giamgia_hd'?'checked':''}>
                                     <label for="giamgia_hd">Giảm giá hóa đơn</label>
                                 </div>
@@ -505,9 +510,11 @@
                             <div id="giamgia_sanpham" style="display: none;">
                                 <label for="ngaybd">Ngày bắt đầu:</label>
                                 <input type="date" id="ngaybd" name="ngaybd" value="${ngayBatDau_sp}">
+                                <span id="errorNgayBd" class="text-danger"></span>
 
                                 <label for="ngaykt">Ngày kết thúc:</label>
                                 <input type="date" id="ngaykt" name="ngaykt" value="${ngayKetThuc_sp}">
+                                <span id="errorNgayKt" class="text-danger"></span>
 
                                 <label for="tigiam">Phần trăm giảm <span class="text-danger">(*)</span> :</label>
                                 <input type="text" id="tigiam" name="tigiam" value="${CTGGSP.phanTramGiam}">
@@ -515,30 +522,36 @@
                             </div>
 
                             <div id="giamgia_hoadon" style="display: none;">
-                                <label for="sosp">Số sản phẩm hóa đơn trên <span class="text-danger">(*)</span> :</label>
+                                <label for="sosp">Số sản phẩm hóa đơn trên <span class="text-danger">(*)</span>
+                                    :</label>
                                 <input type="number" id="sosp" name="sosp" value="${CTGGHD.soLuongSanPham}">
                                 <span id="errorSoSanPham" class="text-danger"></span>
 
-                                <label for="tongtien">Tổng tiền hóa đơn trên <span class="text-danger">(*)</span> :</label>
+                                <label for="tongtien">Tổng tiền hóa đơn trên <span class="text-danger">(*)</span>
+                                    :</label>
                                 <input type="number" id="tongtien" name="tongtien" value="${CTGGHD.soTienHoaDon}">
                                 <span id="errorTongTien" class="text-danger"></span>
 
                                 <label for="ngaybd_hd">Ngày bắt đầu:</label>
                                 <input type="date" id="ngaybd_hd" name="ngaybd_hd" value="${ngayBatDau_hd}">
+                                <span id="errorNgayBd_Hd" class="text-danger"></span>
 
                                 <label for="ngaykt_hd">Ngày kết thúc:</label>
                                 <input type="date" id="ngaykt_hd" name="ngaykt_hd" value="${ngayKetThuc_hd}">
+                                <span id="errorKt_Hd" class="text-danger"></span>
 
                                 <label for="tigiam_hd">Phần trăm giảm <span class="text-danger">(*)</span> :</label>
                                 <input type="text" id="tigiam_hd" name="tigiam_hd" value="${CTGGHD.phanTramGiam}">
                                 <span id="errorPhanTramGiamHD" class="text-danger"></span>
                             </div>
 
-                            <button class="btn btn-success" type="submit" formaction="/chuong-trinh-giam-gia/add" value="Thêm" onclick="addProduct()" >
+                            <button class="btn btn-primary" type="submit" formaction="/chuong-trinh-giam-gia/add"
+                                    value="Thêm" id="idThem" onclick="addProduct()">
                                 <i class="fas fa-plus"></i> Thêm
                             </button>
-                            <button class="btn btn-primary" type="submit" formaction="/chuong-trinh-giam-gia/update" value="Cập nhật" onclick="addProduct()">
-                                Cập nhật
+                            <button class="btn btn-primary" type="submit" formaction="/chuong-trinh-giam-gia/update"
+                                    value="Cập nhật" id="idUpdate" onclick="addProduct()">
+                                <i class="fas fa-sync"></i>Cập nhật
                             </button>
                         </form>
                         <!-- /.card -->
@@ -602,6 +615,15 @@
     });
 </script>
 <script>
+
+    if (window.location.href === "http://localhost:8080/admin/chuong_trinh_giam_gia/add_view/1") {
+        document.getElementById("idThem").style.display = "block";
+        document.getElementById("idUpdate").style.display = "none";
+    } else {
+        document.getElementById("idThem").style.display = "none";
+        document.getElementById("idUpdate").style.display = "block";
+    }
+
     function showGiamGiaSanPham() {
         document.getElementById("giamgia_sanpham").style.display = "block";
         document.getElementById("giamgia_hoadon").style.display = "none";
@@ -635,63 +657,175 @@
         var sosp = document.getElementsByName('sosp')[0].value;
         var tongtien = document.getElementsByName('tongtien')[0].value;
         var tigiam_hd = document.getElementsByName('tigiam_hd')[0].value;
+        var ngaybd = document.getElementsByName('ngaybd')[0].value;
+        var ngaykt = document.getElementsByName('ngaykt')[0].value;
+        var ngaybd_hd = document.getElementsByName('ngaybd_hd')[0].value;
+        var ngaykt_hd = document.getElementsByName('ngaykt_hd')[0].value;
 
         var errorMa = document.getElementById('errorMa');
         var errorTen = document.getElementById('errorTen');
         var errorPhanTramGiamSP = document.getElementById('errorPhanTramGiamSP');
         var errorPhanTramGiamHD = document.getElementById('errorPhanTramGiamHD');
         var errorSoSanPham = document.getElementById('errorSoSanPham');
+        var errorNgayBd = document.getElementById('errorNgayBd');
+        var errorNgayKt = document.getElementById('errorNgayKt');
+        var errorNgayBd_Hd = document.getElementById('errorNgayBd_Hd');
+        var errorKt_Hd = document.getElementById('errorKt_Hd');
         var errorTongTien = document.getElementById('errorTongTien');
         var hasError = false;
 
+
         if (ma.trim() === '') {
             errorMa.innerText = 'Vui lòng nhập mã.';
+            document.getElementById('ma').style.borderColor = 'red';
             hasError = true;
         } else {
             errorMa.innerText = '';
+            document.getElementById('ma').style.borderColor = 'gray';
         }
 
         if (ten.trim() === '') {
             errorTen.innerText = 'Vui lòng nhập tên.';
+            document.getElementById('ten').style.borderColor = 'red';
             hasError = true;
         } else {
+            document.getElementById('ten').style.borderColor = 'gray';
             errorTen.innerText = '';
         }
 
         if (document.getElementById('giamgia_sanpham').style.display === 'block') {
+            if (ngaybd.trim() === '') {
+                errorNgayBd.innerText = 'Vui lòng nhập ngày bắt đầu.';
+                document.getElementById('ngaybd').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                errorNgayBd.innerText = '';
+                document.getElementById('ngaybd').style.borderColor = 'gray';
+            }
+
+            if (ngaykt.trim() === '') {
+                errorNgayKt.innerText = 'Vui lòng nhập ngày kết thúc.';
+                document.getElementById('ngaykt').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                var currentDate = new Date().getTime();
+                var inputDate = new Date(ngaykt).getTime();
+                var ngaybdValue = new Date(ngaybd).getTime();
+
+                if(inputDate <= ngaybdValue){
+                    document.getElementById('ngaykt').style.borderColor = 'red';
+                    errorNgayKt.innerText = 'Ngày kết thúc không được nhỏ hơn hoặc bằng ngày bắt đầu.';
+                    hasError = true;
+                }
+                else if (inputDate < currentDate) {
+                    document.getElementById('ngaykt').style.borderColor = 'red';
+                    errorNgayKt.innerText = 'Ngày kết thúc không được nhỏ hơn hoặc bằng ngày hiện tại.';
+                    hasError = true;
+                }else{
+                    errorNgayKt.innerText = '';
+                    document.getElementById('ngaykt').style.borderColor = 'gray';
+                }
+
+            }
+
             if (tigiam.trim() === '') {
                 errorPhanTramGiamSP.innerText = 'Vui lòng nhập phần trăm giảm.';
+                document.getElementById('tigiam').style.borderColor = 'red';
+                hasError = true;
+            }else if (isNaN(tigiam)) {
+                errorPhanTramGiamSP.innerText = 'Vui lòng nhập số.';
+                document.getElementById('tigiam').style.borderColor = 'red';
+                hasError = true;
+            } else if(tigiam< 0 || tigiam >100){
+                errorPhanTramGiamSP.innerText = 'Phần trăm giảm lớn hơn 0 hoặc nhỏ hơn 100.';
+                document.getElementById('tigiam').style.borderColor = 'red';
                 hasError = true;
             } else {
                 errorPhanTramGiamSP.innerText = '';
+                document.getElementById('tigiam').style.borderColor = 'gray';
             }
-            errorSoSanPham.innerText = '';
-            errorTongTien.innerText = '';
-            errorPhanTramGiamHD.innerText = '';
+            // errorSoSanPham.innerText = '';
+            // errorTongTien.innerText = '';
+            // errorPhanTramGiamHD.innerText = '';
         }
 
         if (document.getElementById('giamgia_hoadon').style.display === 'block') {
             if (sosp.trim() === '') {
                 errorSoSanPham.innerText = 'Vui lòng nhập số sản phẩm.';
+                document.getElementById('sosp').style.borderColor = 'red';
+                hasError = true;
+            } else if (sosp < 0) {
+                errorSoSanPham.innerText = 'Vui lòng nhập số dương.';
+                document.getElementById('sosp').style.borderColor = 'red';
                 hasError = true;
             } else {
                 errorSoSanPham.innerText = '';
+                document.getElementById('sosp').style.borderColor = 'gray';
+            }
+
+            if (ngaybd_hd.trim() === '') {
+                errorNgayBd_Hd.innerText = 'Vui lòng nhập ngày bắt đầu.';
+                document.getElementById('ngaybd_hd').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                errorNgayBd_Hd.innerText = '';
+                document.getElementById('ngaybd_hd').style.borderColor = 'gray';
+            }
+
+            if (ngaykt_hd.trim() === '') {
+                errorKt_Hd.innerText = 'Vui lòng nhập ngày kết thúc.';
+                document.getElementById('ngaykt_hd').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                var currentDate1 = new Date().getTime();
+                var inputDate1 = new Date(ngaykt_hd).getTime();
+                var ngaybdValue1 = new Date(ngaybd_hd).getTime();
+
+                if(inputDate1 <= ngaybdValue1){
+                    document.getElementById('ngaykt_hd').style.borderColor = 'red';
+                    errorKt_Hd.innerText = 'Ngày kết thúc không được nhỏ hơn hoặc bằng ngày bắt đầu.';
+                    hasError = true;
+                }
+                else if (inputDate1 < currentDate1) {
+                    document.getElementById('ngaykt_hd').style.borderColor = 'red';
+                    errorKt_Hd.innerText = 'Ngày kết thúc không được nhỏ hơn hoặc bằng ngày hiện tại.';
+                    hasError = true;
+                }else{
+                    errorKt_Hd.innerText = '';
+                    document.getElementById('ngaykt_hd').style.borderColor = 'gray';
+                }
             }
 
             if (tongtien.trim() === '') {
                 errorTongTien.innerText = 'Vui lòng nhập tổng tiền.';
+                document.getElementById('tongtien').style.borderColor = 'red';
+                hasError = true;
+            }else if (tongtien < 0) {
+                errorTongTien.innerText = 'Vui lòng nhập số dương.';
+                document.getElementById('tongtien').style.borderColor = 'red';
                 hasError = true;
             } else {
                 errorTongTien.innerText = '';
+                document.getElementById('tongtien').style.borderColor = 'gray';
             }
 
             if (tigiam_hd.trim() === '') {
                 errorPhanTramGiamHD.innerText = 'Vui lòng nhập phần trăm giảm.';
+                document.getElementById('tigiam_hd').style.borderColor = 'red';
+                hasError = true;
+            }else if (isNaN(tigiam_hd)) {
+                errorPhanTramGiamHD.innerText = 'Vui lòng nhập số.';
+                document.getElementById('tigiam_hd').style.borderColor = 'red';
+                hasError = true;
+            }else if (tigiam_hd<0 || tigiam_hd >100) {
+                errorPhanTramGiamHD.innerText = 'Phần trăm giảm lớn hơn 0 hoặc nhỏ hơn 100.';
+                document.getElementById('tigiam_hd').style.borderColor = 'red';
                 hasError = true;
             } else {
                 errorPhanTramGiamHD.innerText = '';
+                document.getElementById('tigiam_hd').style.borderColor = 'gray';
             }
-            errorPhanTramGiamSP.innerText = '';
+            // errorPhanTramGiamSP.innerText = '';
         }
 
         if (hasError) {

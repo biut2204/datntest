@@ -359,11 +359,16 @@
                                                 <td><c:set var="dateFormat1" value="dd/MM/yyyy"/>
                                                     <fmt:formatDate value="${list.ngayKetThuc}"
                                                                     pattern="${dateFormat1}"/></td>
-                                                <td>${list.trangThai}</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${list.trangThai == 0}">Còn hạn</c:when>
+                                                        <c:when test="${list.trangThai == 1}">Hết hạn</c:when>
+                                                    </c:choose>
+                                                </td>
                                                 <td>
                                                     <button formaction="/chuong-trinh-giam-gia/detail_hd"
                                                             name="detail_hd" value="${list.id}"
-                                                            class="btn btn-primary me-2">Detail
+                                                            class="btn btn-primary me-2">Chi Tiết
                                                     </button>
                                                 </td>
                                             </tr>

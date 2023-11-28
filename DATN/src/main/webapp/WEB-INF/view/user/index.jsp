@@ -59,8 +59,21 @@
 
         .label1 {
             position: absolute;
-            top: -10px;
-            right: -8px;
+            top: -15px;
+            right: -10px;
+            color: red;
+            padding: 5px;
+            padding-left: 278px;
+            font-size: 30px;
+            transform: rotate(0deg);
+            transform-origin: top right;
+            animation: blink 1s infinite alternate;
+            white-space: nowrap;
+        }
+        .label2 {
+            position: absolute;
+            top: -15px;
+            right: -15px;
             color: red;
             padding: 5px;
             padding-left: 278px;
@@ -251,9 +264,10 @@
             background: #fff3c6;
             color: red; /* Change this to the desired hover color */
         }
+
         #searchResults2 {
-            max-height: 200px; /* Đặt chiều cao tối đa của khu vực hiển thị */
-            overflow-y: auto; /* Cho phép cuộn dọc nếu nội dung vượt quá chiều cao tối đa */
+            max-height: 200px;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -332,7 +346,7 @@
                                 <a href="/user/don_hang/${idKh}" class="btn px-0">
                                     <i class="fa fa-user"></i>
                                     <span class="badge text-secondary border border-secondary rounded-circle"
-                                          style="padding-bottom: 2px;">${idKh}</span>
+                                          style="padding-bottom: 2px;">${khachHangNow.ten}</span>
                                 </a>
                                 <a href="/user/gio_hang/view/${idKh}" class="btn px-0 ml-3">
                                     <i class="fas fa-shopping-cart text-primary"></i>
@@ -342,7 +356,7 @@
                             </c:when>
                             <c:when test="${idKh == 2}">
                                 <a href="/login" class="btn px-0 ml-3">
-                                    <i class="fas fa-user text-primary"></i>
+                                    <i class="fas fa-user text-primary"></i><span style="color: white">Đăng nhập</span>
                                 </a>
                             </c:when>
                         </c:choose>
@@ -374,7 +388,7 @@
                                 <p class="mx-md-5 px-5 animate__animated animate__bounceIn">Lorem rebum magna amet lorem
                                     magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
                                 <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp"
-                                   href="#">Shop Now</a>
+                                   href="/user/view_tim_kiem/${idKh}">Shop Now</a>
                             </div>
                         </div>
                     </div>
@@ -388,7 +402,7 @@
                                 <p class="mx-md-5 px-5 animate__animated animate__bounceIn">Lorem rebum magna amet lorem
                                     magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
                                 <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp"
-                                   href="#">Shop Now</a>
+                                   href="/user/view_tim_kiem/${idKh}">Shop Now</a>
                             </div>
                         </div>
                     </div>
@@ -402,7 +416,7 @@
                                 <p class="mx-md-5 px-5 animate__animated animate__bounceIn">Lorem rebum magna amet lorem
                                     magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
                                 <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp"
-                                   href="#">Shop Now</a>
+                                   href="/user/view_tim_kiem/${idKh}">Shop Now</a>
                             </div>
                         </div>
                     </div>
@@ -415,7 +429,7 @@
                 <div class="offer-text">
                     <h6 class="text-white text-uppercase">Sản phẩm bán chạy</h6>
                     <h3 class="text-white mb-3">Hot</h3>
-                    <a href="" class="btn btn-primary">Shop Now</a>
+                    <a href="/user/view_tim_kiem_hot/${idKh}" class="btn btn-primary">Shop Now</a>
                 </div>
             </div>
             <div class="product-offer mb-30" style="height: 200px;">
@@ -423,7 +437,7 @@
                 <div class="offer-text">
                     <h6 class="text-white text-uppercase">Sản phẩm mới</h6>
                     <h3 class="text-white mb-3">New</h3>
-                    <a href="" class="btn btn-primary">Shop Now</a>
+                    <a href="/user/view_tim_kiem_new/${idKh}" class="btn btn-primary">Shop Now</a>
                 </div>
             </div>
         </div>
@@ -503,7 +517,8 @@
 
 
 <!-- Products Start -->
-<div class="container-fluid pt-5 pb-3">
+
+<div class="container-fluid pt-5 pb-3" style="width: 100%">
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản phẩm bán chạy</span>
     </h2>
     <div class="row px-xl-5">
@@ -521,24 +536,39 @@
                                href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i class="fa fa-search"></i></a>
                         </div>
                     </div>
+                    <div class="label2"><img src="/images/best_seller.png" style="width: 120px"></div>
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate"
                            href="/user/san_pham_detail/${idKh}/${list.ao.id}"
                            style="display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${list.ao.ten}</a>
-                        <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5><strong><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
-                                                          currencySymbol="VNĐ"/></strong></h5>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-center mt-2">
-                            <span class="ml-2">${list.slBan} sản phẩm đã bán</span>
-                        </div>
+                        <c:choose>
+                            <c:when test="${list.giaBan == list.ao.giaBan}">
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <h5 style="color: red;"><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
+                                                                              currencySymbol="VNĐ"/></h5>
+                                </div>
+                                <p>Sản phẩm đã bán ${list.slBan}</p>
+                            </c:when>
+                            <c:when test="${list.giaBan < list.ao.giaBan}">
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <h6 class="text-muted ml-2">
+                                        <del><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
+                                                               currencySymbol="VNĐ"/></del>
+                                    </h6>
+                                    <h5 style="color: red;"><fmt:formatNumber value="${list.giaBan}"
+                                                                              type="currency"
+                                                                              currencySymbol="VNĐ"/></h5>
+                                </div>
+                                <p>Sản phẩm đã bán ${list.slBan}</p>
+                            </c:when>
+                        </c:choose>
                     </div>
                 </div>
             </div>
         </c:forEach>
     </div>
 </div>
-<div style="width: 100%; height: 800px; background: black; padding-top: 5%">
+<div style="width: 99%; height: 800px; background: black; padding-top: 5%">
     <div class="row">
         <div class="col-6">
             <div style="padding-top: 40%;padding-left: 10% ; color: white">
@@ -552,7 +582,7 @@
         </div>
     </div>
 </div>
-<div style="width: 100%; height: 700px; background: black">
+<div style="width: 99%; height: 700px; background: black">
     <div class="row">
         <div class="col-6">
             <img src="/images/home_banner_1_image_2.jpg" style="width: 90%; padding-left: 10%">
@@ -561,13 +591,13 @@
             <div style="padding-top: 40%;padding-left: 10% ; color: white">
                 <p style="font-size: 30px"><b>Hành trình 3 tháng</b></p>
                 <p style="font-size: 50px"><b>VÌ MỘT VIỆT NAM ĐẸP HƠN</b></p>
-                <button class="button-layout">Xem thêm</button>
+                <a href="/user/shop/1" class="button-layout">Xem thêm</a>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container-fluid py-5">
+<div class="container-fluid py-5" style="width: 100%">
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Bộ sưu tập mới</span>
     </h2>
     <div class="row px-xl-5">
@@ -586,7 +616,7 @@
                                    href="/user/san_pham_detail/${idKh}/${list.ao.id}"><i class="fa fa-search"></i></a>
                             </div>
                         </div>
-                        <div class="label1"><img src="/images/new_no_phong.png"></div>
+                        <div class="label1"><img src="/images/new_no_phong.png" style="width: 100px"></div>
                         <div class="text-center py-4">
                             <a class="h6 text-decoration-none text-truncate"
                                href="/user/san_pham_detail/${idKh}/${list.ao.id}"
@@ -594,7 +624,8 @@
                             <c:choose>
                                 <c:when test="${list.giaBan == list.ao.giaBan}">
                                     <div class="d-flex align-items-center justify-content-center mt-2">
-                                        <h5 style="color: red;"><fmt:formatNumber value="${list.ao.giaBan}" type="currency"
+                                        <h5 style="color: red;"><fmt:formatNumber value="${list.ao.giaBan}"
+                                                                                  type="currency"
                                                                                   currencySymbol="VNĐ"/></h5>
                                     </div>
                                     <p>Sản phẩm đã bán ${list.slBan}</p>
@@ -620,7 +651,6 @@
     </div>
 </div>
 
-<!-- Products End -->
 <div id="addFormContainer" style="display: none;">
     <div class="container-fluid">
         <div class="container">
@@ -732,8 +762,7 @@
     </div>
 </div>
 
-
-<div style="background-image:url(//theme.hstatic.net/200000053174/1001115888/14/home_banner_2_bg_image.jpg?v=1210)">
+<div style="background-image:url(//theme.hstatic.net/200000053174/1001115888/14/home_banner_2_bg_image.jpg?v=1210); width: 99%">
     <div class="row" style="padding-top: 2%">
         <div class="col-1">
         </div>
@@ -770,14 +799,8 @@
         </div>
     </div>
 </div>
-<!-- Offer Start -->
 
-<!-- Offer End -->
-
-
-<!-- Products Start -->
-
-<div class="container-fluid py-5">
+<div class="container-fluid py-5" style="width: 100%">
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản phẩm sale</span>
     </h2>
     <div class="row px-xl-5">
@@ -831,24 +854,8 @@
         </div>
     </div>
 </div>
-<div class="container-fluid pt-5 pb-3">
-    <div class="row px-xl-5">
-        <c:forEach items="${listTop2GiamGiaSanPhams}" var="list">
-            <div class="col-md-6">
-                <div class="product-offer mb-30" style="height: 300px;">
-                    <img class="img-fluid" src="/images/test.jpg" alt="">
-                    <div class="offer-text">
-                        <h6 class="text-white text-uppercase">Sale ${list.phanTramGiam}%</h6>
-                        <h3 class="text-white mb-3">Sale sập sàn</h3>
-                        <a href="" class="btn btn-primary">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
-    </div>
-</div>
 <!-- Vendor End -->
-<div class="container-fluid py-5">
+<div class="container-fluid py-5" style="width: 100%">
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Danh sách sản phẩm</span>
     </h2>
     <div class="row px-xl-5">
@@ -902,75 +909,44 @@
     </div>
 </div>
 
+
 <%--chat--%>
 
 <!-- Footer Start -->
 <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
     <div class="row px-xl-5 pt-5">
         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-            <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-            <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum
-                tempor no vero est magna amet no</p>
-            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-            <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+            <h5 class="text-secondary text-uppercase mb-4">LIÊN LẠC</h5>
+            <p class="mb-4">Số 19, Ngõ 204, Lê Thanh Nghị, Hai Bà Trưng, Hà Nội</p>
+            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Nhóm SD-99</p>
+            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>bang0392887284@gmail.com</p>
+            <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+084 987 654 321</p>
         </div>
         <div class="col-lg-8 col-md-12">
             <div class="row">
-                <div class="col-md-4 mb-5">
-                    <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
+                <div class="col-md-6 mb-5">
+                    <h5 class="text-secondary text-uppercase mb-4">Cửa hàng nhanh chóng</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        <a class="text-secondary mb-2" href="/user/trang_chu/${idKh}"><i
+                                class="fa fa-angle-right mr-2"></i>Trang chủ</a>
+                        <a class="text-secondary mb-2" href="/user/view_tim_kiem/${idKh}"><i
+                                class="fa fa-angle-right mr-2"></i>Cửa Hàng</a>
+                        <a class="text-secondary mb-2" href="/user/contact/${idKh}"><i
+                                class="fa fa-angle-right mr-2"></i>Thông tin cửa hàng</a>
+                        <a class="text-secondary mb-2" href="/user/blog/${idKh}"><i class="fa fa-angle-right mr-2"></i>Bài
+                            viết</a>
                     </div>
                 </div>
-                <div class="col-md-4 mb-5">
-                    <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
-                    <div class="d-flex flex-column justify-content-start">
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-5">
-                    <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
-                    <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
-                    <form action="">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Your Email Address">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary">Sign Up</button>
-                            </div>
-                        </div>
-                    </form>
-                    <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
-                    <div class="d-flex">
-                        <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
+                <div class="col-md-6">
+                    <h5 class="text-secondary text-uppercase mb-4">Vị trí cửa hàng</h5>
+                    <p>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.75784392943!2d105.84125167479552!3d21.002341888686352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac70d567c7d1%3A0x5b99cce1def5a9a9!2zMTkgTmcuIDIwNCBQLiBMw6ogVGhhbmggTmdo4buLLCDEkOG7k25nIFTDom0sIEhhaSBCw6AgVHLGsG5nLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1700558341011!5m2!1svi!2s"
+                                width="400" height="200" style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </p>
+
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
-        <div class="col-md-6 px-xl-0">
-            <p class="mb-md-0 text-center text-md-left text-secondary">
-                &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
-                by
-                <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
-            </p>
-        </div>
-        <div class="col-md-6 px-xl-0 text-center text-md-right">
-            <img class="img-fluid" src="img/payments.png" alt="">
         </div>
     </div>
 </div>

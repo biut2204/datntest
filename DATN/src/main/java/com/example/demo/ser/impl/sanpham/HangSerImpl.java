@@ -40,6 +40,8 @@ public class HangSerImpl implements HangSer {
         Hang hang = hangRepo.findById(id).orElse(null);
         hang.setMa(updateHang.getMa());
         hang.setTen(updateHang.getTen());
+        hang.setSdt(updateHang.getSdt());
+        hang.setTenNDD(updateHang.getTenNDD());
         hang.setDiaChi(updateHang.getDiaChi());
         hang.setTrangthai(updateHang.getTrangthai());
         hangRepo.save(hang);

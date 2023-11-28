@@ -10,6 +10,7 @@ import com.example.demo.ser.sanpham.AoSer;
 import com.example.demo.ser.giamgia.GiamGiaHoaDonSer;
 import com.example.demo.ser.giamgia.GiamGiaSanPhamSer;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -96,10 +97,17 @@ public class ChuongTrinhGiamGiaController {
     }
 
     @GetMapping("/admin/ap-dung")
-    public String viewApDung(Model model) {
+    public String viewApDung(Model model, HttpSession session) {
         List<GiamGiaSanPhamChiTiet> listGiamGiaSanPhamChiTiets = giamGiaSanPhamChiTietSer.getAll();
         model.addAttribute("listGiamGiaSanPhamChiTiets",listGiamGiaSanPhamChiTiets);
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
+
+        String loiGiamGiaChiTiet = (String) session.getAttribute("loiGiamGiaChiTiet");
+        if (loiGiamGiaChiTiet != null){
+            model.addAttribute("loiGiamGiaChiTietStr","2");
+        }
+        session.removeAttribute("loiGiamGiaChiTiet");
+
         return "/admin/add/ap_dung";
     }
 
@@ -218,23 +226,31 @@ public class ChuongTrinhGiamGiaController {
     }
 
     @PostMapping("/chuong-trinh-giam-gia/ap-dung-san-pham")
-    public String apDungSanPham(HttpServletRequest request) {
-
-        GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = new GiamGiaSanPhamChiTiet();
+    public String apDungSanPham(HttpServletRequest request, HttpSession session) {
 
         String tenSanPham = request.getParameter("tenSanPham");
         String tenChuongTrinh = request.getParameter("tenChuongTrinh");
         Ao ao = aoSer.findByTen(tenSanPham);
-        GiamGiaSanPham giamGiaSanPham = giamGiaSanPhamSer.findByTen(tenChuongTrinh);
 
-        BigDecimal phanTramGiam = BigDecimal.valueOf(giamGiaSanPham.getPhanTramGiam());
+        GiamGiaSanPhamChiTiet ggspct = giamGiaSanPhamChiTietSer.findByIdAoAndTrangThai(ao.getId());
 
-        giamGiaSanPhamChiTiet.setGiamGiaSanPham(giamGiaSanPham);
-        giamGiaSanPhamChiTiet.setAo(ao);
-        giamGiaSanPhamChiTiet.setSoTienDaGiam(ao.getGiaBan().multiply(phanTramGiam));
-        giamGiaSanPhamChiTiet.setTrangThai(0);
+        if (ggspct == null){
+            GiamGiaSanPhamChiTiet giamGiaSanPhamChiTiet = new GiamGiaSanPhamChiTiet();
 
-        giamGiaSanPhamChiTietSer.add(giamGiaSanPhamChiTiet);
+
+            GiamGiaSanPham giamGiaSanPham = giamGiaSanPhamSer.findByTen(tenChuongTrinh);
+
+            BigDecimal phanTramGiam = BigDecimal.valueOf(giamGiaSanPham.getPhanTramGiam());
+
+            giamGiaSanPhamChiTiet.setGiamGiaSanPham(giamGiaSanPham);
+            giamGiaSanPhamChiTiet.setAo(ao);
+            giamGiaSanPhamChiTiet.setSoTienDaGiam(ao.getGiaBan().multiply(phanTramGiam));
+            giamGiaSanPhamChiTiet.setTrangThai(0);
+
+            giamGiaSanPhamChiTietSer.add(giamGiaSanPhamChiTiet);
+        }else {
+            session.setAttribute("loiGiamGiaChiTiet", "2");
+        }
         return "redirect:/admin/ap-dung";
     }
 }

@@ -356,7 +356,7 @@
                                                 <td>
                                                     <button formaction="/admin/loai_ao/detail" name="detail"
                                                             value="${list.id}"
-                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Chi Tiết
                                                     </button>
                                                 </td>
                                             </tr>
@@ -392,13 +392,13 @@
                         <h3 style="text-align: center">LOẠI ÁO</h3>
                         <input type="hidden" name="id" value="${item.id}">
                         <div class="form-group">
-                            <label for="formGroupExampleInput2">Tên <span class="text-danger">(*)</span> :</label>
+                            <label for="ten">Tên <span class="text-danger">(*)</span> :</label>
                             <input type="text" name="ten" value="${item.ten}" class="form-control"
-                                   id="formGroupExampleInput2" placeholder="Tên ">
+                                   id="ten" placeholder="Tên ">
                             <span id="errorTen" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label for="formGroupExampleInput2">Tên</label>
+                            <label >Ảnh</label>
                             <input type="file" name="tenURL" id="imageInput" accept="image/*" onchange="displayImage()">
                             <span id="errorAnh" class="text-danger"></span>
                             <div id="imagePreview" style="padding-bottom: 10px;padding-left: 10px"></div>
@@ -572,8 +572,10 @@
 
         if (ten.trim() === '') {
             errorTen.innerText = 'Vui lòng nhập tên.';
+            document.getElementById('ten').style.borderColor = 'red';
             hasError = true;
         } else {
+            document.getElementById('ten').style.borderColor = 'gray';
             errorTen.innerText = '';
         }
 
@@ -587,6 +589,7 @@
         <c:forEach var="list" items="${listLoaiAos}">
         if ("${list.ten}".trim() === ten.trim()) {
             errorTen.innerText = 'Tên loại áo đã tồn tại.';
+            document.getElementById('ten').style.borderColor = 'red';
             hasError = true;
         }
         </c:forEach>
@@ -605,8 +608,10 @@
 
         if (ten.trim() === '') {
             errorTen.innerText = 'Vui lòng nhập tên.';
+            document.getElementById('ten').style.borderColor = 'red';
             hasError = true;
         } else {
+            document.getElementById('ten').style.borderColor = 'gray';
             errorTen.innerText = '';
         }
 

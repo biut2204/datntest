@@ -3,6 +3,7 @@ package com.example.demo.controller.admin.auth;
 import com.example.demo.entity.auth.RoleEnum;
 import com.example.demo.entity.khachhang.GioHang;
 import com.example.demo.entity.khachhang.Users;
+import com.example.demo.ser.users.GioHangChiTietSer;
 import com.example.demo.ser.users.GioHangSer;
 import com.example.demo.ser.users.UsersSer;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +32,9 @@ public class AuthController {
     @Autowired
     GioHangSer gioHangSer;
 
+    @Autowired
+    GioHangChiTietSer gioHangChiTietSer;
+
     @GetMapping("/login")
     public String showLoginForm(Model model) {
         model.addAttribute("user", new Users());
@@ -52,6 +56,49 @@ public class AuthController {
     public String test404(Model model){
         model.addAttribute("user",new Users());
         return "/admin/add/404";
+    }
+
+    @GetMapping("/login_google_thanh_cong/*")
+    public String loginGoogleThanhCong(HttpSession session, HttpServletRequest request){
+        String url = request.getRequestURI();
+        String[] parts = url.split("/login_google_thanh_cong/");
+        String gmail = parts[1];
+        int test = usersSer.demLoginGG(gmail);
+
+        if (test > 0) {
+
+            Users users = usersSer.findByEmail(gmail);
+
+            session.setAttribute("userLogged1", users);
+            return "redirect:/user/thong_tin/"+users.getMa();
+        } else if (test == 0) {
+            Users users = new Users();
+
+            int slKH = usersSer.soLuongUser() + 3;
+            String ma = "00" + slKH;
+
+            users.setMa(ma);
+            users.setEmail(gmail);
+            users.setRole(RoleEnum.MENBER);
+            users.setTrangThai(1);
+
+            usersSer.add(users);
+
+            int slGH = gioHangSer.soLuongGioHang() + 1;
+
+            String gh = "GH00" + slGH;
+
+            GioHang g = new GioHang();
+            g.setMa(gh);
+            g.setKhachHang(users);
+            g.setNgayTao(new Date());
+            g.setTrangThai(1);
+            gioHangSer.add(g);
+
+            session.setAttribute("userLogged1", users);
+            return "redirect:/user/thong_tin/"+users.getMa();
+        }
+        return "redirect:/user/thong_tin/"+gmail;
     }
 
     @PostMapping("/guiemail")
@@ -137,6 +184,7 @@ public class AuthController {
                 return "redirect:/admin/index/1";
             } else if (user.getRole() == RoleEnum.MENBER) {
                 session.setAttribute("userLogged1", user);
+                session.setAttribute("login_google_thanh_cong","Thành công");
                 return "redirect:/user/trang_chu/" + user.getMa();
             }
             return "redirect:/admin/ao/view/1";

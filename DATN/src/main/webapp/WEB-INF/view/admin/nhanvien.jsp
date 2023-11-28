@@ -20,7 +20,8 @@
     <link rel="stylesheet" href="../../../resources/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <style>
         #addFormContainer {
             display: none;
@@ -107,13 +108,13 @@
                 <c:choose>
                     <c:when test="${adminOrStaff == 1}">
                         <div class="image">
-                            <img src="/images/test.jpg" >
+                            <img src="/images/test.jpg">
                         </div>
 
                     </c:when>
                     <c:when test="${adminOrStaff == 2}">
                         <div class="image">
-                            <img src="/images/test1.jpg" >
+                            <img src="/images/test1.jpg">
                         </div>
                     </c:when>
                 </c:choose>
@@ -364,7 +365,9 @@
                         <form method="post">
                             <div class="card">
                                 <div class="card-header">
-                                    <button class="btn btn-success" id="addButton" onclick="clickThem()"><i class="fas fa-plus"></i> Thêm</button>
+                                    <button class="btn btn-primary" id="addButton" onclick="clickThem()"><i
+                                            class="fas fa-plus"></i> Thêm
+                                    </button>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -380,7 +383,6 @@
                                             <th>Tỉnh</th>
                                             <th>SDT</th>
                                             <th>Email</th>
-                                            <th>Mật Khẩu</th>
                                             <th>Trạng thái</th>
                                             <th>Action</th>
                                         </tr>
@@ -397,12 +399,11 @@
                                                 <td>${list.quoc_gia}</td>
                                                 <td>${list.sdt}</td>
                                                 <td>${list.email}</td>
-                                                <td>${list.matKhau}</td>
                                                 <td>${list.trangThai==1?'Hoạt Động':'Ngừng Hoạt Động'}</td>
                                                 <td>
                                                     <button formaction="/admin/nhanvien/detail" name="detail"
                                                             value="${list.id}"
-                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i>Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i>Chi Tiết
                                                     </button>
                                                 </td>
                                             </tr>
@@ -419,7 +420,6 @@
                                             <th>Tỉnh</th>
                                             <th>SDT</th>
                                             <th>Email</th>
-                                            <th>Mật Khẩu</th>
                                             <th>Trạng thái</th>
                                             <th>Action</th>
                                         </tr>
@@ -445,9 +445,9 @@
                         <input type="hidden" name="id" value="${item.id}">
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label for="formGroupExampleInput2">Tên <span class="text-danger">(*)</span> :</label>
+                                <label for="ten">Tên <span class="text-danger">(*)</span> :</label>
                                 <input type="text" name="ten" value="${item.ten}" class="form-control"
-                                       id="formGroupExampleInput2" placeholder="Tên ">
+                                       id="ten" placeholder="Tên ">
                                 <span id="errorTen" class="text-danger"></span>
                             </div>
                             <fieldset class="form-group col-md-4">
@@ -474,31 +474,30 @@
                                         </div>
                                     </div>
                                 </div>
+                                <span id="errorGioiTinh" class="text-danger"></span>
                             </fieldset>
                             <div class="form-group col-md-4">
-                                <label for="exampleFormControlTextarea11">Ngày Sinh <span class="text-danger">(*)</span>
+                                <label for="ngay_sinh">Ngày Sinh <span class="text-danger">(*)</span>
                                     :</label>
-                                <input type="date" class="form-control" id="exampleFormControlTextarea11"
+                                <input type="date" class="form-control" id="ngay_sinh"
                                        name="ngay_sinh" value="${item.ngay_sinh}">
                                 <span id="errorNgaySinh" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label for="formGroupExampleInput2">Xã <span class="text-danger">(*)</span>
-                                    :</label>
+                                <label>Tỉnh: <span class="text-danger">(*)</span></label>
 
-                                <select id="ward" class="form-control" onchange="checkSelection()" disabled>
-                                    <option value="">${item.dia_chi}</option>
+                                <select id="province" class="form-control" onchange="loadDistricts(); checkSelection()">
+                                    <option value="">${item.quoc_gia}</option>
                                 </select>
-                                <input type="hidden" id="xa1" name="diaChi" value="${item.dia_chi}">
-
-                                <span id="errorDiaChi" class="text-danger"></span>
+                                <input type="hidden" id="tinh1" name="quoc_gia" value="${item.quoc_gia}">
+                                <span id="errorQuocGia" class="text-danger"></span>
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="formGroupExampleInput2">Huyện <span class="text-danger">(*)</span>
+                                <label for="district">Huyện <span class="text-danger">(*)</span>
                                     :</label>
-                                <select id="district"  class="form-control" onchange="loadWards(); checkSelection()"
+                                <select id="district" class="form-control" onchange="loadWards(); checkSelection()"
                                         disabled>
                                     <option value="">${item.thanh_pho}</option>
                                 </select>
@@ -508,37 +507,39 @@
                             </div>
                             <!-- Trường mới 1: Quốc Gia -->
                             <div class="form-group col-md-4">
-                                <label>Tỉnh: <span class="text-danger">(*)</span></label>
+                                <label for="ward">Xã <span class="text-danger">(*)</span>
+                                    :</label>
 
-                                <select id="province"  class="form-control" onchange="loadDistricts(); checkSelection()">
-                                    <option value="">${item.quoc_gia}</option>
+                                <select id="ward" class="form-control" onchange="checkSelection()" disabled>
+                                    <option value="">${item.dia_chi}</option>
                                 </select>
-                                <input type="hidden" id="tinh1" name="quoc_gia" value="${item.quoc_gia}">
-                                <span id="errorQuocGia" class="text-danger"></span>
+                                <input type="hidden" id="xa1" name="diaChi" value="${item.dia_chi}">
+
+                                <span id="errorDiaChi" class="text-danger"></span>
                             </div>
                         </div>
                         <!-- Trường mới 2: Số Điện Thoại -->
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label for="formGroupSDT">Số Điện Thoại:</label>
-                                <input type="tel" name="sdt" value="${item.sdt}" class="form-control" id="formGroupSDT"
+                                <label for="sdt">Số Điện Thoại:</label>
+                                <input type="tel" name="sdt" value="${item.sdt}" class="form-control" id="sdt"
                                        placeholder="Số Điện Thoại">
                                 <span id="errorSDT" class="text-danger"></span>
                             </div>
 
                             <!-- Trường mới 3: Email -->
                             <div class="form-group col-md-4">
-                                <label for="formGroupEmail">Email:</label>
+                                <label for="email">Email:</label>
                                 <input type="email" name="email" value="${item.email}" class="form-control"
-                                       id="formGroupEmail" placeholder="Email">
+                                       id="email" placeholder="Email">
                                 <span id="errorEmail" class="text-danger"></span>
                             </div>
 
                             <!-- Trường mới 4: Mật Khẩu -->
                             <div class="form-group col-md-4">
-                                <label for="formGroupMatKhau">Mật Khẩu:</label>
-                                <input type="password" name="matKhau" value="${item.matKhau}" class="form-control"
-                                       id="formGroupMatKhau" placeholder="Mật Khẩu">
+                                <label for="matKhau">Mật Khẩu:</label>
+                                <input type="text" name="matKhau" value="${item.matKhau}" class="form-control"
+                                       id="matKhau" placeholder="Mật Khẩu">
                                 <span id="errorMatKhau" class="text-danger"></span>
                             </div>
                         </div>
@@ -564,13 +565,15 @@
                                 </div>
                             </div>
                         </fieldset>
-                        <button  hidden id="bt1" class="btn btn-success" formaction="/admin/nhanvien/add" type="submit"
-                                 onclick="addProduct()"><i class="fas fa-plus"></i> Thêm Mới
+                        <button hidden id="bt1" class="btn btn-primary" formaction="/admin/nhanvien/add" type="submit"
+                                onclick="addProduct()"><i class="fas fa-plus"></i> Thêm Mới
                         </button>
-                        <button  id="bt3" class="btn btn-primary" formaction="/admin/nhanvien/update" type="submit"
-                                 onclick="addProduct()"><i class="fas fa-sync"></i> Cập nhật
+                        <button id="bt3" class="btn btn-primary" formaction="/admin/nhanvien/update" type="submit"
+                                onclick="addProduct()"><i class="fas fa-sync"></i> Cập nhật
                         </button>
-                        <button hidden id="bt2" class="btn btn-primary" formaction="/admin/nhanvien/clear" type="submit">Clear</button>
+                        <button hidden id="bt2" class="btn btn-primary" formaction="/admin/nhanvien/clear"
+                                type="submit">Clear
+                        </button>
                     </form>
 
                 </div>
@@ -640,9 +643,9 @@
         // Toggle the visibility of the form container
         if (addFormContainer.style.display === "none" || addFormContainer.style.display === "") {
             addFormContainer.style.display = "block";
-            bt1.hidden=false;
-            bt2.hidden=false;
-            bt3.hidden=true;
+            bt1.hidden = false;
+            bt2.hidden = false;
+            bt3.hidden = true;
         } else {
             addFormContainer.style.display = "none";
         }
@@ -669,32 +672,121 @@
 </script>
 <script>
     function addProduct() {
-        var ma = document.getElementsByName('ma')[0].value;
         var ten = document.getElementsByName('ten')[0].value;
         var diaChi = document.getElementsByName('diaChi')[0].value;
-        var errorMa = document.getElementById('errorMa');
+        var thanh_pho = document.getElementsByName('thanh_pho')[0].value;
+        var quoc_gia = document.getElementsByName('quoc_gia')[0].value;
+        var ngay_sinh = document.getElementsByName('ngay_sinh')[0].value;
+        var sdt = document.getElementsByName('sdt')[0].value;
+        var email = document.getElementsByName('email')[0].value;
+        var matKhau = document.getElementsByName('matKhau')[0].value;
+
+        var gioiTinhInputs = document.getElementsByName('gioiTinh');
+        var gioiTinhSelected = false;
+
+
         var errorTen = document.getElementById('errorTen');
         var errorDiaChi = document.getElementById('errorDiaChi');
-        var hasError = false;
+        var errorThanhPho = document.getElementById('errorThanhPho');
+        var errorQuocGia = document.getElementById('errorQuocGia');
+        var errorNgaySinh = document.getElementById('errorNgaySinh');
+        var errorSDT = document.getElementById('errorSDT');
+        var errorEmail = document.getElementById('errorEmail');
+        var errorMatKhau = document.getElementById('errorMatKhau');
 
-        if (ma.trim() === '') {
-            errorMa.innerText = 'Vui lòng nhập mã.';
-            hasError = true;
-        } else {
-            errorMa.innerText = '';
-        }
+        var hasError = false;
 
         if (ten.trim() === '') {
             errorTen.innerText = 'Vui lòng nhập tên.';
+            document.getElementById('ten').style.borderColor = 'red';
             hasError = true;
         } else {
+            document.getElementById('ten').style.borderColor = 'gray';
             errorTen.innerText = '';
         }
-        if (diaChi.trim() === '') {
-            errorDiaChi.innerText = 'Vui lòng nhập địa chỉ.';
+
+        if (quoc_gia.trim() === '') {
+            errorQuocGia.innerText = 'Vui lòng chọn tỉnh.';
+            document.getElementById('province').style.borderColor = 'red';
             hasError = true;
         } else {
-            errorTen.innerText = '';
+            document.getElementById('province').style.borderColor = 'gray';
+            errorQuocGia.innerText = '';
+        }
+
+        if (thanh_pho.trim() === '') {
+            errorThanhPho.innerText = 'Vui lòng chọn huyện.';
+            document.getElementById('district').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('district').style.borderColor = 'gray';
+            errorThanhPho.innerText = '';
+        }
+
+        if (diaChi.trim() === '') {
+            document.getElementById('ward').style.borderColor = 'red';
+            errorDiaChi.innerText = 'Vui lòng nhập xã.';
+            hasError = true;
+        } else {
+            document.getElementById('ward').style.borderColor = 'gray';
+            errorDiaChi.innerText = '';
+        }
+
+        if (ngay_sinh.trim() === '') {
+            document.getElementById('ngay_sinh').style.borderColor = 'red';
+            errorNgaySinh.innerText = 'Vui lòng chọn ngày sinh.';
+            hasError = true;
+        } else {
+            document.getElementById('ngay_sinh').style.borderColor = 'gray';
+            errorNgaySinh.innerText = '';
+        }
+
+        if (sdt.trim() === '') {
+            errorSDT.innerText = 'Vui lòng nhập số điện thoại.';
+            document.getElementById('sdt').style.borderColor = 'red';
+            hasError = true;
+        } else if (!/^(0\d{9})$/.test(sdt)) {
+            errorSDT.innerText = 'Số điện thoại không hợp lệ.';
+            document.getElementById('sdt').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('sdt').style.borderColor = 'gray';
+            errorSDT.innerText = '';
+        }
+
+        // Validate Email (Có thể thêm các điều kiện kiểm tra email ở đây)
+        if (email.trim() === '') {
+            errorEmail.innerText = 'Vui lòng nhập địa chỉ email.';
+            document.getElementById('email').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('sdt').style.borderColor = 'gray';
+            errorEmail.innerText = '';
+        }
+
+        // Validate Mật Khẩu (Có thể thêm các điều kiện kiểm tra mật khẩu ở đây)
+        if (matKhau.trim() === '') {
+            errorMatKhau.innerText = 'Vui lòng nhập mật khẩu.';
+            document.getElementById('matKhau').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('matKhau').style.borderColor = 'gray';
+            errorMatKhau.innerText = '';
+        }
+
+
+        for (var i = 0; i < gioiTinhInputs.length; i++) {
+            if (gioiTinhInputs[i].checked) {
+                gioiTinhSelected = true;
+                break;
+            }
+        }
+
+        if (!gioiTinhSelected) { // Nếu không có radio nào được chọn
+            errorGioiTinh.innerText = 'Vui lòng chọn giới tính.'; // Hiển thị thông báo lỗi
+            hasError = true;
+        } else {
+            errorGioiTinh.innerText = '';
         }
 
         if (hasError) {
@@ -708,12 +800,13 @@
     var priceInput1 = document.getElementById("price1");
     var currentPrice = parseFloat(${tongTien});
     var quocGiaValue = '${item.quoc_gia}';
+
     async function loadProvinces() {
         const response = await fetch(`http://localhost:8080/public/provinces`);
         const data = await response.json();
 
         const provinceSelect = document.getElementById("province");
-        if (quocGiaValue===null||quocGiaValue===""){
+        if (quocGiaValue === null || quocGiaValue === "") {
             provinceSelect.innerHTML = '<option value="">Chọn tỉnh</option>';
         }
 

@@ -64,12 +64,16 @@ public class HangController {
 
         String ten = request.getParameter("ten");
         String diaChi = request.getParameter("diaChi");
+        String tenNDD = request.getParameter("tenNDD");
+        String sdt = request.getParameter("sdt");
         String trangthai = request.getParameter("trangthai");
 
         Hang hang = new Hang();
 
         hang.setMa("Hang"+slHang);
         hang.setTen(ten);
+        hang.setSdt(sdt);
+        hang.setTenNDD(tenNDD);
         hang.setDiaChi(diaChi);
         hang.setTrangthai(Integer.parseInt(trangthai));
 
@@ -83,6 +87,8 @@ public class HangController {
         String id = request.getParameter("id");
         String ten = request.getParameter("ten");
         String diaChi = request.getParameter("diaChi");
+        String tenNDD = request.getParameter("tenNDD");
+        String sdt = request.getParameter("sdt");
         String trangthai = request.getParameter("trangthai");
 
         Hang h = hangSer.findById(UUID.fromString(id));
@@ -91,6 +97,8 @@ public class HangController {
 
         hang.setTen(ten);
         hang.setMa(h.getMa());
+        hang.setTenNDD(tenNDD);
+        hang.setSdt(sdt);
         hang.setDiaChi(diaChi);
         hang.setTrangthai(Integer.parseInt(trangthai));
 

@@ -68,6 +68,10 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        .label_check_box{
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
     </style>
     <style>
         .close-btn {
@@ -133,7 +137,7 @@
             width: 100%;
             height: 4px;
             background-color: #007bff; /* Màu của thanh thời gian */
-            animation: slide-out 2s linear; /* Hiệu ứng chạy thời gian 2s */
+            animation: slide-out 1s linear; /* Hiệu ứng chạy thời gian 2s */
         }
 
         @keyframes slide-out {
@@ -144,6 +148,7 @@
                 width: 0%;
             }
         }
+
         .navbar-light .navbar-nav .nav-link:hover {
             background: #fff3c6;
             color: red; /* Change this to the desired hover color */
@@ -216,7 +221,7 @@ ${ngayTao}
                                 <a href="/user/don_hang/${idKh}" class="btn px-0">
                                     <i class="fa fa-user"></i>
                                     <span class="badge text-secondary border border-secondary rounded-circle"
-                                          style="padding-bottom: 2px;">${idKh}</span>
+                                          style="padding-bottom: 2px;">${khachHangNow.ten}</span>
                                 </a>
                                 <a href="/user/gio_hang/view/${idKh}" class="btn px-0 ml-3">
                                     <i class="fas fa-shopping-cart text-primary"></i>
@@ -226,7 +231,7 @@ ${ngayTao}
                             </c:when>
                             <c:when test="${idKh == 2}">
                                 <a href="/login" class="btn px-0 ml-3">
-                                    <i class="fas fa-user text-primary"></i>
+                                    <i class="fas fa-user text-primary"></i><span style="color: white">Đăng nhập</span>
                                 </a>
                             </c:when>
                         </c:choose>
@@ -261,33 +266,34 @@ ${ngayTao}
             <div class="col-lg-6">
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Địa chỉ nhận hàng</span>
                 </h5>
-                <input type="checkbox" name="diaChiChon" value="diaChiCu" id="checkbox1" >Địa
-                chỉ ban đầu
+                <input type="checkbox" name="diaChiChon" value="diaChiCu" id="checkbox1">
+                <label for="checkbox1" class="label_check_box">Địa chỉ ban đầu</label>
                 <div id="view_dia_chi_cu" style="display:block">
                     <div class="bg-light p-30 mb-5">
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label>Họ tên</label>
-                                <input class="form-control" type="text" name="ten" value="${khachHang.ten}"
+                                <input class="form-control" type="text" name="ten" id="ten" value="${khachHang.ten}"
                                        placeholder="${khachHang.ten}"
                                        readonly>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label>Email</label>
-                                <input class="form-control" type="text" name="email" value="${khachHang.email}"
+                                <input class="form-control" type="text" name="email" id="email" value="${khachHang.email}"
                                        placeholder="${khachHang.email}"
                                        readonly>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label>Số điện thoại</label>
-                                <input class="form-control" type="text" name="sdt" value="${khachHang.sdt}"
+                                <input class="form-control" type="text" name="sdt" id="sdt" value="${khachHang.sdt}"
                                        placeholder="${khachHang.sdt}"
                                        readonly>
                             </div>
                             <div class="col-md-6 form-group">
                                 <label>Tỉnh</label>
                                 <input class="form-control" type="text" name="quocGia"
-                                       placeholder="${khachHang.quoc_gia}" value="${khachHang.quoc_gia}" id="tinh" readonly>
+                                       placeholder="${khachHang.quoc_gia}" value="${khachHang.quoc_gia}" id="tinh"
+                                       readonly>
 
                             </div>
                             <div class="col-md-6 form-group">
@@ -298,7 +304,8 @@ ${ngayTao}
                             </div>
                             <div class="col-md-6 form-group">
                                 <label>Xã :</label>
-                                <input class="form-control" type="text" name="diaChi"  id="xa"value="${khachHang.dia_chi}"
+                                <input class="form-control" type="text" name="diaChi" id="xa"
+                                       value="${khachHang.dia_chi}"
                                        placeholder="${khachHang.dia_chi}"
                                        readonly>
                             </div>
@@ -306,26 +313,28 @@ ${ngayTao}
                     </div>
                 </div>
                 <input type="checkbox" name="diaChiChon" value="diaChiMoi" id="checkbox2"
-                       onclick="toggleView('view_dia_chi_moi')">Địa chỉ mới
+                       onclick="toggleView('view_dia_chi_moi')">
+                <label for="checkbox2" class="label_check_box">Địa chỉ mới</label>
                 <div id="view_dia_chi_moi" style="display:none">
                     <div class="bg-light p-30 mb-5">
                         <div class="bg-light p-30 mb-5">
                             <div class="row">
                                 <div class="col-md-6 form-group">
                                     <label>Họ tên</label>
-                                    <input class="form-control" name="ten1" type="text" placeholder="Họ tên">
+                                    <input class="form-control" name="ten1" id="ten1" type="text" placeholder="Họ tên">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label>Email</label>
-                                    <input class="form-control" name="email1" type="text" placeholder="Email">
+                                    <input class="form-control" name="email1" id="email1" type="text" placeholder="Email">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label>Số điện thoại</label>
-                                    <input class="form-control" name="sdt1" type="text" placeholder="Số điện thoại">
+                                    <input class="form-control" name="sdt1" id="sdt1" type="text" placeholder="Số điện thoại">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="province">Tỉnh:</label>
-                                    <select id="province" class="form-control" onchange="loadDistricts(); checkSelection()">
+                                    <select id="province" class="form-control"
+                                            onchange="loadDistricts(); checkSelection()">
                                         <option value="">Chọn tỉnh</option>
                                     </select>
                                     <input type="hidden" id="tinh1" name="quocGia1">
@@ -333,14 +342,15 @@ ${ngayTao}
 
                                 <div class="col-md-6 form-group">
                                     <label for="district">Huyện:</label>
-                                    <select id="district"class="form-control"  onchange="loadWards(); checkSelection()" disabled>
+                                    <select id="district" class="form-control" onchange="loadWards(); checkSelection()"
+                                            disabled>
                                         <option value="">Chọn huyện</option>
                                     </select>
                                     <input type="hidden" id="huyen1" name="thanhPho1">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="ward">Xã:</label>
-                                    <select id="ward"class="form-control"  onchange="checkSelection()" disabled>
+                                    <select id="ward" class="form-control" onchange="checkSelection()" disabled>
                                         <option value="">Chọn xã</option>
                                     </select>
                                     <input type="hidden" id="xa1" name="diaChi1">
@@ -365,8 +375,16 @@ ${ngayTao}
                                 <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
                                 <p>${list.hoaDonChiTiet.soLuong}</p>
                             </div>
-                            <input type="hidden" id="slTon${vTri.index + 1}" value="${list.hoaDonChiTiet.aoChiTiet.slton}">
+                            <input type="hidden" id="slTon${vTri.index + 1}"
+                                   value="${list.hoaDonChiTiet.aoChiTiet.slton}">
                             <input type="hidden" id="sl${vTri.index + 1}" value="${list.hoaDonChiTiet.soLuong}">
+                            <input type="hidden" name="idAoCheck" id="idAo${vTri.index + 1}" value="${list.hoaDonChiTiet.aoChiTiet.ao.id}">
+                            <input type="hidden" name="mauSacCheck" id="mauSac${vTri.index + 1}"
+                                   value="${list.hoaDonChiTiet.aoChiTiet.mau_sac.id}">
+                            <input type="hidden" name="sizeCheck" id="size${vTri.index + 1}"
+                                   value="${list.hoaDonChiTiet.aoChiTiet.size.id}">
+                            <input type="hidden" name="soLuongCheck" id="size${vTri.index + 1}"
+                                   value="${list.hoaDonChiTiet.soLuong}">
                         </c:forEach>
                     </div>
                     <div class="border-bottom pt-3 pb-2">
@@ -380,15 +398,18 @@ ${ngayTao}
                             <div class="d-flex justify-content-between">
                                 <h6 class="font-weight-medium">Ship</h6>
                                 <h6 class="font-weight-medium">
-                                    <input type="text" id="ship" readonly
+                                    <p id="shipcode"></p>
+                                    <input type="hidden" id="ship" readonly
                                            style="border: none; background: none; text-align: left;padding-left: 50%">
                                 </h6>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="price">Giá tiền:</label>
-                            <input type="text" id="price" value="${tongTien}" readonly>
+                            <label for="price" style="font-size: 30px">Tổng tiền:</label>
+                            <input type="hidden" id="price" value="${tongTien}" readonly>
                             <input type="hidden" id="price1" name="tongTien" readonly>
+                            <br>
+                            <label id="tongTienString" style="font-size: 20px"></label>
                         </div>
                         <div class="form-group">
                             <div class="payment-methods">
@@ -399,6 +420,7 @@ ${ngayTao}
                             </div>
                             <div id="view_anh2" style="display:none">
                                 <div class="voucher-list">
+                                    <c:if test="${soChuongTrinhGG == 0}"> Hiện tại không có chương trình giảm giá áp dụng cho hóa đơn</c:if>
                                     <c:forEach items="${CTGG}" var="list">
                                         <div class="voucher-details">
                                             <input name="options" type="radio" value="${list.phanTramGiam}"
@@ -434,6 +456,13 @@ ${ngayTao}
                                 <label class="custom-control-label" for="banktransfer">Thanh toán vnpay</label>
                             </div>
                         </div>
+                        <div class="form-group mb-4">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" value="bank1" name="payment"
+                                       id="banktransfer1">
+                                <label class="custom-control-label" for="banktransfer1">Thanh toán momo</label>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input" value="cash" name="payment"
@@ -457,69 +486,37 @@ ${ngayTao}
 <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
     <div class="row px-xl-5 pt-5">
         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-            <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-            <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum
-                tempor no vero est magna amet no</p>
-            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-            <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+            <h5 class="text-secondary text-uppercase mb-4">LIÊN LẠC</h5>
+            <p class="mb-4">Số 19, Ngõ 204, Lê Thanh Nghị, Hai Bà Trưng, Hà Nội</p>
+            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Nhóm SD-99</p>
+            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>bang0392887284@gmail.com</p>
+            <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+084 987 654 321</p>
         </div>
         <div class="col-lg-8 col-md-12">
             <div class="row">
-                <div class="col-md-4 mb-5">
-                    <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
+                <div class="col-md-6 mb-5">
+                    <h5 class="text-secondary text-uppercase mb-4">Cửa hàng nhanh chóng</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        <a class="text-secondary mb-2" href="/user/trang_chu/${idKh}"><i
+                                class="fa fa-angle-right mr-2"></i>Trang chủ</a>
+                        <a class="text-secondary mb-2" href="/user/view_tim_kiem/${idKh}"><i
+                                class="fa fa-angle-right mr-2"></i>Cửa Hàng</a>
+                        <a class="text-secondary mb-2" href="/user/contact/${idKh}"><i
+                                class="fa fa-angle-right mr-2"></i>Thông tin cửa hàng</a>
+                        <a class="text-secondary mb-2" href="/user/blog/${idKh}"><i class="fa fa-angle-right mr-2"></i>Bài
+                            viết</a>
                     </div>
                 </div>
-                <div class="col-md-4 mb-5">
-                    <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
-                    <div class="d-flex flex-column justify-content-start">
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                        <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-5">
-                    <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
-                    <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
-                    <form action="">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Your Email Address">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary">Sign Up</button>
-                            </div>
-                        </div>
-                    </form>
-                    <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
-                    <div class="d-flex">
-                        <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
+                <div class="col-md-6">
+                    <h5 class="text-secondary text-uppercase mb-4">Vị trí cửa hàng</h5>
+                    <p>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.75784392943!2d105.84125167479552!3d21.002341888686352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac70d567c7d1%3A0x5b99cce1def5a9a9!2zMTkgTmcuIDIwNCBQLiBMw6ogVGhhbmggTmdo4buLLCDEkOG7k25nIFTDom0sIEhhaSBCw6AgVHLGsG5nLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1700558341011!5m2!1svi!2s"
+                                width="400" height="200" style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </p>
+
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
-        <div class="col-md-6 px-xl-0">
-            <p class="mb-md-0 text-center text-md-left text-secondary">
-                &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
-                by
-                <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
-            </p>
-        </div>
-        <div class="col-md-6 px-xl-0 text-center text-md-right">
-            <img class="img-fluid" src="img/payments.png" alt="">
         </div>
     </div>
 </div>
@@ -553,6 +550,7 @@ ${ngayTao}
     var gia1WithCurrency1 = gia1Formatted1 + " VNĐ";
 
     document.getElementById("price").value = gia1WithCurrency1;
+    document.getElementById("tongTienString").innerText = gia1WithCurrency1;
 
     function togglePaymentDetails1() {
         var ctggDetails = document.getElementById("ctgg-details");
@@ -574,6 +572,7 @@ ${ngayTao}
         var gia1WithCurrency = gia1Formatted + " VNĐ";
 
         priceInput.value = gia1WithCurrency;
+        document.getElementById("tongTienString").innerText = gia1WithCurrency;
     }
 
     function toggleView(elementId) {
@@ -611,6 +610,15 @@ ${ngayTao}
             checkbox2.checked = false;
             view_dia_chi_moi.style.display = "none";
             view_dia_chi_cu.style.display = "block";
+            document.getElementById("province").selectedIndex = 0;
+            document.getElementById("district").selectedIndex = 0;
+            document.getElementById("ward").selectedIndex = 0;
+            document.getElementById('ten1').style.borderColor = 'gray';
+            document.getElementById('email1').style.borderColor = 'gray';
+            document.getElementById('sdt1').style.borderColor = 'gray';
+            document.getElementById('province').style.borderColor = 'gray';
+            document.getElementById('district').style.borderColor = 'gray';
+            document.getElementById('ward').style.borderColor = 'gray';
             await findCalculateShipping();
         }
         checkBothUnchecked();
@@ -621,9 +629,16 @@ ${ngayTao}
         if (checkbox2.checked) {
             checkbox1.checked = false;
             view_dia_chi_moi.style.display = "block";
+            document.getElementById('ten').style.borderColor = 'gray';
+            document.getElementById('email').style.borderColor = 'gray';
+            document.getElementById('sdt').style.borderColor = 'gray';
+            document.getElementById('tinh').style.borderColor = 'gray';
+            document.getElementById('huyen').style.borderColor = 'gray';
+            document.getElementById('xa').style.borderColor = 'gray';
         }
         checkBothUnchecked();
     });
+
     function checkBothUnchecked() {
         if (!checkbox1.checked && !checkbox2.checked) {
             const shippingCost = 0;
@@ -631,36 +646,56 @@ ${ngayTao}
             var tongSoTien = currentPrice + shippingCost;
             priceInput1.value = tongSoTien;
 
-            var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+            var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 3
+            });
 
             var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
 
             document.getElementById("ship").value = gia1WithCurrency3;
+            document.getElementById("shipcode").innerText = gia1WithCurrency3;
 
-            var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+            var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 3
+            });
 
             var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
 
             priceInput.value = gia1WithCurrency2;
+            document.getElementById("tongTienString").innerText = gia1WithCurrency2;
             bothUnchecked = true;
+            document.getElementById("province").selectedIndex = 0;
+            document.getElementById("district").selectedIndex = 0;
+            document.getElementById("ward").selectedIndex = 0;
         }
         if (!checkbox1.checked && checkbox2.checked) {
             const shippingCost = 0;
 
             var tongSoTien = currentPrice + shippingCost;
             priceInput1.value = tongSoTien;
+            document.getElementById("tongTienString").innerText = tongSoTien;
 
-            var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+            var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 3
+            });
 
             var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
 
             document.getElementById("ship").value = gia1WithCurrency3;
+            document.getElementById("shipcode").innerText = gia1WithCurrency3;
 
-            var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+            var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 3
+            });
 
             var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
 
             priceInput.value = gia1WithCurrency2;
+            document.getElementById("tongTienString").innerText = gia1WithCurrency2;
             bothUnchecked = true;
         }
     }
@@ -668,7 +703,6 @@ ${ngayTao}
     // Thêm sự kiện onchange cho các combobox
 
     // Hàm để cập nhật giá trị các input dựa trên các combobox đã chọn
-
 
 
     async function findProvinceIdByName(provinceName) {
@@ -698,7 +732,7 @@ ${ngayTao}
     }
 
     async function findDistrictIdByName(districtName, provinceId) {
-        const response = await fetch('http://localhost:8080/public/districts?province_id='+provinceId);
+        const response = await fetch('http://localhost:8080/public/districts?province_id=' + provinceId);
         const data = await response.json();
 
         for (const district of data.data) {
@@ -712,7 +746,7 @@ ${ngayTao}
     }
 
     async function findWardIdByName(wardName, districtId) {
-        const response = await fetch('http://localhost:8080/public/wards?district_id='+districtId);
+        const response = await fetch('http://localhost:8080/public/wards?district_id=' + districtId);
         const data = await response.json();
 
         for (const ward of data.data) {
@@ -762,18 +796,28 @@ ${ngayTao}
 
                 var tongSoTien = currentPrice + shippingCost;
                 priceInput1.value = tongSoTien;
+                document.getElementById("tongTienString").innerText = tongSoTien;
 
-                var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+
+                var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 3
+                });
 
                 var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
 
                 document.getElementById("ship").value = gia1WithCurrency3;
+                document.getElementById("shipcode").innerText = gia1WithCurrency3;
 
-                var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+                var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 3
+                });
 
                 var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
 
                 priceInput.value = gia1WithCurrency2;
+                document.getElementById("tongTienString").innerText = gia1WithCurrency2;
 
             } else {
                 document.getElementById("shippingCost").innerText = "Không thể tính phí vận chuyển.";
@@ -789,15 +833,33 @@ ${ngayTao}
 
 </script>
 <script>
+
     function kiemTra() {
 
         var box1 = document.getElementById("checkbox1");
         var box2 = document.getElementById("checkbox2");
 
         var radioBank = document.getElementById("banktransfer");
+        var radioMomo = document.getElementById("banktransfer1");
         var radioCash = document.getElementById("directcheck");
 
-        if ((!box1.checked && !box2.checked) || (box1.checked && !validateDiaChiCu()) || (box2.checked && !validateDiaChiMoi())) {
+        var ten = document.getElementsByName("ten")[0].value;
+        var email = document.getElementsByName("email")[0].value;
+        var sdt = document.getElementsByName("sdt")[0].value;
+        var quocGia = document.getElementById("tinh").value;
+        var thanhPho = document.getElementById("huyen").value;
+        var diaChi = document.getElementById("xa").value;
+
+
+        var ten1 = document.getElementsByName("ten1")[0].value;
+        var email1 = document.getElementsByName("email1")[0].value;
+        var sdt1 = document.getElementsByName("sdt1")[0].value;
+        var tinh1 = document.getElementById("province").value;
+        var huyen1 = document.getElementById("district").value;
+        var xa1 = document.getElementById("ward").value;
+
+
+        if (!box1.checked && !box2.checked) {
             Swal.fire({
                 icon: 'warning',
                 html: '<div class="swal-text">Vui lòng điền đầy đủ thông tin để nhận hàng</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
@@ -805,11 +867,122 @@ ${ngayTao}
             });
             setTimeout(() => {
                 Swal.close();
-            }, 2000);
+            }, 1000);
             event.preventDefault();
         }
+        if(box1.checked && !box2.checked){
+            var hasError = false;
+            if (ten.trim() === ''){
+                document.getElementById('ten').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('ten').style.borderColor = 'gray';
+            }
+            if (email.trim() === ''){
+                document.getElementById('email').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('email').style.borderColor = 'gray';
+            }
+            if (sdt.trim() === ''){
+                document.getElementById('sdt').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('sdt').style.borderColor = 'gray';
+            }
+            if (quocGia.trim() === ''){
+                document.getElementById('tinh').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('tinh').style.borderColor = 'gray';
+            }
+            if (thanhPho.trim() === ''){
+                document.getElementById('huyen').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('huyen').style.borderColor = 'gray';
+            }
+            if (diaChi.trim() === ''){
+                document.getElementById('xa').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('xa').style.borderColor = 'gray';
+            }
 
-        if (!radioBank.checked && !radioCash.checked) {
+            if (hasError) {
+                Swal.fire({
+                    icon: 'warning',
+                    html: '<div class="swal-text">Vui lòng điền đầy đủ thông tin và đúng định dạng để nhận hàng</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                    allowOutsideClick: true,
+                });
+                setTimeout(() => {
+                    Swal.close();
+                }, 1000);
+                event.preventDefault();
+            }
+        }
+
+        if(!box1.checked && box2.checked){
+            var hasError = false;
+
+            var validEmailFormat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/; // Regex kiểm tra định dạng email
+            var isEmailValid = validEmailFormat.test(email1);
+
+            // Kiểm tra xem sdt1 có đúng 10 số không và chỉ chứa ký tự số hay không
+            var validPhoneNumber = /^\d{10}$/; // Regex kiểm tra 10 ký tự số
+            var isPhoneNumberValid = validPhoneNumber.test(sdt1);
+
+            if (ten1.trim() === ''){
+                document.getElementById('ten1').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('ten1').style.borderColor = 'gray';
+            }
+            if (email1.trim() === '' || !isEmailValid){
+                document.getElementById('email1').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('email1').style.borderColor = 'gray';
+            }
+            if (sdt1.trim() === '' || !isPhoneNumberValid){
+                document.getElementById('sdt1').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('sdt1').style.borderColor = 'gray';
+            }
+            if (tinh1.trim() === ''){
+                document.getElementById('province').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('province').style.borderColor = 'gray';
+            }
+            if (huyen1.trim() === ''){
+                document.getElementById('district').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('district').style.borderColor = 'gray';
+            }
+            if (xa1.trim() === ''){
+                document.getElementById('ward').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('ward').style.borderColor = 'gray';
+            }
+
+            if (hasError) {
+                Swal.fire({
+                    icon: 'warning',
+                    html: '<div class="swal-text">Vui lòng điền đầy đủ thông tin và đúng định dạng để nhận hàng</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                    allowOutsideClick: true,
+                });
+                setTimeout(() => {
+                    Swal.close();
+                }, 1000);
+                event.preventDefault();
+            }
+        }
+
+        if (!radioBank.checked && !radioCash.checked && !radioMomo.checked) {
             Swal.fire({
                 icon: 'warning',
                 html: '<div class="swal-text">Vui lòng chọn phương thức thanh toán</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
@@ -817,7 +990,7 @@ ${ngayTao}
             });
             setTimeout(() => {
                 Swal.close();
-            }, 2000);
+            }, 1000);
             event.preventDefault();
         }
 
@@ -843,31 +1016,12 @@ ${ngayTao}
         }
     }
 
-    function validateDiaChiCu() {
+
         // Kiểm tra các trường trong địa chỉ cũ và trả về true nếu đầy đủ, ngược lại trả về false
         // Ví dụ:
-        var ten = document.getElementsByName("ten")[0].value;
-        var email = document.getElementsByName("email")[0].value;
-        var sdt = document.getElementsByName("sdt")[0].value;
-        var quocGia = document.getElementById("tinh").value;
-        var thanhPho = document.getElementById("huyen").value;
-        var diaChi = document.getElementById("xa").value;
 
-        return ten && email && sdt && quocGia && thanhPho && diaChi;
-    }
 
-    function validateDiaChiMoi() {
-        // Kiểm tra các trường trong địa chỉ mới và trả về true nếu đầy đủ, ngược lại trả về false
-        // Ví dụ:
-        var ten1 = document.getElementsByName("ten1")[0].value;
-        var email1 = document.getElementsByName("email1")[0].value;
-        var sdt1 = document.getElementsByName("sdt1")[0].value;
-        var tinh1 = document.getElementById("province").value;
-        var huyen1 = document.getElementById("district").value;
-        var xa1 = document.getElementById("ward").value;
 
-        return ten1 && email1 && sdt1 && tinh1 && huyen1 && xa1;
-    }
 </script>
 <script>
 
@@ -898,7 +1052,7 @@ ${ngayTao}
             return;
         }
 
-        const response = await fetch('http://localhost:8080/public/districts?province_id='+ provinceId);
+        const response = await fetch('http://localhost:8080/public/districts?province_id=' + provinceId);
         const data = await response.json();
 
         const districtSelect = document.getElementById("district");
@@ -923,7 +1077,7 @@ ${ngayTao}
             return;
         }
 
-        const response = await fetch('http://localhost:8080/public/wards?district_id='+ districtId);
+        const response = await fetch('http://localhost:8080/public/wards?district_id=' + districtId);
         const data = await response.json();
 
         const wardSelect = document.getElementById("ward");
@@ -950,15 +1104,15 @@ ${ngayTao}
         const wardName = wardSelect.options[wardSelect.selectedIndex].text;
 
         if (provinceName) {
-            document.getElementById("tinh1").value= provinceName;
+            document.getElementById("tinh1").value = provinceName;
         }
 
         if (districtName) {
-            document.getElementById("huyen1").value= districtName;
+            document.getElementById("huyen1").value = districtName;
         }
 
         if (wardName) {
-            document.getElementById("xa1").value= wardName;
+            document.getElementById("xa1").value = wardName;
         }
 
         if (provinceName && districtName && wardName) {
@@ -999,18 +1153,27 @@ ${ngayTao}
 
                 var tongSoTien = currentPrice + shippingCost;
                 priceInput1.value = tongSoTien;
+                document.getElementById("tongTienString").innerText = tongSoTien;
 
-                var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+                var gia1Formatted3 = shippingCost.toLocaleString('vi-VN', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 3
+                });
 
                 var gia1WithCurrency3 = gia1Formatted3 + " VNĐ";
 
                 document.getElementById("ship").value = gia1WithCurrency3;
+                document.getElementById("shipcode").innerText = gia1WithCurrency3;
 
-                var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {minimumFractionDigits: 0, maximumFractionDigits: 3});
+                var gia1Formatted2 = tongSoTien.toLocaleString('vi-VN', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 3
+                });
 
                 var gia1WithCurrency2 = gia1Formatted2 + " VNĐ";
 
                 priceInput.value = gia1WithCurrency2;
+                document.getElementById("tongTienString").innerText = gia1WithCurrency2;
 
             } else {
                 document.getElementById("shippingCost").innerText = "Không thể tính phí vận chuyển.";
@@ -1026,6 +1189,21 @@ ${ngayTao}
     document.getElementById("district").addEventListener("change", loadWards);
     document.getElementById("ward").addEventListener("change", checkSelection);
 
+</script>
+<script>
+    var loiHoaDonBySL = "${loiHoaDonBySL}";
+    if (loiHoaDonBySL == "2") {
+        Swal.fire({
+            icon: 'warning',
+            html: '<div class="swal-text">Xin lỗi, sản phẩm trong hóa đn của bạn nhiều hơn số lượng tồn</div><div class="progress-bar-container"></div>',
+            allowOutsideClick: true
+
+        });
+        setTimeout(() => {
+            Swal.close();
+            addFormContainer.style.display = 'block';
+        }, 1000);
+    }
 </script>
 </body>
 

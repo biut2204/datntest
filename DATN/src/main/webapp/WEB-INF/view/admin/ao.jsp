@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="../../../resources/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
         #addFormContainer {
             display: none;
@@ -99,6 +101,38 @@
             height: 80px;
             object-fit: cover;
             border-radius: 50%;
+        }
+    </style>
+    <style>
+        /* CSS cho hiệu ứng chạy thời gian 2s */
+        .swal2-popup {
+            position: relative;
+        }
+
+        .swal2-popup .progress-bar-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #007bff; /* Màu của thanh thời gian */
+            animation: slide-out 1s linear;
+        }
+
+        @keyframes slide-out {
+            0% {
+                width: 100%;
+            }
+            100% {
+                width: 0%;
+            }
+        }
+
+         .red-border {
+             border: 1px solid red;
+         }
+        .black-border {
+            border: 1px solid red;
         }
     </style>
 </head>
@@ -449,7 +483,7 @@
                                                 <td>
                                                     <button formaction="/admin/ao/detail" name="detail"
                                                             value="${list.id}"
-                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Chi Tiết
                                                     </button>
                                                 </td>
                                             </tr>
@@ -516,7 +550,7 @@
                                                 <td>
                                                     <button formaction="/admin/ao/detail" name="detail"
                                                             value="${list.id}"
-                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Chi Tiết
                                                     </button>
                                                 </td>
                                             </tr>
@@ -561,7 +595,7 @@
                                     <label>Tên Sản Phẩm :</label>
                                     <input type="text" class="form-control" value="${item.ten}"
                                            placeholder="Tên Sản Phẩm"
-                                           name="ten1">
+                                           name="ten1" id="ten1">
                                     <span id="errorTen1" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-4">
@@ -573,11 +607,12 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="ngaybd_hd">Ngày nhập:</label>
+                                    <label for="ngayNhap1">Ngày nhập:</label>
                                     <br>
                                     <fmt:formatDate value="${item.ngayNhap}" pattern="yyyy-MM-dd" var="formattedDate"/>
-                                    <input type="date" id="ngaybd_hd" name="ngayNhap1" class="form-control"
+                                    <input type="date" id="ngayNhap1" name="ngayNhap1" class="form-control"
                                            value="${formattedDate}">
+                                    <span id="errorNgayChon1" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -643,25 +678,25 @@
                                 <div class="form-group col-md-6">
                                     <label>Giá Nhập :</label>
                                     <input type="number" class="form-control" value="${item.giaNhap}"
-                                           placeholder="Giá Nhập Sản Phẩm" name="gianhap1">
+                                           placeholder="Giá Nhập Sản Phẩm" name="gianhap1" id="gianhap1">
                                     <span id="errorGiaNhap1" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Giá Bán :</label>
                                     <input type="number" class="form-control" value="${item.giaBan}"
-                                           placeholder="Giá Bán Sản Phẩm" name="giaban1">
+                                           placeholder="Giá Bán Sản Phẩm" name="giaban1" id="giaban1">
                                     <span id="errorGiaBan1" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label>Mô Tả :</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                <textarea class="form-control" id="mota1" rows="3"
                                           name="mota1">${item.moTa}</textarea>
                                 <span id="errorMoTa1" class="text-danger"></span>
                             </div>
 
-                            <button class="btn btn-primary" formaction="/admin/ao/update/${item.id}" type="submit">
+                            <button class="btn btn-primary" formaction="/admin/ao/update/${item.id}" type="submit" onclick="addProduct1()">
                                 <i class="fas fa-sync"></i>Cập nhật
                             </button>
                         </form>
@@ -689,6 +724,7 @@
                                                     <option value="${ms.id}" ${aoChiTiet.mau_sac.id == ms.id?'selected':''}>${ms.ten}</option>
                                                 </c:forEach>
                                             </select>
+                                            <span id="errorMauSac" class="text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label>Size :</label>
@@ -696,20 +732,23 @@
                                                 <input type="checkbox" name="size_id"
                                                        value="${sz.id}" ${aoChiTiet.size.id == sz.id ? 'checked' : ''}>${sz.ten}
                                             </c:forEach>
+                                            <br>
+                                            <span id="errorSizes" class="text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label>Số lượng :</label>
                                             <input type="number" class="form-control" placeholder="Số lượng"
-                                                   name="soLuong"
+                                                   name="soLuong" id="soLuong"
                                                    value="${aoChiTiet.slton}">
+                                            <span id="errorSoLuong" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <button class="btn btn-success" formaction="/admin/ao_chi_tiet/add" type="submit">
+                                    <button class="btn btn-success" formaction="/admin/ao_chi_tiet/add" type="submit" onclick="checkAoChiTiet()">
                                         <i class="fas fa-plus"></i> Thêm
                                     </button>
                                     <button class="btn btn-primary"
-                                            formaction="/admin/ao_chi_tiet/update/${aoChiTiet.id}"
-                                            type="submit">
+                                            formaction="/admin/ao_chi_tiet/update"
+                                            type="submit" onclick="checkAoChiTiet()">
                                         <i class="fas fa-sync"></i>Cập nhật
                                     </button>
                                 </form>
@@ -754,7 +793,7 @@
                                                                 <button formaction="/admin/ao_chi_tiet/detail"
                                                                         name="detail"
                                                                         value="${list.id}"
-                                                                        class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
+                                                                        class="btn btn-primary me-2"><i class="fas fa-edit"></i> Chi Tiết
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -782,8 +821,10 @@
                             <div id="view_anh4" style="display:none;background: white; border-radius: 5px;">
                                 <form enctype="multipart/form-data" method="post">
                                     <input type="hidden" name="ao_id" value="${item.id}">
-                                    <input type="file" name="ten_url1">
-                                    <button formaction="/admin/anh/add" type="submit" class="btn btn-success"><i class="fas fa-plus"></i> Thêm Anh
+                                    <input type="file" name="ten_url1" id="imageInput" accept="image/*" onchange="displayImage()">
+                                    <span id="errorAnh" class="text-danger"></span>
+                                    <div id="imagePreview" style="padding-bottom: 10px;padding-left: 10px"></div>
+                                    <button formaction="/admin/anh/add" type="submit" class="btn btn-success" onclick="themAnh()"><i class="fas fa-plus"></i> Thêm Anh
                                     </button>
                                 </form>
                                 <div class="form-row">
@@ -808,11 +849,9 @@
         <div id="addFormContainer1" style="display: none;">
             <div class="container-fluid">
                 <div class="container">
-                    <h3 style="text-align: center; padding-top: 10px; color: white">ÁO
-                        <i style="display: inline-block" class="fas fa-angle-down"
-                           onclick="toggleView('view_anh5')"></i>
-                    </h3>
                     <div id="view_anh5" style="display:block">
+                        <h3 style="text-align: center; padding-top: 10px; color: white">ÁO
+                        </h3>
                         <form method="post" id="addForm">
                             <input type="hidden" name="id" >
                             <div class="form-row">
@@ -820,7 +859,7 @@
                                     <label>Tên Sản Phẩm <span class="text-danger">(*)</span> :</label>
                                     <input type="text" class="form-control"
                                            placeholder="Tên Sản Phẩm"
-                                           name="ten">
+                                           name="ten" id="ten">
                                     <span id="errorTen" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-4">
@@ -832,9 +871,9 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="ngayChon">Ngày nhập <span class="text-danger">(*)</span> :</label>
+                                    <label for="ngayNhap">Ngày nhập <span class="text-danger">(*)</span> :</label>
                                     <br>
-                                    <input type="date" id="ngayChon" name="ngayNhap" class="form-control">
+                                    <input type="date" id="ngayNhap" name="ngayNhap" class="form-control">
                                     <span id="errorNgayChon" class="text-danger"></span>
                                 </div>
                             </div>
@@ -901,20 +940,20 @@
                                 <div class="form-group col-md-6">
                                     <label>Giá Nhập <span class="text-danger">(*)</span> :</label>
                                     <input type="number" class="form-control"
-                                           placeholder="Giá Nhập Sản Phẩm" name="gianhap">
+                                           placeholder="Giá Nhập Sản Phẩm" name="gianhap" id="gianhap">
                                     <span id="errorGiaNhap" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Giá Bán <span class="text-danger">(*)</span> :</label>
                                     <input type="number" class="form-control"
-                                           placeholder="Giá Bán Sản Phẩm" name="giaban">
+                                           placeholder="Giá Bán Sản Phẩm" name="giaban" id="giaban">
                                     <span id="errorGiaBan" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label>Mô Tả <span class="text-danger">(*)</span> :</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                <textarea class="form-control" id="mota" rows="3"
                                           name="mota"></textarea>
                                 <span id="errorMoTa" class="text-danger"></span>
                             </div>
@@ -1101,34 +1140,51 @@
 
         if (ten.trim() === '') {
             errorTen.innerText = 'Vui lòng nhập tên.';
+            document.getElementById('ten').style.borderColor = 'red';
             hasError = true;
         } else {
+            document.getElementById('ten').style.borderColor = 'gray';
             errorTen.innerText = '';
         }
 
         if (mota.trim() === '') {
             errorMoTa.innerText = 'Vui lòng nhập mô tả.';
+            document.getElementById('mota').style.borderColor = 'red';
             hasError = true;
         } else {
+            document.getElementById('mota').style.borderColor = 'gray';
             errorMoTa.innerText = '';
         }
 
         if (gianhap.trim() === '') {
             errorGiaNhap.innerText = 'Vui lòng nhập giá nhập.';
+            document.getElementById('gianhap').style.borderColor = 'red';
+            hasError = true;
+        } else if (parseFloat(gianhap) < 0) {
+            errorGiaNhap.innerText = 'Vui lòng nhập số dương.';
+            document.getElementById('gianhap').style.borderColor = 'red';
             hasError = true;
         } else {
+            document.getElementById('gianhap').style.borderColor = 'gray';
             errorGiaNhap.innerText = '';
         }
 
         if (giaban.trim() === '') {
             errorGiaBan.innerText = 'Vui lòng nhập giá bán.';
+            document.getElementById('giaban').style.borderColor = 'red';
+            hasError = true;
+        } else if (parseFloat(giaban) < 0) {
+            errorGiaNhap.innerText = 'Vui lòng nhập số dương.';
+            document.getElementById('giaban').style.borderColor = 'red';
             hasError = true;
         } else {
             // Validation for the 'Giá Bán' (not less than Giá Nhập)
             if (parseFloat(giaban) < parseFloat(gianhap)) {
                 errorGiaBan.innerText = 'Giá bán không được nhỏ hơn giá nhập.';
+                document.getElementById('giaban').style.borderColor = 'red';
                 hasError = true;
             } else {
+                document.getElementById('giaban').style.borderColor = 'gray';
                 errorGiaBan.innerText = '';
             }
         }
@@ -1136,21 +1192,210 @@
         // Validation for the 'Ngày Nhập' (not greater than current date and not empty)
         if (ngayNhap.trim() === '') {
             errorNgayChon.innerText = 'Vui lòng nhập ngày nhập.';
+            document.getElementById('ngayNhap').style.borderColor = 'red';
             hasError = true;
         } else {
             var currentDate = new Date();
             var inputDate = new Date(ngayNhap);
 
             if (inputDate > currentDate) {
+                document.getElementById('ngayNhap').style.borderColor = 'red';
                 errorNgayChon.innerText = 'Ngày nhập không được lớn hơn ngày hiện tại.';
                 hasError = true;
             } else {
+                document.getElementById('ngayNhap').style.borderColor = 'gray';
                 errorNgayChon.innerText = '';
             }
         }
 
         if (hasError) {
             event.preventDefault();
+        }
+    }
+
+    function addProduct1() {
+
+        var ten1 = document.getElementsByName('ten1')[0].value;
+        var gianhap1 = document.getElementsByName('gianhap1')[0].value;
+        var giaban1 = document.getElementsByName('giaban1')[0].value;
+        var mota1 = document.getElementsByName('mota1')[0].value;
+        var ngayNhap1 = document.getElementsByName('ngayNhap1')[0].value;
+
+        var errorTen1 = document.getElementById('errorTen1');
+        var errorGiaNhap1 = document.getElementById('errorGiaNhap1');
+        var errorGiaBan1 = document.getElementById('errorGiaBan1');
+        var errorMoTa1 = document.getElementById('errorMoTa1');
+        var errorNgayChon1 = document.getElementById('errorNgayChon1');
+
+        var hasError = false;
+
+        if (ten1.trim() === '') {
+            errorTen1.innerText = 'Vui lòng nhập tên.';
+            document.getElementById('ten1').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('ten1').style.borderColor = 'gray';
+            errorTen1.innerText = '';
+        }
+
+        if (mota1.trim() === '') {
+            errorMoTa1.innerText = 'Vui lòng nhập mô tả.';
+            document.getElementById('mota1').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('mota1').style.borderColor = 'gray';
+            errorMoTa1.innerText = '';
+        }
+
+        if (gianhap1.trim() === '') {
+            errorGiaNhap1.innerText = 'Vui lòng nhập giá nhập.';
+            document.getElementById('gianhap1').style.borderColor = 'red';
+            hasError = true;
+        }else if (parseFloat(gianhap1) < 0) {
+            errorGiaNhap1.innerText = 'Vui lòng nhập số dương.';
+            document.getElementById('gianhap1').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('gianhap1').style.borderColor = 'gray';
+            errorGiaNhap1.innerText = '';
+        }
+
+        if (giaban1.trim() === '') {
+            errorGiaBan1.innerText = 'Vui lòng nhập giá bán.';
+            document.getElementById('giaban1').style.borderColor = 'red';
+            hasError = true;
+        }else if (parseFloat(giaban1) < 0) {
+            errorGiaBan1.innerText = 'Vui lòng nhập số dương.';
+            document.getElementById('giaban1').style.borderColor = 'red';
+            hasError = true;
+        }  else {
+            // Validation for the 'Giá Bán' (not less than Giá Nhập)
+            if (parseFloat(giaban1) < parseFloat(gianhap1)) {
+                errorGiaBan1.innerText = 'Giá bán không được nhỏ hơn giá nhập.';
+                document.getElementById('giaban1').style.borderColor = 'red';
+                hasError = true;
+            } else {
+                document.getElementById('giaban1').style.borderColor = 'gray';
+                errorGiaBan1.innerText = '';
+            }
+        }
+
+        // Validation for the 'Ngày Nhập' (not greater than current date and not empty)
+        if (ngayNhap1.trim() === '') {
+            errorNgayChon1.innerText = 'Vui lòng nhập ngày nhập.';
+            document.getElementById('ngayNhap1').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            var currentDate = new Date();
+            var inputDate = new Date(ngayNhap1);
+
+            if (inputDate > currentDate) {
+                document.getElementById('ngayNhap1').style.borderColor = 'red';
+                errorNgayChon1.innerText = 'Ngày nhập không được lớn hơn ngày hiện tại.';
+                hasError = true;
+            } else {
+                document.getElementById('ngayNhap1').style.borderColor = 'gray';
+                errorNgayChon1.innerText = '';
+            }
+        }
+
+        if (hasError) {
+            event.preventDefault();
+        }
+    }
+
+    function checkAoChiTiet(){
+        var sizes = $("input[name='size_id']:checked").length;
+        var soLuong = $("input[name='soLuong']").val();
+
+        var errorSizes = document.getElementById('errorSizes');
+        var errorSoLuong = document.getElementById('errorSoLuong');
+
+
+        var hasError = false;
+
+        if (sizes === 0) {
+            errorSizes.innerText = 'Vui lòng chọn size';
+            hasError = true;
+        } else {
+            errorSizes.innerText = '';
+        }
+
+        if (soLuong === "") {
+            errorSoLuong.innerText = 'Vui lòng nhập số lượng';
+            document.getElementById('soLuong').style.borderColor = 'red';
+            hasError = true;
+        } else if (soLuong < 0) {
+            errorSoLuong.innerText = 'Số lượng không thể là số âm';
+            document.getElementById('soLuong').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('soLuong').style.borderColor = 'gray';
+            errorSoLuong.innerText = '';
+        }
+
+        if (hasError) {
+            event.preventDefault();
+        }
+    }
+
+    var loiAoChiTietStr = "${loiAoChiTietStr}";
+
+    if (loiAoChiTietStr == 2){
+        addFormContainer.style.display = "none";
+        Swal.fire({
+            icon: 'error',
+            html: '<div class="swal-text">Sản phẩm bạn chọn không tồn tại</div><div class="progress-bar-container"></div>',
+            allowOutsideClick: true // Cho phép đóng thông báo bằng cách nhấp bên ngoài
+        });
+        setTimeout(() => {
+            Swal.close();
+            addFormContainer.style.display = "block";
+        }, 1000);
+    }
+</script>
+<script>
+    var selectedImageName = "";
+    function displayImage() {
+        var input = document.getElementById('imageInput');
+        var preview = document.getElementById('imagePreview');
+
+        while (preview.firstChild) {
+            preview.removeChild(preview.firstChild);
+        }
+
+        var file = input.files[0];
+
+        if (file) {
+            selectedImageName = file.name;
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxWidth = '100px';
+                img.style.maxHeight = '100px';
+                preview.appendChild(img);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function themAnh(){
+        var errorAnh = document.getElementById('errorAnh');
+        var hasError = false;
+
+        if (!selectedImageName) {
+            errorAnh.innerText = 'Vui lòng chọn ảnh.';
+            hasError = true;
+        } else {
+            errorAnh.innerText = '';
+        }
+
+        if (hasError) {
+            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
         }
     }
 </script>

@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="../../../../resources/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../../../../resources/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
 
 
@@ -67,7 +69,26 @@
             object-fit: cover;
             border-radius: 50%;
         }
+        .swal2-popup .progress-bar-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #007bff; /* Màu của thanh thời gian */
+            animation: slide-out 1s linear;
+        }
+
+        @keyframes slide-out {
+            0% {
+                width: 100%;
+            }
+            100% {
+                width: 0%;
+            }
+        }
     </style>
+
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -364,6 +385,7 @@
                             <input type="text" id="searchInput2" onkeyup="search2()" class="form-control" name="tenSanPham"
                                    placeholder="Nhập tên sản phẩm...">
                             <ul id="searchResults2"></ul>
+                            <span id="errorTenSanPham" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
@@ -371,13 +393,14 @@
                             <input type="text" id="searchInput" onkeyup="search()" class="form-control" name="tenChuongTrinh"
                                    placeholder="Nhập tên chương trình...">
                             <ul id="searchResults"></ul>
+                            <span id="errorTenChuongTrinh" class="text-danger"></span>
                         </div>
 
-                        <button type="submit" formaction="/chuong-trinh-giam-gia/ap-dung-san-pham">Áp dụng phiếu giảm giá</button>
+                        <button type="submit" formaction="/chuong-trinh-giam-gia/ap-dung-san-pham" onclick="check()">Áp dụng phiếu giảm giá</button>
                     </form>
                 </div>
                 <div class="col-md-4">
-                    <img src="/images/test.jpg" alt="" width="100%">
+                    <img src="/images/banner5.png" alt="" width="100%">
                 </div>
             </div>
         </div>
@@ -389,10 +412,6 @@
                     <div class="col-12">
                         <form method="post">
                             <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">DataTable with default features</h3>
-                                </div>
-                                <!-- /.card-header -->
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
@@ -406,7 +425,6 @@
                                             <th scope="col">Ngày bắt đầu</th>
                                             <th scope="col">Ngày kết thúc</th>
                                             <th scope="col">Trạng thái</th>
-                                            <th scope="col">Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -423,11 +441,6 @@
                                                 <td><c:set var="dateFormat1" value="dd/MM/yyyy"/>
                                                     <fmt:formatDate value="${list.giamGiaSanPham.ngayKetThuc}" pattern="${dateFormat1}"/></td>
                                                 <td>${list.trangThai==1?"Hết hạn":"Còn hạn"}</td>
-                                                <td>
-                                                    <button formaction="/chuong-trinh-giam-gia/detail_sp" name="detail" value="${list.id}"
-                                                            class="btn btn-primary me-2">Detail
-                                                    </button>
-                                                </td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
@@ -442,7 +455,6 @@
                                             <th scope="col">Ngày bắt đầu</th>
                                             <th scope="col">Ngày kết thúc</th>
                                             <th scope="col">Trạng thái</th>
-                                            <th scope="col">Action</th>
                                         </tr>
                                         </tfoot>
                                     </table>
@@ -555,5 +567,54 @@
         });
     }
 </script>
+
+<script>
+    function check(){
+        var tenSanPham = document.getElementsByName('tenSanPham')[0].value;
+        var tenChuongTrinh = document.getElementsByName('tenChuongTrinh')[0].value;
+
+        var errorTenSanPham = document.getElementById('errorTenSanPham');
+        var errorTenChuongTrinh = document.getElementById('errorTenChuongTrinh');
+
+        var hasError = false;
+
+        if (tenSanPham.trim() === '') {
+            errorTenSanPham.innerText = 'Vui lòng nhập tên sản phẩm.';
+            document.getElementById('searchInput2').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            errorTenSanPham.innerText = '';
+            document.getElementById('searchInput2').style.borderColor = 'gray';
+        }
+
+        if (tenChuongTrinh.trim() === '') {
+            errorTenChuongTrinh.innerText = 'Vui lòng nhập tên chương trình.';
+            document.getElementById('searchInput').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            errorTenChuongTrinh.innerText = '';
+            document.getElementById('searchInput').style.borderColor = 'gray';
+        }
+
+        if (hasError) {
+            event.preventDefault();
+        }
+    }
+</script>
+<script>
+    var loiGiamGiaChiTietStr = "${loiGiamGiaChiTietStr}";
+
+    if (loiGiamGiaChiTietStr == 2){
+        Swal.fire({
+            icon: 'error',
+            html: '<div class="swal-text">Sản phẩm bạn áp dụng đang áp dụng</div><div class="progress-bar-container"></div>',
+            allowOutsideClick: true // Cho phép đóng thông báo bằng cách nhấp bên ngoài
+        });
+        setTimeout(() => {
+            Swal.close();
+        }, 1000);
+    }
+</script>
+
 </body>
 </html>

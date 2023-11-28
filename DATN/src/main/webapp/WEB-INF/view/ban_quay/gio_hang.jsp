@@ -238,6 +238,10 @@
             object-fit: cover;
             border-radius: 50%;
         }
+        .cuon_table{
+            max-height: 500px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -726,7 +730,10 @@
                                             <div class="col-12">
                                                 <div class="row">
                                                     <div class="form-group col-3"></div>
-                                                    <div class="form-group col-3"></div>
+                                                    <div class="form-group col-3">
+                                                        <label for="searchText2">Tìm theo tên</label>
+                                                        <input id="inputSP" style="width: 250px; height: 40px">
+                                                    </div>
                                                     <div class="form-group col-3">
                                                         <label for="searchText2">Lọc theo hãng</label>
                                                         <select class="form-control" name="loai_ao_id" id="searchText2">
@@ -923,9 +930,21 @@
 
                             <h3 style="text-align: center; padding-top: 4px"> Danh sách khách hàng</h3>
                             <!-- /.card-header -->
-                            <div class="card-body">
-                                <table id="example2"  class="table table-bordered table-striped">
+                            <div class="card-body cuon_table">
+                                <table id="tableKH"  class="table table-bordered table-striped">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="form-group col-3"></div>
+                                            <div class="form-group col-3"></div>
+                                            <div class="form-group col-3">
 
+                                            </div>
+                                            <div class="form-group col-3">
+                                                <label>Tìm theo số điện thoại hoặc email</label>
+                                                <input style="width: 240px" id="inputKH">
+                                            </div>
+                                        </div>
+                                    </div>
                                     <thead>
                                     <tr>
                                         <th>Tên</th>
@@ -1436,6 +1455,30 @@
 </script>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get references to the input and table elements
+        var inputSP = document.getElementById("inputSP");
+        var table1 = document.querySelectorAll("#example1 tbody tr");
+
+        // Add an input event listener to the filter input
+        inputSP.addEventListener("input", function () {
+            var filterValue1 = inputSP.value.toLowerCase().trim();
+
+            // Loop through each table row and hide/show based on the filter value
+            table1.forEach(function (row) {
+                var tenSP = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
+
+                if ( tenSP.startsWith(filterValue1)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    });
+</script>
+
+<script>
 
     var addFormContainer5 = document.getElementById("addFormContainer");
     var addFormContainer6 = document.getElementById("addFormContainer1");
@@ -1504,12 +1547,13 @@
 
 
     var khachHanglb = "${khachHang.ten}";
+    var emaillb = "${khachHang.email}";
     var khachHangTen = "Khách lẻ";
 
     console.log(khachHanglb);
     console.log(khachHangTen);
     // Kiểm tra nếu giá trị của khachHang.ten là null hoặc không được định nghĩa
-    if (!khachHanglb || khachHanglb.trim() === "") {
+    if (!emaillb || emaillb.trim() === "") {
         spanElement.textContent = khachHangTen;
         rowSdt.style.display = 'none';
         rowEmail.style.display = 'none';
@@ -1518,7 +1562,31 @@
         spanElement.textContent = khachHanglb;
     }
 
+</script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get references to the input and table elements
+        var inputKH = document.getElementById("inputKH");
+        var tableRows = document.querySelectorAll("#tableKH tbody tr");
+
+        // Add an input event listener to the filter input
+        inputKH.addEventListener("input", function () {
+            var filterValue = inputKH.value.toLowerCase().trim();
+
+            // Loop through each table row and hide/show based on the filter value
+            tableRows.forEach(function (row) {
+                var sdt = row.querySelector("td:nth-child(7)").textContent.toLowerCase();
+                var email = row.querySelector("td:nth-child(8)").textContent.toLowerCase();
+
+                if (sdt.startsWith(filterValue) || email.startsWith(filterValue)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    });
 </script>
 
 <script>
@@ -1626,6 +1694,19 @@
         });
     });
 </script>
+<script>
+    var loiThanhToan = "${loiThanhToan}";
+    if (loiThanhToan == "2") {
+        Swal.fire({
+            icon: 'warning',
+            html: '<div class="swal-text">Xin lỗi, sản phẩm trong hóa đn của bạn nhiều hơn số lượng tồn</div><div class="progress-bar-container"></div>',
+            allowOutsideClick: true
 
+        });
+        setTimeout(() => {
+            Swal.close();
+        }, 1000);
+    }
+</script>
 </body>
 </html>

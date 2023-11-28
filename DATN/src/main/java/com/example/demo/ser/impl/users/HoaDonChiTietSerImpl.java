@@ -47,6 +47,7 @@ public class HoaDonChiTietSerImpl implements HoaDonChiTietSer {
             hoaDonChiTiet.setDonGia(updateHDCT.getDonGia());
             hoaDonChiTiet.setTrangThai(updateHDCT.getTrangThai());
             hoaDonChiTiet.setSoLuong(updateHDCT.getSoLuong());
+            hoaDonChiTiet.setSoLuongYeuCauTraHang(updateHDCT.getSoLuongYeuCauTraHang());
 
             hoaDonChiTietRepo.save(hoaDonChiTiet);
         }

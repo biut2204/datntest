@@ -30,4 +30,6 @@ public class HoaDonDTO {
     int gia;
 
     AoChiTiet aoChiTiet;
+
+    Integer hienThiTraHang;
 }

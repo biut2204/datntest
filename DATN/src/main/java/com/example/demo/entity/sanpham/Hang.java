@@ -31,6 +31,12 @@ public class Hang {
     @Column(name = "Ten")
     private String ten;
 
+    @Column(name = "TenNguoiDaiDien")
+    private String tenNDD;
+
+    @Column(name = "SDT")
+    private String sdt;
+
     @Column(name = "DiaChi")
     private String diaChi;
 

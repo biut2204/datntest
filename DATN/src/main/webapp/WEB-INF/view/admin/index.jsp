@@ -78,6 +78,7 @@
             padding: 20px;
             border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
+
         }
 
         #addForm1 button[type="submit"], #addForm2 button[type="submit"], #addForm3 button[type="submit"], #addForm4 button[type="submit"] {
@@ -112,6 +113,22 @@
             height: 80px;
             object-fit: cover;
             border-radius: 50%;
+        }
+
+        #button-container {
+            text-align: center;
+        }
+
+        #prevWeek, #nextWeek {
+            width: 80px;
+            background: dodgerblue;
+            color: white;
+            margin: 0 10px;
+        }
+
+        .chiTietHoaDonHienThi{
+            max-height: 500px;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -471,22 +488,25 @@
                 <div class="container">
                     <form method="post" id="addForm1">
                         <h3 style="text-align: center">Đơn mới chờ xác nhận</h3>
-
-                        <c:forEach items="${listHoaDonChoXacNhanDTOS}" var="list" varStatus="vTri">
-                            <div class="data-item1">
-                                <div class="d-flex justify-content-between ">
-                                    <p><img style="width: 50px"
-                                            src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
-                                    <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
-                                    <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
-                                    <p>${list.hoaDonChiTiet.soLuong}</p>
+                        <div class="chiTietHoaDonHienThi">
+                            <c:forEach items="${listHoaDonChoXacNhanDTOS}" var="list" varStatus="vTri">
+                                <div class="data-item1">
+                                    <div><b>${list.hoaDonChiTiet.hoaDon.ma}</b></div>
+                                    <div class="d-flex justify-content-between ">
+                                        <p><img style="width: 100px; height: 100px;"
+                                                src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                                        <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
+                                        <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
+                                        <p>${list.hoaDonChiTiet.soLuong}</p>
+                                    </div>
+                                    <div class="divider"></div>
                                 </div>
-                                <div class="divider"></div>
-                            </div>
-                        </c:forEach>
+                            </c:forEach>
+                        </div>
 
-                        <button id="prevPageButton">Pre</button>
-                        <button id="nextPageButton">Next</button>
+
+                        <button id="prevPageButton">Trước</button>
+                        <button id="nextPageButton">Sau</button>
                     </form>
 
                 </div>
@@ -497,22 +517,24 @@
                 <div class="container">
                     <form method="post" id="addForm2">
                         <h3 style="text-align: center">Đơn đang giao</h3>
-
-                        <c:forEach items="${listHoaDonDangGiaoDTOS}" var="list" varStatus="vTri">
-                            <div class="data-item2">
-                                <div class="d-flex justify-content-between ">
-                                    <p><img style="width: 50px"
-                                            src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
-                                    <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
-                                    <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
-                                    <p>${list.hoaDonChiTiet.soLuong}</p>
+                        <div class="chiTietHoaDonHienThi">
+                            <c:forEach items="${listHoaDonDangGiaoDTOS}" var="list" varStatus="vTri">
+                                <div class="data-item2">
+                                    <div class="d-flex justify-content-between ">
+                                        <p><img style="width: 100px; height: 100px;"
+                                                src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                                        <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
+                                        <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
+                                        <p>${list.hoaDonChiTiet.soLuong}</p>
+                                    </div>
+                                    <div class="divider"></div>
                                 </div>
-                                <div class="divider"></div>
-                            </div>
-                        </c:forEach>
+                            </c:forEach>
+                        </div>
 
-                        <button id="prevPageButton2">Pre</button>
-                        <button id="nextPageButton2">Next</button>
+
+                        <button id="prevPageButton2">Trước</button>
+                        <button id="nextPageButton2">Sau</button>
                     </form>
                 </div>
             </div>
@@ -522,22 +544,22 @@
                 <div class="container">
                     <form method="post" id="addForm3">
                         <h3 style="text-align: center">Đơn mới hoàn thành</h3>
-
-                        <c:forEach items="${listHoaDonHoanThanhDTOS}" var="list" varStatus="vTri">
-                            <div class="data-item3">
-                                <div class="d-flex justify-content-between ">
-                                    <p><img style="width: 50px"
-                                            src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
-                                    <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
-                                    <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
-                                    <p>${list.hoaDonChiTiet.soLuong}</p>
+                        <div class="chiTietHoaDonHienThi">
+                            <c:forEach items="${listHoaDonHoanThanhDTOS}" var="list" varStatus="vTri">
+                                <div class="data-item3">
+                                    <div class="d-flex justify-content-between ">
+                                        <p><img style="width: 100px; height: 100px;"
+                                                src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                                        <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
+                                        <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
+                                        <p>${list.hoaDonChiTiet.soLuong}</p>
+                                    </div>
+                                    <div class="divider"></div>
                                 </div>
-                                <div class="divider"></div>
-                            </div>
-                        </c:forEach>
-
-                        <button id="prevPageButton3">Pre</button>
-                        <button id="nextPageButton3">Next</button>
+                            </c:forEach>
+                        </div>
+                        <button id="prevPageButton3">Trước</button>
+                        <button id="nextPageButton3">Sau</button>
                     </form>
                 </div>
             </div>
@@ -547,22 +569,24 @@
                 <div class="container">
                     <form method="post" id="addForm4">
                         <h3 style="text-align: center">Đơn mới hủy</h3>
-
-                        <c:forEach items="${listHoaDonHuyDTOS}" var="list" varStatus="vTri">
-                            <div class="data-item4">
-                                <div class="d-flex justify-content-between ">
-                                    <p><img style="width: 50px"
-                                            src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
-                                    <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
-                                    <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
-                                    <p>${list.hoaDonChiTiet.soLuong}</p>
+                        <div class="chiTietHoaDonHienThi">
+                            <c:forEach items="${listHoaDonHuyDTOS}" var="list" varStatus="vTri">
+                                <div class="data-item4">
+                                    <div class="d-flex justify-content-between ">
+                                        <p><img style="width: 100px; height: 100px;"
+                                                src="/images/${list.hoaDonChiTiet.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                                        <p style="width: 200px">${list.hoaDonChiTiet.aoChiTiet.ao.ten}</p>
+                                        <p><fmt:formatNumber value="${list.gia}" type="currency" currencySymbol="VNĐ"/></p>
+                                        <p>${list.hoaDonChiTiet.soLuong}</p>
+                                    </div>
+                                    <div class="divider"></div>
                                 </div>
-                                <div class="divider"></div>
-                            </div>
-                        </c:forEach>
+                            </c:forEach>
+                        </div>
 
-                        <button id="prevPageButton4">Pre</button>
-                        <button id="nextPageButton4">Next</button>
+
+                        <button id="prevPageButton4">Trước</button>
+                        <button id="nextPageButton4">Sau</button>
                     </form>
                 </div>
             </div>
@@ -597,8 +621,8 @@
                                 <div id="container">
                                     <canvas id="myChart" width="400" height="200"></canvas>
                                     <div id="button-container">
-                                        <button id="prevWeek">Trước</button>
-                                        <button id="nextWeek">Sau</button>
+                                        <button id="prevWeek">Sau</button>
+                                        <button id="nextWeek">Trước</button>
                                     </div>
                                 </div>
                             </div>
@@ -631,7 +655,15 @@
                             <div style="margin-bottom: 10px">
                                 <a href="/admin/quan_li_don_hang/${list.ma}" class="listDonHang">
                                     <div style="display: inline-block;width: 150px">${list.ma}</div>
-                                    <div style="display: inline-block;width: 120px">${list.khachHang.ten}</div>
+                                    <c:choose>
+                                        <c:when test="${list.khachHang == null}">
+                                            <div style="display: inline-block;width: 120px">Khách lẻ</div>
+                                        </c:when>
+                                        <c:when test="${list.khachHang != null}">
+                                            <div style="display: inline-block;width: 120px">${list.khachHang.ten}</div>
+                                        </c:when>
+                                    </c:choose>
+
                                     <div style="display: inline-block;width: 100px">
                                         <fmt:formatNumber value="${list.tongTien}" type="currency"
                                                           currencySymbol="VNĐ"/>
@@ -939,168 +971,204 @@
     });
 </script>
 <script>
-    var dataContainer1 = document.getElementById("addFormContainer1");
-    var dataItems1 = dataContainer1.getElementsByClassName("data-item1");
-    var itemsPerPage = 4; // Số lượng dữ liệu trên mỗi trang
-    var currentPage = 1; // Trang hiện tại
+    // Định nghĩa biến để theo dõi trang hiện tại
+    var currentPage1 = 0;
+    var itemsPerPage1 = 4; // Số lượng mục hiển thị trên mỗi trang
 
-    function showDataOnPage(page) {
-        for (var i = 0; i < dataItems1.length; i++) {
-            dataItems1[i].style.display = "none"; // Ẩn tất cả các dữ liệu
-        }
+    // Lấy danh sách các mục trong form
+    var items1 = document.querySelectorAll('.data-item1');
 
-        var startIndex = (page - 1) * itemsPerPage;
-        var endIndex = startIndex + itemsPerPage;
+    // Hàm để ẩn tất cả các mục
+    function hideAllItems1() {
+        items1.forEach(function(item) {
+            item.style.display = 'none';
+        });
+    }
 
-        for (var i = startIndex; i < endIndex && i < dataItems1.length; i++) {
-            dataItems1[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
+    // Hàm để hiển thị các mục cho trang hiện tại
+    function showItemsForPage1(page) {
+        hideAllItems1();
+
+        var startIndex = page * itemsPerPage1;
+        var endIndex = startIndex + itemsPerPage1;
+
+        for (var i = startIndex; i < endIndex && i < items1.length; i++) {
+            items1[i].style.display = 'block';
         }
     }
 
-    // Gọi hàm hiển thị trang đầu tiên khi trang web được nạp
-    showDataOnPage(currentPage);
+    // Hiển thị trang đầu tiên khi trang web được tải
+    showItemsForPage1(currentPage1);
 
-    // Xử lý nút "Trang trước"
-    document.getElementById("prevPageButton").addEventListener("click", function () {
-        if (currentPage > 1) {
-            currentPage--;
-            showDataOnPage(currentPage);
+    // Xử lý sự kiện khi nhấn nút "Pre"
+    document.getElementById('prevPageButton').addEventListener('click', function() {
+        if (currentPage1 > 0) {
+            currentPage1--;
+            showItemsForPage1(currentPage1);
         }
         event.preventDefault();
     });
 
-    // Xử lý nút "Trang tiếp theo"
-    document.getElementById("nextPageButton").addEventListener("click", function () {
-        var maxPage = Math.ceil(dataItems1.length / itemsPerPage);
-        if (currentPage < maxPage) {
-            currentPage++;
-            showDataOnPage(currentPage);
+    // Xử lý sự kiện khi nhấn nút "Next"
+    document.getElementById('nextPageButton').addEventListener('click', function() {
+        var totalPages1 = Math.ceil(items1.length / itemsPerPage1);
+
+        if (currentPage1 < totalPages1 - 1) {
+            currentPage1++;
+            showItemsForPage1(currentPage1);
         }
         event.preventDefault();
     });
 
 </script>
 <script>
-    var dataContainer2 = document.getElementById("addFormContainer2");
-    var dataItems2 = dataContainer2.getElementsByClassName("data-item2");
-    var itemsPerPage = 4; // Số lượng dữ liệu trên mỗi trang
-    var currentPage = 1; // Trang hiện tại
+    // Định nghĩa biến để theo dõi trang hiện tại
+    var currentPage2 = 0;
+    var itemsPerPage2 = 4; // Số lượng mục hiển thị trên mỗi trang
 
-    function showDataOnPage(page) {
-        for (var i = 0; i < dataItems2.length; i++) {
-            dataItems2[i].style.display = "none"; // Ẩn tất cả các dữ liệu
-        }
+    // Lấy danh sách các mục trong form
+    var items2 = document.querySelectorAll('.data-item2');
 
-        var startIndex = (page - 1) * itemsPerPage;
-        var endIndex = startIndex + itemsPerPage;
+    // Hàm để ẩn tất cả các mục
+    function hideAllItems2() {
+        items2.forEach(function(item) {
+            item.style.display = 'none';
+        });
+    }
 
-        for (var i = startIndex; i < endIndex && i < dataItems2.length; i++) {
-            dataItems2[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
+    // Hàm để hiển thị các mục cho trang hiện tại
+    function showItemsForPage2(page) {
+        hideAllItems2();
+
+        var startIndex = page * itemsPerPage2;
+        var endIndex = startIndex + itemsPerPage2;
+
+        for (var i = startIndex; i < endIndex && i < items2.length; i++) {
+            items2[i].style.display = 'block';
         }
     }
 
-    // Gọi hàm hiển thị trang đầu tiên khi trang web được nạp
-    showDataOnPage(currentPage);
+    // Hiển thị trang đầu tiên khi trang web được tải
+    showItemsForPage2(currentPage2);
 
-    // Xử lý nút "Trang trước"
-    document.getElementById("prevPageButton2").addEventListener("click", function () {
-        if (currentPage > 1) {
-            currentPage--;
-            showDataOnPage(currentPage);
+    // Xử lý sự kiện khi nhấn nút "Pre"
+    document.getElementById('prevPageButton2').addEventListener('click', function() {
+        if (currentPage2 > 0) {
+            currentPage2--;
+            showItemsForPage2(currentPage2);
         }
         event.preventDefault();
     });
 
-    // Xử lý nút "Trang tiếp theo"
-    document.getElementById("nextPageButton2").addEventListener("click", function () {
-        var maxPage = Math.ceil(dataItems2.length / itemsPerPage);
-        if (currentPage < maxPage) {
-            currentPage++;
-            showDataOnPage(currentPage);
+    // Xử lý sự kiện khi nhấn nút "Next"
+    document.getElementById('nextPageButton2').addEventListener('click', function() {
+        var totalPages2 = Math.ceil(items2.length / itemsPerPage2);
+
+        if (currentPage2 < totalPages2 - 1) {
+            currentPage2++;
+            showItemsForPage2(currentPage2);
         }
         event.preventDefault();
     });
 
 </script>
 <script>
-    var dataContainer3 = document.getElementById("addFormContainer3");
-    var dataItems3 = dataContainer3.getElementsByClassName("data-item3");
-    var itemsPerPage = 4; // Số lượng dữ liệu trên mỗi trang
-    var currentPage = 1; // Trang hiện tại
+    // Định nghĩa biến để theo dõi trang hiện tại
+    var currentPage3 = 0;
+    var itemsPerPage3 = 4; // Số lượng mục hiển thị trên mỗi trang
 
-    function showDataOnPage(page) {
-        for (var i = 0; i < dataItems3.length; i++) {
-            dataItems3[i].style.display = "none"; // Ẩn tất cả các dữ liệu
-        }
+    // Lấy danh sách các mục trong form
+    var items3 = document.querySelectorAll('.data-item3');
 
-        var startIndex = (page - 1) * itemsPerPage;
-        var endIndex = startIndex + itemsPerPage;
+    // Hàm để ẩn tất cả các mục
+    function hideAllItems3() {
+        items3.forEach(function(item) {
+            item.style.display = 'none';
+        });
+    }
 
-        for (var i = startIndex; i < endIndex && i < dataItems3.length; i++) {
-            dataItems3[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
+    // Hàm để hiển thị các mục cho trang hiện tại
+    function showItemsForPage3(page) {
+        hideAllItems3();
+
+        var startIndex = page * itemsPerPage3;
+        var endIndex = startIndex + itemsPerPage3;
+
+        for (var i = startIndex; i < endIndex && i < items3.length; i++) {
+            items3[i].style.display = 'block';
         }
     }
 
-    // Gọi hàm hiển thị trang đầu tiên khi trang web được nạp
-    showDataOnPage(currentPage);
+    // Hiển thị trang đầu tiên khi trang web được tải
+    showItemsForPage3(currentPage3);
 
-    // Xử lý nút "Trang trước"
-    document.getElementById("prevPageButton3").addEventListener("click", function () {
-        if (currentPage > 1) {
-            currentPage--;
-            showDataOnPage(currentPage);
+    // Xử lý sự kiện khi nhấn nút "Pre"
+    document.getElementById('prevPageButton3').addEventListener('click', function() {
+        if (currentPage3 > 0) {
+            currentPage3--;
+            showItemsForPage3(currentPage3);
         }
         event.preventDefault();
     });
 
-    // Xử lý nút "Trang tiếp theo"
-    document.getElementById("nextPageButton3").addEventListener("click", function () {
-        var maxPage = Math.ceil(dataItems3.length / itemsPerPage);
-        if (currentPage < maxPage) {
-            currentPage++;
-            showDataOnPage(currentPage);
+    // Xử lý sự kiện khi nhấn nút "Next"
+    document.getElementById('nextPageButton3').addEventListener('click', function() {
+        var totalPages3 = Math.ceil(items3.length / itemsPerPage3);
+
+        if (currentPage3 < totalPages3 - 1) {
+            currentPage3++;
+            showItemsForPage3(currentPage3);
         }
         event.preventDefault();
     });
 
 </script>
 <script>
-    var dataContainer4 = document.getElementById("addFormContainer4");
-    var dataItems4 = dataContainer4.getElementsByClassName("data-item4");
-    var itemsPerPage = 4; // Số lượng dữ liệu trên mỗi trang
-    var currentPage = 1; // Trang hiện tại
+    // Định nghĩa biến để theo dõi trang hiện tại
+    var currentPage4 = 0;
+    var itemsPerPage4 = 4; // Số lượng mục hiển thị trên mỗi trang
 
-    function showDataOnPage(page) {
-        for (var i = 0; i < dataItems4.length; i++) {
-            dataItems4[i].style.display = "none"; // Ẩn tất cả các dữ liệu
-        }
+    // Lấy danh sách các mục trong form
+    var items4 = document.querySelectorAll('.data-item4');
 
-        var startIndex = (page - 1) * itemsPerPage;
-        var endIndex = startIndex + itemsPerPage;
+    // Hàm để ẩn tất cả các mục
+    function hideAllItems4() {
+        items4.forEach(function(item) {
+            item.style.display = 'none';
+        });
+    }
 
-        for (var i = startIndex; i < endIndex && i < dataItems4.length; i++) {
-            dataItems4[i].style.display = "block"; // Hiển thị các dữ liệu trên trang hiện tại
+    // Hàm để hiển thị các mục cho trang hiện tại
+    function showItemsForPage4(page) {
+        hideAllItems4();
+
+        var startIndex = page * itemsPerPage4;
+        var endIndex = startIndex + itemsPerPage4;
+
+        for (var i = startIndex; i < endIndex && i < items4.length; i++) {
+            items4[i].style.display = 'block';
         }
     }
 
-    // Gọi hàm hiển thị trang đầu tiên khi trang web được nạp
-    showDataOnPage(currentPage);
+    // Hiển thị trang đầu tiên khi trang web được tải
+    showItemsForPage4(currentPage4);
 
-    // Xử lý nút "Trang trước"
-    document.getElementById("prevPageButton4").addEventListener("click", function () {
-        if (currentPage > 1) {
-            currentPage--;
-            showDataOnPage(currentPage);
+    // Xử lý sự kiện khi nhấn nút "Pre"
+    document.getElementById('prevPageButton4').addEventListener('click', function() {
+        if (currentPage4 > 0) {
+            currentPage4--;
+            showItemsForPage4(currentPage4);
         }
         event.preventDefault();
     });
 
-    // Xử lý nút "Trang tiếp theo"
-    document.getElementById("nextPageButton4").addEventListener("click", function () {
-        var maxPage = Math.ceil(dataItems4.length / itemsPerPage);
-        if (currentPage < maxPage) {
-            currentPage++;
-            showDataOnPage(currentPage);
+    // Xử lý sự kiện khi nhấn nút "Next"
+    document.getElementById('nextPageButton4').addEventListener('click', function() {
+        var totalPages4 = Math.ceil(items4.length / itemsPerPage4);
+
+        if (currentPage4 < totalPages4 - 1) {
+            currentPage4++;
+            showItemsForPage4(currentPage4);
         }
         event.preventDefault();
     });

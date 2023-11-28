@@ -334,7 +334,9 @@
                                     <div id="errorDiv" class="alert alert-danger" style="display: none;">
                                         Chỉ được tạo tối đa 5 hóa đơn.
                                     </div>
-                                    <button type="submit" class="btn btn-primary ml-auto" id="createHoaDonButton" onclick="createHoaDon()"><i class="fas fa-plus"></i> Tạo Đơn Hàng</button>
+                                    <div class="col-7"></div>
+                                    <button type="submit" class="btn btn-primary col-2" id="addButton" onclick="taoKhachHangNhanh()"><i class="fas fa-plus"></i> Tạo tài khoản nhanh</button>
+                                    <button type="submit" class="btn btn-primary col-2" id="createHoaDonButton" onclick="createHoaDon()"><i class="fas fa-plus"></i> Tạo Đơn Hàng</button>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -416,6 +418,36 @@
 
         <!-- /.content -->
     </div>
+    <div id="addFormContainer" style="display: none;">
+        <div class="container-fluid">
+            <div class="container">
+                <form method="post" id="addForm">
+                    <h3 style="text-align: center">TẠO TÀI KHOẢN NHANH</h3>
+                    <div class="form-group">
+                        <label for="ten">Tên <span class="text-danger">(*)</span> :</label>
+                        <input type="text" name="ten" class="form-control"
+                               id="ten" placeholder="Tên ">
+                        <span id="errorTen" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="ten">Email <span class="text-danger">(*)</span> :</label>
+                        <input type="text" name="email"  class="form-control"
+                               id="email" placeholder="Email ">
+                        <span id="errorEmail" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="ten">Số điện thoại <span class="text-danger">(*)</span> :</label>
+                        <input type="text" name="sdt"  class="form-control"
+                               id="sdt" placeholder="Tên ">
+                        <span id="errorSdt" class="text-danger"></span>
+                    </div>
+                    <button class="btn btn-primary" formaction="/admin/ban-quay/tao_nhanh_tk" type="submit"
+                            onclick="addProduct()"><i class="fas fa-plus"></i> Thêm Mới
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- /.content-wrapper -->
 
     <!-- Control Sidebar -->
@@ -487,6 +519,81 @@
         });
     });
 </script>
+<script>
 
+    var addButton = document.getElementById("addButton");
+    var addFormContainer = document.getElementById("addFormContainer");
+
+    // Add an event listener to the button
+
+    // Add an event listener to the background overlay
+    addFormContainer.addEventListener("click", function (event) {
+        // Check if the click occurred outside the form
+        if (event.target === addFormContainer) {
+            // Hide the form
+            addFormContainer.style.display = "none";
+        }
+    });
+
+    function taoKhachHangNhanh(){
+        addFormContainer.style.display = "block";
+        event.preventDefault();
+    }
+
+    function addProduct() {
+        var ten = document.getElementsByName('ten')[0].value;
+        var email = document.getElementsByName('email')[0].value;
+        var sdt = document.getElementsByName('sdt')[0].value;
+        var errorTen = document.getElementById('errorTen');
+        var errorEmail = document.getElementById('errorEmail');
+        var errorSdt = document.getElementById('errorSdt');
+        var hasError = false;
+
+        // Kiểm tra tên
+        if (ten.trim() === '') {
+            errorTen.innerText = 'Vui lòng nhập tên.';
+            document.getElementById('ten').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('ten').style.borderColor = 'gray';
+            errorTen.innerText = '';
+        }
+
+        // Kiểm tra định dạng email
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            errorEmail.innerText = 'Vui lòng nhập đúng định dạng email.';
+            document.getElementById('email').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('email').style.borderColor = 'gray';
+            errorEmail.innerText = '';
+        }
+
+        <c:forEach var="list" items="${listKH}">
+        if ("${list.email}".trim() === email.trim()) {
+            errorEmail.innerText = 'Email này đã được đăng kí.';
+            document.getElementById('email').style.borderColor = 'red';
+            hasError = true;
+        }
+        </c:forEach>
+
+        // Kiểm tra định dạng số điện thoại
+        var phoneRegex = /^\d{10}$/;
+        if (!phoneRegex.test(sdt)) {
+            errorSdt.innerText = 'Vui lòng nhập số điện thoại đúng định dạng (10 số).';
+            document.getElementById('sdt').style.borderColor = 'red';
+            hasError = true;
+        } else {
+            document.getElementById('sdt').style.borderColor = 'gray';
+            errorSdt.innerText = '';
+        }
+
+        if (hasError) {
+            event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
+        }
+    }
+
+</script>
 </body>
 </html>

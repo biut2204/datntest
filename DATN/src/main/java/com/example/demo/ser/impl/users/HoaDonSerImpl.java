@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -109,6 +110,7 @@ public class HoaDonSerImpl implements HoaDonSer {
     public List<HoaDonDTO> findHoaDonDT0(List<HoaDon> listHoaDons) {
 
         List<HoaDonDTO> hoaDonDTOS = new ArrayList<>();
+        LocalDate localDate = LocalDate.now();
 
         for (HoaDon hoaDon : listHoaDons) {
             int donGia = 0;
@@ -122,6 +124,10 @@ public class HoaDonSerImpl implements HoaDonSer {
                 } else {
                     donGia += ao.getGiaBan().toBigInteger().intValue() * hoaDonChiTiet.getSoLuong();
                 }
+            }
+
+            if (hoaDon.getNgayHoanThanh() != null && localDate.isAfter(ChronoLocalDate.from(hoaDon.getNgayHoanThanh().plusDays(7)))){
+                hoaDonDTO.setHienThiTraHang(1);
             }
             hoaDonDTO.setHoaDon(hoaDon);
             hoaDonDTO.setHoaDonChiTiets(listHoaDonChiTiets);
@@ -184,7 +190,7 @@ public class HoaDonSerImpl implements HoaDonSer {
             int sl = Math.toIntExact(hoaDonRepo.tongSl(hoaDon.getId()));
 
             if(hoaDon.getKhachHang() == null){
-                donHangDTO.setTen("");
+                donHangDTO.setTen(null);
             }else {
                 donHangDTO.setTen(hoaDon.getKhachHang().getTen());
             }
@@ -332,7 +338,7 @@ public class HoaDonSerImpl implements HoaDonSer {
             int sl = Math.toIntExact(hoaDonRepo.tongSl(hoaDon.getId()));
 
             if(hoaDon.getKhachHang() == null){
-                donHangDTO.setTen("");
+                donHangDTO.setTen(null);
             }else {
                 donHangDTO.setTen(hoaDon.getKhachHang().getTen());
             }
@@ -367,7 +373,7 @@ public class HoaDonSerImpl implements HoaDonSer {
             int sl = Math.toIntExact(hoaDonRepo.tongSl(hoaDon.getId()));
 
             if(hoaDon.getKhachHang() == null){
-                donHangDTO.setTen("");
+                donHangDTO.setTen(null);
             }else {
                 donHangDTO.setTen(hoaDon.getKhachHang().getTen());
             }

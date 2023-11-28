@@ -292,6 +292,10 @@
         .icon-x:hover {
             color: #ddd;
         }
+        #chiTietDonHang{
+            max-height: 300px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -710,9 +714,16 @@
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label>Khách hàng: <span
-                                            style="margin-left: 102px;background: #7adeee;padding: 10px;border-radius: 15px;display:
-                                            <c:if test="${hoaDon.khachHang == null}">none</c:if>">${hoaDon.khachHang.ten}</span></label>
+                                    <c:choose>
+                                        <c:when test="${hoaDon.khachHang == null}">
+                                            <label>Khách hàng: <span
+                                                    style="margin-left: 102px;background: #7adeee;padding: 10px;border-radius: 15px">Khách lẻ</span></label>
+                                        </c:when>
+                                        <c:when test="${hoaDon.khachHang != null}">
+                                            <label>Khách hàng: <span
+                                                    style="margin-left: 102px;background: #7adeee;padding: 10px;border-radius: 15px">${hoaDon.khachHang.ten}</span></label>
+                                        </c:when>
+                                    </c:choose>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -748,11 +759,15 @@
                                         </c:when>
                                         <c:when test="${hoaDon.hinhThuc == 2 }">
                                             <label>Thanh toán: <span
-                                                    style="margin-left: 105px;background: #abdec7;padding: 10px;border-radius: 15px">Thanh toán Vnpay</span></label>
+                                                    style="margin-left: 105px;background: #abdec7;padding: 10px;border-radius: 15px">Thanh toán Banking</span></label>
                                         </c:when>
                                         <c:when test="${hoaDon.hinhThuc == 3 }">
                                             <label>Thanh toán: <span
                                                     style="margin-left: 105px;background: #fff3c6;padding: 10px;border-radius: 15px">Thanh toán khi nhận hàng</span></label>
+                                        </c:when>
+                                        <c:when test="${hoaDon.hinhThuc == 4 }">
+                                            <label>Thanh toán: <span
+                                                    style="margin-left: 105px;background: #fbddeb;padding: 10px;border-radius: 15px">Thanh toán Momo</span></label>
                                         </c:when>
                                     </c:choose>
                                 </div>
@@ -836,7 +851,16 @@
                                                 <td>${list.soLuong}</td>
                                                 <td><fmt:formatNumber value="${list.hoaDon.tongTien}" type="currency"
                                                                       currencySymbol="VNĐ"/></td>
-                                                <td>${list.ten}</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${list.ten == null}">
+                                                            Khách lẻ
+                                                        </c:when>
+                                                        <c:when test="${list.ten != null}">
+                                                            ${list.ten}
+                                                        </c:when>
+                                                    </c:choose>
+                                                </td>
                                                 <td>
                                                     <c:set var="dateTimeString" value="${list.hoaDon.ngayTao}"/>
                                                     <fmt:parseDate value="${dateTimeString}" var="parsedDate"
@@ -852,10 +876,13 @@
                                                             Tại quầy</p></c:when>
                                                         <c:when test="${list.hoaDon.hinhThuc ==2}"><p
                                                                 style="background: #abdec7;border-radius: 15px;text-align: center">
-                                                            VnPay</p></c:when>
+                                                            Vnpay</p></c:when>
                                                         <c:when test="${list.hoaDon.hinhThuc ==3}"><p
                                                                 style="background: #fff3c6;border-radius: 15px;text-align: center">
                                                             Khi nhận hàng</p></c:when>
+                                                        <c:when test="${list.hoaDon.hinhThuc ==4}"><p
+                                                                style="background: #fbddeb;border-radius: 15px;text-align: center">
+                                                            Momo</p></c:when>
                                                     </c:choose>
                                                 </td>
                                                 <td>
@@ -877,7 +904,7 @@
                                                 <td>
                                                     <button formaction="/admin/quan_li_don_hang/detail" name="detail"
                                                             value="${list.hoaDon.ma}"
-                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Detail
+                                                            class="btn btn-primary me-2"><i class="fas fa-edit"></i> Chi Tiết
                                                     </button>
                                                 </td>
                                             </tr>
@@ -938,24 +965,31 @@
                         <i class="fas fa-times"></i>
                     </div>
                 </div>
-                <div class="d-flex justify-content-between ">
-                    <p style="width: 50px">Ảnh</p>
-                    <p style="width: 200px">Tên sản phẩm</p>
-                    <p style="width: 100px">Số lượng</p>
-                    <p style="width: 100px">Tổng tiền</p>
-                </div>
-
-                <c:forEach items="${hoaDonChiTiets}" var="list">
+                <div id="chiTietDonHang">
                     <div class="d-flex justify-content-between ">
-                        <p><img style="width: 50px; height: 50px; border: 1px solid #6e7881"
-                                src="/images/${list.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
-                        <p style="width: 200px">${list.aoChiTiet.ao.ten}</p>
-                        <p style="width: 100px">${list.soLuong}</p>
-                        <p style="width: 100px"><fmt:formatNumber value="${list.donGia}" type="currency"
-                                                                  currencySymbol="VNĐ"/></p>
+                       <b> <p style="width: 100px">Ảnh</p></b>
+                        <b><p style="width: 200px">Tên sản phẩm</p></b>
+                        <b><p style="width: 100px">Số lượng</p></b>
+                        <b><p style="width: 100px">Tổng tiền</p></b>
                     </div>
-                </c:forEach>
-                <h5>Ngày tạo hóa đơn: <c:set var="dateTimeString" value="${hoaDon.ngayTao}"/>
+                    <c:forEach items="${hoaDonChiTiets}" var="list">
+                        <div class="d-flex justify-content-between ">
+                            <p><img style="width: 100px; height: 100px; border: 1px solid #6e7881"
+                                    src="/images/${list.aoChiTiet.ao.anhs.get(0).ten_url}"></p>
+                            <div style="width: 200px">
+                                <b>
+                                    <p>${list.aoChiTiet.ao.ten}</p>
+                                    <p>Thông tin: ${list.aoChiTiet.mau_sac.ten}, ${list.aoChiTiet.size.ten}</p>
+                                </b>
+                            </div>
+
+                            <b><p style="width: 100px">${list.soLuong}</p></b>
+                            <b><p style="width: 100px"><fmt:formatNumber value="${list.donGia}" type="currency"
+                                                                         currencySymbol="VNĐ"/></p></b>
+                        </div>
+                    </c:forEach>
+                </div>
+                <h5 style="padding-top: 10px">Ngày tạo hóa đơn: <c:set var="dateTimeString" value="${hoaDon.ngayTao}"/>
                     <fmt:parseDate value="${dateTimeString}" var="parsedDate"
                                    pattern="yyyy-MM-dd'T'HH:mm:ss.SSS"/>
                     <fmt:formatDate value="${parsedDate}" var="formattedDate"
@@ -1153,10 +1187,11 @@
 </script>
 <script>
     $(document).ready(function () {
-        var rowsPerPage = 20; // Số dòng trên mỗi trang
+        var rowsPerPage = 10; // Số dòng trên mỗi trang
         var totalRows = $('#example1 tbody tr').length;
         var numPages = Math.ceil(totalRows / rowsPerPage);
         var currentPage = 1;
+        var maxVisiblePages = 4; // Số trang tối đa hiển thị
 
         // Ẩn tất cả các dòng ngoại trừ các dòng đầu tiên
         $('#example1 tbody tr').hide();
@@ -1165,12 +1200,31 @@
         // Hiển thị số trang và màu xanh cho trang hiện tại
         function showPagination() {
             $('#pageButtons').empty();
-            for (var i = 1; i <= numPages; i++) {
+
+            var startPage, endPage;
+
+            if (numPages <= maxVisiblePages) {
+                startPage = 1;
+                endPage = numPages;
+            } else {
+                if (currentPage <= Math.floor(maxVisiblePages / 2)) {
+                    startPage = 1;
+                    endPage = maxVisiblePages;
+                } else if (currentPage + Math.floor(maxVisiblePages / 2) >= numPages) {
+                    startPage = numPages - maxVisiblePages + 1;
+                    endPage = numPages;
+                } else {
+                    startPage = currentPage - Math.floor(maxVisiblePages / 2);
+                    endPage = currentPage + Math.floor(maxVisiblePages / 2) - 1;
+                }
+            }
+
+            for (var i = startPage; i <= endPage; i++) {
                 $('#pageButtons').append('<button class="page-link">' + i + '</button>');
             }
 
             $('.page-link').removeClass('active');
-            $('.page-link').eq(currentPage - 1).addClass('active');
+            $('.page-link').eq(currentPage - startPage).addClass('active');
         }
 
         showPagination();
@@ -1210,5 +1264,6 @@
         });
     });
 </script>
+
 </body>
 </html>

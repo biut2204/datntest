@@ -44,8 +44,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
 
         //chỉ xem member
 //        registry.addInterceptor(userInterceptor)
-//                .addPathPatterns("/user/**")
-//                .excludePathPatterns("/user/trang_chu/*","/user/tim_kiem/*","/user/san_pham_detail/*/*");
+//                .addPathPatterns("/user/don_hang/*","/user/doi_mat_khau_view/*");
 
         registry.addInterceptor(satffInterceptor)
                 .addPathPatterns("/admin/index/*","/admin/ao/view/*");

@@ -344,7 +344,6 @@
                                             <th>Tỉnh</th>
                                             <th>SDT</th>
                                             <th>Email</th>
-                                            <th>Mật Khẩu</th>
                                             <th>Trạng thái</th>
                                         </tr>
                                         </thead>
@@ -360,7 +359,6 @@
                                                 <td>${list.quoc_gia}</td>
                                                 <td>${list.sdt}</td>
                                                 <td>${list.email}</td>
-                                                <td>${list.matKhau}</td>
                                                 <td>${list.trangThai==1?'Hoạt Động':'Ngừng Hoạt Động'}</td>
                                             </tr>
                                         </c:forEach>
@@ -376,7 +374,6 @@
                                             <th>Tỉnh</th>
                                             <th>SDT</th>
                                             <th>Email</th>
-                                            <th>Mật Khẩu</th>
                                             <th>Trạng thái</th>
                                         </tr>
                                         </tfoot>

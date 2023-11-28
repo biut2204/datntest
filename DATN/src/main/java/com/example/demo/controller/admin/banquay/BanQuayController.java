@@ -4,6 +4,7 @@ package com.example.demo.controller.admin.banquay;
 import com.example.demo.entity.auth.RoleEnum;
 import com.example.demo.entity.dto.HoaDonDTO;
 import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
+import com.example.demo.entity.khachhang.GioHang;
 import com.example.demo.entity.khachhang.HoaDon;
 import com.example.demo.entity.khachhang.HoaDonChiTiet;
 import com.example.demo.entity.khachhang.Users;
@@ -27,12 +28,16 @@ import com.example.demo.ser.sanpham.HangSer;
 import com.example.demo.ser.sanpham.LoaiAoSer;
 import com.example.demo.ser.sanpham.MauSacSer;
 import com.example.demo.ser.sanpham.SizeSer;
+import com.example.demo.ser.users.GioHangSer;
 import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
 import com.example.demo.ser.users.UsersSer;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +50,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -97,6 +103,12 @@ public class BanQuayController {
     @Autowired
     ChatSer chatSer;
 
+    @Autowired
+    GioHangSer gioHangSer;
+
+    @Autowired
+    JavaMailSender mailSender;
+
     @GetMapping("/trang-chu")
     public String view(Model model, HttpServletRequest request) {
 
@@ -106,9 +118,9 @@ public class BanQuayController {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
-        if (user.getRole() == RoleEnum.STAFF){
+        if (user.getRole() == RoleEnum.STAFF) {
             model.addAttribute("adminOrStaff", "1");
-        }else if (user.getRole() == RoleEnum.ADMIN){
+        } else if (user.getRole() == RoleEnum.ADMIN) {
             model.addAttribute("adminOrStaff", "2");
         }
         model.addAttribute("nameUser", user.getTen());
@@ -119,6 +131,7 @@ public class BanQuayController {
         ArrayList<Users> listKH = (ArrayList<Users>) usersSer.getAll();
         model.addAttribute("listKH", listKH);
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
+
 
 //        int tongSoLuong= hoaDonChiTietSer.soLuongSanPham(5,);
 //        model.addAttribute("soSanPham",tongSoLuong);
@@ -141,9 +154,9 @@ public class BanQuayController {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
-        if (user.getRole() == RoleEnum.STAFF){
+        if (user.getRole() == RoleEnum.STAFF) {
             model.addAttribute("adminOrStaff", "1");
-        }else if (user.getRole() == RoleEnum.ADMIN){
+        } else if (user.getRole() == RoleEnum.ADMIN) {
             model.addAttribute("adminOrStaff", "2");
         }
         model.addAttribute("nameUser", user.getTen());
@@ -230,6 +243,13 @@ public class BanQuayController {
         model.addAttribute("listHoaDonChiTiets", listHoaDonChiTiets);
         model.addAttribute("hoaDon", hoaDon.getId());
 
+        String loiHoaDonBySoLuong = (String) session.getAttribute("loiHoaDonBySoLuong");
+
+        if (loiHoaDonBySoLuong != null) {
+            model.addAttribute("loiThanhToan","2");
+        }
+        session.removeAttribute("loiHoaDonBySoLuong");
+
         return "/ban_quay/gio_hang";
     }
 
@@ -266,13 +286,13 @@ public class BanQuayController {
 //        Users users = usersSer.findByMa(ma);
 //        model.addAttribute("idKh", users.getMa());
 
-        int ma = hoaDonSer.demHoaDon() + 1;
+        LocalDateTime now = LocalDateTime.now();
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
 
         HoaDon hoaDon = new HoaDon();
-        hoaDon.setMa("HD00" + ma);
+        hoaDon.setMa("HD" + now.getMonthValue() + now.getDayOfMonth() + now.getHour() + now.getMinute() + now.getSecond());
         hoaDon.setKhachHang(null);
         hoaDon.setNhanVien(user);
         hoaDon.setHinhThuc(1);
@@ -339,6 +359,7 @@ public class BanQuayController {
         }
         return "redirect:/admin/ban-quay/view-cart/" + idHoaDon;
     }
+
     @PostMapping("/delete-khach-hang/{id}")
     public String deleteKH(HttpServletRequest request) {
 
@@ -371,7 +392,23 @@ public class BanQuayController {
                             @RequestParam("ghiChu") String ghiChu,
                             @RequestParam(value = "chon", required = false) List<String> chon,
                             @RequestParam(value = "idAoChiTiet", required = false) List<UUID> idAoChiTiet,
-                            @RequestParam(value = "soLuong", required = false) List<String> soLuong) {
+                            @RequestParam(value = "soLuong", required = false) List<String> soLuong,
+                            HttpSession session) {
+
+        int checkSoLuongTon = 0;
+
+        for (int i = 0; i < idAoChiTiet.size(); i++) {
+            AoChiTiet actStr = aoChiTietSer.findById(idAoChiTiet.get(i));
+            Integer slCheck = Integer.parseInt(soLuong.get(i));
+            if (slCheck > actStr.getSlton()) {
+                checkSoLuongTon += 1;
+            }
+        }
+
+        if (checkSoLuongTon > 0) {
+            session.setAttribute("loiHoaDonBySoLuong", "2");
+            return "redirect:/admin/ban-quay/view-cart/"+id;
+        }
 
         HoaDon hd = hoaDonSer.findId(id);
         HoaDon hoaDon = new HoaDon();
@@ -380,6 +417,7 @@ public class BanQuayController {
         hoaDon.setTongTien(tongTien);
         hoaDon.setGhiChu(ghiChu);
         hoaDon.setTrangThai(3);
+        hoaDon.setKhachHang(hd.getKhachHang());
         hoaDon.setNgayTao(hd.getNgayTao());
         hoaDon.setNgayHoanThanh(LocalDateTime.now());
         hoaDon.setNgayThanhToan(LocalDateTime.now());
@@ -390,7 +428,7 @@ public class BanQuayController {
 
         for (String selectedValue : chon) {
 
-            HoaDonChiTiet hdct = hoaDonChiTietSer.findByHoaDonAndAoChiTiet(id,idAoChiTiet.get(Integer.parseInt(selectedValue)));
+            HoaDonChiTiet hdct = hoaDonChiTietSer.findByHoaDonAndAoChiTiet(id, idAoChiTiet.get(Integer.parseInt(selectedValue)));
 
             AoChiTiet act = aoChiTietSer.findById(idAoChiTiet.get(Integer.parseInt(selectedValue)));
             Ao ao = act.getAo();
@@ -462,6 +500,52 @@ public class BanQuayController {
 
         model.addAttribute("hoaDon", hoaDon1.getId());
 
+        return "redirect:/admin/ban-quay/trang-chu";
+    }
+
+    @PostMapping("/tao_nhanh_tk")
+    public String taoNhanhTk(HttpServletRequest request) {
+        String ten = request.getParameter("ten");
+        String email = request.getParameter("email");
+        String sdt = request.getParameter("sdt");
+
+        Users users = new Users();
+
+        int slKH = usersSer.soLuongUser() + 3;
+        String ma = "00" + slKH;
+
+        String mk = RandomStringUtils.randomNumeric(8);
+
+        users.setMa(ma);
+        users.setTen(ten);
+        users.setEmail(email);
+        users.setSdt(sdt);
+        users.setMatKhau(mk);
+        users.setRole(RoleEnum.MENBER);
+        users.setTrangThai(1);
+
+        usersSer.add(users);
+
+        int slGH = gioHangSer.soLuongGioHang() + 1;
+
+        String gh = "GH00" + slGH;
+
+        GioHang g = new GioHang();
+        g.setMa(gh);
+        g.setKhachHang(users);
+        g.setNgayTao(new Date());
+        g.setTrangThai(1);
+        gioHangSer.add(g);
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Thông tin tài khoản");
+        message.setText("Chúc mừng bạn đã đăng ký thành công tài khoản từ SD-99" +
+                "\nTên khách hàng : " + ten +
+                "\nEmail : " + email +
+                "\nSố điện thoại : " + sdt + "\nMật khẩu : " + mk +
+                "\nCảm ơn bạn và chúc bạn mua hàng vui vẻ");
+        mailSender.send(message);
         return "redirect:/admin/ban-quay/trang-chu";
     }
 

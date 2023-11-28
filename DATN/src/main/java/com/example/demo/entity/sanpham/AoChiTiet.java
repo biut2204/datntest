@@ -46,6 +46,9 @@ public class AoChiTiet implements Serializable {
     @Column(name = "SoLuongBan")
     private Integer slban;
 
+    @Column(name = "SoLuongTra")
+    private Integer slTra;
+
     @Column(name = "TrangThai")
     private Integer trangthai;
 }
