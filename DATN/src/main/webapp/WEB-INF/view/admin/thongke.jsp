@@ -106,6 +106,11 @@
                     <i class="fas fa-expand-arrows-alt"></i>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" role="button" href="/admin/logout">
+                    <i class="fas fa-sign-out-alt" style="width: 20px"></i> Đăng xuất
+                </a>
+            </li>
         </ul>
     </nav>
     <!-- /.navbar -->
@@ -377,7 +382,7 @@
                     <div class="card">
                         <div class="card-header p-3 pt-2">
                             <div class="icon icon-lg icon-shape bg-gradient-pink shadow-pink text-center border-radius-xl mt-n4 position-absolute">
-                                <i class="material-icons opacity-10">Hóa Đơn</i>
+                                <i class="material-icons opacity-10" style="padding-left: 5px; padding-right: 5px">  Hóa Đơn  </i>
                             </div>
                             <div class="text-end pt-1">
                                 <p class="text-sm mb-0 text-capitalize">Số lượng đơn hoàn thành</p>
@@ -386,7 +391,7 @@
                         </div>
                         <hr class="dark horizontal my-0">
                         <div class="card-footer p-3">
-                            <span id="SSHD" class=" text-sm font-weight-bolder">${soSanhHoaDon}% </span><p class="mb-0" id="tbslhd">so với hôm trước</p>
+                            <span id="SSHD" class=" text-sm font-weight-bolder">${soSanhHoaDon} (hóa đơn) </span><p class="mb-0" id="tbslhd">so với hôm trước ( ${soHoaDonHomQua} Hóa đơn)</p>
                         </div>
                     </div>
                 </div>
@@ -394,7 +399,7 @@
                     <div class="card">
                         <div class="card-header p-3 pt-2">
                             <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-                                <i class="material-icons opacity-10">Sản phẩm đã bán</i>
+                                <i class="material-icons opacity-10" style="padding-left: 5px; padding-right: 5px">Sản phẩm đã bán</i>
                             </div>
                             <div class="text-end pt-1">
                                 <p class="text-sm mb-0 text-capitalize">Số lượng bán</p>
@@ -403,7 +408,7 @@
                         </div>
                         <hr class="dark horizontal my-0">
                         <div class="card-footer p-3">
-                            <span id="SSSL" class=" text-sm font-weight-bolder">${soSanhSoLuong}% </span><p class="mb-0" id="tbslb">so với hôm trước</p>
+                            <span id="SSSL" class=" text-sm font-weight-bolder">${soSanhSoLuong} (áo) </span><p class="mb-0" id="tbslb">so với hôm trước ( ${soLuongBanHomQua} Áo)</p>
                         </div>
                     </div>
                 </div>
@@ -411,7 +416,7 @@
                     <div class="card">
                         <div class="card-header p-3 pt-2">
                             <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                                <i class="material-icons opacity-10">Doanh thu</i>
+                                <i class="material-icons opacity-10" style="padding-left: 5px; padding-right: 5px">Doanh thu</i>
                             </div>
                             <div class="text-end pt-1">
                                 <p class="text-sm mb-0 text-capitalize">Doanh thu </p>
@@ -420,7 +425,7 @@
                         </div>
                         <hr class="dark horizontal my-0">
                         <div class="card-footer p-3">
-                            <span id="SSDT" class="text-sm font-weight-bolder change-color">${soSanhDoanhThu}%</span> <p class="mb-0" id="tbdt">so với hôm qua</p>
+                            <span id="SSDT" class="text-sm font-weight-bolder change-color">${soSanhDoanhThu} (VNĐ)</span> <p class="mb-0" id="tbdt">so với hôm qua ( ${doanhThuHomQua} VNĐ)</p>
                         </div>
                     </div>
                 </div>
@@ -428,7 +433,7 @@
                     <div class="card">
                         <div class="card-header p-3 pt-2">
                             <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
-                                <i class="bi bi-people-fill">Lượt khách</i>
+                                <i class="bi bi-people-fill" style="padding-left: 5px; padding-right: 5px">Lượt khách</i>
                             </div>
                             <div class="text-end pt-1">
                                 <p class="text-sm mb-0 text-capitalize">Số lượng khách đã mua</p>
@@ -437,7 +442,7 @@
                         </div>
                         <hr class="dark horizontal my-0">
                         <div class="card-footer p-3">
-                            <span id="SSSLK" class=" text-sm font-weight-bolder">${soSanhSoLuongKhach}% </span><p class="mb-0" id="tbslk">so với hôm trước</p>
+                            <span id="SSSLK" class=" text-sm font-weight-bolder">${soSanhSoLuongKhach} (khách) </span><p class="mb-0" id="tbslk">so với hôm trước ( ${soLuongKhachHomQua} Khách)</p>
                         </div>
                     </div>
                 </div>
@@ -1041,21 +1046,22 @@
                 document.getElementById("SL").textContent = data.soluongBan+" (cái)";
                 document.getElementById("DT").textContent = data.doanhThu+" (VNĐ)";
                 document.getElementById("SLKM").textContent = data.soLuongKhachMua+" (khách)";
-                document.getElementById("SSHD").textContent = data.soSanhSoHoaDon + "% ";
-                document.getElementById("SSSL").textContent = data.soSanhSoLuongBan+ "% ";
-                document.getElementById("SSDT").textContent = data.soSanhDoanhThu+ "% ";
-                document.getElementById("SSSLK").textContent = data.soSanhSoLuongKhachMua+ "% ";
+
+                document.getElementById("SSHD").textContent = data.soSanhSoHoaDon + " (hóa đơn)";
+                document.getElementById("SSSL").textContent = data.soSanhSoLuongBan+ " (áo)";
+                document.getElementById("SSDT").textContent = data.soSanhDoanhThu+ " (VNĐ) ";
+                document.getElementById("SSSLK").textContent = data.soSanhSoLuongKhachMua+ " (khách) ";
                 if(selectedOption==='thang'){
-                    document.getElementById("tbdt").textContent = "so với tháng trước ";
-                    document.getElementById("tbslhd").textContent = "so với tháng trước ";
-                    document.getElementById("tbslb").textContent = "so với tháng trước ";
-                    document.getElementById("tbslk").textContent = "so với tháng trước ";
+                    document.getElementById("tbslhd").textContent = "so với tháng trước ( "+data.soLuongHoaDonHomQua+" Hóa đơn )";
+                    document.getElementById("tbslb").textContent = "so với tháng trước ( "+data.soluongBanHomQua+" Áo )";
+                    document.getElementById("tbdt").textContent = "so với tháng trước ( "+data.doanhThuHomQua+" VNĐ )";
+                    document.getElementById("tbslk").textContent = "so với tháng trước ( "+data.soLuongKhachMuaHomQua+" Khách )";
                 }
                 else{
-                    document.getElementById("tbdt").textContent = "so với hôm trước ";
-                    document.getElementById("tbslhd").textContent = "so với hôm trước ";
-                    document.getElementById("tbslk").textContent = "so với hôm trước ";
-                    document.getElementById("tbslb").textContent = "so với hôm trước ";
+                    document.getElementById("tbslhd").textContent = "so với hôm trước ( "+data.soLuongHoaDonHomQua+" Hóa đơn )";
+                    document.getElementById("tbslb").textContent = "so với hôm trước ( "+data.soluongBanHomQua+" Áo )";
+                    document.getElementById("tbdt").textContent = "so với hôm trước ( "+data.doanhThuHomQua+" VNĐ )";
+                    document.getElementById("tbslb").textContent = "so với hôm trước ( "+data.soLuongKhachMuaHomQua+" Khách )";
                 }
 
 

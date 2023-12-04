@@ -45,6 +45,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.0/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.0/dist/sweetalert2.min.js"></script>
 
     <style>
         #addFormContainer {
@@ -66,6 +68,7 @@
 
         #addForm {
             background-color: white;
+            height: 85%;
             /* Màu nền của biểu mẫu */
             /*padding: 20px;*/
             border-radius: 5px;
@@ -93,7 +96,7 @@
             top: 0;
             left: 0;
             /*padding-top: 15%;*/
-            padding-left: 18%;
+            padding-left: 12%;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
@@ -136,7 +139,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            padding-left: 18%;
+            padding-left: 3%;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
@@ -152,7 +155,7 @@
             height: 300px;
             background-color: white;
             /* Màu nền của biểu mẫu */
-            padding: 20px;
+            /*padding: 20px;*/
             border-radius: 5px;
             /* Góc bo tròn cho khung biểu mẫu */
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -666,14 +669,26 @@
                                                     </div>
 
                                                     <div class="d-flex justify-content-between mt-2 border-bottom">
-                                                        <h6 class="font-weight-bold">Tiền khách đưa</h6>
-                                                        <input type="number" min="0" step="1"
-                                                               id="amountPaid" oninput="calculateChange()"
-                                                               style="width: 200px; ">
+                                                        <h6 class="font-weight-bold">Hình thức thanh toán</h6>
+                                                        <label>
+                                                            <input type="checkbox" name="hinhThucThanhToan" value="momo" id="momo"> Momo
+                                                        </label>
+                                                        <label>
+                                                            <input type="checkbox" name="hinhThucThanhToan" value="taiQuay" id="taiQuay"> Tiền mặt
+                                                        </label>
                                                     </div>
-                                                    <div class="d-flex justify-content-between mt-2 ">
-                                                        <h6 class="font-weight-bold">Tiền thừa trả khách</h6>
-                                                        <label id="changeLabel">0 VNĐ</label>
+
+                                                    <div id="hienThiTaiQay" style="display: none">
+                                                        <div class="d-flex justify-content-between mt-2 border-bottom">
+                                                            <h6 class="font-weight-bold">Tiền khách đưa</h6>
+                                                            <input type="number" min="0" step="1"
+                                                                   id="amountPaid" oninput="calculateChange()"
+                                                                   style="width: 200px; ">
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-2 ">
+                                                            <h6 class="font-weight-bold">Tiền thừa trả khách</h6>
+                                                            <label id="changeLabel">0 VNĐ</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -683,9 +698,9 @@
                                             <div class="mb-5">
                                                 <div>
                                                     <label>Ghi chú</label>
-                                                    <button class="btn btn-primary " style="width: 150px; height: 30px"
+                                                    <button class="btn btn-primary " style="width: 150px; height: 50px; margin-top: 5px; margin-bottom: 5px"
                                                             formaction="/admin/ban-quay/luuHD/${hoaDon}">
-                                                        Lưu ghi chú
+                                                        <span style="margin-top: 10px">Lưu ghi chú</span>
                                                     </button>
                                                     <textarea name="ghiChu"
                                                               style="width: 100%; height: 150px"></textarea>
@@ -716,7 +731,7 @@
 
         <section class="content">
             <div id="addFormContainer" style="display: ${noneOrBlock};">
-                <div class="container-fluid mt-3" style="width: 1200px; max-height: 700px; ">
+                <div class="container-fluid mt-3" style="width: 1300px; max-height: 700px; ">
                     <div class="row">
                         <div class="col-12">
                             <form id="addForm" method="post" class="mt-3" style="max-height: 700px; overflow-y: auto;">
@@ -811,8 +826,8 @@
             </div>
         </section>
         <div id="addFormContainer1" style="display: ${noneOrBlock};border: 2px">
-            <div class="container-fluid " style="margin-top: 160px; ">
-                <div class="card " style="width: 1000px; height: 450px">
+            <div class="container-fluid " style="margin-top: 80px; ">
+                <div class="card " style="width: 1200px; height: 500px">
                     <div class="row px-xl-5 m-3 ">
                         <div class="col-lg-5 mb-30 border">
                             <div id="product-carousel" class="carousel slide" data-ride="carousel">
@@ -862,10 +877,11 @@
                                 <input type="hidden" id="soLuongTon">
                                 <form method="post">
                                     <input type="hidden" name="idAo" value="${ao.id}" id="idAo">
-                                    <div class="d-flex mb-4 mt-4">
+                                    <div class=" mb-4 mt-4">
                                         <strong class="text-dark mr-3 ml-2">Colors:</strong>
                                         <c:forEach items="${mauSacs}" var="list" varStatus="vTri">
-                                            <div class="custom-control custom-radio custom-control-inline">
+                                            <div class="custom-control custom-radio custom-control-inline"
+                                                 style="margin-left: 10px; padding-top: 8px; padding-left: 5px">
                                                 <input type="radio" id="radio${vTri.index + 1}" name="mauSac"
                                                        value="${list.id}">
                                                 <label class="radio-label" for="radio${vTri.index + 1}"><span
@@ -876,11 +892,11 @@
                                             </div>
                                         </c:forEach>
                                     </div>
-                                    <div class="d-flex mb-3">
+                                    <div class=" mb-3">
                                         <strong class="text-dark mr-3 ml-2">Sizes:</strong>
                                         <c:forEach items="${sizes}" var="list" varStatus="vTri">
                                             <div class="custom-control custom-radio custom-control-inline"
-                                                 style="margin-left: 8px">
+                                                 style="margin-left: 2px; padding-top: 8px; padding-left: 5px">
                                                 <input type="radio" id="size${vTri.index + 1}" name="size"
                                                        value="${list.id}">
                                                 <label class="radio-label" for="size${vTri.index + 1}"><span
@@ -922,87 +938,89 @@
             </div>
         </div>
         <div id="addFormContainer2" style="display: none;border: 2px">
-            <div class="container-fluid" style="margin-top: 100px">
-                <div class="container">
-                    <form method="post">
+            <div class="container-fluid " style="width: 1300px; max-height: 700px; margin-top: 80px">
+                <div class="row">
+                    <div class="col-12">
+                        <form method="post">
 
-                        <div class="card">
+                            <div class="card">
 
-                            <h3 style="text-align: center; padding-top: 4px"> Danh sách khách hàng</h3>
-                            <!-- /.card-header -->
-                            <div class="card-body cuon_table">
-                                <table id="tableKH"  class="table table-bordered table-striped">
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="form-group col-3"></div>
-                                            <div class="form-group col-3"></div>
-                                            <div class="form-group col-3">
+                                <h3 style="text-align: center; padding-top: 4px"> Danh sách khách hàng</h3>
+                                <!-- /.card-header -->
+                                <div class="card-body cuon_table">
+                                    <table id="tableKH"  class="table table-bordered table-striped">
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="form-group col-3"></div>
+                                                <div class="form-group col-3"></div>
+                                                <div class="form-group col-3">
 
-                                            </div>
-                                            <div class="form-group col-3">
-                                                <label>Tìm theo số điện thoại hoặc email</label>
-                                                <input style="width: 240px" id="inputKH">
+                                                </div>
+                                                <div class="form-group col-3">
+                                                    <label>Tìm theo số điện thoại hoặc email</label>
+                                                    <input style="width: 240px" id="inputKH">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <thead>
-                                    <tr>
-                                        <th>Tên</th>
-                                        <th>Ngày Sinh</th>
-                                        <th>Giới Tính</th>
-                                        <th>Xã</th>
-                                        <th>Huyện</th>
-                                        <th>Tỉnh</th>
-                                        <th>SDT</th>
-                                        <th>Email</th>
-                                        <th>Trạng thái</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach items="${listKhachHang}" var="list">
+                                        <thead>
                                         <tr>
-
-                                            <td>${list.ten}</td>
-                                            <td> ${list.ngay_sinh}</td>
-                                                <%--                                            <td> ${list.ngay_sinh.format(DateTimeFormatter.ofPattern('dd/MM/yyyy HH:mm:ss'))}</td>--%>
-                                            <td>${list.gioiTinh==0?"Nam":"Nữ"}</td>
-                                            <td>${list.dia_chi}</td>
-                                            <td>${list.thanh_pho}</td>
-                                            <td>${list.quoc_gia}</td>
-                                            <td>${list.sdt}</td>
-                                            <td>${list.email}</td>
-                                            <td>${list.trangThai==1?'Hoạt Động':'Ngừng Hoạt Động'}</td>
-                                            <td>
-                                                <input type="hidden" value="${idHoaDon}" name="idHoaDon">
-                                                <button class="btn btn-primary px-3"
-
-                                                        formaction="/admin/ban-quay/update-khach-hang/${list.id}">
-                                                    Chọn
-                                                </button>
-                                            </td>
+                                            <th>Tên</th>
+                                            <th>Ngày Sinh</th>
+                                            <th>Giới Tính</th>
+                                            <th>Xã</th>
+                                            <th>Huyện</th>
+                                            <th>Tỉnh</th>
+                                            <th>SDT</th>
+                                            <th>Email</th>
+                                            <th>Trạng thái</th>
+                                            <th>Action</th>
                                         </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Tên</th>
-                                        <th>Ngày Sinh</th>
-                                        <th>Giới Tính</th>
-                                        <th>Xã</th>
-                                        <th>Huyện</th>
-                                        <th>Tỉnh</th>
-                                        <th>SDT</th>
-                                        <th>Email</th>
-                                        <th>Trạng thái</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </tfoot>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach items="${listKhachHang}" var="list">
+                                            <tr>
+
+                                                <td>${list.ten}</td>
+                                                <td> ${list.ngay_sinh}</td>
+                                                    <%--                                            <td> ${list.ngay_sinh.format(DateTimeFormatter.ofPattern('dd/MM/yyyy HH:mm:ss'))}</td>--%>
+                                                <td>${list.gioiTinh==0?"Nam":"Nữ"}</td>
+                                                <td>${list.dia_chi}</td>
+                                                <td>${list.thanh_pho}</td>
+                                                <td>${list.quoc_gia}</td>
+                                                <td>${list.sdt}</td>
+                                                <td>${list.email}</td>
+                                                <td>${list.trangThai==1?'Hoạt Động':'Ngừng Hoạt Động'}</td>
+                                                <td>
+                                                    <input type="hidden" value="${idHoaDon}" name="idHoaDon">
+                                                    <button class="btn btn-primary px-3"
+
+                                                            formaction="/admin/ban-quay/update-khach-hang/${list.id}">
+                                                        Chọn
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th>Tên</th>
+                                            <th>Ngày Sinh</th>
+                                            <th>Giới Tính</th>
+                                            <th>Xã</th>
+                                            <th>Huyện</th>
+                                            <th>Tỉnh</th>
+                                            <th>SDT</th>
+                                            <th>Email</th>
+                                            <th>Trạng thái</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
                             </div>
-                            <!-- /.card-body -->
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1184,11 +1202,55 @@
 </script>
 
 <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var momoCheckbox = document.getElementById('momo');
+        var taiQuayCheckbox = document.getElementById('taiQuay');
+        var hienThiTaiQay = document.getElementById('hienThiTaiQay');
+
+        function handleCheckboxClick(checkbox) {
+            if (checkbox === momoCheckbox) {
+                taiQuayCheckbox.checked = false;
+                hienThiTaiQay.style.display = 'none';
+            } else if (checkbox === taiQuayCheckbox) {
+                momoCheckbox.checked = false;
+                hienThiTaiQay.style.display = 'block';
+            }
+
+            if (!momoCheckbox.checked && !taiQuayCheckbox.checked) {
+                hienThiTaiQay.style.display = 'none';
+            }
+        }
+
+        momoCheckbox.addEventListener('click', function () {
+            handleCheckboxClick(momoCheckbox);
+        });
+        taiQuayCheckbox.addEventListener('click', function () {
+            handleCheckboxClick(taiQuayCheckbox);
+        });
+    });
+
     function kiemTra() {
 
         var slHDCHT = ${slHDCTByHoaDon};
 
         var hasError = false;
+
+        var momoCheckbox = document.getElementById('momo');
+        var taiQuayCheckbox = document.getElementById('taiQuay');
+
+        if (!momoCheckbox.checked && !taiQuayCheckbox.checked){
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Chưa chọn phương thức thanh toán</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
+                allowOutsideClick: true,
+            });
+            setTimeout(() => {
+                Swal.close();
+            }, 1000);
+            hasError = true;
+            event.preventDefault();
+        }
 
         if (slHDCHT == 0) {
             Swal.fire({
@@ -1304,6 +1366,22 @@
         var slStr = document.getElementById("sl" + vTri).value;
 
         var sl = parseFloat(slStr);
+
+        var inputElement = document.getElementById("sl" + vTri);
+        var enteredValue = inputElement.value;
+
+        if (/[^\d.-]/.test(enteredValue)) {
+            // If it contains non-numeric characters or a minus sign, remove them and update the value
+            enteredValue = enteredValue.replace(/[^\d.-]/g, "");
+            inputElement.value = enteredValue;
+        }
+
+        // Check if the entered value is less than 0
+        if (parseFloat(enteredValue) < 0) {
+            // If it's negative, set the value to an empty string
+            inputElement.value = '';
+            return;
+        }
 
         if (isNaN(sl)) {
             sl = 0; // Set it to 0 if it's NaN
@@ -1706,6 +1784,76 @@
         setTimeout(() => {
             Swal.close();
         }, 1000);
+    }
+</script>
+<script>
+    var themHoaDonThanhCong = "${themHoaDonThanhCong}";
+    if (themHoaDonThanhCong == "2") {
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 2000, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Tạo hóa đơn thành công!',
+            icon: 'success',
+        });
+    }
+
+    var themGioHangThanhCong = "${themGioHangThanhCong}";
+    if (themGioHangThanhCong == "2") {
+
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 2000, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Thêm vào giỏ hàng thành công!',
+            icon: 'success',
+        });
+    }
+
+    var deleteSanPhamThanhCong = "${deleteSanPhamThanhCong}";
+    if (deleteSanPhamThanhCong == "2") {
+
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 2000, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Xóa sản phẩm thành công!',
+            icon: 'success',
+        });
+    }
+
+    var themKhachHangThanhCong = "${themKhachHangThanhCong}";
+    if (themKhachHangThanhCong == "2") {
+
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 2000, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Thêm khách hàng thành công!',
+            icon: 'success',
+        });
+    }
+
+    var deleteKhachHangThanhCong = "${deleteKhachHangThanhCong}";
+    if (deleteKhachHangThanhCong == "2") {
+
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 2000, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Xóa khách hàng thành công!',
+            icon: 'success',
+        });
     }
 </script>
 </body>

@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.0/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.0/dist/sweetalert2.min.js"></script>
     <style>
         #addFormContainer {
             display: none;
@@ -91,6 +93,11 @@
             <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" role="button" href="/admin/logout">
+                    <i class="fas fa-sign-out-alt" style="width: 20px"></i> Đăng xuất
                 </a>
             </li>
         </ul>
@@ -550,7 +557,7 @@
                                 <div class="col-sm-10">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="trangthai" id="gridRadios1"
-                                               value="1" ${item.trangThai == 1 ? 'checked' : ''}>
+                                               value="1" ${item.trangThai == 1 ? 'checked' : ''} checked>
                                         <label class="form-check-label" for="gridRadios1">
                                             Hoạt Động
                                         </label>

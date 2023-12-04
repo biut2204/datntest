@@ -31,6 +31,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.0/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.0/dist/sweetalert2.min.js"></script>
     <style>
         /* CSS cho hiệu ứng chạy thời gian 2s */
         .swal2-popup {
@@ -55,6 +57,7 @@
                 width: 0%;
             }
         }
+
         .navbar-light .navbar-nav .nav-link:hover {
             background: #fff3c6;
             color: red; /* Change this to the desired hover color */
@@ -125,16 +128,25 @@
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                         <c:choose>
                             <c:when test="${idKh != 2}">
-                                <a href="/user/don_hang/${idKh}" class="btn px-0">
-                                    <i class="fa fa-user"></i>
-                                    <span class="badge text-secondary border border-secondary rounded-circle"
-                                          style="padding-bottom: 2px;">${khachHangNow.ten}</span>
-                                </a>
-                                <a href="/user/gio_hang/view/${idKh}" class="btn px-0 ml-3">
-                                    <i class="fas fa-shopping-cart text-primary"></i>
-                                    <span class="badge text-secondary border border-secondary rounded-circle"
-                                          style="padding-bottom: 2px;">${soLuongSanPham}</span>
-                                </a>
+                                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                                    <div class="navbar-nav mr-auto py-0">
+                                        <div class="nav-item dropdown">
+                                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i
+                                                    class="fa fa-user" style="color: #ffd019"></i>
+                                                <span class="badge text-secondary border border-secondary rounded-circle"
+                                                      style="padding-bottom: 2px;">${khachHangNow.ten}</span></a>
+                                            <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
+                                                <a href="/user/thong_tin/${idKh}" class="dropdown-item">Thông tin</a>
+                                                <a href="/user/don_hang/${idKh}" class="dropdown-item">Đơn hàng</a>
+                                                <a href="/logout" class="dropdown-item">Đăng xuất</a>
+                                            </div>
+                                        </div>
+                                        <a href="/user/gio_hang/view/${idKh}" class="nav-item nav-link"><i
+                                                class="fas fa-shopping-cart text-primary"></i>
+                                            <span class="badge text-secondary border border-secondary rounded-circle"
+                                                  style="padding-bottom: 2px;">${soLuongSanPham}</span></a>
+                                    </div>
+                                </div>
                             </c:when>
                             <c:when test="${idKh == 2}">
                                 <a href="/login" class="btn px-0 ml-3">
@@ -190,9 +202,10 @@
                         <tr>
                             <td class="align-middle"><input type="checkbox" name="chon" value="${vTri.index}">
                             <td class="align-middle">${vTri.index + 1}
-                            <td class="align-middle"><a href="/user/san_pham_detail/${idKh}/${list.aoChiTiet.ao.id}"> <img
-                                src="/images/${list.aoChiTiet.ao.anhs.get(0).ten_url}" alt=""
-                                style="width: 50px;"></a>
+                            <td class="align-middle"><a href="/user/san_pham_detail/${idKh}/${list.aoChiTiet.ao.id}">
+                                <img
+                                        src="/images/${list.aoChiTiet.ao.anhs.get(0).ten_url}" alt=""
+                                        style="width: 50px;"></a>
                             </td>
 
                             <input type="hidden" name="idAoChiTiet" value="${list.aoChiTiet.id}">
@@ -223,14 +236,16 @@
                                         <input type="hidden" name="donGia" readonly id="donGia1${vTri.index + 1}"
                                                value="${ list.gia * list.gioHangChiTiet.soLuong}"
                                                style="border: none; background: none; text-align: center;">
-                                        <input type="text" id="abc${vTri.index + 1}" style="border: none; background: none; text-align: center;">
+                                        <input type="text" id="abc${vTri.index + 1}"
+                                               style="border: none; background: none; text-align: center;">
                                         <input type="hidden" id="vTri" value="${vTri.index + 1}">
                                     </c:when>
                                     <c:when test="${checkGH == 1}">
                                         <input type="hidden" name="donGia" readonly id="donGia1${vTri.index + 1}"
                                                value="${ list.gia * list.hoaDonChiTiet.soLuong}"
                                                style="border: none; background: none; text-align: center;">
-                                        <input type="text" id="abc${vTri.index + 1}" style="border: none; background: none; text-align: center;">
+                                        <input type="text" id="abc${vTri.index + 1}"
+                                               style="border: none; background: none; text-align: center;">
                                         <input type="hidden" id="vTri" value="${vTri.index + 1}">
                                     </c:when>
                                 </c:choose>
@@ -238,10 +253,14 @@
                             <td class="align-middle">
                                 <c:choose>
                                     <c:when test="${checkGH == 0}">
-                                        <a href="/user/gio_hang/delete/${idKh}/${list.gioHangChiTiet.id}" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
+                                        <button class="btn btn-sm btn-danger"
+                                                onclick="xoaGioHang('${list.gioHangChiTiet.id}')"><i
+                                                class="fa fa-times"></i></button>
                                     </c:when>
                                     <c:when test="${checkGH == 1}">
-                                        <a href="/user/hoa_don_chinh_sua/delete/${list.hoaDonChiTiet.id}" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
+                                        <button class="btn btn-sm btn-danger"
+                                                onclick="xoaHoaDonChinhSua('${list.hoaDonChiTiet.id}')"><i
+                                                class="fa fa-times"></i></button>
                                     </c:when>
                                 </c:choose>
                             </td>
@@ -273,7 +292,8 @@
                             </c:when>
                             <c:when test="${checkGH == 1}">
                                 <button class="btn btn-block btn-primary font-weight-bold my-3 py-3"
-                                        formaction="/user/hoa_don_chinh_sua/update/${maHoaDon}" onclick="kiemTra()">Cập nhật
+                                        formaction="/user/hoa_don_chinh_sua/update/${maHoaDon}" onclick="kiemTra()">Cập
+                                    nhật
                                 </button>
                             </c:when>
                         </c:choose>
@@ -365,7 +385,13 @@
 
         var slStr = document.getElementById("sl" + vTri).value;
 
-        var sl = parseFloat(slStr);
+        var sl;
+
+        if (slStr.trim() === '') {
+            sl = 0;
+        } else {
+            sl = parseFloat(slStr);
+        }
 
         var giaStr = document.getElementById("gia" + vTri).textContent;
 
@@ -398,7 +424,7 @@
                 console.log(sl);
                 console.log(slTon);
 
-                if(sl <= 0){
+                if (sl <= 0) {
                     Swal.fire({
                         icon: 'warning',
                         html: '<div class="swal-text">Số lượng chọn nhỏ hơn 0 là không hợp lệ</div><div class="progress-bar-container"></div>', // Ẩn nút "Oke"
@@ -489,7 +515,64 @@
         soLuongInputs[i].setAttribute("data-index", i + 1); // Lưu trữ index để có thể tìm các phần tử liên quan
     }
 </script>
-
+<script>
+    function xoaGioHang(gioHangChiTietId) {
+        Swal.fire({
+            icon: 'warning',
+            text: 'Bạn có chắc chắn muốn xóa sản phẩm khỏi giỏ hàng?',
+            showCancelButton: true,
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy bỏ'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng đồng ý đăng xuất, chuyển họ đến trang đăng xuất
+                window.location.href = "/user/gio_hang/delete/${idKh}/"+gioHangChiTietId;
+            }
+        });
+        event.preventDefault();
+    }
+    function xoaHoaDonChinhSua(hoaDonChinhSuaId) {
+        Swal.fire({
+            icon: 'warning',
+            text: 'Bạn có chắc chắn muốn xóa sản phẩm khỏi hóa đơn chờ thanh toán?',
+            showCancelButton: true,
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy bỏ'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Nếu người dùng đồng ý đăng xuất, chuyển họ đến trang đăng xuất
+                window.location.href = "/user/hoa_don_chinh_sua/delete/"+hoaDonChinhSuaId;
+            }
+        });
+        event.preventDefault();
+    }
+</script>
+<script>
+    var themThanhCong = "${themThanhCong}";
+    var xoaThanhCong = "${xoaThanhCong}";
+    if (themThanhCong == "2") {
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 2000, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Thêm thành công!',
+            icon: 'success',
+        });
+    }
+    if (xoaThanhCong == "2") {
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 2000, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Xóa thành công!',
+            icon: 'success',
+        });
+    }
+</script>
 </body>
 
 </html>

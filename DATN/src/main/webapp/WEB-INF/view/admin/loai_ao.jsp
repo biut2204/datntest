@@ -21,6 +21,8 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="../../../resources/css/add_form.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.0/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.0/dist/sweetalert2.min.js"></script>
     <style>
         .image {
             width: 80px;
@@ -57,6 +59,11 @@
             <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" role="button" href="/admin/logout">
+                    <i class="fas fa-sign-out-alt" style="width: 20px"></i> Đăng xuất
                 </a>
             </li>
         </ul>
@@ -625,6 +632,34 @@
         if (hasError) {
             event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
         }
+    }
+</script>
+<script>
+    var themThanhCong = "${themThanhCong}";
+    if (themThanhCong == "2") {
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 2000, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Thêm thành công!',
+            icon: 'success',
+        });
+    }
+
+    var capNhatThanhCong = "${capNhatThanhCong}";
+    if (capNhatThanhCong == "2") {
+
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 2000, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Cập nhật thành công!',
+            icon: 'success',
+        });
     }
 </script>
 </body>

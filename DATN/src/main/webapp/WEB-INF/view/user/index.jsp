@@ -343,16 +343,23 @@
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                         <c:choose>
                             <c:when test="${idKh != 2}">
-                                <a href="/user/don_hang/${idKh}" class="btn px-0">
-                                    <i class="fa fa-user"></i>
-                                    <span class="badge text-secondary border border-secondary rounded-circle"
-                                          style="padding-bottom: 2px;">${khachHangNow.ten}</span>
-                                </a>
-                                <a href="/user/gio_hang/view/${idKh}" class="btn px-0 ml-3">
-                                    <i class="fas fa-shopping-cart text-primary"></i>
-                                    <span class="badge text-secondary border border-secondary rounded-circle"
-                                          style="padding-bottom: 2px;">${soLuongSanPham}</span>
-                                </a>
+                                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                                    <div class="navbar-nav mr-auto py-0">
+                                        <div class="nav-item dropdown">
+                                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" style="color: #ffd019"></i>
+                                                <span class="badge text-secondary border border-secondary rounded-circle"
+                                                      style="padding-bottom: 2px;">${khachHangNow.ten}</span></a>
+                                            <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
+                                                <a href="/user/thong_tin/${idKh}" class="dropdown-item">Thông tin</a>
+                                                <a href="/user/don_hang/${idKh}" class="dropdown-item">Đơn hàng</a>
+                                                <a href="/logout" class="dropdown-item">Đăng xuất</a>
+                                            </div>
+                                        </div>
+                                        <a href="/user/gio_hang/view/${idKh}" class="nav-item nav-link"><i class="fas fa-shopping-cart text-primary"></i>
+                                            <span class="badge text-secondary border border-secondary rounded-circle"
+                                                  style="padding-bottom: 2px;">${soLuongSanPham}</span></a>
+                                    </div>
+                                </div>
                             </c:when>
                             <c:when test="${idKh == 2}">
                                 <a href="/login" class="btn px-0 ml-3">
@@ -425,7 +432,7 @@
         </div>
         <div class="col-lg-4">
             <div class="product-offer mb-30" style="height: 200px;">
-                <img class="img-fluid" src="/images/test1.jpg" alt="">
+                <img class="img-fluid" src="/images/giamgia0.jpg" alt="">
                 <div class="offer-text">
                     <h6 class="text-white text-uppercase">Sản phẩm bán chạy</h6>
                     <h3 class="text-white mb-3">Hot</h3>
@@ -433,7 +440,7 @@
                 </div>
             </div>
             <div class="product-offer mb-30" style="height: 200px;">
-                <img class="img-fluid" src="/images/test1.jpg" alt="">
+                <img class="img-fluid" src="/images/giamgia1.png" alt="">
                 <div class="offer-text">
                     <h6 class="text-white text-uppercase">Sản phẩm mới</h6>
                     <h3 class="text-white mb-3">New</h3>
@@ -703,10 +710,10 @@
                             <div id="soLuongTonStr"></div>
                             <input type="hidden" id="soLuongTon">
                             <input type="hidden" name="idAo" value="${ao.id}" id="idAo">
-                            <div class="d-flex mb-4">
+                            <div class="mb-4">
                                 <strong class="text-dark mr-3">Colors:</strong>
                                 <c:forEach items="${mauSacs}" var="list" varStatus="vTri">
-                                    <div class="custom-control custom-radio custom-control-inline">
+                                    <div class="custom-control custom-radio custom-control-inline" style="margin-left: 10px; padding-top: 8px; padding-left: 5px">
                                         <input type="radio" id="radio${vTri.index + 1}" name="mauSac"
                                                value="${list.id}">
                                         <label class="radio-label" for="radio${vTri.index + 1}"><span
@@ -717,11 +724,11 @@
                                     </div>
                                 </c:forEach>
                             </div>
-                            <div class="d-flex mb-3">
+                            <div class="mb-3">
                                 <strong class="text-dark mr-3">Sizes:</strong>
                                 <c:forEach items="${sizes}" var="list" varStatus="vTri">
                                     <div class="custom-control custom-radio custom-control-inline"
-                                         style="margin-left: 8px">
+                                         style="margin-left: 10px; padding-top: 8px; padding-left: 5px">
                                         <input type="radio" id="size${vTri.index + 1}" name="size" value="${list.id}">
                                         <label class="radio-label" for="size${vTri.index + 1}"><span
                                                 style="padding-left: 10px;padding-top: 5px">${list.ten}</span></label>

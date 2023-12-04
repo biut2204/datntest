@@ -7,6 +7,7 @@ import com.example.demo.repo.sanpham.SizeRepo;
 import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.SizeSer;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,7 @@ public class SizeController {
     ChatSer chatSer;
 
     @GetMapping("/admin/size/view/*")
-    public String view(Model model, HttpServletRequest request) {
+    public String view(Model model, HttpServletRequest request, HttpSession session) {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
@@ -53,12 +54,26 @@ public class SizeController {
         } catch (Exception e) {
 
         }
+
+        String addThanhCong = (String) session.getAttribute("addThanhCong");
+        String updateThanhCong = (String) session.getAttribute("updateThanhCong");
+
+        if (addThanhCong != null){
+            model.addAttribute("themThanhCong","2");
+        }
+
+        if (updateThanhCong != null){
+            model.addAttribute("capNhatThanhCong","2");
+        }
+
+        session.removeAttribute("addThanhCong");
+        session.removeAttribute("updateThanhCong");
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/size";
     }
 
     @PostMapping("/admin/size/add")
-    public String add(Model model, HttpServletRequest request) {
+    public String add(Model model, HttpServletRequest request, HttpSession session) {
 
         int slS = sizeRepo.soS() + 1;
         String ten = request.getParameter("ten");
@@ -71,11 +86,12 @@ public class SizeController {
         size.setTrangthai(Integer.parseInt(trangthai));
 
         sizeSer.add(size);
+        session.setAttribute("addThanhCong","2");
         return "redirect:/admin/size/view/1";
     }
 
     @PostMapping("/admin/size/update")
-    public String update(Model model, HttpServletRequest request) {
+    public String update(Model model, HttpServletRequest request, HttpSession session) {
 
         String id = request.getParameter("id");
         String ten = request.getParameter("ten");
@@ -89,11 +105,12 @@ public class SizeController {
         size.setTrangthai(Integer.parseInt(trangthai));
 
         sizeSer.update(UUID.fromString(id), size);
+        session.setAttribute("updateThanhCong","2");
         return "redirect:/admin/size/view/1";
     }
 
     @PostMapping("/admin/size/detail")
-    public String detail(Model model, HttpServletRequest request) {
+    public String detail(Model model, HttpServletRequest request, HttpSession session) {
 
         String id = request.getParameter("detail");
         Size size = sizeSer.findById(UUID.fromString(id));

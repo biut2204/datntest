@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -165,7 +166,7 @@ public class ApiController {
         LocalDate ngayHienTai = LocalDate.now();
         LocalDate ngayHomTruoc = ngayHienTai.minus(1, ChronoUnit.DAYS);
         LocalDate lastMonth = ngayHienTai.minusMonths(1);
-
+        NumberFormat numberFormat = new DecimalFormat("#,###");
         if ("ngay".equals(thongKeOption)) {
             Integer soDonNgayHienTai = hoaDonSer.soLuongHoaDonHoanThanhTheoNgay(ngayHienTai);
             Integer soDonNgayHomTruoc = hoaDonSer.soLuongHoaDonHoanThanhTheoNgay(ngayHomTruoc);
@@ -208,65 +209,54 @@ public class ApiController {
             if (soLuongKhachMuaNgayTruocStr == null) {
                 soLuongKhachMuaNgayTruocStr = 0;
             }
-            DecimalFormat df = new DecimalFormat("0.00");
-            double soSanhHoaDon;
-            if(soDonNgayHomTruoc==0){
-                soSanhHoaDon=100;
-            }
-            else{
-                soSanhHoaDon= ((double)(soDonNgayHienTai - soDonNgayHomTruoc) / soDonNgayHomTruoc) * 100;
-            }
-            String formatSoSanhHoaDon = df.format(soSanhHoaDon);
+
+            int soSanhHoaDon;
+            soSanhHoaDon = soDonNgayHienTai-soDonNgayHomTruoc;
+            String formatSoSanhHoaDon = String.valueOf(soSanhHoaDon);
             if(soSanhHoaDon>=0){
                 formatSoSanhHoaDon = "+"+formatSoSanhHoaDon;
             }
 
-            double soSanhSoLuongBan;
+            int soSanhSoLuongBan;
 
-            if (soLuongBanNgayTruoc == 0) {
-                soSanhSoLuongBan = soLuongBanNgayHienTai;
-            } else {
-                soSanhSoLuongBan = ((double)(soLuongBanNgayHienTai - soLuongBanNgayTruoc) / soLuongBanNgayTruoc) * 100;
-            }
+            soSanhSoLuongBan=soLuongBanNgayHienTai-soLuongBanNgayTruoc;
 
-            String formatSoSanhSoLuong = df.format(soSanhSoLuongBan);
+            String formatSoSanhSoLuong = String.valueOf(soSanhSoLuongBan);
             if(soSanhSoLuongBan>=0){
                 formatSoSanhSoLuong = "+"+formatSoSanhSoLuong;
             }
-
+            System.out.println(formatSoSanhSoLuong);
             double soSanhDoanhThu ;
 
-            if (doanhThuNgayTruocStr == 0.0){
-                soSanhDoanhThu = doanhThuNgayHienTai;
-            }else {
-                soSanhDoanhThu = ((doanhThuNgayHienTai - doanhThuNgayTruocStr) / doanhThuNgayTruocStr) * 100;
-            }
-            String formatSoSanhDoanhThu = df.format(soSanhDoanhThu);
+            soSanhDoanhThu=doanhThuNgayHienTai-doanhThuNgayTruocStr;
+            String formatSoSanhDoanhThu = numberFormat.format(soSanhDoanhThu);
             if(soSanhDoanhThu>=0){
                 formatSoSanhDoanhThu = "+"+formatSoSanhDoanhThu;
             }
 
-            double soSanhSoLuongKhach;
+            int soSanhSoLuongKhach;
 
-            if (soLuongKhachMuaNgayTruocStr == 0){
-                soSanhSoLuongKhach = soLuongKhachMuaNgayHienTai;
-            }else {
-                soSanhSoLuongKhach = ((double)(soLuongKhachMuaNgayHienTai - soLuongKhachMuaNgayTruocStr) / soLuongKhachMuaNgayTruocStr) * 100;
-            }
+            soSanhSoLuongKhach=soLuongKhachMuaNgayHienTai-soLuongKhachMuaNgayTruocStr;
 
-            String formatSoSanhSoLuongKhach = df.format(soSanhSoLuongKhach);
+            String formatSoSanhSoLuongKhach = String.valueOf(soSanhSoLuongKhach);
             if(soSanhSoLuongKhach>=0){
                 formatSoSanhSoLuongKhach = "+"+formatSoSanhSoLuongKhach;
             }
 
-            thongKeDoanhThuDTO.setSoLuongHoaDon(soDonNgayHienTai);
-            thongKeDoanhThuDTO.setSoluongBan(soLuongBanNgayHienTai);
-            thongKeDoanhThuDTO.setDoanhThu(doanhThuNgayHienTai);
-            thongKeDoanhThuDTO.setSoLuongKhachMua(soLuongKhachMuaNgayHienTai);
+            thongKeDoanhThuDTO.setSoLuongHoaDon(String.valueOf(soDonNgayHienTai));
+            thongKeDoanhThuDTO.setSoluongBan(String.valueOf(soLuongBanNgayHienTai));
+            thongKeDoanhThuDTO.setDoanhThu(numberFormat.format(doanhThuNgayHienTai));
+            thongKeDoanhThuDTO.setSoLuongKhachMua(String.valueOf(soLuongKhachMuaNgayHienTai));
+
             thongKeDoanhThuDTO.setSoSanhSoHoaDon(formatSoSanhHoaDon);
             thongKeDoanhThuDTO.setSoSanhSoLuongBan(formatSoSanhSoLuong);
             thongKeDoanhThuDTO.setSoSanhDoanhThu(formatSoSanhDoanhThu);
             thongKeDoanhThuDTO.setSoSanhSoLuongKhachMua(formatSoSanhSoLuongKhach);
+
+            thongKeDoanhThuDTO.setSoLuongHoaDonHomQua(String.valueOf(soDonNgayHomTruoc));
+            thongKeDoanhThuDTO.setSoluongBanHomQua(String.valueOf(soLuongBanNgayTruoc));
+            thongKeDoanhThuDTO.setDoanhThuHomQua(numberFormat.format(doanhThuNgayTruocStr));
+            thongKeDoanhThuDTO.setSoLuongKhachMuaHomQua(String.valueOf(soLuongKhachMuaNgayTruocStr));
         } else if ("thang".equals(thongKeOption)) {
             Integer soDonNgayHienTai = hoaDonSer.soHoaDonTrongThang(ngayHienTai);
             Integer soDonNgayHomTruoc = hoaDonSer.soHoaDonTrongThang(lastMonth);
@@ -309,70 +299,54 @@ public class ApiController {
             if (soLuongKhachMuaNgayTruocStr == null) {
                 soLuongKhachMuaNgayTruocStr = 0;
             }
-            DecimalFormat df = new DecimalFormat("0.00");
-            double soSanhHoaDon;
-            if(soDonNgayHomTruoc==0){
-                soSanhHoaDon=100;
-            }
-            else{
-                soSanhHoaDon= ((double)(soDonNgayHienTai - soDonNgayHomTruoc) / soDonNgayHomTruoc) * 100;
-            }
-            String formatSoSanhHoaDon = df.format(soSanhHoaDon);
+
+            int soSanhHoaDon;
+            soSanhHoaDon = soDonNgayHienTai-soDonNgayHomTruoc;
+            String formatSoSanhHoaDon = String.valueOf(soSanhHoaDon);
             if(soSanhHoaDon>=0){
                 formatSoSanhHoaDon = "+"+formatSoSanhHoaDon;
             }
 
-            double soSanhSoLuongBan;
+            int soSanhSoLuongBan;
 
-            if (soLuongBanNgayTruoc == 0) {
-                soSanhSoLuongBan = soLuongBanNgayHienTai;
-            } else {
+            soSanhSoLuongBan=soLuongBanNgayHienTai-soLuongBanNgayTruoc;
 
-                soSanhSoLuongBan = ((double)(soLuongBanNgayHienTai -  soLuongBanNgayTruoc) / soLuongBanNgayTruoc) * 100;
-            }
-
-            String formatSoSanhSoLuong = df.format(soSanhSoLuongBan);
+            String formatSoSanhSoLuong = String.valueOf(soSanhSoLuongBan);
             if(soSanhSoLuongBan>=0){
                 formatSoSanhSoLuong = "+"+formatSoSanhSoLuong;
             }
-
+            System.out.println(formatSoSanhSoLuong);
             double soSanhDoanhThu ;
 
-            if (doanhThuNgayTruocStr == 0.0){
-                soSanhDoanhThu = doanhThuNgayHienTai;
-            }else {
-                soSanhDoanhThu = ((doanhThuNgayHienTai - doanhThuNgayTruocStr) / doanhThuNgayTruocStr) * 100;
-            }
-            String formatSoSanhDoanhThu = df.format(soSanhDoanhThu);
+            soSanhDoanhThu=doanhThuNgayHienTai-doanhThuNgayTruocStr;
+            String formatSoSanhDoanhThu = numberFormat.format(soSanhDoanhThu);
             if(soSanhDoanhThu>=0){
                 formatSoSanhDoanhThu = "+"+formatSoSanhDoanhThu;
-                model.addAttribute("mauDT", "success");
-            }
-            else{
-                model.addAttribute("mauDT", "danger");
             }
 
-            double soSanhSoLuongKhach;
+            int soSanhSoLuongKhach;
 
-            if (soLuongKhachMuaNgayTruocStr == 0){
-                soSanhSoLuongKhach = soLuongKhachMuaNgayHienTai;
-            }else {
-                soSanhSoLuongKhach = ((double)(soLuongKhachMuaNgayHienTai - soLuongKhachMuaNgayTruocStr) / soLuongKhachMuaNgayTruocStr) * 100;
-            }
+            soSanhSoLuongKhach=soLuongKhachMuaNgayHienTai-soLuongKhachMuaNgayTruocStr;
 
-            String formatSoSanhSoLuongKhach = df.format(soSanhSoLuongKhach);
+            String formatSoSanhSoLuongKhach = String.valueOf(soSanhSoLuongKhach);
             if(soSanhSoLuongKhach>=0){
                 formatSoSanhSoLuongKhach = "+"+formatSoSanhSoLuongKhach;
             }
 
-            thongKeDoanhThuDTO.setSoLuongHoaDon(soDonNgayHienTai);
-            thongKeDoanhThuDTO.setSoluongBan(soLuongBanNgayHienTai);
-            thongKeDoanhThuDTO.setDoanhThu(doanhThuNgayHienTai);
-            thongKeDoanhThuDTO.setSoLuongKhachMua(soLuongKhachMuaNgayHienTai);
+            thongKeDoanhThuDTO.setSoLuongHoaDon(String.valueOf(soDonNgayHienTai));
+            thongKeDoanhThuDTO.setSoluongBan(String.valueOf(soLuongBanNgayHienTai));
+            thongKeDoanhThuDTO.setDoanhThu(numberFormat.format(doanhThuNgayHienTai));
+            thongKeDoanhThuDTO.setSoLuongKhachMua(String.valueOf(soLuongKhachMuaNgayHienTai));
+
             thongKeDoanhThuDTO.setSoSanhSoHoaDon(formatSoSanhHoaDon);
             thongKeDoanhThuDTO.setSoSanhSoLuongBan(formatSoSanhSoLuong);
             thongKeDoanhThuDTO.setSoSanhDoanhThu(formatSoSanhDoanhThu);
             thongKeDoanhThuDTO.setSoSanhSoLuongKhachMua(formatSoSanhSoLuongKhach);
+
+            thongKeDoanhThuDTO.setSoLuongHoaDonHomQua(String.valueOf(soDonNgayHomTruoc));
+            thongKeDoanhThuDTO.setSoluongBanHomQua(String.valueOf(soLuongBanNgayTruoc));
+            thongKeDoanhThuDTO.setDoanhThuHomQua(numberFormat.format(doanhThuNgayTruocStr));
+            thongKeDoanhThuDTO.setSoLuongKhachMuaHomQua(String.valueOf(soLuongKhachMuaNgayTruocStr));
             System.out.println(soLuongBanNgayHienTai+" aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+ soLuongBanNgayTruoc+ formatSoSanhSoLuong);
         }
         return thongKeDoanhThuDTO;

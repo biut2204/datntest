@@ -1,30 +1,34 @@
 package com.example.demo.entity.dto;
 
 public class ThongKeDoanhThuDTO {
-    private Integer soLuongHoaDon;
+    private String soLuongHoaDon;
 
     private String soSanhSoHoaDon;
-
-    private Integer soluongBan;
+    private String soLuongHoaDonHomQua;
+    private String soluongBan;
 
     private String soSanhSoLuongBan;
-
-    private Double doanhThu;
+    private String soluongBanHomQua;
+    private String doanhThu;
 
     private String soSanhDoanhThu;
-
-    private Integer soLuongKhachMua;
+    private String doanhThuHomQua;
+    private String soLuongKhachMua;
 
     private String soSanhSoLuongKhachMua;
+
+    private String soLuongKhachMuaHomQua;
+
+
 
     public ThongKeDoanhThuDTO() {
     }
 
-    public Integer getSoLuongHoaDon() {
+    public String getSoLuongHoaDon() {
         return soLuongHoaDon;
     }
 
-    public void setSoLuongHoaDon(Integer soLuongHoaDon) {
+    public void setSoLuongHoaDon(String soLuongHoaDon) {
         this.soLuongHoaDon = soLuongHoaDon;
     }
 
@@ -36,11 +40,19 @@ public class ThongKeDoanhThuDTO {
         this.soSanhSoHoaDon = soSanhSoHoaDon;
     }
 
-    public Integer getSoluongBan() {
+    public String getSoLuongHoaDonHomQua() {
+        return soLuongHoaDonHomQua;
+    }
+
+    public void setSoLuongHoaDonHomQua(String soLuongHoaDonHomQua) {
+        this.soLuongHoaDonHomQua = soLuongHoaDonHomQua;
+    }
+
+    public String getSoluongBan() {
         return soluongBan;
     }
 
-    public void setSoluongBan(Integer soluongBan) {
+    public void setSoluongBan(String soluongBan) {
         this.soluongBan = soluongBan;
     }
 
@@ -52,11 +64,19 @@ public class ThongKeDoanhThuDTO {
         this.soSanhSoLuongBan = soSanhSoLuongBan;
     }
 
-    public Double getDoanhThu() {
+    public String getSoluongBanHomQua() {
+        return soluongBanHomQua;
+    }
+
+    public void setSoluongBanHomQua(String soluongBanHomQua) {
+        this.soluongBanHomQua = soluongBanHomQua;
+    }
+
+    public String getDoanhThu() {
         return doanhThu;
     }
 
-    public void setDoanhThu(Double doanhThu) {
+    public void setDoanhThu(String doanhThu) {
         this.doanhThu = doanhThu;
     }
 
@@ -68,11 +88,19 @@ public class ThongKeDoanhThuDTO {
         this.soSanhDoanhThu = soSanhDoanhThu;
     }
 
-    public Integer getSoLuongKhachMua() {
+    public String getDoanhThuHomQua() {
+        return doanhThuHomQua;
+    }
+
+    public void setDoanhThuHomQua(String doanhThuHomQua) {
+        this.doanhThuHomQua = doanhThuHomQua;
+    }
+
+    public String getSoLuongKhachMua() {
         return soLuongKhachMua;
     }
 
-    public void setSoLuongKhachMua(Integer soLuongKhachMua) {
+    public void setSoLuongKhachMua(String soLuongKhachMua) {
         this.soLuongKhachMua = soLuongKhachMua;
     }
 
@@ -82,5 +110,13 @@ public class ThongKeDoanhThuDTO {
 
     public void setSoSanhSoLuongKhachMua(String soSanhSoLuongKhachMua) {
         this.soSanhSoLuongKhachMua = soSanhSoLuongKhachMua;
+    }
+
+    public String getSoLuongKhachMuaHomQua() {
+        return soLuongKhachMuaHomQua;
+    }
+
+    public void setSoLuongKhachMuaHomQua(String soLuongKhachMuaHomQua) {
+        this.soLuongKhachMuaHomQua = soLuongKhachMuaHomQua;
     }
 }

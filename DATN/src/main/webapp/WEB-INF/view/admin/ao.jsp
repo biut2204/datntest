@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.0/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.0/dist/sweetalert2.min.js"></script>
     <style>
         #addFormContainer {
             display: none;
@@ -30,7 +32,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Màu nền với độ trong suốt */
+            background-color: rgba(0, 0, 0, 0.5);
             z-index: 9999;
             justify-content: center;
             align-items: center;
@@ -63,7 +65,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Màu nền với độ trong suốt */
+            background-color: rgba(0, 0, 0, 0.5);
             z-index: 9999;
             justify-content: center;
             align-items: center;
@@ -156,6 +158,11 @@
             <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" role="button" href="/admin/logout">
+                    <i class="fas fa-sign-out-alt" style="width: 20px"></i> Đăng xuất
                 </a>
             </li>
         </ul>
@@ -824,7 +831,7 @@
                                     <input type="file" name="ten_url1" id="imageInput" accept="image/*" onchange="displayImage()">
                                     <span id="errorAnh" class="text-danger"></span>
                                     <div id="imagePreview" style="padding-bottom: 10px;padding-left: 10px"></div>
-                                    <button formaction="/admin/anh/add" type="submit" class="btn btn-success" onclick="themAnh()"><i class="fas fa-plus"></i> Thêm Anh
+                                    <button formaction="/admin/anh/add" type="submit" class="btn btn-primary" onclick="themAnh()"><i class="fas fa-plus"></i> Thêm ảnh
                                     </button>
                                 </form>
                                 <div class="form-row">
@@ -1397,6 +1404,41 @@
         if (hasError) {
             event.preventDefault(); // Ngăn chặn submit form nếu có lỗi
         }
+    }
+</script>
+<script>
+    var themThanhCong = "${themThanhCong}";
+    if (themThanhCong == "2") {
+        document.getElementById('addFormContainer').style.display = "none";
+        Swal.fire({
+            position: 'top-end',
+            toast: true,
+            showConfirmButton: false,
+            timer: 1500,
+            width: '300px',
+            text: 'Thêm thành công!',
+            icon: 'success',
+        });
+        setTimeout(() => {
+           document.getElementById('addFormContainer').style.display = "block";
+        }, 1500);
+    }
+
+    var capNhatThanhCong = "${capNhatThanhCong}";
+    if (capNhatThanhCong == "2") {
+        document.getElementById('addFormContainer').style.display = "none";
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 1500, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Cập nhật thành công!',
+            icon: 'success',
+        });
+        setTimeout(() => {
+            document.getElementById('addFormContainer').style.display = "block";
+        }, 1500);
     }
 </script>
 </body>

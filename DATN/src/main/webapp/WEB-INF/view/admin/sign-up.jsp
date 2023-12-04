@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap" rel="stylesheet">
     <!-- Latform styles -->
     <link rel="stylesheet" href="../../../resources/dist/css/latform-style-1.min.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="form-wrapper">
@@ -29,6 +30,9 @@
                     <h3 class="font-weight-bold mb-3">Đăng Ký Tài Khoản</h3>
                     <p class="text-muted">Bạn có thể tạo 1 tài khoản miên phí ngay bây giờ</p>
                 </div>
+                <c:forEach items="${listTK}" var="list">
+                    <input type="hidden" value="${list.email}">
+                </c:forEach>
                 <form action="/dangky-done" method="post">
                     <div class="form-group">
                         <label for="fullname">Họ và Tên</label>
@@ -40,7 +44,7 @@
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input id="check" type="hidden" value="${tb}">
-                        <label style="color: red">${tb==1?"Email đã có trên hệ thống!":""}</label>
+                        <label style="color: red">${tb==1?"Email đã liên kết với tài khoản":""}</label>
                         <div class="form-icon-wrapper">
                             <input type="email" class="form-control" id="email" placeholder="Nhập email" required name="Email">
                             <i class="form-icon-left mdi mdi-email"></i>
@@ -89,14 +93,29 @@
         var passwordRepeat = document.getElementById('password-repeat').value;
 
         if (fullname === '' || email === '' || password === '' || passwordRepeat === '') {
-            alert('Vui lòng điền đầy đủ thông tin.');
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Vui lòng điền đầy đủ thông tin</div>',
+                allowOutsideClick: true
+            });
+            setTimeout(() => {
+                Swal.close();
+            }, 1500);
             event.preventDefault();
         }
-        if (password != passwordRepeat){
-            alert('mật khẩu không giống nhau.');
+        else if (password != passwordRepeat){
+            Swal.fire({
+                icon: 'warning',
+                html: '<div class="swal-text">Mật khẩu không giống nhau</div>',
+                allowOutsideClick: true
+            });
+            setTimeout(() => {
+                Swal.close();
+            }, 1500);
             event.preventDefault();
         }
     }
 </script>
+
 </body>
 </html>

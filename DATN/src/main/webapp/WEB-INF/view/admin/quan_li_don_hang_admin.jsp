@@ -44,7 +44,7 @@
             padding: 20px;
             border-radius: 5px; /* Góc bo tròn cho khung biểu mẫu */
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Đổ bóng cho biểu mẫu */
-            margin-top: 10%;
+            margin-top: 4%;
         }
 
         #addForm button[type="submit"] {
@@ -320,6 +320,11 @@
                     <i class="fas fa-expand-arrows-alt"></i>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" role="button" href="/admin/logout">
+                    <i class="fas fa-sign-out-alt" style="width: 20px"></i> Đăng xuất
+                </a>
+            </li>
         </ul>
     </nav>
     <!-- /.navbar -->
@@ -587,7 +592,7 @@
             <section class="content">
                 <div class="container-fluid">
                     <div class="status-container">
-                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i>
+                        <div class="status status-1" ><i class="fas fa-hourglass-half"></i>
                             Đang
                             chờ xác nhận
                         </div>
@@ -601,12 +606,12 @@
             <section class="content">
                 <div class="container-fluid">
                     <div class="status-container">
-                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i>
+                        <div class="status status-1" ><i class="fas fa-hourglass-half"></i>
                             Đang
                             chờ xác nhận
                         </div>
                         <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
-                        <div class="status status-2" onclick="showStatus('2')" style="margin-right: 50%"><i
+                        <div class="status status-2"  style="margin-right: 50%"><i
                                 class="fas fa-truck"></i> Đang giao
                         </div>
                     </div>
@@ -619,15 +624,15 @@
             <section class="content">
                 <div class="container-fluid">
                     <div class="status-container">
-                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i>
+                        <div class="status status-1" ><i class="fas fa-hourglass-half"></i>
                             Đang
                             chờ xác nhận
                         </div>
                         <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
-                        <div class="status status-2" onclick="showStatus('2')"><i class="fas fa-truck"></i> Đang giao
+                        <div class="status status-2" ><i class="fas fa-truck"></i> Đang giao
                         </div>
                         <div class="arrow arrow2"><i class="fas fa-arrow-right"></i></div>
-                        <div class="status status-3" onclick="showStatus('3')" style="margin-right: 25%"><i
+                        <div class="status status-3"  style="margin-right: 25%"><i
                                 class="fas fa-check-circle"></i> Hoàn
                             thành
                         </div>
@@ -641,12 +646,12 @@
             <section class="content">
                 <div class="container-fluid">
                     <div class="status-container">
-                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i>
+                        <div class="status status-1" ><i class="fas fa-hourglass-half"></i>
                             Đang
                             chờ xác nhận
                         </div>
                         <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
-                        <div class="status status-4" onclick="showStatus('4')" style="margin-right: 50%"><i
+                        <div class="status status-4"  style="margin-right: 50%"><i
                                 class="fas fa-times-circle"></i> Hủy
                         </div>
                     </div>
@@ -659,11 +664,11 @@
             <section class="content">
                 <div class="container-fluid">
                     <div class="status-container">
-                        <div class="status status-1" onclick="showStatus('1')"><i class="fas fa-hourglass-half"></i>
+                        <div class="status status-1"><i class="fas fa-hourglass-half"></i>
                             Quầy
                         </div>
                         <div class="arrow arrow1"><i class="fas fa-arrow-right"></i></div>
-                        <div class="status status-3" onclick="showStatus('3')" style="margin-right: 50%"><i
+                        <div class="status status-3" style="margin-right: 50%"><i
                                 class="fas fa-times-circle"></i> Hoàn thành
                         </div>
                     </div>
@@ -755,7 +760,7 @@
                                     <c:choose>
                                         <c:when test="${hoaDon.hinhThuc == 1 }">
                                             <label>Thanh toán: <span
-                                                    style="margin-left: 105px;background: #C594C5;padding: 10px;border-radius: 15px">Tại quầy</span></label>
+                                                    style="margin-left: 105px;background: #C594C5;padding: 10px;border-radius: 15px">Tiền mặt(Tại quầy)</span></label>
                                         </c:when>
                                         <c:when test="${hoaDon.hinhThuc == 2 }">
                                             <label>Thanh toán: <span
@@ -768,6 +773,10 @@
                                         <c:when test="${hoaDon.hinhThuc == 4 }">
                                             <label>Thanh toán: <span
                                                     style="margin-left: 105px;background: #fbddeb;padding: 10px;border-radius: 15px">Thanh toán Momo</span></label>
+                                        </c:when>
+                                        <c:when test="${hoaDon.hinhThuc == 6 }">
+                                            <label>Thanh toán: <span
+                                                    style="margin-left: 105px;background: #fbddeb;padding: 10px;border-radius: 15px">Thanh toán Momo (Tại quầy)</span></label>
                                         </c:when>
                                     </c:choose>
                                 </div>
@@ -789,7 +798,7 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <div class="form-group col-3">
-                                                <select class="form-control" name="trangThai">
+                                                <select class="form-control" name="trangThai" style="margin-top: 5px">
                                                     <option value="0" ${trangThaiSession == '0'?'selected':''}>Tất cả
                                                     </option>
                                                     <option value="1" ${trangThaiSession == '1'?'selected':''}>Chờ xác
@@ -862,9 +871,10 @@
                                                     </c:choose>
                                                 </td>
                                                 <td>
+<%--                                                        ${list.hoaDon.ngayTao}--%>
                                                     <c:set var="dateTimeString" value="${list.hoaDon.ngayTao}"/>
                                                     <fmt:parseDate value="${dateTimeString}" var="parsedDate"
-                                                                   pattern="yyyy-MM-dd'T'HH:mm:ss.SSS"/>
+                                                                   pattern="yyyy-MM-dd'T'HH:mm:ss"/>
                                                     <fmt:formatDate value="${parsedDate}" var="formattedDate"
                                                                     pattern="yyyy-MM-dd HH:mm:ss"/>
                                                         ${formattedDate}
@@ -873,7 +883,7 @@
                                                     <c:choose>
                                                         <c:when test="${list.hoaDon.hinhThuc ==1}"><p
                                                                 style="background: #C594C5;border-radius: 15px;text-align: center">
-                                                            Tại quầy</p></c:when>
+                                                            Tiền mặt(Tại quầy)</p></c:when>
                                                         <c:when test="${list.hoaDon.hinhThuc ==2}"><p
                                                                 style="background: #abdec7;border-radius: 15px;text-align: center">
                                                             Vnpay</p></c:when>
@@ -883,6 +893,9 @@
                                                         <c:when test="${list.hoaDon.hinhThuc ==4}"><p
                                                                 style="background: #fbddeb;border-radius: 15px;text-align: center">
                                                             Momo</p></c:when>
+                                                        <c:when test="${list.hoaDon.hinhThuc ==6}"><p
+                                                                style="background: #fbddeb;border-radius: 15px;text-align: center">
+                                                            Momo(Tại quầy)</p></c:when>
                                                     </c:choose>
                                                 </td>
                                                 <td>

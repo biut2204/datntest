@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 @Controller
@@ -48,7 +49,9 @@ public class AuthController {
     }
 
     @GetMapping("/quenmk")
-    public String quenmk() {
+    public String quenmk(Model model) {
+        List<Users> listTK= usersSer.getAll();
+        model.addAttribute("listTK",listTK);
         return "/admin/password-reset";
     }
 

@@ -572,6 +572,14 @@ public class TrangChuController {
         List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
         model.addAttribute("listLoaiAos", listLoaiAos);
 
+        String updateThanhCong = (String) session.getAttribute("updateThanhCong");
+
+        if (updateThanhCong != null){
+            model.addAttribute("capNhatThanhCong","2");
+        }
+
+        session.removeAttribute("updateThanhCong");
+
         return "/user/thong_tin";
     }
 
@@ -697,7 +705,7 @@ public class TrangChuController {
     }
 
     @PostMapping("/user/contact-done/{maOrEmail}")
-    public String contactdone(HttpServletRequest request, @PathVariable String maOrEmail) {
+    public String contactdone(HttpServletRequest request, @PathVariable String maOrEmail, HttpSession session) {
 
         Users users = null;
 
@@ -727,7 +735,10 @@ public class TrangChuController {
         users.setMatKhau(matKhau);
 
         usersSer.update(users.getId(), users);
-        return "redirect:/user/trang_chu/" + users.getMa();
+
+        session.setAttribute("updateThanhCong","2");
+
+        return "redirect:/user/thong_tin/" + users.getMa();
     }
 
     @PostMapping("/user/danh_gia")

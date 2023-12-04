@@ -164,12 +164,26 @@ public class SanPhamController {
         if(loiAoChiTiet != null){
             model.addAttribute("loiAoChiTietStr", "2");
         }
+
+        String addThanhCong = (String) session.getAttribute("addThanhCong");
+        String updateThanhCong = (String) session.getAttribute("updateThanhCong");
+
+        if (addThanhCong != null){
+            model.addAttribute("themThanhCong","2");
+        }
+
+        if (updateThanhCong != null){
+            model.addAttribute("capNhatThanhCong","2");
+        }
+
+        session.removeAttribute("addThanhCong");
+        session.removeAttribute("updateThanhCong");
         session.removeAttribute("loiAoChiTiet");
         return "/admin/ao";
     }
 
     @PostMapping("/admin/ao/add")
-    public String add(HttpServletRequest request) {
+    public String add(HttpServletRequest request, HttpSession session) {
         String ten = request.getParameter("ten");
         String hang_id = request.getParameter("hang_id");
         String loai_ao_id = request.getParameter("loai_ao_id");
@@ -209,11 +223,13 @@ public class SanPhamController {
         ao.setTrangThai(1);
 
         aoSer.add(ao);
+
+        session.setAttribute("addThanhCong","2");
         return "redirect:/admin/ao/view/" + ao.getId();
     }
 
     @PostMapping("/admin/ao/update/*")
-    public String update(HttpServletRequest request) {
+    public String update(HttpServletRequest request, HttpSession session) {
 
         String url = request.getRequestURI();
         String[] parts = url.split("/admin/ao/update/");
@@ -257,11 +273,12 @@ public class SanPhamController {
         ao.setTrangThai(updateAo.getTrangThai());
 
         aoSer.update(updateAo.getId(), ao);
+        session.setAttribute("updateThanhCong","2");
         return "redirect:/admin/ao/view/" + id;
     }
 
     @PostMapping("/admin/ao_chi_tiet/add")
-    public String addAoChiTiet(HttpServletRequest request, @RequestParam(value = "size_id", required = false) List<UUID> size_id) {
+    public String addAoChiTiet(HttpServletRequest request, @RequestParam(value = "size_id", required = false) List<UUID> size_id, HttpSession session) {
 
         String mau_sac_id = request.getParameter("mau_sac_id");
         String soLuong = request.getParameter("soLuong");
@@ -315,7 +332,7 @@ public class SanPhamController {
         ao.setTrangThai(updateAo.getTrangThai());
 
         aoSer.update(updateAo.getId(), ao);
-
+        session.setAttribute("addThanhCong","2");
         return "redirect:/admin/ao/view/" + ao_id;
     }
 
@@ -365,6 +382,7 @@ public class SanPhamController {
         ao.setTrangThai(updateAo.getTrangThai());
 
         aoSer.update(updateAo.getId(), ao);
+        session.setAttribute("updateThanhCong","2");
 
         return "redirect:/admin/ao/view/" + ao_id;
     }
@@ -382,7 +400,7 @@ public class SanPhamController {
     }
 
     @PostMapping("/admin/anh/add")
-    public String anhAdd(@RequestPart("ten_url1") MultipartFile file, HttpServletRequest request) {
+    public String anhAdd(@RequestPart("ten_url1") MultipartFile file, HttpServletRequest request, HttpSession session) {
 
         String ao_id = request.getParameter("ao_id");
 
@@ -421,6 +439,8 @@ public class SanPhamController {
         ao.setTrangThai(2);
 
         aoSer.update(updateAo.getId(), ao);
+
+        session.setAttribute("addThanhCong","2");
 
         return "redirect:/admin/ao/view/" + ao_id;
     }

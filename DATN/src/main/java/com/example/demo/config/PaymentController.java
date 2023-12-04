@@ -140,29 +140,52 @@ public class PaymentController {
 
     @GetMapping("/paywithmomo/*")
     public String thanhCongMomo(HttpSession session, Model model,
+                                @RequestParam(value = "orderId", required = false) String orderId,
                                 @RequestParam(value = "message", required = false) String message){
-
-        System.out.println("Message = "+ message);
+        HoaDon hoaDon = hoaDonSer.findByMa(orderId);
+        String webOrQuay = null;
+        if (hoaDon.getTrangThai() == 0){
+            webOrQuay = "web";
+        }else if (hoaDon.getTrangThai() == 5){
+            webOrQuay = "quay";
+        }
         if (message.equals("Successful.")){
-            String maHoaDonByMomo = (String) session.getAttribute("maHoaDonByMomo");
-            HoaDon hoaDon1 = hoaDonSer.findByMa(maHoaDonByMomo);
-
             HoaDon hd1 = new HoaDon();
 
-            hd1.setMa(hoaDon1.getMa());
-            hd1.setTongTien(hoaDon1.getTongTien());
-            hd1.setNgayTao(hoaDon1.getNgayTao());
+            hd1.setMa(hoaDon.getMa());
+            hd1.setTongTien(hoaDon.getTongTien());
+            hd1.setNgayTao(hoaDon.getNgayTao());
             hd1.setNgayChoXacNhan(LocalDateTime.now());
-            hd1.setKhachHang(hoaDon1.getKhachHang());
-            hd1.setTrangThai(1);
-            hd1.setMoTa(hoaDon1.getMoTa());
-            hd1.setHinhThuc(4);
+            if (webOrQuay.equals("web")){
+                hd1.setNgayHoanThanh(null);
+            }else if (webOrQuay.equals("quay")){
+                hd1.setNgayHoanThanh(LocalDateTime.now());
+            }
+            hd1.setKhachHang(hoaDon.getKhachHang());
 
-            hoaDonSer.update(hoaDon1.getId(), hd1);
+            if (webOrQuay.equals("web")){
+                hd1.setTrangThai(1);
+            }else if (webOrQuay.equals("quay")){
+                hd1.setTrangThai(3);
+            }
 
-            model.addAttribute("idKh",hoaDon1.getKhachHang().getMa());
+            hd1.setMoTa(hoaDon.getMoTa());
 
-            List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon1.getId());
+            if (webOrQuay.equals("web")){
+                hd1.setHinhThuc(4);
+            }else if (webOrQuay.equals("quay")){
+                hd1.setHinhThuc(6);
+            }
+
+
+            hoaDonSer.update(hoaDon.getId(), hd1);
+
+            if (webOrQuay.equals("web")){
+                model.addAttribute("idKh",hoaDon.getKhachHang().getMa());
+            }
+
+
+            List<HoaDonChiTiet> listHoaDonChiTiets = hoaDonChiTietSer.findByHoaDon(hoaDon.getId());
 
             for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiets){
                 Ao ao = hoaDonChiTiet.getAoChiTiet().getAo();
@@ -205,17 +228,27 @@ public class PaymentController {
 
                 aoChiTietSer.update(act.getId(), aoChiTiet);
             }
-            session.removeAttribute("maHoaDonByMomo");
-            return "/user/thanh_cong";
+
+            if (webOrQuay.equals("web")){
+                return "/user/thanh_cong";
+            }else if (webOrQuay.equals("quay")){
+                session.setAttribute("quayThanhToanThanhCong","2");
+                return "redirect:/admin/ban-quay/trang-chu";
+            }
         }else {
+            if (webOrQuay.equals("web")){
+                HoaDon hoaDon1 = hoaDonSer.findByMa(orderId);
 
-            String maHoaDonByMomo = (String) session.getAttribute("maHoaDonByMomo");
-            HoaDon hoaDon1 = hoaDonSer.findByMa(maHoaDonByMomo);
+                model.addAttribute("idKh",hoaDon1.getKhachHang().getMa());
+                return "/user/erorr";
+            }else if (webOrQuay.equals("quay")){
+                HoaDon hoaDon1 = hoaDonSer.findByMa(orderId);
 
-            model.addAttribute("idKh",hoaDon1.getKhachHang().getMa());
-            session.removeAttribute("maHoaDonByMomo");
-            return "/user/erorr";
+                return "redirect:/admin/ban-quay/view-cart/"+hoaDon1.getId();
+            }
+
         }
+        return null;
     }
 
     @GetMapping("/thanh_cong/*")

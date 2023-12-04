@@ -89,7 +89,7 @@ public class UserController {
     LoaiAoSer loaiAoSer;
 
     @GetMapping("/user/gio_hang/view/*")
-    public String viewGioHang(HttpServletRequest request, Model model) {
+    public String viewGioHang(HttpServletRequest request, Model model, HttpSession session) {
 
         String url = request.getRequestURI();
         String[] parts = url.split("/user/gio_hang/view/");
@@ -139,11 +139,23 @@ public class UserController {
         List<LoaiAo> listLoaiAos = loaiAoSer.findAllByTrangThai(1);
         model.addAttribute("listLoaiAos", listLoaiAos);
 
+        String addThanhCong = (String) session.getAttribute("addThanhCong");
+        String deleteThanhCong = (String) session.getAttribute("deleteThanhCong");
+
+        if (addThanhCong != null){
+            model.addAttribute("themThanhCong","2");
+        }
+        if (deleteThanhCong != null){
+            model.addAttribute("xoaThanhCong","2");
+        }
+
+        session.removeAttribute("addThanhCong");
+        session.removeAttribute("deleteThanhCong");
         return "/user/gio_hang";
     }
 
     @GetMapping("/user/gio_hang/delete/*/*")
-    public String deleteGioHang(HttpServletRequest request){
+    public String deleteGioHang(HttpServletRequest request, HttpSession session){
         String url = request.getRequestURI();
         String[] parts = url.split("/user/gio_hang/delete/");
         String pStr = parts[1];
@@ -153,6 +165,8 @@ public class UserController {
         String idGioHangChiTiet = p[1];
 
         gioHangChiTietSer.delete(UUID.fromString(idGioHangChiTiet));
+
+        session.setAttribute("deleteThanhCong","2");
         return "redirect:/user/gio_hang/view/"+ idKh;
     }
 
@@ -479,7 +493,7 @@ public class UserController {
     }
 
     @PostMapping("/user/gio_hang/add_gio_hang/*")
-    public String addGioHang(HttpServletRequest request, Model model) {
+    public String addGioHang(HttpServletRequest request, Model model, HttpSession session) {
         String url = request.getRequestURI();
         String[] parts = url.split("/user/gio_hang/add_gio_hang/");
         String ma = parts[1];
@@ -526,6 +540,7 @@ public class UserController {
 
             gioHangChiTietSer.update(checkGHCT.getId(), ghct);
         }
+        session.setAttribute("addThanhCong","2");
         return "redirect:/user/gio_hang/view/" + users.getMa();
     }
 

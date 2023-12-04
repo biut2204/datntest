@@ -212,6 +212,11 @@
                     <i class="fas fa-expand-arrows-alt"></i>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" role="button" href="/admin/logout">
+                    <i class="fas fa-sign-out-alt" style="width: 20px"></i> Đăng xuất
+                </a>
+            </li>
         </ul>
     </nav>
     <!-- /.navbar -->

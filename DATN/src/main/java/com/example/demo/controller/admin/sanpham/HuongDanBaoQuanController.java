@@ -7,6 +7,7 @@ import com.example.demo.repo.sanpham.HuongDanBaoQuanRepo;
 import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.HuongDanBaoQuanSer;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,7 @@ public class HuongDanBaoQuanController {
     ChatSer chatSer;
 
     @GetMapping("/admin/huong_dan_bao_quan/view/*")
-    public String view(Model model, HttpServletRequest request) {
+    public String view(Model model, HttpServletRequest request, HttpSession session) {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
@@ -53,12 +54,25 @@ public class HuongDanBaoQuanController {
         } catch (Exception e) {
 
         }
+        String addThanhCong = (String) session.getAttribute("addThanhCong");
+        String updateThanhCong = (String) session.getAttribute("updateThanhCong");
+
+        if (addThanhCong != null){
+            model.addAttribute("themThanhCong","2");
+        }
+
+        if (updateThanhCong != null){
+            model.addAttribute("capNhatThanhCong","2");
+        }
+
+        session.removeAttribute("addThanhCong");
+        session.removeAttribute("updateThanhCong");
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/huong_dan_bao_quan";
     }
 
     @PostMapping("/admin/huong_dan_bao_quan/add")
-    public String add(HttpServletRequest request) {
+    public String add(HttpServletRequest request, HttpSession session) {
         int slHDBQ = huongDanBaoQuanRepo.soHDBQ() + 1;
         String ten = request.getParameter("ten");
         String chitiet = request.getParameter("chitiet");
@@ -72,11 +86,12 @@ public class HuongDanBaoQuanController {
         huongDanBaoQuan.setTrangthai(Integer.parseInt(trangthai));
 
         huongDanBaoQuanSer.add(huongDanBaoQuan);
+        session.setAttribute("addThanhCong","2");
         return "redirect:/admin/huong_dan_bao_quan/view/1";
     }
 
     @PostMapping("/admin/huong_dan_bao_quan/update")
-    public String update(HttpServletRequest request) {
+    public String update(HttpServletRequest request, HttpSession session) {
         String id = request.getParameter("id");
         String ten = request.getParameter("ten");
         String chitiet = request.getParameter("chitiet");
@@ -92,6 +107,8 @@ public class HuongDanBaoQuanController {
         huongDanBaoQuan.setTrangthai(Integer.parseInt(trangthai));
 
         huongDanBaoQuanSer.update(UUID.fromString(id), huongDanBaoQuan);
+
+        session.setAttribute("updateThanhCong","2");
 
         return "redirect:/admin/huong_dan_bao_quan/view/1";
     }

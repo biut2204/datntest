@@ -9,6 +9,7 @@ import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.ChatVaiSer;
 import com.example.demo.ser.sanpham.HuongDanBaoQuanSer;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +35,7 @@ public class ChatVaiController {
     ChatSer chatSer;
 
     @GetMapping("/admin/chat_vai/view/*")
-    public String view(Model model, HttpServletRequest request) {
+    public String view(Model model, HttpServletRequest request,HttpSession session) {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
@@ -61,12 +62,27 @@ public class ChatVaiController {
         } catch (Exception e) {
 
         }
+
+        String addThanhCong = (String) session.getAttribute("addThanhCong");
+        String updateThanhCong = (String) session.getAttribute("updateThanhCong");
+
+        if (addThanhCong != null){
+            model.addAttribute("themThanhCong","2");
+        }
+
+        if (updateThanhCong != null){
+            model.addAttribute("capNhatThanhCong","2");
+        }
+
+        session.removeAttribute("addThanhCong");
+        session.removeAttribute("updateThanhCong");
+
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/chat_vai";
     }
 
     @PostMapping("/admin/chat_vai/add")
-    public String add(HttpServletRequest request){
+    public String add(HttpServletRequest request, HttpSession session){
         int slCv = chatVaiRepo.soCV() + 1;
         String ten = request.getParameter("ten");
         String thongtin = request.getParameter("thongtin");
@@ -85,11 +101,13 @@ public class ChatVaiController {
 
         chatVaiSer.add(chatVai);
 
+        session.setAttribute("addThanhCong","2");
+
         return "redirect:/admin/chat_vai/view/1";
     }
 
     @PostMapping("/admin/chat_vai/update")
-    public String update(HttpServletRequest request){
+    public String update(HttpServletRequest request, HttpSession session){
         String id = request.getParameter("id");
         String ten = request.getParameter("ten");
         String thongtin = request.getParameter("thongtin");
@@ -108,6 +126,8 @@ public class ChatVaiController {
         chatVai.setTrangthai(Integer.parseInt(trangthai));
 
         chatVaiSer.update(UUID.fromString(id),chatVai);
+
+        session.setAttribute("updateThanhCong","2");
 
         return "redirect:/admin/chat_vai/view/1";
     }

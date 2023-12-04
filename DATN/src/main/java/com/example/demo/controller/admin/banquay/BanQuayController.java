@@ -1,6 +1,10 @@
 package com.example.demo.controller.admin.banquay;
 
 
+import com.example.demo.config.Constant;
+import com.example.demo.config.Decode;
+import com.example.demo.config.MomoModel;
+import com.example.demo.config.ResultMoMo;
 import com.example.demo.entity.auth.RoleEnum;
 import com.example.demo.entity.dto.HoaDonDTO;
 import com.example.demo.entity.giamgia.GiamGiaSanPhamChiTiet;
@@ -32,6 +36,8 @@ import com.example.demo.ser.users.GioHangSer;
 import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
 import com.example.demo.ser.users.UsersSer;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang.RandomStringUtils;
@@ -46,7 +52,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -110,7 +122,7 @@ public class BanQuayController {
     JavaMailSender mailSender;
 
     @GetMapping("/trang-chu")
-    public String view(Model model, HttpServletRequest request) {
+    public String view(Model model, HttpServletRequest request, HttpSession session) {
 
 //        String url = request.getRequestURI();
 //        String[] parts = url.split("/admin/ban-quay/");
@@ -145,6 +157,24 @@ public class BanQuayController {
 //            model.addAttribute("idKh", "2");
 //            model.addAttribute("tenKh", "2");
 //        }
+
+        String addKhachHangNhanhThanhCong = (String) session.getAttribute("addKhachHangNhanhThanhCong");
+        String addGhiChuThanhCong = (String) session.getAttribute("addGhiChuThanhCong");
+        String quayThanhToanThanhCong = (String) session.getAttribute("quayThanhToanThanhCong");
+
+        if (addKhachHangNhanhThanhCong != null){
+            model.addAttribute("themKhachHangNhanhThanhCong","2");
+        }
+        if (addGhiChuThanhCong != null){
+            model.addAttribute("themGhiChuThanhCong","2");
+        }
+        if (quayThanhToanThanhCong != null){
+            model.addAttribute("quayThanhToanThanhCongStr","2");
+        }
+
+        session.removeAttribute("addKhachHangNhanhThanhCong");
+        session.removeAttribute("addGhiChuThanhCong");
+        session.removeAttribute("quayThanhToanThanhCong");
 
         return "/ban_quay/trang_chu";
     }
@@ -250,18 +280,46 @@ public class BanQuayController {
         }
         session.removeAttribute("loiHoaDonBySoLuong");
 
+        String addHoaDonThanhCong = (String) session.getAttribute("addHoaDonThanhCong");
+        String addGioHangThanhCong = (String) session.getAttribute("addGioHangThanhCong");
+        String xoaSanPhamThanhCong = (String) session.getAttribute("xoaSanPhamThanhCong");
+        String addKhachHangThanhCong = (String) session.getAttribute("addKhachHangThanhCong");
+        String xoaKhachHangThanhCong = (String) session.getAttribute("xoaKhachHangThanhCong");
+
+        if (addHoaDonThanhCong != null){
+            model.addAttribute("themHoaDonThanhCong","2");
+        }
+        if (addGioHangThanhCong != null){
+            model.addAttribute("themGioHangThanhCong","2");
+        }
+        if (xoaSanPhamThanhCong != null){
+            model.addAttribute("deleteSanPhamThanhCong","2");
+        }
+        if (addKhachHangThanhCong != null){
+            model.addAttribute("themKhachHangThanhCong","2");
+        }
+        if (xoaKhachHangThanhCong != null){
+            model.addAttribute("deleteKhachHangThanhCong","2");
+        }
+
+        session.removeAttribute("addHoaDonThanhCong");
+        session.removeAttribute("addGioHangThanhCong");
+        session.removeAttribute("xoaSanPhamThanhCong");
+        session.removeAttribute("addKhachHangThanhCong");
+
         return "/ban_quay/gio_hang";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(Model model, @PathVariable("id") UUID id) {
+    public String delete(Model model, @PathVariable("id") UUID id, HttpSession session) {
 
         hoaDonSer.delete(id);
+        session.setAttribute("xoaHoaDonThanhCong","2");
         return "redirect:/admin/ban-quay/trang-chu";
     }
 
     @GetMapping("/delete-san-pham/*/*")
-    public String deleteSP(HttpServletRequest request) {
+    public String deleteSP(HttpServletRequest request, HttpSession session) {
 
         String url = request.getRequestURI();
         String[] parts = url.split("/admin/ban-quay/delete-san-pham/");
@@ -272,12 +330,13 @@ public class BanQuayController {
         String idHDCT = p[1];
 
         hoaDonChiTietSer.delete(UUID.fromString(idHDCT));
+        session.setAttribute("xoaSanPhamThanhCong","2");
 
         return "redirect:/admin/ban-quay/view-cart/" + idHD;
     }
 
     @PostMapping("/addHD")
-    public String addHD(Model model, HttpServletRequest request) {
+    public String addHD(Model model, HttpServletRequest request, HttpSession session) {
 
 //        String url = request.getRequestURI();
 //        String[] parts = url.split("/admin/ban-quay/addHD/");
@@ -301,11 +360,13 @@ public class BanQuayController {
 
         hoaDonSer.add(hoaDon);
 
+        session.setAttribute("addHoaDonThanhCong","2");
+
         return "redirect:/admin/ban-quay/view-cart/" + hoaDon.getId();
     }
 
     @PostMapping("/add_gio_hang/{id}")
-    public String addGioHang(HttpServletRequest request, @PathVariable("id") UUID id) {
+    public String addGioHang(HttpServletRequest request, @PathVariable("id") UUID id, HttpSession session) {
 
 
         HoaDon hoaDon = hoaDonSer.findId(id);
@@ -340,11 +401,13 @@ public class BanQuayController {
 
             hoaDonChiTietSer.update(checkGHCT.getId(), hdct);
         }
+
+        session.setAttribute("addGioHangThanhCong","2");
         return "redirect:/admin/ban-quay/view-cart/" + hoaDon.getId();
     }
 
     @PostMapping("/update-khach-hang/{id}")
-    public String updateKH(HttpServletRequest request, @PathVariable("id") UUID id) {
+    public String updateKH(HttpServletRequest request, @PathVariable("id") UUID id,HttpSession session) {
 
         String idHoaDon = request.getParameter("idHoaDon");
 
@@ -357,11 +420,12 @@ public class BanQuayController {
                 hoaDonSer.update(UUID.fromString(idHoaDon), hoaDon);
             }
         }
+        session.setAttribute("addKhachHangThanhCong","2");
         return "redirect:/admin/ban-quay/view-cart/" + idHoaDon;
     }
 
     @PostMapping("/delete-khach-hang/{id}")
-    public String deleteKH(HttpServletRequest request) {
+    public String deleteKH(HttpServletRequest request, HttpSession session) {
 
         String idHoaDon = request.getParameter("idHoaDon");
 
@@ -372,6 +436,7 @@ public class BanQuayController {
                 hoaDonSer.update(UUID.fromString(idHoaDon), hoaDon);
             }
         }
+        session.setAttribute("xoaKhachHangThanhCong","2");
         return "redirect:/admin/ban-quay/view-cart/" + idHoaDon;
     }
 
@@ -393,7 +458,7 @@ public class BanQuayController {
                             @RequestParam(value = "chon", required = false) List<String> chon,
                             @RequestParam(value = "idAoChiTiet", required = false) List<UUID> idAoChiTiet,
                             @RequestParam(value = "soLuong", required = false) List<String> soLuong,
-                            HttpSession session) {
+                            HttpSession session, HttpServletRequest request) throws JsonProcessingException {
 
         int checkSoLuongTon = 0;
 
@@ -410,7 +475,10 @@ public class BanQuayController {
             return "redirect:/admin/ban-quay/view-cart/"+id;
         }
 
+        String hinhThucTT = request.getParameter("hinhThucThanhToan");
+
         HoaDon hd = hoaDonSer.findId(id);
+
         HoaDon hoaDon = new HoaDon();
 
         hoaDon.setMa(hd.getMa());
@@ -476,14 +544,108 @@ public class BanQuayController {
 
         hoaDonSer.update(id, hoaDon);
 
+        if(hinhThucTT.equals("momo")){
+
+            LocalDateTime now = LocalDateTime.now();
+
+            HoaDon hoaDon1 = new HoaDon();
+
+            hoaDon1.setMa("HD" + now.getMonthValue() +now.getDayOfMonth()+ now.getHour()+ now.getMinute()+ now.getSecond());
+            hoaDon1.setTongTien(bigDecimalTongDonGia);
+            hoaDon1.setGhiChu(ghiChu);
+            hoaDon1.setTrangThai(5);
+            hoaDon1.setKhachHang(hd.getKhachHang());
+            hoaDon1.setNgayTao(hd.getNgayTao());
+            hoaDon1.setNgayHoanThanh(null);
+            hoaDon1.setNgayThanhToan(null);
+            hoaDon1.setNhanVien(hd.getNhanVien());
+            hoaDon1.setHinhThuc(3);
+            hoaDon1.setMoTa(hd.getMoTa());
+
+            hoaDonSer.update(hd.getId(), hoaDon1);
+
+            for (String selectedValue : chon) {
+                AoChiTiet act = aoChiTietSer.findById(idAoChiTiet.get(Integer.parseInt(selectedValue)));
+
+                AoChiTiet aoChiTiet = new AoChiTiet();
+
+                int slTon = act.getSlton() + Integer.parseInt(soLuong.get(Integer.parseInt(selectedValue)));
+                int slBan = act.getSlban() - Integer.parseInt(soLuong.get(Integer.parseInt(selectedValue)));
+
+                aoChiTiet.setMau_sac(act.getMau_sac());
+                aoChiTiet.setSize(act.getSize());
+                aoChiTiet.setAo(act.getAo());
+                aoChiTiet.setSlton(slTon);
+                aoChiTiet.setSlban(slBan);
+                aoChiTiet.setTrangthai(act.getTrangthai());
+
+                aoChiTietSer.update(act.getId(), aoChiTiet);
+            }
+
+            session.setAttribute("maHoaDonByMomoTaiQuay", hoaDon1.getMa());
+
+            ObjectMapper mapper = new ObjectMapper();
+            String orderId = hoaDon1.getMa();
+            MomoModel jsonRequest = new MomoModel();
+            jsonRequest.setPartnerCode(Constant.IDMOMO);
+            jsonRequest.setOrderId(orderId);
+            jsonRequest.setStoreId(orderId);
+            jsonRequest.setRedirectUrl(Constant.redirectUrl);
+            jsonRequest.setIpnUrl(Constant.ipnUrl);
+            jsonRequest.setAmount(bigDecimalTongDonGia.toString());
+            jsonRequest.setOrderInfo("Thanh toán Male Fashion.");
+            jsonRequest.setRequestId(orderId);
+            jsonRequest.setOrderType(Constant.orderType);
+            jsonRequest.setRequestType(Constant.requestType);
+            jsonRequest.setTransId("1");
+            jsonRequest.setResultCode("200");
+            jsonRequest.setMessage("");
+            jsonRequest.setPayType(Constant.payType);
+            jsonRequest.setResponseTime("300000");
+            jsonRequest.setExtraData("");
+
+            String decode = "accessKey=" + Constant.accessKey + "&amount=" + jsonRequest.amount + "&extraData="
+                    + jsonRequest.extraData + "&ipnUrl=" + Constant.ipnUrl + "&orderId=" + orderId + "&orderInfo="
+                    + jsonRequest.orderInfo + "&partnerCode=" + jsonRequest.getPartnerCode() + "&redirectUrl="
+                    + Constant.redirectUrl + "&requestId=" + jsonRequest.getRequestId() + "&requestType="
+                    + Constant.requestType;
+
+
+            String signature = Decode.encode(Constant.serectkey, decode);
+            jsonRequest.setSignature(signature);
+            String json = mapper.writeValueAsString(jsonRequest);
+            HttpClient client = HttpClient.newHttpClient();
+            ResultMoMo res = new ResultMoMo();
+
+            try {
+                HttpRequest requestMomo = HttpRequest.newBuilder().uri(new URI(Constant.Url))
+                        .POST(HttpRequest.BodyPublishers.ofString(json)).headers("Content-Type", "application/json")
+                        .build();
+                HttpResponse<String> response = client.send(requestMomo, HttpResponse.BodyHandlers.ofString());
+                res = mapper.readValue(response.body(), ResultMoMo.class);
+            } catch (InterruptedException | URISyntaxException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if (res == null) {
+
+                session.setAttribute("error_momo", "Thanh toán thất bại");
+                return "redirect:/home";
+
+            } else {
+                return "redirect:" + res.payUrl;
+            }
+        }
+
         model.addAttribute("hoaDon", id);
+        session.setAttribute("quayThanhToanThanhCong","2");
 
         return "redirect:/admin/ban-quay/trang-chu";
     }
 
     @PostMapping("/luuHD/{id}")
     public String luuHD(Model model, @PathVariable("id") UUID id,
-                        @RequestParam("ghiChu") String ghiChu) {
+                        @RequestParam("ghiChu") String ghiChu, HttpSession session) {
 
         HoaDon hoaDon1 = hoaDonSer.findId(id);
 
@@ -499,12 +661,12 @@ public class BanQuayController {
         }
 
         model.addAttribute("hoaDon", hoaDon1.getId());
-
+        session.setAttribute("addGhiChuThanhCong","2");
         return "redirect:/admin/ban-quay/trang-chu";
     }
 
     @PostMapping("/tao_nhanh_tk")
-    public String taoNhanhTk(HttpServletRequest request) {
+    public String taoNhanhTk(HttpServletRequest request,HttpSession session) {
         String ten = request.getParameter("ten");
         String email = request.getParameter("email");
         String sdt = request.getParameter("sdt");
@@ -546,6 +708,7 @@ public class BanQuayController {
                 "\nSố điện thoại : " + sdt + "\nMật khẩu : " + mk +
                 "\nCảm ơn bạn và chúc bạn mua hàng vui vẻ");
         mailSender.send(message);
+        session.setAttribute("addKhachHangNhanhThanhCong","2");
         return "redirect:/admin/ban-quay/trang-chu";
     }
 

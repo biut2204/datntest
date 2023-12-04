@@ -7,6 +7,7 @@ import com.example.demo.repo.sanpham.LoaiAoRepo;
 import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.LoaiAoSer;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +38,7 @@ public class LoaiAoController {
     ChatSer chatSer;
 
     @GetMapping("/admin/loai_ao/view/*")
-    public String view(Model model, HttpServletRequest request) {
+    public String view(Model model, HttpServletRequest request, HttpSession session) {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
@@ -60,12 +61,26 @@ public class LoaiAoController {
             model.addAttribute("item", loaiAo);
         } catch (Exception e) {
         }
+
+        String addThanhCong = (String) session.getAttribute("addThanhCong");
+        String updateThanhCong = (String) session.getAttribute("updateThanhCong");
+
+        if (addThanhCong != null){
+            model.addAttribute("themThanhCong","2");
+        }
+
+        if (updateThanhCong != null){
+            model.addAttribute("capNhatThanhCong","2");
+        }
+
+        session.removeAttribute("addThanhCong");
+        session.removeAttribute("updateThanhCong");
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/loai_ao";
     }
 
     @PostMapping("/admin/loai_ao/add")
-    public String add(@RequestPart("tenURL") MultipartFile file, Model model, HttpServletRequest request) {
+    public String add(@RequestPart("tenURL") MultipartFile file, Model model, HttpServletRequest request, HttpSession session) {
 
         int slLA = loaiAoRepo.soLA() + 1;
         String ten = request.getParameter("ten");
@@ -89,11 +104,12 @@ public class LoaiAoController {
         loaiAo.setTrangthai(Integer.parseInt(trangthai));
 
         loaiAoSer.add(loaiAo);
+        session.setAttribute("addThanhCong","2");
         return "redirect:/admin/loai_ao/view/1";
     }
 
     @PostMapping("/admin/loai_ao/update")
-    public String update(@RequestPart("tenURL") MultipartFile file, Model model, HttpServletRequest request) {
+    public String update(@RequestPart("tenURL") MultipartFile file, Model model, HttpServletRequest request, HttpSession session) {
 
         String id = request.getParameter("id");
         String ten = request.getParameter("ten");
@@ -118,6 +134,8 @@ public class LoaiAoController {
         loaiAo.setTrangthai(Integer.parseInt(trangthai));
 
         loaiAoSer.update(UUID.fromString(id), loaiAo);
+
+        session.setAttribute("updateThanhCong","2");
         return "redirect:/admin/loai_ao/view/1";
     }
 

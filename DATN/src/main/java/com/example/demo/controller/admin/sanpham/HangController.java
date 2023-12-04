@@ -7,6 +7,7 @@ import com.example.demo.repo.sanpham.HangRepo;
 import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.HangSer;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,7 @@ public class HangController {
     ChatSer chatSer;
 
     @GetMapping("/admin/hang/view/*")
-    public String view(Model model, HttpServletRequest request) {
+    public String view(Model model, HttpServletRequest request, HttpSession session) {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
@@ -53,12 +54,27 @@ public class HangController {
         } catch (Exception e) {
 
         }
+
+        String addThanhCong = (String) session.getAttribute("addThanhCong");
+        String updateThanhCong = (String) session.getAttribute("updateThanhCong");
+
+        if (addThanhCong != null){
+            model.addAttribute("themThanhCong","2");
+        }
+
+        if (updateThanhCong != null){
+            model.addAttribute("capNhatThanhCong","2");
+        }
+
+        session.removeAttribute("addThanhCong");
+        session.removeAttribute("updateThanhCong");
+
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/hang";
     }
 
     @PostMapping("/admin/hang/add")
-    public String add(Model model, HttpServletRequest request) {
+    public String add(Model model, HttpServletRequest request, HttpSession session) {
 
         int slHang = hangRepo.soHang() + 1;
 
@@ -78,11 +94,13 @@ public class HangController {
         hang.setTrangthai(Integer.parseInt(trangthai));
 
         hangSer.add(hang);
+
+        session.setAttribute("addThanhCong","2");
         return "redirect:/admin/hang/view/1";
     }
 
     @PostMapping("/admin/hang/update")
-    public String update(Model model, HttpServletRequest request) {
+    public String update(Model model, HttpServletRequest request, HttpSession session) {
 
         String id = request.getParameter("id");
         String ten = request.getParameter("ten");
@@ -103,6 +121,7 @@ public class HangController {
         hang.setTrangthai(Integer.parseInt(trangthai));
 
         hangSer.update(UUID.fromString(id), hang);
+        session.setAttribute("updateThanhCong","2");
         return "redirect:/admin/hang/view/1";
     }
 

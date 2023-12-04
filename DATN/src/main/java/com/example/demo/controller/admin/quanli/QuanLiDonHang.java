@@ -84,7 +84,7 @@ public class QuanLiDonHang {
 
             model.addAttribute("hoaDon", hoaDon);
             model.addAttribute("hoaDonChiTiets", hoaDonChiTiets);
-            if (hoaDon.getHinhThuc() == 1) {
+            if (hoaDon.getHinhThuc() == 1 || hoaDon.getHinhThuc() == 6) {
                 model.addAttribute("trangThai", "5");
             } else {
                 model.addAttribute("trangThai", hoaDon.getTrangThai());

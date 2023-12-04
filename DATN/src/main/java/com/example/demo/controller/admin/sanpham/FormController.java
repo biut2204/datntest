@@ -7,6 +7,7 @@ import com.example.demo.repo.sanpham.FormRepo;
 import com.example.demo.ser.chat.ChatSer;
 import com.example.demo.ser.sanpham.FormSer;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,7 @@ public class FormController {
     ChatSer chatSer;
 
     @GetMapping("/admin/form/view/*")
-    public String view(Model model, HttpServletRequest request) {
+    public String view(Model model, HttpServletRequest request, HttpSession session) {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
@@ -53,12 +54,27 @@ public class FormController {
         } catch (Exception e) {
 
         }
+
+        String addThanhCong = (String) session.getAttribute("addThanhCong");
+        String updateThanhCong = (String) session.getAttribute("updateThanhCong");
+
+        if (addThanhCong != null){
+            model.addAttribute("themThanhCong","2");
+        }
+
+        if (updateThanhCong != null){
+            model.addAttribute("capNhatThanhCong","2");
+        }
+
+        session.removeAttribute("addThanhCong");
+        session.removeAttribute("updateThanhCong");
+
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
         return "/admin/form";
     }
 
     @PostMapping("/admin/form/add")
-    public String add(Model model, HttpServletRequest request) {
+    public String add(Model model, HttpServletRequest request, HttpSession session) {
 
         int slF = formRepo.soF() + 1;
         String ten = request.getParameter("ten");
@@ -71,11 +87,14 @@ public class FormController {
         form.setTrangthai(Integer.parseInt(trangthai));
 
         formSer.add(form);
+
+        session.setAttribute("addThanhCong","2");
+
         return "redirect:/admin/form/view/1";
     }
 
     @PostMapping("/admin/form/update")
-    public String update(Model model, HttpServletRequest request) {
+    public String update(Model model, HttpServletRequest request, HttpSession session) {
 
         String id = request.getParameter("id");
 
@@ -91,6 +110,7 @@ public class FormController {
         form.setTrangthai(Integer.parseInt(trangthai));
 
         formSer.update(UUID.fromString(id), form);
+        session.setAttribute("updateThanhCong","2");
         return "redirect:/admin/form/view/1";
     }
 

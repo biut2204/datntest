@@ -23,6 +23,7 @@ import com.example.demo.ser.sanpham.SizeSer;
 import com.example.demo.ser.users.HoaDonChiTietSer;
 import com.example.demo.ser.users.HoaDonSer;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -73,9 +74,9 @@ public class IndexController {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
-        if (user.getRole() == RoleEnum.STAFF){
+        if (user.getRole() == RoleEnum.STAFF) {
             model.addAttribute("adminOrStaff", "1");
-        }else if (user.getRole() == RoleEnum.ADMIN){
+        } else if (user.getRole() == RoleEnum.ADMIN) {
             model.addAttribute("adminOrStaff", "2");
         }
         model.addAttribute("nameUser", user.getTen());
@@ -127,9 +128,9 @@ public class IndexController {
 
         Object object = request.getSession().getAttribute("userLogged");
         Users user = (Users) object;
-        if (user.getRole() == RoleEnum.STAFF){
+        if (user.getRole() == RoleEnum.STAFF) {
             model.addAttribute("adminOrStaff", "1");
-        }else if (user.getRole() == RoleEnum.ADMIN){
+        } else if (user.getRole() == RoleEnum.ADMIN) {
             model.addAttribute("adminOrStaff", "2");
         }
         model.addAttribute("nameUser", user.getTen());
@@ -183,81 +184,48 @@ public class IndexController {
             soLuongKhachMuaNgayTruocStr = 0;
         }
 
-        DecimalFormat df = new DecimalFormat("0.00");
-        double soSanhHoaDon;
-        if(soDonNgayHomTruoc==0){
-            soSanhHoaDon=100;
+
+        int soSanhHoaDon;
+        soSanhHoaDon = soDonNgayHienTai - soDonNgayHomTruoc;
+        if (soSanhHoaDon >= 0) {
+            model.addAttribute("soSanhHoaDon", "+" + soSanhHoaDon);
+        } else {
+            model.addAttribute("soSanhHoaDon", soSanhHoaDon);
+        }
+
+        int soSanhSoLuongBan;
+        soSanhSoLuongBan = soLuongBanNgayHienTai - soLuongBanNgayTruoc;
+        if (soSanhSoLuongBan >= 0) {
+            model.addAttribute("soSanhSoLuong", "+" + soSanhSoLuongBan);
+        } else {
+            model.addAttribute("soSanhSoLuong", soSanhSoLuongBan);
+        }
+        NumberFormat numberFormat = new DecimalFormat("#,###");
+        double soSanhDoanhThu;
+        soSanhDoanhThu = doanhThuNgayHienTai - doanhThuNgayTruocStr;
+        if (soSanhDoanhThu >= 0) {
+            model.addAttribute("soSanhDoanhThu", "+" +numberFormat.format(soSanhDoanhThu) );
         }
         else{
-            soSanhHoaDon= ((double) (soDonNgayHienTai - soDonNgayHomTruoc) / soDonNgayHomTruoc) * 100;
-        }
-        String formatSoSanhHoaDon = df.format(soSanhHoaDon);
-
-        if (soSanhHoaDon < 0) {
-            model.addAttribute("soSanhHoaDon", formatSoSanhHoaDon);
-            model.addAttribute("mauHD", "danger");
-        } else {
-            model.addAttribute("soSanhHoaDon", "+" + formatSoSanhHoaDon);
-            model.addAttribute("mauHD", "success");
+            model.addAttribute("soSanhDoanhThu", numberFormat.format(soSanhDoanhThu));
         }
 
-        double soSanhSoLuongBan;
 
-        if (soLuongBanNgayTruoc == 0) {
-            soSanhSoLuongBan = 100;
-        } else {
-            soSanhSoLuongBan = ((double) (soLuongBanNgayHienTai - soLuongBanNgayTruoc) / soLuongBanNgayTruoc) * 100;
+
+        int soSanhSoLuongKhach;
+        soSanhSoLuongKhach = soLuongKhachMuaNgayHienTai - soLuongKhachMuaNgayTruocStr;
+        if (soSanhSoLuongKhach >= 0) {
+            model.addAttribute("soSanhSoLuongKhach", "+" + soSanhSoLuongKhach);
         }
-
-        String formatSoSanhSoLuong = df.format(soSanhSoLuongBan);
-        if (soSanhSoLuongBan < 0) {
-            model.addAttribute("soSanhSoLuong", formatSoSanhSoLuong);
-            model.addAttribute("mauSL", "danger");
-        } else {
-            model.addAttribute("soSanhSoLuong", "+" + formatSoSanhSoLuong);
-            model.addAttribute("mauSL", "success");
-        }
-
-        double soSanhDoanhThu ;
-
-        if (doanhThuNgayTruocStr == 0.0){
-            soSanhDoanhThu = 100;
-        }else {
-            soSanhDoanhThu = ((doanhThuNgayHienTai - doanhThuNgayTruocStr) / doanhThuNgayTruocStr) * 100;
-        }
-        String formatSoSanhDoanhThu = df.format(soSanhDoanhThu);
-
-        if (soSanhDoanhThu < 0) {
-            model.addAttribute("soSanhDoanhThu", formatSoSanhDoanhThu);
-            model.addAttribute("mauDT", "danger");
-        } else {
-            model.addAttribute("soSanhDoanhThu", "+" + formatSoSanhDoanhThu);
-            model.addAttribute("mauDT", "success");
-        }
-
-        double soSanhSoLuongKhach;
-
-        if (soLuongKhachMuaNgayTruocStr == 0){
-            soSanhSoLuongKhach = 100;
-        }else {
-            soSanhSoLuongKhach = ((double) (soLuongKhachMuaNgayHienTai - soLuongKhachMuaNgayTruocStr) / soLuongKhachMuaNgayTruocStr) * 100;
-        }
-
-        String formatSoSanhSoLuongKhach = df.format(soSanhSoLuongKhach);
-
-        if (soSanhSoLuongKhach < 0) {
-            model.addAttribute("soSanhSoLuongKhach", formatSoSanhSoLuongKhach);
-            model.addAttribute("mauSLK", "danger");
-        } else {
-            model.addAttribute("soSanhSoLuongKhach", "+" + formatSoSanhSoLuongKhach);
-            model.addAttribute("mauSLK", "success");
+        else{
+            model.addAttribute("soSanhSoLuongKhach", soSanhSoLuongKhach);
         }
 
 
         List<Double> doanhThuTheoThang = hoaDonSer.doanhThuTheoThang(ngayStart, ngayHienTai);
         List<Integer> soLuongBanTheoThang = hoaDonChiTietSer.soLuongBanTheoThang(ngayStart, ngayHienTai);
 
-        List<Integer> getThang = hoaDonSer.getDataThang(ngayStart,ngayHienTai);
+        List<Integer> getThang = hoaDonSer.getDataThang(ngayStart, ngayHienTai);
         List<Integer> monthsInPeriod = new ArrayList<>();
         LocalDate currentDate = ngayStart;
         while (!currentDate.isAfter(ngayHienTai)) {
@@ -268,7 +236,7 @@ public class IndexController {
         List<Double> finalResult = new ArrayList<>();
         List<Integer> finalResult1 = new ArrayList<>();
         for (Integer month : monthsInPeriod) {
-            boolean found = false,found1=false;
+            boolean found = false, found1 = false;
             for (int i = 0; i < doanhThuTheoThang.size(); i++) {
                 if (month == getThang.get(i)) {
                     finalResult.add(doanhThuTheoThang.get(i));
@@ -294,18 +262,31 @@ public class IndexController {
             System.out.println(finalResult);
         }
 
-        Double doanhThuThangHienTai = hoaDonSer.doanhThuThangHienTai(firstDayOfMonth,ngayHienTai);
+        Double doanhThuThangHienTaiStr = hoaDonSer.doanhThuThangHienTai(firstDayOfMonth, ngayHienTai);
 
-        NumberFormat numberFormat = new DecimalFormat("#,###");
+        Double doanhThuThangHienTai;
+
+        if (doanhThuThangHienTaiStr == null){
+            doanhThuThangHienTai = (double) 0;
+        }else {
+            doanhThuThangHienTai = doanhThuThangHienTaiStr;
+        }
+
         String doanhThuFormatted = numberFormat.format(doanhThuThangHienTai);
 
-        Integer soLuongBanThangHienTai = hoaDonChiTietSer.soLuongBanThangHienTai(firstDayOfMonth,ngayHienTai);
-        model.addAttribute("doanhThuThangHienTai",doanhThuFormatted);
-        model.addAttribute("soLuongBanThangHienTai",soLuongBanThangHienTai);
+        Integer soLuongBanThangHienTai = hoaDonChiTietSer.soLuongBanThangHienTai(firstDayOfMonth, ngayHienTai);
+        model.addAttribute("doanhThuThangHienTai", doanhThuFormatted);
+        model.addAttribute("soLuongBanThangHienTai", soLuongBanThangHienTai);
         model.addAttribute("soHoaDonHomNay", soDonNgayHienTai);
         model.addAttribute("soLuongHomNay", soLuongBanNgayHienTai);
-        model.addAttribute("doanhThuHomNay", doanhThuNgayHienTai);
+        model.addAttribute("doanhThuHomNay",numberFormat.format(doanhThuNgayHienTai) );
         model.addAttribute("soLuongKhachMua", soLuongKhachMuaNgayHienTai);
+
+        model.addAttribute("soHoaDonHomQua", soDonNgayHomTruoc);
+        model.addAttribute("soLuongBanHomQua", soLuongBanNgayTruoc);
+        model.addAttribute("doanhThuHomQua",numberFormat.format(doanhThuNgayTruocStr) );
+        model.addAttribute("soLuongKhachHomQua", soLuongKhachMuaNgayTruocStr);
+
         model.addAttribute("listDoanhThu", finalResult);
         model.addAttribute("listSoLuong", finalResult1);
         model.addAttribute("mauSac", mauSacSer.getAll());
@@ -319,5 +300,11 @@ public class IndexController {
         model.addAttribute("listLoaiAo", loaiAoSer.findAllByTrangThai(1));
 
         return "/admin/thongke";
+    }
+
+    @GetMapping("/admin/logout")
+    public String adminLogout(HttpSession session){
+        session.removeAttribute("userLogged");
+        return "redirect:/login";
     }
 }

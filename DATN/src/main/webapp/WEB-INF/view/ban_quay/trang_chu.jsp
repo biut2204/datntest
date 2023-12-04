@@ -21,6 +21,8 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="../../../resources/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="../../../resources/css/add_form.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.0/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.0/dist/sweetalert2.min.js"></script>
     <style>
         .image {
             width: 80px;
@@ -375,7 +377,7 @@
                                                             Đang chờ</p></c:when>
                                                     </c:choose>
                                                 </td>
-                                                <td>${list.ghiChu}</td>
+                                                <td style="width: 30%">${list.ghiChu}</td>
                                                 <td>
                                                     <a href="/admin/ban-quay/view-cart/${list.id}"
                                                        class="btn btn-primary me-2 "><i class="fas fa-edit" ></i>
@@ -594,6 +596,46 @@
         }
     }
 
+</script>
+<script>
+    var themKhachHangNhanhThanhCong = "${themKhachHangNhanhThanhCong}";
+    if (themKhachHangNhanhThanhCong == "2") {
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 2000, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Thêm khách hàng nhanh thành công!',
+            icon: 'success',
+        });
+    }
+
+    var themGhiChuThanhCong = "${themGhiChuThanhCong}";
+    if (themGhiChuThanhCong == "2") {
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 2000, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Thêm ghi chú thành công!',
+            icon: 'success',
+        });
+    }
+
+    var quayThanhToanThanhCongStr = "${quayThanhToanThanhCongStr}";
+    if (quayThanhToanThanhCongStr == "2") {
+        Swal.fire({
+            position: 'top-end', // Vị trí của thông báo
+            toast: true, // Thiết lập kiểu thông báo là "toast"
+            showConfirmButton: false, // Không hiển thị nút xác nhận
+            timer: 2000, // Thời gian hiển thị (đơn vị là milliseconds)
+            width: '300px', // Đặt chiều rộng của thông báo
+            text: 'Thanh toán thành công!',
+            icon: 'success',
+        });
+    }
 </script>
 </body>
 </html>

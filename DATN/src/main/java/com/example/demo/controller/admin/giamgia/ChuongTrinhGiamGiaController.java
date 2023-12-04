@@ -43,7 +43,7 @@ public class ChuongTrinhGiamGiaController {
     GiamGiaSanPhamChiTietSer giamGiaSanPhamChiTietSer;
 
     @GetMapping("/admin/chuong_trinh_giam_gia/add_view/*")
-    public String viewAdd(Model model, HttpServletRequest request) {
+    public String viewAdd(Model model, HttpServletRequest request, HttpSession session) {
 
         String url = request.getRequestURI();
         String[] parts = url.split("/admin/chuong_trinh_giam_gia/add_view/");
@@ -84,6 +84,21 @@ public class ChuongTrinhGiamGiaController {
 
         }
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
+
+        String addThanhCong = (String) session.getAttribute("addThanhCong");
+        String updateThanhCong = (String) session.getAttribute("updateThanhCong");
+
+        if (addThanhCong != null){
+            model.addAttribute("themThanhCong","2");
+        }
+
+        if (updateThanhCong != null){
+            model.addAttribute("capNhatThanhCong","2");
+        }
+
+        session.removeAttribute("addThanhCong");
+        session.removeAttribute("updateThanhCong");
+
         return "/admin/add/add_chuong_trinh";
     }
 
@@ -103,10 +118,15 @@ public class ChuongTrinhGiamGiaController {
         model.addAttribute("allChat", chatSer.soTinNhanChuaDoc());
 
         String loiGiamGiaChiTiet = (String) session.getAttribute("loiGiamGiaChiTiet");
+        String addThanhCong = (String) session.getAttribute("addThanhCong");
         if (loiGiamGiaChiTiet != null){
             model.addAttribute("loiGiamGiaChiTietStr","2");
         }
+        if (addThanhCong != null){
+            model.addAttribute("themThanhCong","2");
+        }
         session.removeAttribute("loiGiamGiaChiTiet");
+        session.removeAttribute("addThanhCong");
 
         return "/admin/add/ap_dung";
     }
@@ -121,7 +141,7 @@ public class ChuongTrinhGiamGiaController {
     }
 
     @PostMapping("/chuong-trinh-giam-gia/add")
-    public String add(HttpServletRequest request) {
+    public String add(HttpServletRequest request, HttpSession session) {
         String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
         String loai = request.getParameter("loai");
@@ -163,11 +183,13 @@ public class ChuongTrinhGiamGiaController {
             giamGiaHoaDon.setSoTienHoaDon(tongtien);
             giamGiaHoaDonSer.add(giamGiaHoaDon);
         }
+
+        session.setAttribute("addThanhCong","2");
         return "redirect:/admin/chuong_trinh_giam_gia/add_view/1";
     }
 
     @PostMapping("/chuong-trinh-giam-gia/update")
-    public String update(HttpServletRequest request) {
+    public String update(HttpServletRequest request, HttpSession session) {
         String id = request.getParameter("id");
         String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
@@ -210,6 +232,7 @@ public class ChuongTrinhGiamGiaController {
             giamGiaHoaDon.setSoTienHoaDon(tongtien);
             giamGiaHoaDonSer.update(UUID.fromString(id), giamGiaHoaDon);
         }
+        session.setAttribute("updateThanhCong","2");
         return "redirect:/admin/chuong_trinh_giam_gia/add_view/1";
     }
 
@@ -248,6 +271,7 @@ public class ChuongTrinhGiamGiaController {
             giamGiaSanPhamChiTiet.setTrangThai(0);
 
             giamGiaSanPhamChiTietSer.add(giamGiaSanPhamChiTiet);
+            session.setAttribute("addThanhCong", "2");
         }else {
             session.setAttribute("loiGiamGiaChiTiet", "2");
         }

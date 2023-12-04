@@ -155,16 +155,23 @@
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                         <c:choose>
                             <c:when test="${idKh != 2}">
-                                <a href="/user/don_hang/${idKh}" class="btn px-0">
-                                    <i class="fa fa-user"></i>
-                                    <span class="badge text-secondary border border-secondary rounded-circle"
-                                          style="padding-bottom: 2px;">${khachHangNow.ten}</span>
-                                </a>
-                                <a href="/user/gio_hang/view/${idKh}" class="btn px-0 ml-3">
-                                    <i class="fas fa-shopping-cart text-primary"></i>
-                                    <span class="badge text-secondary border border-secondary rounded-circle"
-                                          style="padding-bottom: 2px;">${soLuongSanPham}</span>
-                                </a>
+                                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                                    <div class="navbar-nav mr-auto py-0">
+                                        <div class="nav-item dropdown">
+                                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" style="color: #ffd019"></i>
+                                                <span class="badge text-secondary border border-secondary rounded-circle"
+                                                      style="padding-bottom: 2px;">${khachHangNow.ten}</span></a>
+                                            <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
+                                                <a href="/user/thong_tin/${idKh}" class="dropdown-item">Thông tin</a>
+                                                <a href="/user/don_hang/${idKh}" class="dropdown-item">Đơn hàng</a>
+                                                <a href="/logout" class="dropdown-item">Đăng xuất</a>
+                                            </div>
+                                        </div>
+                                        <a href="/user/gio_hang/view/${idKh}" class="nav-item nav-link"><i class="fas fa-shopping-cart text-primary"></i>
+                                            <span class="badge text-secondary border border-secondary rounded-circle"
+                                                  style="padding-bottom: 2px;">${soLuongSanPham}</span></a>
+                                    </div>
+                                </div>
                             </c:when>
                             <c:when test="${idKh == 2}">
                                 <a href="/login" class="btn px-0 ml-3">
